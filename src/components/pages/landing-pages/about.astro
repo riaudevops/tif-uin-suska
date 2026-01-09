@@ -1,130 +1,115 @@
-<section class="py-24 bg-white">
+<section class="relative">
+  <div class="relative overflow-hidden shadow-2xl">
 
-  <!-- Heading -->
-  <div class="max-w-4xl mx-auto text-center px-6 mb-20">
-    <h2 class="text-3xl md:text-4xl font-bold text-green-900">
-      Fasilitas Program Studi
-    </h2>
-    <p class="mt-4 text-gray-600 leading-relaxed">
-      Sarana dan prasarana pendukung pembelajaran, penelitian, dan pengembangan
-      kompetensi mahasiswa secara berkelanjutan.
-    </p>
-  </div>
+    <!-- BACKGROUND -->
+    <div class="absolute inset-0 bg-gradient-to-br from-green-900 via-emerald-800 to-green-700"></div>
+    <div class="absolute inset-0 bg-[url('/landing-pages/gedung.jpg')] bg-cover bg-center opacity-15"></div>
 
-  <!-- Fasilitas -->
-  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-6">
+    <!-- CONTENT -->
+    <div class="relative z-10 max-w-7xl mx-auto px-8 py-14 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-    <div class="border border-gray-200 rounded-2xl p-8 transition hover:border-yellow-400 hover:shadow-lg">
-      <h3 class="text-lg font-semibold text-green-800 flex items-center gap-4 mb-3">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M9.75 3v6.75L5.25 21h13.5L14.25 9.75V3" />
-        </svg>
-        Laboratorium Komputer
-      </h3>
-      <p class="text-gray-600 text-sm leading-relaxed mb-4">
-        Digunakan untuk praktikum mata kuliah, pengembangan proyek aplikasi sederhana,
-        serta mendukung kegiatan riset dan tugas akhir mahasiswa.
-      </p>
-      <div class="flex gap-2 text-xs">
-        <span class="px-3 py-1 bg-gray-100 rounded-full">Praktikum</span>
-        <span class="px-3 py-1 bg-gray-100 rounded-full">Proyek</span>
-        <span class="px-3 py-1 bg-gray-100 rounded-full">Riset</span>
+      <!-- LEFT : IDENTITAS PRODI -->
+      <div class="flex flex-col gap-10">
+
+        <!-- LOGO + TITLE -->
+        <div class="flex items-center gap-6">
+          <div class="flex flex-col items-center border-r border-white/20 pr-6">
+            <img src="/logo/uin.png" alt="Logo UIN Suska" class="h-20 w-auto">
+            <span class="mt-2 text-[10px] font-bold text-yellow-300 uppercase tracking-widest text-center">
+              UIN Suska Riau
+            </span>
+          </div>
+
+          <div>
+            <h1 class="text-2xl md:text-3xl font-bold uppercase tracking-wide text-white leading-tight">
+              Teknik Informatika
+            </h1>
+            <h2 class="text-lg md:text-xl font-light text-emerald-200 uppercase">
+              Fakultas Sains dan Teknologi
+            </h2>
+          </div>
+        </div>
+
+        <!-- AKREDITASI -->
+        <div class="flex items-center gap-3">
+          <img src="/logo/unggul.png" alt="Akreditasi Unggul" class="h-12 w-auto"/>
+          <img src="/logo/blu.png" alt="BLU" class="h-12 w-auto"/>
+          <img src="/logo/kemenag.png" alt="Kemenag" class="h-12 w-auto"/>
+        </div>
+
       </div>
-    </div>
 
-    <div class="border border-gray-200 rounded-2xl p-8 transition hover:border-yellow-400 hover:shadow-lg">
-      <h3 class="text-lg font-semibold text-green-800 flex items-center gap-4 mb-3">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M3 10l9-6 9 6v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8z" />
-        </svg>
-        Ruang Kelas Representatif
-      </h3>
-      <p class="text-gray-600 text-sm leading-relaxed mb-4">
-        Mendukung pembelajaran berbasis presentasi, diskusi kelompok, dan studi kasus
-        melalui fasilitas multimedia yang menunjang interaksi akademik.
-      </p>
-      <div class="flex gap-2 text-xs">
-        <span class="px-3 py-1 bg-gray-100 rounded-full">Diskusi</span>
-        <span class="px-3 py-1 bg-gray-100 rounded-full">Presentasi</span>
+      <!-- RIGHT : DESKRIPSI -->
+      <div class="text-white max-w-xl">
+        <p class="text-xs font-extrabold uppercase tracking-[0.25em] text-yellow-300">
+          Informasi Program Studi
+        </p>
+
+        <h3 class="text-3xl font-bold leading-snug">
+          Teknik Informatika
+        </h3>
+
+        <p class="text-emerald-100 leading-relaxed">
+          Program Studi Teknik Informatika UIN Sultan Syarif Kasim Riau
+          mengintegrasikan keilmuan teknologi informasi dengan nilai-nilai keislaman.
+          Fokus kami adalah mencetak lulusan yang unggul secara akademik, adaptif
+          terhadap perkembangan teknologi, serta beretika dan berintegritas.
+        </p>
       </div>
-    </div>
 
-    <div class="border border-gray-200 rounded-2xl p-8 transition hover:border-yellow-400 hover:shadow-lg">
-      <h3 class="text-lg font-semibold text-green-800 flex items-center gap-4 mb-3">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M12 3v18m9-9H3" />
-        </svg>
-        Akses Internet Kampus
-      </h3>
-      <p class="text-gray-600 text-sm leading-relaxed mb-4">
-        Memfasilitasi akses sistem pembelajaran daring, literatur ilmiah,
-        serta kebutuhan pengembangan aplikasi dan kolaborasi akademik mahasiswa.
-      </p>
-      <div class="flex gap-2 text-xs">
-        <span class="px-3 py-1 bg-gray-100 rounded-full">E-Learning</span>
-        <span class="px-3 py-1 bg-gray-100 rounded-full">Riset</span>
-        <span class="px-3 py-1 bg-gray-100 rounded-full">Kolaborasi</span>
-      </div>
+    </div>
+  </div>
+</section>
+
+<section class="relative bg-gradient-to-br from-green-900 to-emerald-800">
+  <div class="max-w-7xl mx-auto px-6 py-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <a class="group bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-yellow-400/60 hover:bg-white/10 transition">
+        <svg class="w-8 h-8 text-yellow-300 mb-4" ...></svg>
+        <h4 class="font-semibold text-white mb-2">
+          SIREG
+        </h4>
+        <p class="text-sm text-emerald-200 leading-relaxed">
+          Sistem layanan akademik terpadu untuk mahasiswa.
+        </p>
+      </a>
+      
+      <a class="group bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-yellow-400/60 hover:bg-white/10 transition">
+        <svg class="w-8 h-8 text-yellow-300 mb-4" ...></svg>
+        <h4 class="font-semibold text-white mb-2">
+          E-Learning
+        </h4>
+        <p class="text-sm text-emerald-200 leading-relaxed">
+          Platform seperti classroom virtual untuk mendukung pembelajaran daring.
+          Dengan memberi materi dan mengumpulkan tugas secara online.
+        </p>
+      </a>
+      
+      <a class="group bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-yellow-400/60 hover:bg-white/10 transition">
+        <svg class="w-8 h-8 text-yellow-300 mb-4" ...></svg>
+        <h4 class="font-semibold text-white mb-2">
+          IRaise
+        </h4>
+        <p class="text-sm text-emerald-200 leading-relaxed">
+          Iraise adalah sistem informasi akademik untuk dosen.
+          Memudahkan dalam pengelolaan data dan informasi akademik.
+          Dengan fitur-fitur yang lengkap.
+        </p>
+      </a>
+      
+      <a class="group bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-yellow-400/60 hover:bg-white/10 transition">
+        <svg class="w-8 h-8 text-yellow-300 mb-4" ...></svg>
+        <h4 class="font-semibold text-white mb-2">
+          Dashboard TIF
+        </h4>
+        <p class="text-sm text-emerald-200 leading-relaxed">
+          Dashboard TIF merupakan aplikasi setoran murajaah
+          bagi mahasiswa Program Studi Teknik Informatika.
+          Dengan fitur-fitur yang memudahkan dalam pengelolaan
+          dan pelaporan kegiatan akademik.
+        </p>
+      </a>
     </div>
 
   </div>
-
-  <!-- Sistem Akademik -->
-  <div class="max-w-4xl mx-auto mt-28 px-6 text-center">
-    <h3 class="text-3xl font-bold text-green-900 mb-4">
-      Sistem Layanan Akademik
-    </h3>
-    <p class="text-gray-600 mb-6">
-      Program Studi Teknik Informatika didukung oleh sistem informasi akademik
-      yang terintegrasi dengan universitas.
-      Sistem ini digunakan oleh mahasiswa dan dosen dalam aktivitas akademik sehari-hari.
-    </p>
-
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-      <a href="https://sireg.uin-suska.ac.id/"
-        class="border border-gray-200 rounded-xl py-6 font-medium text-green-700
-                hover:border-yellow-400 hover:bg-yellow-50 transition
-                flex flex-col items-center gap-3">
-
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M9 17v-6a2 2 0 012-2h2a2 2 0 012 2v6" />
-        </svg>
-        SIREG
-      </a>
-
-      <a href="https://iraisenew.uin-suska.ac.id/"
-        class="border border-gray-200 rounded-xl py-6 font-medium text-green-700
-                hover:border-yellow-400 hover:bg-yellow-50 transition
-                flex flex-col items-center gap-3">
-        iRaise
-      </a>
-
-      <a href="https://elearning.uin-suska.ac.id/"
-        class="border border-gray-200 rounded-xl py-6 font-medium text-green-700
-                hover:border-yellow-400 hover:bg-yellow-50 transition
-                flex flex-col items-center gap-3">
-        E-Learning
-      </a>
-
-      <a href="https://dashboard.tif.uin-suska.ac.id/"
-         class="border border-gray-200 rounded-xl py-6 font-medium text-green-700
-                 hover:border-yellow-400 hover:bg-yellow-50 transition
-                 flex flex-col items-center gap-3">
-        Dashboard TIF
-      </a>
-    </div>
-  </div>
-  
-  <!-- Gambar -->
-  <div class="relative max-w-6xl mx-auto px-6 mt-24">
-    <div class="absolute inset-0 bg-gradient-to-t from-green-900/30 to-transparent rounded-xl"></div>
-    <img src="/landing-pages/gedung-faste.jpg"
-         alt="Gedung FASTE"
-         class="w-full rounded-xl shadow-lg relative z-10" />
-  </div>
-
 </section>
