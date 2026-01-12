@@ -1,0 +1,51 @@
+{
+	"version": 3,
+	"routes": [
+		{
+			"handle": "filesystem"
+		},
+		{
+			"src": "^/_astro/(.*)$",
+			"headers": {
+				"cache-control": "public, max-age=31536000, immutable"
+			},
+			"continue": true
+		},
+		{
+			"src": "^/_server-islands/([^/]+?)/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/_image/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/api/search/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/dosen-pages/dosen/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/panduan-pages/panduan/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/profil-pages/sejarah/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/rencana-pages/rencana/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/visimisi-pages/visimisi/?$",
+			"dest": "_render"
+		},
+		{
+			"src": "^/$",
+			"dest": "_render"
+		}
+	]
+}
