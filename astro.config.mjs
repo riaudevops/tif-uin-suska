@@ -1,20 +1,8 @@
-import { defineConfig } from "astro/config";
-import react from "@astrojs/react";
-import tailwind from "@astrojs/tailwind";
-import node from "@astrojs/node";
-import vercel from "@astrojs/vercel";
+import { defineConfig } from 'astro/config';
+import tailwind from '@astrojs/tailwind';
 
+// HAPUS import vercel dan adapter untuk sementara
 export default defineConfig({
-  output: "server",
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true,
-    }
-  }),
-  integrations: [
-    react(),
-    tailwind({
-      applyBaseStyles: false,
-    }),
-  ],
+  // HAPUS output: 'server'
+  integrations: [tailwind()],
 });
