@@ -12,6 +12,7 @@
   "dependencies": {
     "@astrojs/node": "^9.5.1",
     "@astrojs/react": "^4.4.2",
+    "@astrojs/vercel": "^9.0.3",
     "@lucide/astro": "^0.556.0",
     "@radix-ui/react-navigation-menu": "^1.2.14",
     "aos": "^2.3.4",
