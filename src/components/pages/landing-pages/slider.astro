@@ -167,16 +167,23 @@
     </div>
 </div>
 
-  <!-- BUTTONS -->
-  <button id="prev"
-    class="absolute left-6 top-1/2 -translate-y-1/2 z-30 bg-white/40 hover:bg-yellow-100 text-green-800 p-3 rounded-full backdrop-blur">
-    &lsaquo;
-  </button>
+<!-- Tombol Prev -->
+<button id="prev"
+    class="absolute left-6 top-1/2 -translate-y-1/2 z-30 group flex items-center justify-center w-12 h-12 bg-white/20 hover:bg-white/90 border border-white/30 text-white hover:text-green-800 rounded-full backdrop-blur-md transition-all duration-300 shadow-lg active:scale-90"
+    aria-label="Previous Slide">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transform group-hover:-translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+    </svg>
+</button>
 
-  <button id="next"
-    class="absolute right-6 top-1/2 -translate-y-1/2 z-30 bg-white/40 hover:bg-yellow-100 text-green-800 p-3 rounded-full backdrop-blur">
-    &rsaquo;
-  </button>
+<!-- Tombol Next -->
+<button id="next"
+    class="absolute right-6 top-1/2 -translate-y-1/2 z-30 group flex items-center justify-center w-12 h-12 bg-white/20 hover:bg-white/90 border border-white/30 text-white hover:text-green-800 rounded-full backdrop-blur-md transition-all duration-300 shadow-lg active:scale-90"
+    aria-label="Next Slide">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+    </svg>
+</button>
 
   <!-- INDICATORS -->
   <div id="indicators"
