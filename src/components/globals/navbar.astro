@@ -1,181 +1,165 @@
-<nav class="w-full fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/70">
-
-  <!-- Top Bar -->
-  <div class="w-full bg-[#004d2c] text-white text-sm">
-    <div class="container mx-auto px-4 py-2 flex justify-end items-center gap-4">
-      <a href="#" class="hover:underline">International Office</a>
-      <a href="#" class="hover:underline">Akreditasi</a>
-      <a href="#" class="hover:underline">Mitra</a>
-      <select class="bg-white/90 text-gray-800 text-xs px-2 py-1 rounded-md focus:outline-none">
-        <option>ID</option>
-        <option>EN</option>
-      </select>
+<nav class="w-full fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-sm">
+  
+  <div class="w-full bg-[#004d2c] text-white/90 text-[10px] py-2 md:text-xs uppercase tracking-widest font-medium">
+    <div class="container mx-auto px-6 py-3 flex justify-end items-center gap-6">
+      <a href="#" class="hover:text-yellow-400 transition-colors">International Office</a>
+      <a href="#" class="hover:text-yellow-400 transition-colors">Akreditasi</a>
+      <a href="#" class="hover:text-yellow-400 transition-colors">Mitra</a>
+      <div class="h-3 w-[1px] bg-white/20"></div>
+      <div class="flex items-center gap-1">
+        <select class="bg-transparent text-white cursor-pointer focus:outline-none border-none outline-none appearance-none">
+          <option class="text-gray-800">ID</option>
+          <option class="text-gray-800">EN</option>
+        </select>
+        <svg class="w-2 h-2 opacity-60" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
     </div>
   </div>
 
-  <!-- Logo + Judul + Unggul -->
-  <div class="container mx-auto flex items-center justify-between py-4 px-4">
-    <div class="flex items-center gap-4">
-      <!-- Logo UIN -->
-      <img src="/logo/uin.png" alt="Logo UIN Suska Riau" class="w-10 h-10 object-contain" />
+  <div class="bg-white/95 backdrop-blur-md border-b border-gray-100">
+    <div class="container mx-auto flex items-center justify-between py-3 px-6">
       
-      <!-- Teks TEKNIK INFORMATIKA + Fakultas -->
-      <div class="flex flex-col leading-tight">
-        <a href="/" class="text-base md:text-lg font-semibold text-gray-900">TEKNIK INFORMATIKA</a>
-        <span class="text-xs md:text-sm text-gray-600">FAKULTAS SAINS DAN TEKNOLOGI</span>
-      </div>
-
-      <!-- Logo Unggul -->
-      <img src="/logo/unggul.png" alt="Logo Unggul" class="w-10 h-10 object-contain" />
-    </div>
-
-    <!-- Menu Desktop -->
-    <div class="hidden md:flex items-center gap-6 text-gray-800 font-medium">
-
-      <a href="/" class="hover:text-yellow-600 px-3 py-2 transition">Beranda</a>
-
-      <!-- Dropdown Profil -->
-      <div class="relative" data-dropdown>
-        <button type="button" class="flex items-center gap-1 px-3 py-2 hover:text-yellow-600 transition" data-menu-btn="profil" aria-expanded="false" aria-controls="menu-profil">
-          Profil
-          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div id="menu-profil" class="absolute bg-white shadow-xl rounded-lg p-4 w-64 mt-2 z-50 hidden" data-menu="profil" role="menu">
-          <a href="/profil-pages/sejarah" class="block py-2 px-3 hover:bg-gray-100 rounded">Sejarah</a>
-          <a href="/visimisi-pages/visimisi" class="block py-2 px-3 hover:bg-gray-100 rounded">Visi, Misi, Tujuan, dan Strategi</a>
-          <a href="/rencana-pages/rencana" class="block py-2 px-3 hover:bg-gray-100 rounded">Rencana Strategi</a>
-          <a href="/panduan-pages/panduan" class="block py-2 px-3 hover:bg-gray-100 rounded">Panduan Pengelolaan Pendidikan</a>
-          <a href="/struktur" class="block py-2 px-3 hover:bg-gray-100 rounded">Struktur Organisasi</a>
-          <a href="/dosen-pages/dosen" class="block py-2 px-3 hover:bg-gray-100 rounded">Dosen</a>
-          <a href="/laboratorium" class="block py-2 px-3 hover:bg-gray-100 rounded">Laboratorium</a>
-          <a href="/ruang-kelas" class="block py-2 px-3 hover:bg-gray-100 rounded">Ruang Kelas</a>
-          <a href="/prestasi" class="block py-2 px-3 hover:bg-gray-100 rounded">Prestasi</a>
+      <div class="flex items-center gap-6">
+        <div class="flex flex-col items-center border-r border-slate-200 pr-6">
+          <img src="/logo/uin.png" alt="Logo UIN Suska" class="h-16 w-auto">
+          <span class="text-[10px] font-bold text-[#004d2c] mt-2 uppercase tracking-tighter text-center">
+            UIN Suska Riau
+          </span>
+        </div>
+        <div class="flex flex-col">
+          <h1 class="text-xl md:text-2xl font-extrabold tracking-tight text-slate-800 leading-tight uppercase">
+            Teknik Informatika
+          </h1>
+          <h2 class="text-sm md:text-lg font-medium text-slate-500 leading-tight uppercase">
+            Fakultas Sains dan Teknologi
+          </h2>
+        </div>
+        
+        <div class="flex items-center group">
+          <img src="/logo/unggul.png" alt="Logo Unggul" class="w-8 h-8 md:w-10 md:h-10 object-contain hidden sm:block ml-2 opacity-80 group-hover:opacity-100 transition-opacity" />
         </div>
       </div>
 
-      <!-- Dropdown Akademik -->
-      <div class="relative" data-dropdown>
-        <button type="button" class="flex items-center gap-1 px-3 py-2 hover:text-yellow-600 transition" data-menu-btn="akademik" aria-expanded="false" aria-controls="menu-akademik">
-          Akademik
-          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div id="menu-akademik" class="absolute bg-white shadow-xl rounded-lg p-4 w-64 mt-2 z-50 hidden" data-menu="akademik" role="menu">
-          <a href="/penerimaan" class="block py-2 px-3 hover:bg-gray-100 rounded">Penerimaan</a>
-          <a href="/pelayanan" class="block py-2 px-3 hover:bg-gray-100 rounded">Pelayanan Administrasi</a>
-          <a href="/kurikulum" class="block py-2 px-3 hover:bg-gray-100 rounded">Kurikulum</a>
-          <a href="/kalender" class="block py-2 px-3 hover:bg-gray-100 rounded">Kalender Akademik</a>
-          <a href="/beasiswa" class="block py-2 px-3 hover:bg-gray-100 rounded">Beasiswa</a>
-          <a href="/tugas-akhir" class="block py-2 px-3 hover:bg-gray-100 rounded">Info Tugas Akhir (TA)</a>
-          <a href="/kerja-praktik" class="block py-2 px-3 hover:bg-gray-100 rounded">Info Kerja Praktik (KP)</a>
-          <a href="/labssquad" class="block py-2 px-3 hover:bg-gray-100 rounded">Labs Squad</a>
+      <div class="hidden lg:flex items-center gap-1 text-[13px] font-bold text-slate-700 uppercase">
+        <a href="/" class="px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50">Beranda</a>
+
+        <div class="relative" data-dropdown>
+          <button type="button" class="flex items-center gap-1 px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50" data-menu-btn="profil">
+            Profil <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div id="menu-profil" class="absolute left-0 bg-white shadow-2xl rounded-xl p-2 w-72 mt-2 hidden border border-gray-100 z-50" data-menu="profil">
+            <a href="/profil-pages/sejarah" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Sejarah</a>
+            <a href="/visimisi-pages/visimisi" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Visi, Misi, Tujuan, dan Strategi</a>
+            <a href="/rencana-pages/rencana" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Rencana Strategi</a>
+            <a href="/panduan-pages/panduan" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Panduan Pengelolaan Pendidikan</a>
+            <a href="/struktur" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Struktur Organisasi</a>
+            <a href="/dosen-pages/dosen" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Dosen</a>
+            <a href="/laboratorium" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Laboratorium</a>
+            <a href="/ruang-kelas" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Ruang Kelas</a>
+            <a href="/prestasi" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Prestasi</a>
+          </div>
         </div>
+
+        <div class="relative" data-dropdown>
+          <button type="button" class="flex items-center gap-1 px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50" data-menu-btn="akademik">
+            Akademik <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div id="menu-akademik" class="absolute left-0 bg-white shadow-2xl rounded-xl p-2 w-72 mt-2 hidden border border-gray-100 z-50" data-menu="akademik">
+            <a href="/penerimaan" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Penerimaan</a>
+            <a href="/pelayanan" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Pelayanan Administrasi</a>
+            <a href="/kurikulum" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Kurikulum</a>
+            <a href="/kalender" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Kalender Akademik</a>
+            <a href="/beasiswa" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Beasiswa</a>
+            <a href="/tugas-akhir" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Info Tugas Akhir (TA)</a>
+            <a href="/kerja-praktik" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Info Kerja Praktik (KP)</a>
+            <a href="/labssquad" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Labs Squad</a>
+          </div>
+        </div>
+
+        <div class="relative" data-dropdown>
+          <button type="button" class="flex items-center gap-1 px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50" data-menu-btn="penelitian">
+            Penelitian <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div id="menu-penelitian" class="absolute left-0 bg-white shadow-2xl rounded-xl p-2 w-72 mt-2 hidden border border-gray-100 z-50" data-menu="penelitian">
+            <a href="/jurnal" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Jurnal COreIT</a>
+            <a href="/aiorc" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">AIORC</a>
+            <a href="/software" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Software Engineering</a>
+            <a href="/teknologi" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Information Technology</a>
+          </div>
+        </div>
+
+        <a href="/berita" class="px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50">Berita</a>
+        <a href="/alumni" class="px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50">Alumni</a>
+        <a href="https://hima.tif.uin-suska.ac.id/" target="_blank" class="ml-4 px-5 py-2 bg-[#004d2c] text-white rounded-full hover:bg-yellow-600 transition shadow-md shadow-green-100 flex items-center gap-2">
+            HIMATIF
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
 
-      <!-- Dropdown Penelitian -->
-      <div class="relative" data-dropdown>
-        <button type="button" class="flex items-center gap-1 px-3 py-2 hover:text-yellow-600 transition" data-menu-btn="penelitian" aria-expanded="false" aria-controls="menu-penelitian">
-          Penelitian
-          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div id="menu-penelitian" class="absolute bg-white shadow-xl rounded-lg p-4 w-64 mt-2 z-50 hidden" data-menu="penelitian" role="menu">
-          <a href="/jurnal" class="block py-2 px-3 hover:bg-gray-100 rounded">Jurnal COreIT</a>
-          <a href="/aiorc" class="block py-2 px-3 hover:bg-gray-100 rounded">AIORC</a>
-          <a href="/software" class="block py-2 px-3 hover:bg-gray-100 rounded">Software Engineering</a>
-          <a href="/teknologi" class="block py-2 px-3 hover:bg-gray-100 rounded">Information Technology</a>
-        </div>
-      </div>
+      <button class="lg:hidden p-2 text-slate-800" id="mobile-menu-btn">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+      </button>
 
-      <a href="/berita" class="hover:text-yellow-600 px-3 py-2 transition">Berita</a>
-      <a href="/agenda" class="hover:text-yellow-600 px-3 py-2 transition">Agenda</a>
-      <a href="/alumni" class="hover:text-yellow-600 px-3 py-2 transition">Alumni</a>
-      <a href="https://hima.tif.uin-suska.ac.id/" target="_blank" class="hover:text-yellow-600 px-3 py-2 transition">HIMATIF</a>
-
-    </div>
-
-    <!-- Mobile Menu Button -->
-    <button class="md:hidden text-2xl text-gray-800" id="mobile-menu-btn">☰</button>
-
-  </div>
-
-  <!-- Mobile Menu -->
-  <div id="mobile-menu" class="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg hidden">
-    <div class="container mx-auto py-4 px-4 flex flex-col gap-2">
-      <a href="/" class="py-2 px-3 hover:bg-gray-100 rounded">Beranda</a>
-      <a href="/profil" class="py-2 px-3 hover:bg-gray-100 rounded">Profil</a>
-      <a href="/akademik" class="py-2 px-3 hover:bg-gray-100 rounded">Akademik</a>
-      <a href="/penelitian" class="py-2 px-3 hover:bg-gray-100 rounded">Penelitian</a>
-      <a href="/berita" class="py-2 px-3 hover:bg-gray-100 rounded">Berita</a>
-      <a href="/agenda" class="py-2 px-3 hover:bg-gray-100 rounded">Agenda</a>
-      <a href="/alumni" class="py-2 px-3 hover:bg-gray-100 rounded">Alumni</a>
-      <a href="https://hima.tif.uin-suska.ac.id/" target="_blank" class="py-2 px-3 hover:bg-gray-100 rounded">HIMATIF</a>
     </div>
   </div>
 
-  <!-- Bottom Accent -->
-  <div class="w-full h-4 bg-[#004d2c]"></div>
+  <div class="w-full h-[3px] bg-gradient-to-r from-green-800 via-green-600 to-yellow-500"></div>
+
+  <div id="mobile-menu" class="lg:hidden absolute top-full left-0 right-0 bg-white shadow-2xl hidden border-t border-gray-100">
+    <div class="container mx-auto py-6 px-6 flex flex-col gap-1 max-h-[80vh] overflow-y-auto">
+      <a href="/" class="py-3 px-4 font-bold text-slate-800 hover:bg-green-50 rounded-xl transition">Beranda</a>
+      <div class="h-[1px] bg-gray-100 my-1"></div>
+      <p class="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2">Menu Utama</p>
+      <a href="/profil" class="py-3 px-4 text-slate-700 hover:bg-green-50 rounded-xl transition">Profil</a>
+      <a href="/akademik" class="py-3 px-4 text-slate-700 hover:bg-green-50 rounded-xl transition">Akademik</a>
+      <a href="/penelitian" class="py-3 px-4 text-slate-700 hover:bg-green-50 rounded-xl transition">Penelitian</a>
+      <a href="/berita" class="py-3 px-4 text-slate-700 hover:bg-green-50 rounded-xl transition">Berita</a>
+      <a href="/alumni" class="py-3 px-4 text-slate-700 hover:bg-green-50 rounded-xl transition">Alumni</a>
+      <a href="https://hima.tif.uin-suska.ac.id/" target="_blank" class="mt-4 py-4 px-4 bg-[#004d2c] text-white text-center font-bold rounded-xl transition">HIMATIF</a>
+    </div>
+  </div>
 
 </nav>
 
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // Ambil semua tombol & menu
-  const buttons = Array.from(document.querySelectorAll('[data-menu-btn]'));
-  const menus = Array.from(document.querySelectorAll('[data-menu]'));
+  const buttons = document.querySelectorAll('[data-menu-btn]');
+  const menus = document.querySelectorAll('[data-menu]');
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
 
-  // Utility: tutup semua menu
+  // Tutup semua dropdown desktop
   function closeAll() {
-    menus.forEach(menu => {
-      menu.classList.add('hidden');
-      const id = menu.getAttribute('data-menu');
-      const btn = document.querySelector(`[data-menu-btn="${id}"]`);
-      if (btn) btn.setAttribute('aria-expanded', 'false');
-    });
+    menus.forEach(menu => menu.classList.add('hidden'));
+    buttons.forEach(btn => btn.setAttribute('aria-expanded', 'false'));
   }
 
-  // Toggle ketika tombol diklik
+  // Handle Dropdown Desktop
   buttons.forEach(btn => {
     btn.addEventListener('click', (e) => {
-      e.stopPropagation(); // penting: cegah document click berjalan
+      e.stopPropagation();
       const key = btn.getAttribute('data-menu-btn');
-      if (!key) return;
-
-      const menu = document.querySelector(`[data-menu="${key}"]`);
-      if (!menu) return;
-
-      // Tutup menu lain, lalu toggle target
-      menus.forEach(m => {
-        if (m !== menu) m.classList.add('hidden');
-      });
-
+      const menu = document.getElementById(`menu-${key}`);
       const isHidden = menu.classList.contains('hidden');
+      
+      closeAll();
       if (isHidden) {
         menu.classList.remove('hidden');
         btn.setAttribute('aria-expanded', 'true');
-        // Fokus ke menu (opsional)
-        menu.focus?.();
-      } else {
-        menu.classList.add('hidden');
-        btn.setAttribute('aria-expanded', 'false');
       }
     });
   });
 
-  // Pastikan klik di dalam menu tidak menutup (agar link bisa di-klik)
-  menus.forEach(menu => {
-    menu.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
+  // Handle Mobile Menu
+  mobileBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    mobileMenu.classList.toggle('hidden');
   });
 
-  // Klik di luar -> tutup semua
+  // Klik di luar untuk menutup semuanya
   document.addEventListener('click', () => {
     closeAll();
-  });
-
-  // ESC -> tutup semua
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeAll();
+    mobileMenu.classList.add('hidden');
   });
 });
 </script>
