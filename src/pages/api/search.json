@@ -1,22 +1,22 @@
-// [
-//   {
-//     "title": "Beranda",
-//     "path": "/",
-//     "content": "Teknik Informatika Fakultas Sains dan Teknologi UIN Suska Riau"
-//   },
-//   {
-//     "title": "Profil",
-//     "path": "/profil-pages/sejarah",
-//     "content": "Sejarah Teknik Informatika UIN Suska Riau"
-//   },
-//   {
-//     "title": "Dosen",
-//     "path": "/dosen-pages/dosen",
-//     "content": "Daftar dosen teknik informatika"
-//   },
-//   {
-//     "title": "Beasiswa",
-//     "path": "/beasiswa",
-//     "content": "Informasi beasiswa mahasiswa"
-//   }
-// ]
+[
+  {
+    "title": "Beranda",
+    "path": "/",
+    "content": "Teknik Informatika Fakultas Sains dan Teknologi UIN Suska Riau"
+  },
+  {
+    "title": "Profil",
+    "path": "/profil-pages/sejarah",
+    "content": "Sejarah Teknik Informatika UIN Suska Riau"
+  },
+  {
+    "title": "Dosen",
+    "path": "/dosen-pages/dosen",
+    "content": "Daftar dosen teknik informatika"
+  },
+  {
+    "title": "Beasiswa",
+    "path": "/beasiswa",
+    "content": "Informasi beasiswa mahasiswa"
+  }
+]
