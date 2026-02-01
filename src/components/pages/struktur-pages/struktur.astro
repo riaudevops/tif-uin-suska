@@ -1,0 +1,148 @@
+---
+// Data tetap sama
+const pimpinan = { jabatan: "Ketua Jurusan", nama: "Iwan Iskandar, S.T, M.T" };
+const sekretaris = { jabatan: "Sekretaris Jurusan", nama: "Reski Mai Candra, S.T, M.Sc" };
+const koordinatorTA = { jabatan: "Koordinator Tugas Akhir", nama: "Fadhilah Syafria, S.T, M.Kom" };
+const koordinatorKP = { jabatan: "Koordinator Kerja Praktek", nama: "Liza Afriyanti, M.Kom" };
+const administrasiAKademik = { jabatan: "Administrasi Akademik" };
+const administrasiUmum = { jabatan: "Administrasi Umum" };
+
+const lab = {
+  kepala: { jabatan: "Kepala Laboratorium", nama: "Muhammad Affandes, S.T, M.T" },
+  sub: [
+    { peran: "Koord. Lab Technopreneur & Inkubator Bisnis", nama: "Nazruddin Safaat H, M.T" },
+    { peran: "Koord. Lab Riset Data Science dan Business Intelligence", nama: "Suwanto Sanjaya, S.T, M.Kom" },
+    { peran: "Koord. Lab Kecerdasan Buatan & Sains Komputer", nama: "Iis Afrianty, S.T, M.Sc" },
+    { peran: "Koord. Lab Pemrograman & Pengembangan Aplikasi", nama: "Pizaini, S.T, M.Kom" }
+  ]
+};
+
+const bidang = ["Sistem Cerdas", "Rekayasa Perangkat Lunak", "Teknologi Informasi"];
+---
+
+<section class="py-10 bg-slate-50 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6">
+    
+    <div class="text-center mb-20">
+      <h2 class="text-4xl font-black text-slate-900 mb-4">Struktur Organisasi</h2>
+    </div>
+
+    <div class="relative flex flex-col items-center">
+      
+      <div class="absolute top-24 w-px h-[calc(100%-250px)] bg-slate-300 hidden md:block"></div>
+
+      <div class="relative z-10 mb-16">
+        <div class="bg-emerald-900 text-white p-6 rounded-2xl shadow-xl w-72 text-center border-b-4 border-yellow-500">
+          <p class="text-[10px] uppercase tracking-widest text-emerald-300 font-bold mb-1">{pimpinan.jabatan}</p>
+          <h3 class="font-bold text-lg leading-tight">{pimpinan.nama}</h3>
+        </div>
+        <div class="w-px h-16 bg-slate-300 mx-auto md:hidden"></div>
+      </div>
+
+      <div class="flex flex-col md:flex-row justify-between w-full max-w-5xl relative mb-24">
+        
+<div class="flex flex-col items-center md:items-end w-full md:w-1/2 md:pr-16 relative">
+  <div class="absolute top-10 right-0 w-16 h-px bg-slate-300 hidden md:block"></div>
+  
+  <div class="bg-white border-2 border-emerald-900 p-5 rounded-xl shadow-lg w-64 text-center z-10">
+    <p class="text-[10px] uppercase text-emerald-700 font-bold mb-1">{sekretaris.jabatan}</p>
+    <h4 class="font-bold text-slate-800 text-sm">{sekretaris.nama}</h4>
+  </div>
+  
+  <div class="w-px h-10 bg-slate-300 mr-[128px] hidden md:block"></div>
+
+    <div class="grid grid-cols-2 gap-8 relative w-64 mr-0">  
+      
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[130px] h-px bg-slate-300 hidden md:block"></div>
+
+      <div class="flex flex-col items-center pt-4 relative">
+        <div class="absolute top-0 w-px h-[17px] bg-slate-300 hidden md:block"></div>
+        
+        <div class="bg-slate-100 p-3 rounded-xl border border-slate-200 text-center w-32 shadow-sm z-10">
+          <p class="text-[9px] uppercase font-bold text-slate-500">{administrasiAKademik.jabatan}</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col items-center pt-4 relative">
+        <div class="absolute top-0 w-px h-[17px] bg-slate-300 hidden md:block"></div>
+        
+        <div class="bg-slate-100 p-3 rounded-xl border border-slate-200 text-center w-32 shadow-sm z-10">
+          <p class="text-[9px] uppercase font-bold text-slate-500">{administrasiUmum.jabatan}</p>
+        </div>
+      </div>
+    </div>
+    </div>
+
+        <div class="flex flex-col items-center md:items-start w-full md:w-1/2 md:pl-16 relative mt-12 md:mt-4">
+          <div class="absolute top-10 left-0 w-16 h-px bg-slate-300 hidden md:block"></div>
+
+          <div class="space-y-4">
+            <div class="bg-white border border-slate-300 p-4 rounded-xl shadow-md w-64 text-center z-10">
+              <p class="text-[9px] uppercase text-slate-500 font-bold mb-1">{koordinatorTA.jabatan}</p>
+              <h4 class="font-bold text-slate-800 text-xs">{koordinatorTA.nama}</h4>
+            </div>
+            <div class="bg-white border border-slate-300 p-4 rounded-xl shadow-md w-64 text-center z-10">
+              <p class="text-[9px] uppercase text-slate-500 font-bold mb-1">{koordinatorKP.jabatan}</p>
+              <h4 class="font-bold text-slate-800 text-xs">{koordinatorKP.nama}</h4>
+            </div>
+          </div>
+          </div>
+      </div>
+
+      <div class="w-full h-px bg-slate-300 mb-12 hidden md:block"></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 w-full items-start">
+        
+        <div class="lg:col-span-2 flex flex-col items-center relative">
+          <div class="absolute -top-12 w-px h-12 bg-slate-300 hidden md:block"></div>
+           <div class="bg-emerald-800 text-white p-4 rounded-xl shadow-lg w-full text-center mb-4">
+            <p class="text-[9px] font-bold uppercase text-emerald-200">Kepala Laboratorium</p>
+            <h4 class="font-bold text-xs">{lab.kepala.nama}</h4>
+          </div>
+          <div class="space-y-2 w-full border-l-2 border-emerald-200 pl-4">
+            {lab.sub.map(s => (
+              <div class="bg-white p-3 rounded-lg border border-slate-100 shadow-sm text-left">
+                <p class="text-[10px] font-bold text-slate-700 leading-tight">{s.nama}</p>
+                <p class="text-[8px] text-slate-400 uppercase">{s.peran}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {bidang.map(item => (
+          <div class="flex flex-col items-center gap-3 relative">
+            <div class="absolute -top-12 w-px h-12 bg-slate-300 hidden md:block"></div>
+            <div class="bg-white border-2 border-slate-200 p-4 rounded-2xl text-center min-h-[100px] flex items-center justify-center shadow-sm">
+              <h4 class="font-black text-slate-800 text-[10px] uppercase">Bidang Keahlian <br/> <span class="text-emerald-600">{item}</span></h4>
+            </div>
+            <div class="bg-slate-100 p-2 rounded-lg border border-dashed border-slate-300 text-center">
+               <p class="text-[9px] font-bold text-slate-400">Dosen Bidang</p>
+            </div>
+          </div>
+        ))}
+
+        <div class="contents">
+          
+          <div class="flex flex-col items-center gap-3 relative">
+            <div class="absolute -top-12 w-px h-12 bg-slate-300 hidden md:block"></div>
+            
+            <div class="bg-white border border-slate-200 p-4 rounded-xl text-center text-[10px] font-bold uppercase text-slate-600 h-[100px] w-full flex items-center justify-center shadow-sm">
+              Redaktur Jurnal CoreIT
+            </div>
+          </div>
+
+          <div class="flex flex-col items-center gap-3 relative">
+            <div class="absolute -top-12 w-px h-12 bg-slate-300 hidden md:block"></div>
+            
+            <div class="bg-white border border-slate-200 p-4 rounded-xl text-center text-[10px] font-bold uppercase text-slate-600 h-[100px] w-full flex items-center justify-center shadow-sm">
+              PMP
+            </div>
+          </div>
+          
+        </div>
+</div>
+
+
+    </div>
+  </div>
+</section>
