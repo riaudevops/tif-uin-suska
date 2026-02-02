@@ -1,3 +1,10 @@
+---
+// import { useTranslation } from "@/i18n/utils";
+// import { getRelativeLocaleUrl } from "astro:i18n";
+// console.log("Bahasa saat ini:", lang);
+// const lang = Astro.currentLocale as 'id' | 'en' || 'id';
+// const { translate } = useTranslation(lang);
+---
 <nav class="w-full fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-sm">
   
   <div class="w-full bg-[#004d2c] text-white/90 text-[10px] py-1 md:text-xs uppercase tracking-widest font-medium">
@@ -21,7 +28,7 @@
       
       <div class="flex items-center gap-5">
         <div class="flex flex-col items-center border-r-2 border-slate-100 pr-5 group cursor-pointer">
-          <img src="/logo/uin.png" alt="Logo UIN Suska" class="h-14 w-auto transform group-hover:scale-105 transition-transform duration-300">
+          <img src="/logo/uin.png" alt="Logo UIN Suska" class="h-10 w-auto transform group-hover:scale-105 transition-transform duration-300">
           <span class="text-[9px] font-black text-[#004d2c] mt-1.5 uppercase tracking-tighter text-center leading-none">
             UIN Suska Riau
           </span>
@@ -30,13 +37,15 @@
           <h1 class="text-lg md:text-xl font-black tracking-tight text-slate-800 leading-none uppercase">
             Teknik <span class="text-[#004d2c]">Informatika</span>
           </h1>
-          <h2 class="text-[11px] md:text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">
+          <h2 class="text-[11px] md:text-xs font-bold text-slate-500 mt-1 uppercase tracking-wider">
             Fakultas Sains dan Teknologi
           </h2>
         </div>
         
         <div class="hidden sm:flex items-center">
           <img src="/logo/unggul.png" alt="Logo Unggul" class="w-10 h-10 object-contain ml-3 opacity-90 hover:opacity-100 transition-opacity drop-shadow-sm" />
+          <img src="/logo/blu.png" alt="Logo Blu" class="w-10 h-10 object-contain ml-3 opacity-90 hover:opacity-100 transition-opacity drop-shadow-sm" />
+          <img src="/logo/kemenag.png" alt="Logo Kemenag" class="w-10 h-10 object-contain ml-3 opacity-90 hover:opacity-100 transition-opacity drop-shadow-sm" />
         </div>
       </div>
 
@@ -53,7 +62,7 @@
             <a href="/visimisi-pages/visimisi" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Visi, Misi, Tujuan, dan Strategi</a>
             <a href="/rencana-pages/rencana" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Rencana Strategi</a>
             <a href="/panduan-pages/panduan" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Panduan Pengelolaan Pendidikan</a>
-            <a href="/struktur" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Struktur Organisasi</a>
+            <a href="/struktur-pages/struktur" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Struktur Organisasi</a>
             <a href="/dosen-pages/dosen" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Dosen</a>
             <a href="/laboratorium" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Laboratorium</a>
             <a href="/ruang-kelas" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Ruang Kelas</a>
@@ -128,14 +137,45 @@ document.addEventListener('DOMContentLoaded', () => {
   const menus = document.querySelectorAll('[data-menu]');
   const mobileBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
+  
+  // Ambil elemen Nav dan TopBar
+  const nav = document.querySelector('nav');
+  // Kita cari div pertama di dalam nav sebagai TopBar
+  const topBar = nav.firstElementChild; 
+  // Ambil select language
+  const langSelect = nav.querySelector('select');
 
-  // Tutup semua dropdown desktop
+  // --- 1. LOGIKA SCROLL (Agar Konten Tidak Tertutup Terus) ---
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      topBar.classList.add('hidden');
+      nav.classList.add('shadow-lg');
+    } else {
+      topBar.classList.remove('hidden');
+      nav.classList.remove('shadow-lg');
+    }
+  });
+
+  // --- 2. LOGIKA TRANSLASI ---
+  if (langSelect) {
+    langSelect.addEventListener('change', function() {
+      const lang = this.value.toLowerCase();
+      if (lang === 'en') {
+        // Mengarahkan ke prefix /en/
+        window.location.href = '/en' + window.location.pathname;
+      } else {
+        // Kembali ke default (ID)
+        window.location.href = window.location.pathname.replace('/en', '');
+      }
+    });
+  }
+
+  // --- 3. LOGIKA DROPDOWN & MOBILE ---
   function closeAll() {
     menus.forEach(menu => menu.classList.add('hidden'));
     buttons.forEach(btn => btn.setAttribute('aria-expanded', 'false'));
   }
 
-  // Handle Dropdown Desktop
   buttons.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -151,16 +191,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Handle Mobile Menu
-  mobileBtn.addEventListener('click', (e) => {
+  mobileBtn?.addEventListener('click', (e) => {
     e.stopPropagation();
-    mobileMenu.classList.toggle('hidden');
+    mobileMenu?.classList.toggle('hidden');
   });
 
-  // Klik di luar untuk menutup semuanya
   document.addEventListener('click', () => {
     closeAll();
-    mobileMenu.classList.add('hidden');
+    mobileMenu?.classList.add('hidden');
   });
 });
-</script>
