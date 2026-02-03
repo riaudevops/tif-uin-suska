@@ -1,64 +1,148 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 
-const res = await fetch("http://localhost:8055/items/article?fields=title,slug,thumbnail,publish");
+const res = await fetch(
+  "http://localhost:8055/items/article?fields=title,slug,thumbnail,publish,category.name"
+);
 const { data: posts } = await res.json();
 
 const ASSET_URL = "http://localhost:8055/assets/";
+const categories = [
+  "Semua", ...new Set(posts.map(post => post.category?.name).filter(Boolean))
+  ];
 ---
 
-<Layout title="Berita | Teknik Informatika UIN Suska">
-  <section class="py-16 bg-slate-50 min-h-screen">
+
+<Layout title="Berita">
+  <nav class="max-w-6xl mx-auto px-6 mt-10">
+      <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100">
+          <li class="flex items-center">
+              <a href="/" class="flex items-center hover:text-green-600 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  Beranda
+              </a>
+          </li>
+          <li class="text-gray-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+          </li>
+          <li>
+              <a href="/berita" class="hover:text-green-600 transition-colors">
+                  Berita
+              </a>
+          </li>
+          <li class="text-gray-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+          </li>
+          <li class="text-green-700 font-bold tracking-tight">
+              {posts.length} Berita
+          </li>
+      </ol>
+  </nav>
+
+  <section class="py-6 bg-[#f8fafc] min-h-screen">
     <div class="max-w-6xl mx-auto px-6">
-      
-      <div class="mb-12 border-l-8 border-[#004d2c] pl-6">
-        <h1 class="text-4xl font-black text-slate-800 uppercase tracking-tight">
-          Warta <span class="text-[#004d2c]">Informatika</span>
-        </h1>
-        <p class="text-slate-500 mt-2 font-medium">Informasi terbaru seputar kegiatan dan prestasi akademik.</p>
+
+      <div class="mb-16">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+          <div class="relative">
+            <div class="absolute -left-5 top-0 bottom-0 w-1.5 bg-[#004d2c] rounded-full"></div>
+            <h1 class="text-5xl font-black text-slate-900 tracking-tight leading-tight">
+              Portal <span class="text-[#004d2c]">Berita</span>
+            </h1>
+            <p class="text-slate-500 mt-2 font-medium">
+              Berita terkini seputar kegiatan dan informasi dari prodi Teknik Informatika.
+              <br />Jangan lupa untuk selalu mengunjungi halaman ini untuk mendapatkan informasi terbaru.
+              <br />Terima kasih telah berkunjung!
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-2" id="filter-container">
+            {categories.map((cat) => (
+              <button
+                data-category={cat}
+                class="filter-btn px-6 py-2 rounded-full text-xs font-black tracking-widest uppercase transition-all duration-300 border-2 bg-white text-slate-400 border-slate-100 hover:border-yellow-400 hover:text-yellow-600 shadow-sm"
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {posts.map(post => (
-          <a href={`/berita/${post.slug}`} class="group bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-2xl hover:border-yellow-400 transition-all duration-300 flex flex-col">
-            
-            <div class="relative overflow-hidden">
-              <img 
-                src={`${ASSET_URL}${post.thumbnail}`} 
-                alt={post.title}
-                class="h-56 w-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-              />
-              <div class="absolute top-4 left-4">
-                <span class="bg-[#004d2c] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-lg">
-                  News
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10" id="news-grid">
+        {posts.map((post) => (
+          <div 
+            class="news-item group relative bg-white rounded-[2.5rem] p-4 border-2 border-transparent hover:border-yellow-400 transition-all duration-500 flex flex-col shadow-sm hover:shadow-xl"
+            data-category={post.category?.name}
+          >
+            <div class="relative h-60 overflow-hidden rounded-[2rem]">
+              <img src={`${ASSET_URL}${post.thumbnail}`} class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div class="absolute top-5 left-5">
+                <span class="bg-white/95 backdrop-blur text-[#004d2c] text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-sm">
+                  {post.category?.name}
                 </span>
               </div>
             </div>
 
-            <div class="p-6 flex flex-col flex-grow">
-              <div class="flex items-center gap-2 mb-3">
-                <svg class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                  {new Date(post.publish).toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' })}
-                </p>
+            <div class="px-4 py-8 flex flex-col flex-grow">
+              <div class="flex items-center gap-2 mb-4 text-slate-400 uppercase text-[11px] font-bold">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                {new Date(post.publish).toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' })}
               </div>
 
-              <h2 class="font-extrabold text-xl text-slate-800 leading-snug group-hover:text-[#004d2c] transition-colors line-clamp-2">
+              <h2 class="font-black text-xl text-slate-800 group-hover:text-[#004d2c] transition-colors line-clamp-2">
                 {post.title}
               </h2>
 
-              <div class="mt-auto pt-6 flex items-center text-sm font-bold text-[#004d2c] group-hover:text-yellow-600">
-                Baca Selengkapnya
-                <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </div>
+              <a href={`/berita/${post.slug}`} class="mt-auto pt-8 flex items-center justify-between">
+                <span class="text-sm font-black text-[#004d2c] group-hover:text-yellow-600 transition-colors uppercase italic">
+                  Baca Selengkapnya
+                </span>
+                <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center transition-all duration-500 group-hover:bg-yellow-400 group-hover:rotate-[-45deg] group-hover:text-white group-hover:scale-110 shadow-inner">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </div>
+              </a>
             </div>
-          </a>
+          </div>
         ))}
       </div>
     </div>
   </section>
 </Layout>
+
+<script is:inline>
+  const buttons = document.querySelectorAll('.filter-btn');
+  const items = document.querySelectorAll('.news-item');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const category = btn.dataset.category?.trim();
+
+      buttons.forEach(b => {
+        b.classList.remove('bg-[#004d2c]', 'text-white', 'border-[#004d2c]');
+        b.classList.add('bg-white', 'text-slate-400', 'border-slate-100');
+      });
+
+      btn.classList.add('bg-[#004d2c]', 'text-white', 'border-[#004d2c]');
+      btn.classList.remove('bg-white', 'text-slate-400', 'border-slate-100');
+
+      items.forEach(item => {
+        const itemCat = item.dataset.category?.trim();
+
+        if (category === "Semua" || itemCat === category) {
+          item.style.display = "flex";
+        } else {
+          item.style.display = "none";
+        }
+      });
+    });
+  });
+</script>
