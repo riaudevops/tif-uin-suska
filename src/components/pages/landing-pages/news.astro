@@ -1,29 +1,12 @@
 ---
-// Data berita — bisa nanti diganti dynamic API, database, dll.
-const posts = [
-  {
-    title: "Penerimaan Mahasiswa Baru 2024/2025 Telah Dibuka!", // Judul berita
-    date: "26/11/2025", // Format: dd/mm/yyyy
-    image: "/news-pages/tes.jpg", // URL gambar masukin kedalam databasenya(sejauh ini masih belum dibuaut masih ancang ancang)
-    slug: "penerimaan-mahasiswa-baru-2024-2025", // untuk link dinamis
-    desc: "Penerimaan mahasiswa baru untuk tahun akademik 2024/2025 telah resmi dibuka...", // deskripsi singkat
-  },
-  {
-    title: "Seminar Nasional Teknologi Informasi",
-    date: "11/11/2025",
-    image: "/news-pages/tes.jpg",
-    slug: "seminar-nasional-teknologi-informasi",
-    desc: "Kegiatan Seminar Nasional Teknik Informatika dengan fokus AI dan Keamanan Siber...",
-  },
-  {
-    title: "Workshop AI untuk Mahasiswa",
-    date: "11/11/2025",
-    image: "/news-pages/tes.jpg",
-    slug: "workshop-ai-mahasiswa",
-    desc: "Workshop penggunaan AI generatif untuk mendukung penelitian di bidang Informatika...",
-  },
-];
+const res = await fetch(
+  "http://localhost:8055/items/article?fields=title,slug,thumbnail,publish,content&sort=-publish&limit=3"
+);
+const { data: posts } = await res.json();
+
+const ASSET_URL = "http://localhost:8055/assets/";
 ---
+
 <section class="relative py-24 px-6 overflow-hidden bg-[#022c22]">
   <div class="absolute top-0 left-1/4 w-96 h-96 bg-green-500/10 rounded-full blur-[120px]"></div>
   <div class="absolute inset-0 bg-[url('/landing-pages/gedung.jpg')] bg-cover bg-center opacity-15"></div> 
@@ -43,7 +26,7 @@ const posts = [
           
           <div class="overflow-hidden h-52">
             <img 
-              src={post.image} 
+              src={`${ASSET_URL}${post.thumbnail}`}
               alt={post.title} 
               class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
             />
@@ -62,12 +45,12 @@ const posts = [
             </h3>
 
             <p class="text-gray-600 text-sm mb-6 line-clamp-3">
-              {post.desc}
+              {post.content.replace(/<[^>]+>/g, "").slice(0, 100)}...
             </p>
 
             <div class="mt-auto">
               <a
-                href={`/berita/${post.slug}`} 
+                href={`/berita/${post.slug}`}
                 class="inline-flex items-center font-bold rounded-full text-sm text-emerald-800 hover:text-yellow-600 transition-colors group/link"
               >
                 Baca Selengkapnya 
