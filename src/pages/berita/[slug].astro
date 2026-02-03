@@ -6,7 +6,7 @@ export const prerender = false;
 const { slug } = Astro.params;
 
 const res = await fetch(
-  `http://localhost:8055/items/article?filter[slug][_eq]=${slug}&fields=id,title,content,publish,thumbnail,tags,category.*,author.first_name,author.last_name,author.avatar`
+  `http://localhost:8055/items/article?filter[slug][_eq]=${slug}&fields=id,title,content,publish,thumbnail,tags,category.*,author`
 );
 const json = await res.json();
 const article = json.data?.[0];
@@ -15,7 +15,7 @@ if (!article) throw new Error("Article tidak ditemukan");
 
 // Related articles (selain artikel ini)
 const relatedRes = await fetch(
-  `http://localhost:8055/items/article?filter[id][_neq]=${article.id}&limit=3&fields=title,slug,thumbnail`
+  `http://localhost:8055/items/article?filter[slug][_eq]=${slug}&fields=title,content,publish,thumbnail,category.*,author.id,author.first_name,author.last_name`
 );
 const relatedJson = await relatedRes.json();
 const related = relatedJson.data;
@@ -81,12 +81,10 @@ const related = relatedJson.data;
         
         <!-- 👤 AUTHOR-->
         <div class="text-sm text-slate-600">
-          <span class="text-slate-500">Ditulis oleh </span>
+          <span class="text-slate-500">Ditulis oleh : </span>
           <span class="font-semibold text-slate-800">
-          {article.author
-            ? `${article.author.first_name} ${article.author.last_name}`
-            : "Tim Redaksi"}
-        </span>
+            {article.author}
+          </span>
       </div>
     </div>
 
