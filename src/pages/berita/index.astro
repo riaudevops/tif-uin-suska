@@ -2,7 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 
 const res = await fetch(
-  "http://localhost:8055/items/article?fields=title,slug,thumbnail,publish,category.name" {
+  "http://localhost:8055/items/article?fields=title,slug,thumbnail,publish,category.name", {
     cache: "no-store"
   }
 );
