@@ -1,11 +1,10 @@
 ---
-
 const agendaKegiatan = [
   {
     tanggal: "15",
     bulan: "Okt",
-    tahun: "2025",
-    judul: "Seminar Nasional Teknologi Informasi (SNTI)",
+    tahun: "2026",
+    judul: "Seminar Internasional",
     waktu: "08:00 - 16:00 WIB",
     lokasi: "Aula Gedung Teater FST",
     kategori: "Seminar",
@@ -76,20 +75,18 @@ const getKategoriClass = (kat) => {
 <section class="py-6 bg-white min-h-screen">
     <div class="container mx-auto px-6">
         <div class="mb-16">
-            <h2 class="text-[#004d2c] text-sm font-bold tracking-[0.3em] uppercase mb-3">Calendar of Events</h2>
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-        <div class="relative">
-            <div class="absolute -left-5 top-0 bottom-0 w-1.5 bg-[#004d2c] rounded-full"></div>
-                <h1 class="text-5xl font-black text-slate-900 tracking-tight leading-tight">
-                    Portal <span class="text-[#004d2c]">Berita</span>
-                </h1>
-            <p class="text-slate-500 mt-2 font-medium">
-                Berita terkini seputar kegiatan dan informasi dari prodi Teknik Informatika.
-            <br />Jangan lupa untuk selalu mengunjungi halaman ini untuk mendapatkan informasi terbaru.
-            <br />Terima kasih telah berkunjung!
-            </p>
-        </div>
-        </div>
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                <div class="relative">
+                <div class="absolute -left-5 top-0 bottom-0 w-1.5 bg-[#004d2c] rounded-full"></div>
+                    <h2 class="text-[#004d2c] text-sm font-bold tracking-[0.3em] uppercase mb-3">Calendar of Events</h2>
+                    <h1 class="text-5xl font-black text-[#004d2c] tracking-tight leading-tight">
+                        Agenda
+                    </h1>
+                    <p class="text-slate-500 mt-2 font-medium">
+                        Berikut adalah agenda kegiatan terbaru dari prodi Teknik Informatika. Pastikan untuk mencatat tanggal penting dan bergabung dalam berbagai acara yang kami selenggarakan!
+                    </p>
+                </div>
+            </div>
         </div>
 
       <div class="grid gap-8 lg:grid-cols-2">
@@ -142,20 +139,10 @@ const getKategoriClass = (kat) => {
         <div class="relative z-10">
           <h2 class="text-2xl font-bold mb-4">Ingin berkolaborasi dalam kegiatan kami?</h2>
           <p class="text-green-100/80 mb-8 max-w-xl mx-auto text-sm">Hubungi sekretariat jurusan untuk informasi lebih lanjut mengenai pengajuan kegiatan atau kemitraan acara.</p>
-          <a href="/kontak" class="inline-block px-8 py-3 bg-yellow-500 hover:bg-yellow-400 text-[#004d2c] font-black rounded-full transition-all transform hover:scale-105 uppercase text-xs tracking-widest"> Hubungi Kami </a>
+          <a href="mailto:tif@uin-suska.ac.id" class="inline-block px-8 py-3 bg-yellow-500 hover:bg-yellow-400 text-[#004d2c] font-black rounded-full transition-all transform hover:scale-105 uppercase text-xs tracking-widest"> Hubungi Kami </a>
         </div>
         <div class="absolute -right-20 -top-20 w-64 h-64 bg-green-700/30 rounded-full"></div>
       </div>
 
     </div>
   </section>
-
-<style>
-  /* Menghilangkan scrollbar tapi tetap bisa scroll */
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;  
-    overflow: hidden;
-  }
-</style>
