@@ -1,13 +1,14 @@
 ---
-// import { useTranslation } from "@/i18n/utils";
-// import { getRelativeLocaleUrl } from "astro:i18n";
-// console.log("Bahasa saat ini:", lang);
-// const lang = Astro.currentLocale as 'id' | 'en' || 'id';
-// const { translate } = useTranslation(lang);
+import { useTranslation } from "@/i18n/utils";
+
+const lang = Astro.currentLocale || "id";
+console.log("Bahasa saat ini:", lang);
+const { translate } = useTranslation(lang);
 ---
+
 <nav class="w-full fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-sm">
   
-  <div class="w-full bg-[#004d2c] text-white/90 text-[10px] py-1 md:text-xs uppercase tracking-widest font-medium">
+  <div data-topbar class="w-full bg-[#004d2c] text-white/90 text-[10px] py-1 md:text-xs uppercase tracking-widest font-medium">
     <div class="container mx-auto px-6 py-1 flex justify-end items-center gap-6">
       <a href="#" class="hover:text-yellow-400 transition-colors">International Office</a>
       <a href="#" class="hover:text-yellow-400 transition-colors">Akreditasi</a>
@@ -15,8 +16,8 @@
       <div class="h-3 w-[1px] bg-white/20"></div>
       <div class="flex items-center gap-1">
         <select class="bg-transparent text-white cursor-pointer focus:outline-none border-none outline-none appearance-none">
-          <option class="text-gray-800">ID</option>
-          <option class="text-gray-800">EN</option>
+          <option value="id" selected={lang === 'id'} class="text-gray-800">ID</option>
+          <option value="en" selected={lang === 'en'} class="text-gray-800">EN</option>
         </select>
         <svg class="w-2 h-2 opacity-60" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
       </div>
@@ -53,8 +54,8 @@
         <a href="/" class="px-3 py-1 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50">Beranda</a>
 
         <div class="relative" data-dropdown>
-          <button type="button" class="flex items-center gap-1 px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50" data-menu-btn="profil">
-            Profil <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          <button aria-expanded="false" type="button" class="flex items-center gap-1 px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50" data-menu-btn="profil">
+            PROFIL <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
           </button>
           
           <div id="menu-profil" class="absolute left-0 bg-white shadow-2xl rounded-xl p-2 w-72 mt-2 hidden border border-gray-100 z-50" data-menu="profil">
@@ -64,15 +65,15 @@
             <a href="/panduan-pages/panduan" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Panduan Pengelolaan Pendidikan</a>
             <a href="/struktur-pages/struktur" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Struktur Organisasi</a>
             <a href="/dosen-pages/dosen" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Dosen</a>
-            <a href="/laboratorium" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Laboratorium</a>
+            <a href="/laboratorium-pages/laboratorium" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Laboratorium</a>
             <a href="/ruang-kelas" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Ruang Kelas</a>
-            <a href="/prestasi" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Prestasi</a>
+            <a href="/prestasi-pages/prestasi" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Prestasi</a>
           </div>
         </div>
 
         <div class="relative" data-dropdown>
-          <button type="button" class="flex items-center gap-1 px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50" data-menu-btn="akademik">
-            Akademik <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          <button aria-expanded="false" type="button" class="flex items-center gap-1 px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50" data-menu-btn="akademik">
+            AKADEMIK <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
           </button>
           <div id="menu-akademik" class="absolute left-0 bg-white shadow-2xl rounded-xl p-2 w-72 mt-2 hidden border border-gray-100 z-50" data-menu="akademik">
             <a href="/penerimaan" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Penerimaan</a>
@@ -87,8 +88,8 @@
         </div>
 
         <div class="relative" data-dropdown>
-          <button type="button" class="flex items-center gap-1 px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50" data-menu-btn="penelitian">
-            Penelitian <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          <button aria-expanded="false" type="button" class="flex items-center gap-1 px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50" data-menu-btn="penelitian">
+            PENELITIAN <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
           </button>
           <div id="menu-penelitian" class="absolute left-0 bg-white shadow-2xl rounded-xl p-2 w-72 mt-2 hidden border border-gray-100 z-50" data-menu="penelitian">
             <a href="/jurnal" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Jurnal COreIT</a>
@@ -99,14 +100,15 @@
         </div>
 
         <a href="/berita" class="px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50">Berita</a>
-        <a href="/alumni" class="px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50">Alumni</a>
+        <a href="/agenda-pages/agenda" class="px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50">Agenda</a>
+        <a href="/alumni-pages/alumni" class="px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50">Alumni</a>
         <a href="https://hima.tif.uin-suska.ac.id/" target="_blank" class="ml-4 px-5 py-2 bg-[#004d2c] text-white rounded-full hover:bg-yellow-600 transition shadow-md shadow-green-100 flex items-center gap-2">
             HIMATIF
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
 
-      <button class="lg:hidden p-2 text-slate-800" id="mobile-menu-btn">
+      <button aria-expanded="false" type="button" class="lg:hidden p-2 text-slate-800" id="mobile-menu-btn">
         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
       </button>
 
@@ -132,69 +134,82 @@
 </nav>
 
 <script is:inline>
-document.addEventListener('DOMContentLoaded', () => {
-  const buttons = document.querySelectorAll('[data-menu-btn]');
-  const menus = document.querySelectorAll('[data-menu]');
-  const mobileBtn = document.getElementById('mobile-menu-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
+  // Fungsi utama inisialisasi
+  function initNavbar() {
+    const nav = document.querySelector('nav');
+    const buttons = document.querySelectorAll('[data-menu-btn]');
+    const menus = document.querySelectorAll('[data-menu]');
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const topBar = nav?.querySelector('[data-topbar]');
+    const langSelect = nav?.querySelector('select');
 
-  const nav = document.querySelector('nav');
-  const topBar = nav?.firstElementChild;
-  const langSelect = nav?.querySelector('select');
+    if (!nav) return;
 
-  window.addEventListener('scroll', () => {
-    if (!topBar) return;
-
-    if (window.scrollY > 50) {
-      topBar.classList.add('hidden');
-      nav.classList.add('shadow-lg');
-    } else {
-      topBar.classList.remove('hidden');
-      nav.classList.remove('shadow-lg');
+    function closeAll() {
+      menus.forEach(menu => menu.classList.add('hidden'));
+      buttons.forEach(btn => btn.setAttribute('aria-expanded', 'false'));
     }
-  });
 
-  if (langSelect) {
-    langSelect.addEventListener('change', function () {
-      const lang = this.value.toLowerCase();
-      if (lang === 'en' && !window.location.pathname.startsWith('/en')) {
-        window.location.href = '/en' + window.location.pathname;
-      } else if (lang !== 'en') {
-        window.location.href = window.location.pathname.replace(/^\/en/, '');
-      }
+    // Dropdown click
+    buttons.forEach(btn => {
+      // Gunakan kloning untuk hapus listener lama jika ada (mencegah double trigger)
+      const newBtn = btn.cloneNode(true);
+      btn.parentNode.replaceChild(newBtn, btn);
+
+      newBtn.addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const key = newBtn.dataset.menuBtn;
+        const menu = document.getElementById(`menu-${key}`);
+        if (!menu) return;
+
+        const isCurrentlyOpen = !menu.classList.contains('hidden');
+        
+        closeAll(); // Tutup semua dulu
+
+        if (!isCurrentlyOpen) {
+          menu.classList.remove('hidden');
+          newBtn.setAttribute('aria-expanded', 'true');
+        }
+      });
     });
-  }
 
-  function closeAll() {
-    menus.forEach(menu => menu.classList.add('hidden'));
-    buttons.forEach(btn => btn.setAttribute('aria-expanded', 'false'));
-  }
-
-  buttons.forEach(btn => {
-    btn.addEventListener('click', (e) => {
+    // Mobile menu toggle
+    mobileBtn?.addEventListener('click', e => {
       e.stopPropagation();
-      const key = btn.getAttribute('data-menu-btn');
-      const menu = document.getElementById(`menu-${key}`);
-      if (!menu) return;
+      mobileMenu?.classList.toggle('hidden');
+    });
 
-      const isHidden = menu.classList.contains('hidden');
-      closeAll();
+    // Scroll effect
+    window.addEventListener('scroll', () => {
+      if (topBar) {
+        topBar.classList.toggle('hidden', window.scrollY > 50);
+      }
+      nav.classList.toggle('shadow-lg', window.scrollY > 50);
+    });
 
-      if (isHidden) {
-        menu.classList.remove('hidden');
-        btn.setAttribute('aria-expanded', 'true');
+    // Klik di mana saja untuk tutup
+    document.addEventListener('click', (e) => {
+      if (!nav.contains(e.target)) {
+        closeAll();
+        mobileMenu?.classList.add('hidden');
       }
     });
-  });
 
-  mobileBtn?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    mobileMenu?.classList.toggle('hidden');
-  });
+    // Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        closeAll();
+        mobileMenu?.classList.add('hidden');
+      }
+    });
+  }
 
-  document.addEventListener('click', () => {
-    closeAll();
-    mobileMenu?.classList.add('hidden');
-  });
-});
+  // Jalankan saat load pertama kali
+  document.addEventListener('DOMContentLoaded', initNavbar);
+  
+  // Jalankan juga saat navigasi Astro (jika pakai ViewTransitions)
+  document.addEventListener('astro:page-load', initNavbar);
 </script>
