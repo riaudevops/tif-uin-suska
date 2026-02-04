@@ -137,9 +137,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const menus = document.querySelectorAll('[data-menu]');
   const mobileBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
-  
+
   const nav = document.querySelector('nav');
-  const topBar = nav?.firstElementChild; 
+  const topBar = nav?.firstElementChild;
   const langSelect = nav?.querySelector('select');
 
   window.addEventListener('scroll', () => {
@@ -155,17 +155,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   if (langSelect) {
-    langSelect.addEventListener('change', function() {
+    langSelect.addEventListener('change', function () {
       const lang = this.value.toLowerCase();
       if (lang === 'en' && !window.location.pathname.startsWith('/en')) {
-        window.location.href = `/en${window.location.pathname}`;
+        window.location.href = '/en' + window.location.pathname;
       } else if (lang !== 'en') {
         window.location.href = window.location.pathname.replace(/^\/en/, '');
       }
     });
   }
 
-  //  DROPDOWN & MOBILE ---
   function closeAll() {
     menus.forEach(menu => menu.classList.add('hidden'));
     buttons.forEach(btn => btn.setAttribute('aria-expanded', 'false'));
@@ -178,7 +177,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const menu = document.getElementById(`menu-${key}`);
       if (!menu) return;
 
+      const isHidden = menu.classList.contains('hidden');
       closeAll();
+
       if (isHidden) {
         menu.classList.remove('hidden');
         btn.setAttribute('aria-expanded', 'true');
@@ -196,3 +197,4 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileMenu?.classList.add('hidden');
   });
 });
+</script>
