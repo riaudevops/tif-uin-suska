@@ -1,0 +1,161 @@
+---
+
+const agendaKegiatan = [
+  {
+    tanggal: "15",
+    bulan: "Okt",
+    tahun: "2025",
+    judul: "Seminar Nasional Teknologi Informasi (SNTI)",
+    waktu: "08:00 - 16:00 WIB",
+    lokasi: "Aula Gedung Teater FST",
+    kategori: "Seminar",
+    deskripsi: "Pertemuan tahunan peneliti dan praktisi IT untuk berbagi inovasi terbaru.",
+    status: "Mendatang"
+  },
+  {
+    tanggal: "20",
+    bulan: "Okt",
+    tahun: "2025",
+    judul: "Workshop UI/UX Design with Figma",
+    waktu: "13:30 - 15:30 WIB",
+    lokasi: "Lab. Multimedia",
+    kategori: "Workshop",
+    deskripsi: "Pelatihan intensif desain antarmuka pengguna untuk mahasiswa semester 3 & 5.",
+    status: "Mendatang"
+  },
+  {
+    tanggal: "02",
+    bulan: "Nov",
+    tahun: "2025",
+    judul: "Sidang Tugas Akhir Periode I",
+    waktu: "08:00 - Selesai",
+    lokasi: "Ruang Rapat Jurusan",
+    kategori: "Akademik",
+    deskripsi: "Pelaksanaan ujian lisan bagi mahasiswa tingkat akhir yang telah menyelesaikan skripsi.",
+    status: "Penting"
+  },
+  {
+    tanggal: "12",
+    bulan: "Nov",
+    tahun: "2025",
+    judul: "HIMATIF Anniversary & Expo",
+    waktu: "09:00 - 21:00 WIB",
+    lokasi: "Lapangan Parkir FST",
+    kategori: "Himpunan",
+    deskripsi: "Perayaan ulang tahun himpunan mahasiswa dengan pameran karya teknologi.",
+    status: "Mendatang"
+  }
+];
+
+const getKategoriClass = (kat) => {
+  switch(kat) {
+    case 'Akademik': return 'bg-red-100 text-red-700 border-red-200';
+    case 'Seminar': return 'bg-blue-100 text-blue-700 border-blue-200';
+    case 'Workshop': return 'bg-purple-100 text-purple-700 border-purple-200';
+    default: return 'bg-green-100 text-green-700 border-green-200';
+  }
+};
+
+---
+
+<nav class="max-w-7xl mx-auto px-8 mt-12 text-sm">
+  <ol class="flex items-center space-x-2 text-slate-500">
+    <li class="flex items-center">
+      <a href="/" class="hover:text-emerald-700 transition flex items-center gap-1">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Beranda
+      </a>
+    </li>
+    <li class="text-slate-300">/</li>
+    <li class="text-emerald-800 font-semibold italic">
+        Agenda
+    </li>
+  </ol>
+</nav>
+
+<section class="py-6 bg-white min-h-screen">
+    <div class="container mx-auto px-6">
+        <div class="mb-16">
+            <h2 class="text-[#004d2c] text-sm font-bold tracking-[0.3em] uppercase mb-3">Calendar of Events</h2>
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+        <div class="relative">
+            <div class="absolute -left-5 top-0 bottom-0 w-1.5 bg-[#004d2c] rounded-full"></div>
+                <h1 class="text-5xl font-black text-slate-900 tracking-tight leading-tight">
+                    Portal <span class="text-[#004d2c]">Berita</span>
+                </h1>
+            <p class="text-slate-500 mt-2 font-medium">
+                Berita terkini seputar kegiatan dan informasi dari prodi Teknik Informatika.
+            <br />Jangan lupa untuk selalu mengunjungi halaman ini untuk mendapatkan informasi terbaru.
+            <br />Terima kasih telah berkunjung!
+            </p>
+        </div>
+        </div>
+        </div>
+
+      <div class="grid gap-8 lg:grid-cols-2">
+        {agendaKegiatan.map((item) => (
+          <div class="group bg-white rounded-3xl p-1 shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100 flex flex-col md:flex-row overflow-hidden">
+            
+            <div class="bg-[#004d2c] text-white p-6 md:w-32 flex flex-col items-center justify-center text-center group-hover:bg-yellow-600 transition-colors duration-500">
+              <span class="text-3xl font-black leading-none">{item.tanggal}</span>
+              <span class="text-sm font-bold uppercase tracking-widest mt-1">{item.bulan}</span>
+              <span class="text-xs opacity-70 mt-1">{item.tahun}</span>
+            </div>
+
+            <div class="p-8 flex-1 relative">
+              <div class="flex justify-between items-start mb-4">
+                <span class={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${getKategoriClass(item.kategori)}`}>
+                  {item.kategori}
+                </span>
+                {item.status === 'Penting' && (
+                  <span class="flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-red-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                  </span>
+                )}
+              </div>
+
+              <h3 class="text-xl font-bold text-slate-800 mb-3 group-hover:text-[#004d2c] transition-colors">
+                {item.judul}
+              </h3>
+              
+              <p class="text-slate-500 text-sm mb-6 line-clamp-2">
+                {item.deskripsi}
+              </p>
+
+              <div class="flex flex-wrap gap-4 pt-4 border-t border-slate-50">
+                <div class="flex items-center gap-2 text-slate-400 text-xs font-medium">
+                  <svg class="w-4 h-4 text-[#004d2c]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  {item.waktu}
+                </div>
+                <div class="flex items-center gap-2 text-slate-400 text-xs font-medium">
+                  <svg class="w-4 h-4 text-[#004d2c]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  {item.lokasi}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-20 bg-[#004d2c] rounded-[2rem] p-10 text-center text-white relative overflow-hidden shadow-2xl shadow-green-900/20">
+        <div class="relative z-10">
+          <h2 class="text-2xl font-bold mb-4">Ingin berkolaborasi dalam kegiatan kami?</h2>
+          <p class="text-green-100/80 mb-8 max-w-xl mx-auto text-sm">Hubungi sekretariat jurusan untuk informasi lebih lanjut mengenai pengajuan kegiatan atau kemitraan acara.</p>
+          <a href="/kontak" class="inline-block px-8 py-3 bg-yellow-500 hover:bg-yellow-400 text-[#004d2c] font-black rounded-full transition-all transform hover:scale-105 uppercase text-xs tracking-widest"> Hubungi Kami </a>
+        </div>
+        <div class="absolute -right-20 -top-20 w-64 h-64 bg-green-700/30 rounded-full"></div>
+      </div>
+
+    </div>
+  </section>
+
+<style>
+  /* Menghilangkan scrollbar tapi tetap bisa scroll */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+  }
+</style>
