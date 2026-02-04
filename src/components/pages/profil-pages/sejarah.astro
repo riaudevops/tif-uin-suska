@@ -1,45 +1,61 @@
-<nav class="max-w-5xl mx-auto px-6 mt-8 text-sm text-slate-500">
-  <ol class="flex items-center space-x-3 bg-slate-50 py-3 px-5 rounded-lg border border-slate-100">
+<nav class="max-w-7xl mx-auto px-8 mt-12 text-sm">
+  <ol class="flex items-center space-x-2 text-slate-500">
     <li class="flex items-center">
-      <a href="/" class="hover:text-[#004d2c] flex items-center gap-1 transition">
+      <a href="/" class="hover:text-emerald-700 transition flex items-center gap-1">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-        Home
+        Beranda
       </a>
     </li>
     <li class="text-slate-300">/</li>
     <li>
-      <a href="/profil" class="hover:text-[#004d2c] transition font-medium">Profil</a>
+        <a href="/profil" class="hover:text-emerald-700 transition">
+            Profil
+        </a>
     </li>
     <li class="text-slate-300">/</li>
-    <li class="text-[#004d2c] font-bold tracking-tight">Sejarah</li>
+    <li class="text-emerald-800 font-semibold italic">
+        Sejarah
+    </li>
   </ol>
 </nav>
 
-<section class="relative">
-  <div class="relative overflow-hidden shadow-2xl">
-
-    <!-- BACKGROUND -->
-    <div class="absolute inset-0 bg-gradient-to-br from-green-900 via-emerald-800 to-green-700"></div>
-    <div class="absolute inset-0 bg-[url('/landing-pages/gedung.jpg')] bg-cover bg-center opacity-15"></div>
-
-    <!-- CONTENT -->
-    <div class="relative z-10 max-w-7xl mx-auto px-8 py-14 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<section class="relative mt-6">
+  <div class="w-full h-full px-8">
+    <div class="relative overflow-hidden shadow-2xl bg-slate-900 min-h-[400px] flex items-center">
       
-  <header class="space-y-6">
-    <h1 class="text-3xl md:text-5xl font-extrabold text-yellow-500 border-l-[10px] border-[#004d2c] pl-6 leading-tight uppercase">
-      Sejarah Program Studi <br>
-      <span class="text-[#004d2c]">Teknik Informatika</span>
-    </h1>
+      <div class="absolute inset-0 bg-gradient-to-r from-green-900/80 via-green-800/60 to-transparent z-10"></div>
+      <div class="absolute inset-0 bg-[url('/landing-pages/gedung-faste.jpg')] bg-cover bg-center"></div>
 
-    <div class="bg-white border-l-4 border-yellow-500 p-6 shadow-sm rounded-r-xl border border-slate-100">
-      <p class="text-lg text-slate-600 leading-relaxed italic">
-        "Program Studi Teknik Informatika telah berdiri sejak tahun 1999 dan merupakan salah satu Program Studi favorit di UIN Suska Riau."
-      </p>
-      <div class="mt-4 flex flex-wrap items-center gap-3">
-        <span class="px-3 py-1 bg-green-100 text-[#004d2c] text-xs font-bold rounded-full border border-green-200">Akreditasi: Unggul</span>
-        <span class="text-xs text-slate-400 font-medium">SK No. 086/SK/LAM-INFOKOM/Ak/S/IV/2025</span>
+      <div class="relative z-20 p-8 md:p-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="space-y-8">
+          <div>
+            <span class="inline-block px-4 py-1.5 bg-yellow-500 text-emerald-950 text-xs font-bold uppercase tracking-widest rounded-full mb-6">
+              Legacy Since 1999
+            </span>
+            <h1 class="text-4xl md:text-6xl font-black text-white leading-tight">
+              Sejarah <span class="text-yellow-500">Prodi</span> <br>
+              Teknik Informatika
+            </h1>
+          </div>
+
+          <div class="bg-white/10 backdrop-blur-md border-l-4 border-yellow-500 p-6 rounded-r-2xl shadow-xl">
+            <p class="text-lg md:text-xl text-emerald-50 leading-relaxed italic font-light">
+              "Program Studi Teknik Informatika telah berdiri sejak tahun 1999 dan merupakan salah satu Program Studi favorit di UIN Suska Riau."
+            </p>
+            <div class="mt-6 flex flex-wrap items-center gap-4">
+              <div class="flex items-center gap-2 px-4 py-2 bg-emerald-600/30 border border-emerald-400/30 rounded-lg">
+                <span class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
+                <span class="text-white text-sm font-bold tracking-wide">Akreditasi: Unggul</span>
+              </div>
+              <span class="text-xs text-emerald-200/60 font-mono">SK No. 086/SK/LAM-INFOKOM/2025</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hidden lg:block relative">
+           <div class="absolute -inset-4 bg-yellow-500/10 blur-3xl rounded-full"></div>
+           </div>
       </div>
     </div>
-    
-  </header>
-</section> 
+  </div>
+</section>
