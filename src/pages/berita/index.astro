@@ -2,16 +2,17 @@
 import Layout from "@/layouts/Layout.astro";
 
 const res = await fetch(
-  "http://localhost:8055/items/article?fields=title,slug,thumbnail,publish,category.name"
+  "http://localhost:8055/items/article?fields=title,slug,thumbnail,publish,category.name" {
+    cache: "no-store"
+  }
 );
 const { data: posts } = await res.json();
 
 const ASSET_URL = "http://localhost:8055/assets/";
 const categories = [
-  "Semua", ...new Set(posts.map(post => post.category?.name).filter(Boolean))
-  ];
+  "Semua", ...new Set(posts.map(post => post.category?.name).filter(name => typeof name === "string"))
+];
 ---
-
 
 <Layout title="Berita">
   <nav class="max-w-6xl mx-auto px-6 mt-10">
@@ -82,7 +83,7 @@ const categories = [
             data-category={post.category?.name}
           >
             <div class="relative h-60 overflow-hidden rounded-[2rem]">
-              <img src={`${ASSET_URL}${post.thumbnail}`} class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              <img src={post.thumbnail ? `${ASSET_URL}${post.thumbnail}` : '/default-thumbnail.jpg' } class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700" />
               <div class="absolute top-5 left-5">
                 <span class="bg-white/95 backdrop-blur text-[#004d2c] text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-sm">
                   {post.category?.name}
@@ -119,8 +120,14 @@ const categories = [
 </Layout>
 
 <script is:inline>
+  document.addEventListener('astro:page-load', initFilter);
+document.addEventListener('DOMContentLoaded', initFilter);
+
+function initFilter() {
   const buttons = document.querySelectorAll('.filter-btn');
   const items = document.querySelectorAll('.news-item');
+
+  if (!buttons.length || !items.length) return;
 
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -136,13 +143,10 @@ const categories = [
 
       items.forEach(item => {
         const itemCat = item.dataset.category?.trim();
-
-        if (category === "Semua" || itemCat === category) {
-          item.style.display = "flex";
-        } else {
-          item.style.display = "none";
-        }
+        item.style.display =
+          category === "Semua" || itemCat === category ? "flex" : "none";
       });
     });
   });
+}
 </script>
