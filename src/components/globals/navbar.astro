@@ -15,7 +15,7 @@ const { translate } = useTranslation(lang);
       <a href="#" class="hover:text-yellow-400 transition-colors">Mitra</a>
       <div class="h-3 w-[1px] bg-white/20"></div>
       <div class="flex items-center gap-1">
-        <select class="bg-transparent text-white cursor-pointer focus:outline-none border-none outline-none appearance-none">
+        <select id="lang-switch" class="bg-transparent text-white cursor-pointer focus:outline-none border-none outline-none appearance-none">
           <option value="id" selected={lang === 'id'} class="text-gray-800">ID</option>
           <option value="en" selected={lang === 'en'} class="text-gray-800">EN</option>
         </select>
@@ -77,13 +77,13 @@ const { translate } = useTranslation(lang);
           </button>
           <div id="menu-akademik" class="absolute left-0 bg-white shadow-2xl rounded-xl p-2 w-72 mt-2 hidden border border-gray-100 z-50" data-menu="akademik">
             <a href="https://pmb.uin-suska.ac.id/" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Penerimaan</a>
-            <a href="/pelayanan" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Pelayanan Administrasi</a>
-            <a href="/kurikulum--pages/kurikulum" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Kurikulum</a>
+            <a href="https://linktr.ee/administrasi_prodi_tif" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Pelayanan Administrasi</a>
+            <a href="/kurikulum-pages/kurikulum" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Kurikulum</a>
             <a href="https://pmt.uin-suska.ac.id/wp-content/uploads/2025/08/Kalender-Akademik-UIN-Suska-Riau-Tahun-2025-2026.pdf" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Kalender Akademik</a>
             <a href="/beasiswa" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Beasiswa</a>
             <a href="/tugas-akhir" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Info Tugas Akhir (TA)</a>
             <a href="/kerja-praktik" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Info Kerja Praktik (KP)</a>
-            <a href="/labssquad" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Labs Squad</a>
+            <a href="/labssquad-pages/labssquad" class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium">Labs Squad</a>
           </div>
         </div>
 
@@ -143,6 +143,11 @@ const { translate } = useTranslation(lang);
     const mobileMenu = document.getElementById('mobile-menu');
     const topBar = nav?.querySelector('[data-topbar]');
     const langSelect = nav?.querySelector('select');
+    
+    // const langselect = document.getElementById("lang-switch");
+    // if (langselect) {
+    //   langselect.addEvent
+    // }
 
     if (!nav) return;
 
