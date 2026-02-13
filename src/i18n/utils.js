@@ -1,9 +1,11 @@
-import { ui, defaultLanguage } from './ui';
+import { ui, defaultLanguage } from "./ui.js";
 
-export function useTranslation(lang = defaultLanguage) {
-    const translate = (key) => {
-        return ui[lang]?.[key] || ui[defaultLanguage][key] || key;
-    };
-    
-    return { translate };
+export function useTranslation(lang) {
+  const currentLang = ui[lang] ? lang : defaultLanguage;
+
+  function translate(key) {
+    return ui[currentLang][key] || ui[defaultLanguage][key] || key;
+  }
+
+  return { translate };
 }
