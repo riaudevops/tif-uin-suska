@@ -4,144 +4,215 @@ import Layout from "../../layouts/Layout.astro";
 export const prerender = false;
 
 const { slug } = Astro.params;
+const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:8055";
 
-const res = await fetch(
-  `http://localhost:8055/items/article?filter[slug][_eq]=${slug}&fields=id,title,content,publish,thumbnail,tags,category.*,author`
-);
+const [res, relatedRes] = await Promise.all([
+    fetch(
+        `${API_URL}/items/article?filter[slug][_eq]=${slug}&fields=id,title,content,publish,thumbnail,tags,category.*,author`,
+    ),
+    fetch(
+        `${API_URL}/items/article?filter[slug][_neq]=${slug}&limit=3&fields=slug,title,content,publish,thumbnail,category.*,author.id,author.first_name,author.last_name`,
+    ),
+]);
+
 const json = await res.json();
-const article = json.data?.[0];
-
-if (!article) throw new Error("Article tidak ditemukan");
-
-// Related articles (selain artikel ini)
-const relatedRes = await fetch(
-  `http://localhost:8055/items/article?filter[slug][_eq]=${slug}&fields=title,content,publish,thumbnail,category.*,author.id,author.first_name,author.last_name`
-);
 const relatedJson = await relatedRes.json();
-const related = relatedJson.data;
+
+const article = json.data?.[0];
+const related = relatedJson.data || [];
+
+// 5. OPTIMASI: Redirect ke 404 alih-alih melempar server error yang membuat web crash
+if (!article) {
+    return Astro.redirect("/404");
+}
 ---
 
 <Layout title={article.title}>
+    <div class="max-w-5xl mx-auto px-6 py-10">
+        <nav class="max-w-6xl mx-auto px-6 mt-10">
+            <ol
+                class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100"
+            >
+                <li class="flex items-center">
+                    <a
+                        href="/"
+                        class="flex items-center hover:text-green-600 transition-colors"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-4 w-4 mr-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                            ></path>
+                        </svg>
+                        Beranda
+                    </a>
+                </li>
+                <li class="text-gray-300">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </li>
+                <li>
+                    <a
+                        href="/berita"
+                        class="hover:text-green-600 transition-colors">Berita</a
+                    >
+                </li>
+                <li class="text-gray-300">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </li>
+                <li class="text-green-700 font-bold tracking-tight">
+                    {article.title}
+                </li>
+            </ol>
+        </nav>
 
-  <div class="max-w-5xl mx-auto px-6 py-10">
+        {
+            article.category?.name && (
+                <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold mt-4 inline-block">
+                    {article.category.name}
+                </span>
+            )
+        }
 
-    <!-- 🔗 BREADCRUMB -->
-    <nav class="max-w-6xl mx-auto px-6 mt-10">
-    <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100">
-        <li class="flex items-center">
-            <a href="/" class="flex items-center hover:text-green-600 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                Beranda
-            </a>
-        </li>
-        <li class="text-gray-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-        </li>
-        <li>
-            <a href="/berita" class="hover:text-green-600 transition-colors">
-                Berita
-            </a>
-        </li>
-        <li class="text-gray-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-        </li>
-        <li class="text-green-700 font-bold tracking-tight">
+        <h1 class="text-4xl md:text-5xl font-bold leading-tight mt-4 mb-6">
             {article.title}
-        </li>
-    </ol>
-</nav>
+        </h1>
 
-    <!-- 🏷 CATEGORY -->
-    <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold">
-      {article.category?.name}
-    </span>
+        <div
+            class="flex items-center justify-between flex-wrap gap-4 border-y py-4 mb-8"
+        >
+            <div
+                class="text-sm text-slate-600 flex flex-col sm:flex-row sm:gap-4"
+            >
+                <div>
+                    Dipublikasikan pada
+                    <span class="font-medium">
+                        {
+                            new Date(article.publish).toLocaleDateString(
+                                "id-ID",
+                                {
+                                    day: "numeric",
+                                    month: "long",
+                                    year: "numeric",
+                                },
+                            )
+                        }
+                    </span>
+                </div>
 
-    <!-- 📰 TITLE -->
-    <h1 class="text-4xl md:text-5xl font-bold leading-tight mt-4 mb-6">
-      {article.title}
-    </h1>
-
-    <!-- 👤 META INFO -->
-    <div class="flex items-center justify-between flex-wrap gap-4 border-y py-4 mb-8">
-      <div class="text-sm text-slate-600">
-        Dipublikasikan pada  
-        <span class="font-medium">
-          {new Date(article.publish).toLocaleDateString("id-ID", {
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-          })}
-        </span>
-        
-        <!-- 👤 AUTHOR-->
-        <div class="text-sm text-slate-600">
-          <span class="text-slate-500">Ditulis oleh : </span>
-          <span class="font-semibold text-slate-800">
-            {article.author}
-          </span>
-      </div>
-    </div>
-
-      <!-- 🔗 SHARE -->
-      <div class="flex gap-3 text-sm">
-        <a href={`https://wa.me/?text=${article.title}`} class="hover:text-emerald-600">WhatsApp</a>
-        <a href={`https://twitter.com/intent/tweet?text=${article.title}`} class="hover:text-emerald-600">Twitter</a>
-        <a href={`https://www.facebook.com/sharer/sharer.php?u=${Astro.url.href}`} class="hover:text-emerald-600">Facebook</a>
-      </div>
-    </div>
-
-    <!-- 🖼 HERO IMAGE -->
-    <img
-      src={`http://localhost:8055/assets/${article.thumbnail}`}
-      class="w-full h-[420px] object-cover rounded-2xl shadow-xl mb-10"
-      alt={article.title}
-    />
-
-    <!-- ✍ CONTENT -->
-    <div
-      class="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-emerald-600"
-      set:html={article.content}
-    />
-
-    <!-- 🏷 TAGS -->
-    <div class="mt-10 flex flex-wrap gap-2">
-      {article.tags?.map(tag => (
-        <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs">
-          #{tag}
-        </span>
-      ))}
-    </div>
-
-    <!-- 📰 RELATED -->
-    <div class="mt-16">
-      <h2 class="text-2xl font-bold mb-6">Berita Lainnya</h2>
-
-      <div class="grid md:grid-cols-3 gap-6">
-        {related.map(item => (
-          <a href={`/berita/${item.slug}`} class="group block bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden">
-
-            <img
-              src={`http://localhost:8055/assets/${item.thumbnail}`}
-              class="h-40 w-full object-cover group-hover:scale-105 transition"
-            />
-
-            <div class="p-4">
-              <h3 class="font-semibold group-hover:text-emerald-600">
-                {item.title}
-              </h3>
+                <div class="text-sm text-slate-600">
+                    <span class="text-slate-500">Ditulis oleh : </span>
+                    <span class="font-semibold text-slate-800">
+                        {article.author}
+                    </span>
+                </div>
             </div>
 
-          </a>
-        ))}
-      </div>
+            <div class="flex gap-3 text-sm">
+                <a
+                    href={`https://wa.me/?text=${encodeURIComponent(article.title + " " + Astro.url.href)}`}
+                    target="_blank"
+                    class="hover:text-emerald-600">WhatsApp</a
+                >
+                <a
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(Astro.url.href)}`}
+                    target="_blank"
+                    class="hover:text-emerald-600">Twitter</a
+                >
+                <a
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(Astro.url.href)}`}
+                    target="_blank"
+                    class="hover:text-emerald-600">Facebook</a
+                >
+            </div>
+        </div>
+
+        {
+            article.thumbnail && (
+                <img
+                    src={`${API_URL}/assets/${article.thumbnail}`}
+                    class="w-full h-[420px] object-cover rounded-2xl shadow-xl mb-10"
+                    alt={article.title}
+                />
+            )
+        }
+
+        <div
+            class="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-emerald-600"
+            set:html={article.content}
+        />
+
+        {
+            article.tags && article.tags.length > 0 && (
+                <div class="mt-10 flex flex-wrap gap-2">
+                    {article.tags.map((tag: string) => (
+                        <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs">
+                            #{tag}
+                        </span>
+                    ))}
+                </div>
+            )
+        }
+
+        {
+            related.length > 0 && (
+                <div class="mt-16">
+                    <h2 class="text-2xl font-bold mb-6">Berita Lainnya</h2>
+
+                    <div class="grid md:grid-cols-3 gap-6">
+                        {related.map((item: any) => (
+                            <a
+                                href={`/berita/${item.slug}`}
+                                class="group block bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
+                            >
+                                {item.thumbnail && (
+                                    <img
+                                        src={`${API_URL}/assets/${item.thumbnail}`}
+                                        class="h-40 w-full object-cover group-hover:scale-105 transition"
+                                        alt={item.title}
+                                    />
+                                )}
+                                <div class="p-4">
+                                    <h3 class="font-semibold group-hover:text-emerald-600">
+                                        {item.title}
+                                    </h3>
+                                </div>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            )
+        }
     </div>
-
-  </div>
-
 </Layout>
