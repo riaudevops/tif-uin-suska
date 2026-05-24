@@ -1,49 +1,49 @@
 ---
-const prestasiData = [
-  { no: 1, kegiatan: "3X3 Basketball", tahun: "2017", nama: "Shiddiq Syendanu Putra", tingkat: "Universitas", prestasi: "Juara 1" },
-  { no: 2, kegiatan: "LCC 4 PILAR", tahun: "2017", nama: "AFDOLUL KHOLIS", tingkat: "Lokal/Wilayah", prestasi: "Juara 2" },
-  { no: 3, kegiatan: "Olahraga/futsal", tahun: "2017", nama: "Muhammad Fadhilunnas", tingkat: "Lokal/Wilayah", prestasi: "Juara 1" },
-  { no: 4, kegiatan: "Olimpiade Kimia Mipa Expo", tahun: "2017", nama: "Rahmi Fariza", tingkat: "Provinsi", prestasi: "Babak Semi Final" },
-  { no: 5, kegiatan: "Dekan Cup fakultas hukum UIR", tahun: "2017", nama: "Nurfadillahmz", tingkat: "Lokal/Wilayah", prestasi: "Juara 2" },
-  { no: 6, kegiatan: "Volly Ball", tahun: "2017", nama: "M Fajri Ramadhan", tingkat: "Lokal/Wilayah", prestasi: "Juara 2" },
-  { no: 7, kegiatan: "Tenis Meja Aksiona", tahun: "2017", nama: "Muhammad Ridha", tingkat: "Lokal/Wilayah", prestasi: "Juara 3" },
-  { no: 8, kegiatan: "PIONIR SE-INDONESIA DI ACEH CABOR BOLA BASKET", tahun: "2017", nama: "Gandhi Alwira Ponda", tingkat: "Nasional", prestasi: "Juara 3" },
-  { no: 9, kegiatan: "Lomba Akustik", tahun: "2017", nama: "AFDOLUL KHOLIS", tingkat: "Lokal/Wilayah", prestasi: "Juara 1" },
-  { no: 10, kegiatan: "LBC CUP UIR BOLA BASKET SEPEKANBARU", tahun: "2017", nama: "Gandhi Alwira Ponda", tingkat: "Lokal/Wilayah", prestasi: "Juara 1" },
-  { no: 11, kegiatan: "MMiss Internet yang di taja oleh Asosiasi Penyelenggara Jaza Internet Indonesia (APJII)", tahun: "2017", nama: "Suci Hidayati", tingkat: "Provinsi", prestasi: "Finalis" },
-  { no: 12, kegiatan: "Forriska", tahun: "2017", nama: "Muhammad Yosdi", tingkat: "Lokal/Wilayah", prestasi: "Juara 3" },
-  { no: 13, kegiatan: "5th International Conference on Instrumentation, Communication, Information Technology, and Biomedical Engineering 2017", tahun: "2017", nama: "Faqhri Mulianda Putra", tingkat: "Internasional", prestasi: "Partisipan" },
-  { no: 14, kegiatan: "Debat Bahasa Inggris", tahun: "2015", nama: "Rizky Yananda", tingkat: "Universitas", prestasi: "Juara 3" },
-  { no: 15, kegiatan: "Olimpiade UIN 3×3", tahun: "2017", nama: "Nurfadillahmz", tingkat: "Lokal/Wilayah", prestasi: "Juara 2" },
-  { no: 16, kegiatan: "Lomba Lintas Alam Kwarcab Pekanbaru", tahun:"2017", nama: "Muhammad Ridha", tingkat: "Lokal/Wilayah", prestasi: "Juara 1" },
-  { no: 17, kegiatan: "Mahasiswa Berprestasi (MAWAPRES) UIN SUSKA Riau", tahun: "2017", nama: "Suci Hidayati", tingkat: "Universitas", prestasi: "Top 6" }, 
-  { no: 18, kegiatan: "Teknologi Tepat Guna PERTIKA", tahun: "2017", nama: "Muhammad Ridha", tingkat: "Lokal/Wilayah", prestasi: "Juara 3" },
-  { no: 19, kegiatan: "STIKES HT CUP SEPEKANBARU BOLA BASKET", tahun: "2017", nama: "Gandhi Alwira Ponda", tingkat: "Lokal/Wilayah", prestasi: "Juara 1" },
-  { no: 20, kegiatan: "Bulan bahasa battle beatbox", tahun: "2016", nama: "Dzakwan Harist Mahendra", tingkat: "Lokal/Wilayah", prestasi: "Juara 3" },
-  { no: 21, kegiatan: "Juara 2 Menulis Opini 23 Tahun Berkarya LPM Gagasan", tahun: "2016", nama: "Muhammad Yosdi", tingkat: "Lokal/Wilayah", prestasi: "Juara 2" },
-  { no: 22, kegiatan: "Olimpiade Teknologi Informasi dan Komunikasi", tahun: "2016", nama: "Fiqhri Mulianda Putra", tingkat: "Nasional", prestasi: "Finalis"},
-  { no: 23, kegiatan: "ZFace Girl yang di taja oleh Riau Pos", tahun: "2016", nama: "Suci Hidayati", tingkat: "Provinsi", prestasi: "Top 5 (Five) ZFace Girl" },
-  { no: 24, kegiatan: "Garda Tualang cup Basketball competition", tahun: "2016", nama: "Nurfadillahmz", tingkat: "Lokal/Wilayah", prestasi: "Juara 2" },
-  { no: 25, kegiatan: "Lomba Lintas Alam Mapalagaharu PCR", tahun: "2016", nama: "Muhammad Ridha", tingkat: "Lokal/Wilayah", prestasi: "Juara 2" },
-  { no: 26, kegiatan: "Olahraga", tahun: "2016", nama: "Muhammad Fadhilunnas", tingkat: "Lokal/Wilayah", prestasi: "Juara 2" },
-  { no: 27, kegiatan: "LBC Cup II", tahun: "2016", nama: "Nurfadillahmz", tingkat: "Lokal/Wilayah", prestasi: "Juara 1" },
-  { no: 28, kegiatan: "Pensi Scout Camp", tahun: "2016", nama: "Muhammad Ridha", tingkat: "Lokal/Wilayah", prestasi: "Juara 2" },
-  { no: 29, kegiatan: "GARDA TUALANG CUP U-21 Se-RIAU BOLA BASKET", tahun: "2016", nama: "Gandhi Alwira Ponda", tingkat: "Lokal/Wilayah", prestasi: "Juara 2" },
-  { no: 30, kegiatan: "2016 4th International Conference on Cyber and IT Service Management", tahun: "2016", nama: "Lia Anggriani", tingkat: "Internasional", prestasi: "Partisipan" },
-  { no: 31, kegiatan: "Debat Bahasa Inggris", tahun: "2016", nama: "Rizky Yananda", tingkat: "Universitas", prestasi: "Juara 3" },
-  { no: 32, kegiatan: "Olahraga", tahun: "2015", nama: "Muhammad Fadhilunnas", tingkat: "Lokal/Wilayah", prestasi: "Juara 1" },
-];
+const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:8055";
 
-// Fungsi warna badge berdasarkan prestasi
-const getPrestasiColor = (status) => {
-  if (status.includes("Juara 1")) return "bg-yellow-100 text-yellow-700 border-yellow-200";
-  if (status.includes("Juara 2")) return "bg-slate-100 text-slate-700 border-slate-200";
-  if (status.includes("Juara 3")) return "bg-orange-100 text-orange-700 border-orange-200";
-  return "bg-blue-50 text-blue-700 border-blue-100";
+let prestasiData = [];
+
+try {
+  const response = await fetch(`${API_URL}/items/prestasi?sort=-tahun`);
+  
+  if (!response.ok) {
+    const errorDetails = await response.json();
+    console.error("ERROR DIRECTUS:", JSON.stringify(errorDetails, null, 2));
+    throw new Error(`Gagal (Status: ${response.status})`);
+  }
+  
+  const dataDirectus = await response.json();
+
+  prestasiData = dataDirectus.data.map((item) => {
+    return {
+      kegiatan: item.nama_kegiatan || 'Tanpa Nama',
+      nama: item.mahasiswa || 'Anonim',
+      tahun: item.tahun || '-',
+      tingkat: item.tingkat || 'Lokal',
+      prestasi: item.pencapaian || 'Finalis'
+    };
+  });
+} catch (error) {
+  console.error("Error fetching prestasi:", error.message);
+}
+
+const getPrestasiColor = (prestasi) => {
+  const p = prestasi.toLowerCase();
+  
+  if (p.includes('juara 1') || p.includes('pertama') || p.includes('emas')) {
+    return 'bg-yellow-100 text-yellow-700 border-yellow-200';
+  }
+  if (p.includes('juara 2') || p.includes('kedua') || p.includes('perak')) {
+    return 'bg-slate-100 text-slate-700 border-slate-300';
+  }
+  if (p.includes('juara 3') || p.includes('ketiga') || p.includes('perunggu')) {
+    return 'bg-orange-100 text-orange-700 border-orange-200';
+  }
+  return 'bg-blue-50 text-blue-600 border-blue-100';
 };
 ---
-
-  <section class="py-20 bg-slate-50 min-h-screen">
+ 
+<section class="py-20 bg-slate-50 min-h-screen">
     <div class="container mx-auto px-6">
       
       <div class="mb-12 text-center max-w-3xl mx-auto">
@@ -59,60 +59,139 @@ const getPrestasiColor = (status) => {
       </div>
 
       <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 overflow-hidden border border-slate-100">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="bg-[#004d2c] text-white">
-                <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider text-center w-16">No</th>
-                <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">Nama Kegiatan</th>
-                <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">Mahasiswa</th>
-                <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider text-center">Tahun</th>
-                <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">Tingkat</th>
-                <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">Pencapaian</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100">
-              {prestasiData.map((item, index) => (
-                <tr class="hover:bg-green-50/50 transition-colors group">
-                  <td class="py-5 px-6 text-center text-slate-400 font-medium text-sm">{index + 1}</td>
-                  <td class="py-5 px-6">
-                    <p class="text-slate-800 font-bold text-sm leading-snug group-hover:text-[#004d2c] transition-colors">{item.kegiatan}</p>
-                  </td>
-                  <td class="py-5 px-6">
-                    <div class="flex items-center gap-3">
-                      <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500 border border-slate-200 uppercase">
-                        {item.nama.charAt(0)}
-                      </div>
-                      <span class="text-slate-600 text-sm font-medium">{item.nama}</span>
-                    </div>
-                  </td>
-                  <td class="py-5 px-6 text-center">
-                    <span class="text-slate-500 text-sm">{item.tahun}</span>
-                  </td>
-                  <td class="py-5 px-6">
-                    <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[10px] font-bold uppercase tracking-wide">
-                      {item.tingkat}
-                    </span>
-                  </td>
-                  <td class="py-5 px-6">
-                    <span class={`px-18 py-1.5 rounded-lg text-xs font-black border ${getPrestasiColor(item.prestasi)}`}>
-                      {item.prestasi}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr class="bg-[#004d2c] text-white">
+                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider text-center w-16">No</th>
+                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">Nama Kegiatan</th>
+                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">Mahasiswa</th>
+                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider text-center">Tahun</th>
+                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">Tingkat</th>
+                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">Pencapaian</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100" id="prestasi-tbody">
+                    {prestasiData.length === 0 ? (
+                      <tr>
+                        <td colspan="6" class="py-10 text-center text-slate-400 font-medium text-sm">
+                          Belum ada data prestasi yang tersedia.
+                        </td>
+                      </tr>
+                    ) : (
+                      prestasiData.map((item, index) => (
+                        <tr class={`prestasi-row hover:bg-green-50/50 transition-colors group ${index >= 15 ? 'hidden' : ''}`}>
+                          <td class="py-5 px-6 text-center text-slate-400 font-medium text-sm">{index + 1}</td>
+                          <td class="py-5 px-6">
+                            <p class="text-slate-800 font-bold text-sm leading-snug group-hover:text-[#004d2c] transition-colors">{item.kegiatan}</p>
+                          </td>
+                          <td class="py-5 px-6">
+                            <div class="flex items-center gap-3">
+                              <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500 border border-slate-200 uppercase">
+                                {item.nama.charAt(0)}
+                              </div>
+                              <span class="text-slate-600 text-sm font-medium">{item.nama}</span>
+                            </div>
+                          </td>
+                          <td class="py-5 px-6 text-center">
+                            <span class="text-slate-500 text-sm">{item.tahun}</span>
+                          </td>
+                          <td class="py-5 px-6">
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[10px] font-bold uppercase tracking-wide">
+                              {item.tingkat}
+                            </span>
+                          </td>
+                          <td class="py-5 px-6">
+                            <span class={`px-4 py-1.5 rounded-lg text-xs font-black border ${getPrestasiColor(item.prestasi)}`}>
+                              {item.prestasi}
+                            </span>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
         
-        <div class="bg-slate-50/50 p-6 border-t border-slate-100 flex justify-between items-center">
-          <p class="text-xs text-slate-400 font-medium font-mono uppercase tracking-tighter">
-            Total {prestasiData.length} Records found
+        <div class="bg-slate-50/50 p-6 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p id="pagination-info" class="text-xs text-slate-400 font-medium font-mono uppercase tracking-tighter">
+            Menampilkan data...
           </p>
-          <div class="flex gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
-            Source: Database Akademik Informatika
+          <div class="flex gap-2">
+            <button id="btn-prev" class="px-4 py-2 text-xs font-bold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-[#004d2c] disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+              &larr; Sebelumnya
+            </button>
+            <span id="page-number" class="px-4 py-2 text-xs font-bold text-[#004d2c] bg-green-50 border border-green-200 rounded-lg">
+              1
+            </span>
+            <button id="btn-next" class="px-4 py-2 text-xs font-bold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-[#004d2c] disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+              Selanjutnya &rarr;
+            </button>
           </div>
-        </div>
-      </div>
     </div>
-  </section>
+    </div>
+    </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const rows = document.querySelectorAll('.prestasi-row');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const pageInfo = document.getElementById('pagination-info');
+    const pageNumber = document.getElementById('page-number');
+
+    const rowsPerPage = 15;
+    let currentPage = 1;
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+    function updateTable() {
+      const start = (currentPage - 1) * rowsPerPage;
+      const end = start + rowsPerPage;
+
+      rows.forEach((row, index) => {
+        if (index >= start && index < end) {
+          row.classList.remove('hidden');
+        } else {
+          row.classList.add('hidden');
+        }
+      });
+
+      const currentEnd = Math.min(end, rows.length);
+      const currentStart = rows.length === 0 ? 0 : start + 1;
+      
+      if (pageInfo) {
+        pageInfo.textContent = `Menampilkan ${currentStart} - ${currentEnd} dari total ${rows.length} Records`;
+      }
+      
+      if (pageNumber) {
+        pageNumber.textContent = `${currentPage} / ${totalPages || 1}`;
+      }
+
+      if (btnPrev && btnNext) {
+        btnPrev.disabled = currentPage === 1;
+        btnNext.disabled = currentPage === totalPages || totalPages === 0;
+      }
+    }
+
+    if (btnPrev) {
+      btnPrev.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          updateTable();
+        }
+      });
+    }
+
+    if (btnNext) {
+      btnNext.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          updateTable();
+        }
+      });
+    }
+
+    updateTable();
+  });
+</script>
