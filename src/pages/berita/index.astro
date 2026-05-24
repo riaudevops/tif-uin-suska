@@ -1,152 +1,301 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 
-const res = await fetch(
-  "http://localhost:8055/items/article?fields=title,slug,thumbnail,publish,category.name", {
-    cache: "no-store"
-  }
-);
-const { data: posts } = await res.json();
+const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:8055";
 
-const ASSET_URL = "http://localhost:8055/assets/";
+let posts = [];
+
+try {
+    const res = await fetch(
+        `${API_URL}/items/article?fields=title,slug,thumbnail,publish,category.name&sort=-publish`,
+        { cache: "no-store" },
+    );
+
+    if (res.ok) {
+        const json = await res.json();
+        posts = json.data || [];
+    } else {
+        console.error("Gagal mengambil data dari API");
+    }
+} catch (error) {
+    console.error("Terjadi kesalahan saat fetch data:", error);
+}
+
 const categories = [
-  "Semua", ...new Set(posts.map(post => post.category?.name).filter(name => typeof name === "string"))
+    "Semua",
+    ...new Set(
+        posts
+            .map((post: any) => post.category?.name)
+            .filter((name: any) => typeof name === "string"),
+    ),
 ];
 ---
 
 <Layout title="Berita">
-  <nav class="max-w-6xl mx-auto px-6 mt-10">
-      <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100">
-          <li class="flex items-center">
-              <a href="/" class="flex items-center hover:text-green-600 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  Beranda
-              </a>
-          </li>
-          <li class="text-gray-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-          </li>
-          <li>
-              <a href="/berita" class="hover:text-green-600 transition-colors">
-                  Berita
-              </a>
-          </li>
-          <li class="text-gray-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-          </li>
-          <li class="text-green-700 font-bold tracking-tight">
-              {posts.length} Berita
-          </li>
-      </ol>
-  </nav>
+    <nav class="max-w-6xl mx-auto px-6 mt-10">
+        <ol
+            class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100"
+        >
+            <li class="flex items-center">
+                <a
+                    href="/"
+                    class="flex items-center hover:text-green-600 transition-colors"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4 mr-1"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                        ></path>
+                    </svg>
+                    Beranda
+                </a>
+            </li>
+            <li class="text-gray-300">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"></path>
+                </svg>
+            </li>
+            <li>
+                <a
+                    href="/berita"
+                    class="hover:text-green-600 transition-colors"
+                >
+                    Berita
+                </a>
+            </li>
+            <li class="text-gray-300">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"></path>
+                </svg>
+            </li>
+            <li class="text-green-700 font-bold tracking-tight">
+                {posts.length} Berita
+            </li>
+        </ol>
+    </nav>
 
-  <section class="py-6 bg-[#f8fafc] min-h-screen">
-    <div class="max-w-6xl mx-auto px-6">
+    <section class="py-6 bg-[#f8fafc] min-h-screen">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="mb-16">
+                <div
+                    class="flex flex-col lg:flex-row lg:items-center justify-between gap-8"
+                >
+                    <div class="relative">
+                        <div
+                            class="absolute -left-5 top-0 bottom-0 w-1.5 bg-[#004d2c] rounded-full"
+                        >
+                        </div>
+                        <h1
+                            class="text-5xl font-black text-[#004d2c] tracking-tight leading-tight"
+                        >
+                            Berita
+                        </h1>
+                        <p class="text-slate-500 mt-2 font-medium">
+                            Berita terkini seputar kegiatan dan informasi dari
+                            prodi Teknik Informatika.
+                            <br />Jangan lupa untuk selalu mengunjungi halaman
+                            ini untuk mendapatkan informasi terbaru.
+                            <br />Terima kasih telah berkunjung!
+                        </p>
+                    </div>
 
-      <div class="mb-16">
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-          <div class="relative">
-            <div class="absolute -left-5 top-0 bottom-0 w-1.5 bg-[#004d2c] rounded-full"></div>
-            <h1 class="text-5xl font-black text-[#004d2c] tracking-tight leading-tight">
-              Berita
-            </h1>
-            <p class="text-slate-500 mt-2 font-medium">
-              Berita terkini seputar kegiatan dan informasi dari prodi Teknik Informatika.
-              <br />Jangan lupa untuk selalu mengunjungi halaman ini untuk mendapatkan informasi terbaru.
-              <br />Terima kasih telah berkunjung!
-            </p>
-          </div>
-
-          <div class="flex flex-wrap gap-2" id="filter-container">
-            {categories.map((cat) => (
-              <button
-                data-category={cat}
-                class="filter-btn px-6 py-2 rounded-full text-xs font-black tracking-widest uppercase transition-all duration-300 border-2 bg-white text-slate-400 border-slate-100 hover:border-yellow-400 hover:text-yellow-600 shadow-sm"
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10" id="news-grid">
-        {posts.map((post) => (
-          <div 
-            class="news-item group relative bg-white rounded-[2.5rem] p-4 border-2 border-transparent hover:border-yellow-400 transition-all duration-500 flex flex-col shadow-sm hover:shadow-xl"
-            data-category={post.category?.name}
-          >
-            <div class="relative h-60 overflow-hidden rounded-[2rem]">
-              <img src={post.thumbnail ? `${ASSET_URL}${post.thumbnail}` : '/default-thumbnail.jpg' } class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700" />
-              <div class="absolute top-5 left-5">
-                <span class="bg-white/95 backdrop-blur text-[#004d2c] text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-sm">
-                  {post.category?.name}
-                </span>
-              </div>
-            </div>
-
-            <div class="px-4 py-8 flex flex-col flex-grow">
-              <div class="flex items-center gap-2 mb-4 text-slate-400 uppercase text-[11px] font-bold">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                {new Date(post.publish).toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' })}
-              </div>
-
-              <h2 class="font-black text-xl text-slate-800 group-hover:text-[#004d2c] transition-colors line-clamp-2">
-                {post.title}
-              </h2>
-
-              <a href={`/berita/${post.slug}`} class="mt-auto pt-8 flex items-center justify-between">
-                <span class="text-sm font-black text-[#004d2c] group-hover:text-yellow-600 transition-colors uppercase italic">
-                  Baca Selengkapnya
-                </span>
-                <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center transition-all duration-500 group-hover:bg-yellow-400 group-hover:rotate-[-45deg] group-hover:text-white group-hover:scale-110 shadow-inner">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
+                    <div class="flex flex-wrap gap-2" id="filter-container">
+                        {
+                            categories.map((cat) => (
+                                <button
+                                    data-category={cat}
+                                    class={`filter-btn px-6 py-2 rounded-full text-xs font-black tracking-widest uppercase transition-all duration-300 border-2 shadow-sm ${
+                                        cat === "Semua"
+                                            ? "bg-[#004d2c] text-white border-[#004d2c] active-filter"
+                                            : "bg-white text-slate-400 border-slate-100 hover:border-yellow-400 hover:text-yellow-600"
+                                    }`}
+                                >
+                                    {cat}
+                                </button>
+                            ))
+                        }
+                    </div>
                 </div>
-              </a>
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
+
+            {
+                posts.length === 0 ? (
+                    <div class="text-center py-20 text-slate-500">
+                        Belum ada berita yang dipublikasikan saat ini.
+                    </div>
+                ) : (
+                    <div
+                        class="grid md:grid-cols-2 lg:grid-cols-3 gap-10"
+                        id="news-grid"
+                    >
+                        {posts.map((post: any) => (
+                            <div
+                                class="news-item group relative bg-white rounded-[2.5rem] p-4 border-2 border-transparent hover:border-yellow-400 transition-all duration-500 flex flex-col shadow-sm hover:shadow-xl"
+                                data-category={
+                                    post.category?.name || "Uncategorized"
+                                }
+                            >
+                                <div class="relative h-60 overflow-hidden rounded-[2rem]">
+                                    <img
+                                        src={
+                                            post.thumbnail
+                                                ? `${API_URL}/assets/${post.thumbnail}`
+                                                : "/default-thumbnail.jpg"
+                                        }
+                                        class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                        alt={post.title}
+                                    />
+                                    {post.category?.name && (
+                                        <div class="absolute top-5 left-5">
+                                            <span class="bg-white/95 backdrop-blur text-[#004d2c] text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-sm">
+                                                {post.category.name}
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div class="px-4 py-8 flex flex-col flex-grow">
+                                    <div class="flex items-center gap-2 mb-4 text-slate-400 uppercase text-[11px] font-bold">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                        {post.publish
+                                            ? new Date(
+                                                  post.publish,
+                                              ).toLocaleDateString("id-ID", {
+                                                  day: "numeric",
+                                                  month: "long",
+                                                  year: "numeric",
+                                              })
+                                            : "Tanggal tidak tersedia"}
+                                    </div>
+
+                                    <h2 class="font-black text-xl text-slate-800 group-hover:text-[#004d2c] transition-colors line-clamp-2">
+                                        {post.title}
+                                    </h2>
+
+                                    <a
+                                        href={`/berita/${post.slug}`}
+                                        class="mt-auto pt-8 flex items-center justify-between"
+                                    >
+                                        <span class="text-sm font-black text-[#004d2c] group-hover:text-yellow-600 transition-colors uppercase italic">
+                                            Baca Selengkapnya
+                                        </span>
+                                        <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center transition-all duration-500 group-hover:bg-yellow-400 group-hover:rotate-[-45deg] group-hover:text-white group-hover:scale-110 shadow-inner">
+                                            <svg
+                                                class="w-5 h-5"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="3"
+                                                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                                                />
+                                            </svg>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )
+            }
+        </div>
+    </section>
 </Layout>
 
 <script is:inline>
-  document.addEventListener('astro:page-load', initFilter);
-document.addEventListener('DOMContentLoaded', initFilter);
+    // Script dipertahankan dengan sedikit perbaikan logika styling agar konsisten
+    document.addEventListener("astro:page-load", initFilter);
+    document.addEventListener("DOMContentLoaded", initFilter);
 
-function initFilter() {
-  const buttons = document.querySelectorAll('.filter-btn');
-  const items = document.querySelectorAll('.news-item');
+    function initFilter() {
+        const buttons = document.querySelectorAll(".filter-btn");
+        const items = document.querySelectorAll(".news-item");
 
-  if (!buttons.length || !items.length) return;
+        if (!buttons.length || !items.length) return;
 
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const category = btn.dataset.category?.trim();
+        buttons.forEach((btn) => {
+            // Hapus event listener lama agar tidak dobel saat pindah halaman (View Transitions)
+            btn.replaceWith(btn.cloneNode(true));
+        });
 
-      buttons.forEach(b => {
-        b.classList.remove('bg-[#004d2c]', 'text-white', 'border-[#004d2c]');
-        b.classList.add('bg-white', 'text-slate-400', 'border-slate-100');
-      });
+        const newButtons = document.querySelectorAll(".filter-btn");
 
-      btn.classList.add('bg-[#004d2c]', 'text-white', 'border-[#004d2c]');
-      btn.classList.remove('bg-white', 'text-slate-400', 'border-slate-100');
+        newButtons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const category = btn.dataset.category?.trim();
 
-      items.forEach(item => {
-        const itemCat = item.dataset.category?.trim();
-        item.style.display =
-          category === "Semua" || itemCat === category ? "flex" : "none";
-      });
-    });
-  });
-}
+                // Reset semua tombol ke style default
+                newButtons.forEach((b) => {
+                    b.classList.remove(
+                        "bg-[#004d2c]",
+                        "text-white",
+                        "border-[#004d2c]",
+                        "active-filter",
+                    );
+                    b.classList.add(
+                        "bg-white",
+                        "text-slate-400",
+                        "border-slate-100",
+                    );
+                });
+
+                // Set tombol yang di-klik ke style aktif
+                btn.classList.add(
+                    "bg-[#004d2c]",
+                    "text-white",
+                    "border-[#004d2c]",
+                    "active-filter",
+                );
+                btn.classList.remove(
+                    "bg-white",
+                    "text-slate-400",
+                    "border-slate-100",
+                );
+
+                // Filter item berita
+                items.forEach((item) => {
+                    const itemCat = item.dataset.category?.trim();
+                    if (category === "Semua" || itemCat === category) {
+                        item.style.display = "flex";
+                        // Efek fade-in sederhana
+                        item.style.opacity = "0";
+                        setTimeout(() => (item.style.opacity = "1"), 50);
+                    } else {
+                        item.style.display = "none";
+                    }
+                });
+            });
+        });
+    }
 </script>
