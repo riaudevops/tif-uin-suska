@@ -2,23 +2,17 @@
 import "../styles/global.css";
 import Navbar from "../components/globals/navbar.astro";
 import Footer from "../components/pages/landing-pages/footer.astro";
-import Search from "../components/globals/search.astro";
-
-const pathname = new URL(Astro.request.url).pathname;
-const isHome = pathname === "/" || pathname === "/en/" || pathname === "/en";
-const lang = Astro.currentLocale || "id";
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html>
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     </head>
     <body class="bg-white">
         <Navbar />
-        <Search />
-        <main class={isHome ? "" : "pt-24 md:pt-28"}>
+        <main>
             <slot />
         </main>
         <Footer />

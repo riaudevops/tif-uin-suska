@@ -1,6 +1,6 @@
 ---
-const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:8055";
-const ASSET_URL = `${API_URL}/items/dosen`;
+const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
+const ASSET_URL = `${API_URL}/assets/`;
 
 let dosenData = [];
 
@@ -12,7 +12,8 @@ try {
   const dataDirectus = await response.json();
   dosenData = dataDirectus.data;
 } catch (error) {
-  console.error("Error fetching dosen:", error.message);
+  const message = error instanceof Error ? error.message : String(error);
+  console.error("Error fetching dosen:", message);
 }
 ---
 
@@ -38,13 +39,13 @@ try {
           <p class="text-slate-500">Data dosen belum tersedia.</p>
         </div>
       ) : (
-        dosenData.map((dosen) => (
+        dosenData.map((dosen: any) => (
           <div class="group bg-white border border-slate-200 p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row gap-6">
             
             <div class="relative w-full sm:w-40 flex-shrink-0 mx-auto sm:mx-0">
               <div class="absolute inset-0 bg-slate-200 translate-x-3 translate-y-3 rounded-xl group-hover:translate-x-4 group-hover:translate-y-4 transition-transform duration-300"></div>
               <img 
-                src={`${import.meta.env.PUBLIC_API_URL}/assets/${dosen.foto}`}
+                src={`${ASSET_URL}${dosen.foto}`}
                 alt={dosen.nama} 
                 class="relative z-10 w-full h-full object-cover rounded-xl aspect-[3/4] grayscale group-hover:grayscale-0 transition-all duration-500"
               />

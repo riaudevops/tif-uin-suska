@@ -1,19 +1,38 @@
 ---
 export const prerender = true; 
 
-export async function getStaticPaths() {
-  const API_URL = import.meta.env.PUBLIC_API_URL;
-  const response = await fetch(`${API_URL}/items/dosen`);
-  const { data } = await response.json();
+type DosenPagePath = {
+  params: { slug: string };
+  props: { dosen: any };
+};
+
+const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
+
+export async function getStaticPaths(): Promise<DosenPagePath[]> {
   
-  return data.map((dosen) => ({
-    params: { slug: dosen.slug },
-    props: { dosen },
-  }));
+
+  try {
+    const response = await fetch(`${API_URL}/items/dosen`);
+
+    if (!response.ok) {
+      throw new Error(`Gagal mengambil dosen (status: ${response.status})`);
+    }
+
+    const { data } = await response.json();
+
+    return (data || []).map((dosen: any) => ({
+      params: { slug: dosen.slug },
+      props: { dosen },
+    }));
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn("Gagal generate halaman dosen:", message);
+    return [];
+  }
 }
 
-const { dosen } = Astro.props;
-const ASSET_URL = `${import.meta.env.PUBLIC_API_URL}/assets/`;
+const dosen = (Astro.props?.dosen ?? {}) as any;
+const ASSET_URL = `${API_URL}/assets/`;
 ---
 
 <!DOCTYPE html>

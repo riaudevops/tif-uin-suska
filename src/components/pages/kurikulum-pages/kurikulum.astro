@@ -1,9 +1,23 @@
 ---
-const API_URL = import.meta.env.PUBLIC_API_URL;
+import Layout from "@/layouts/Layout.astro";
 
-const response = await fetch(`${API_URL}/items/kurikulum?sort=semester`);
-const data = await response.json();
-const kurikulum = data.data;
+const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
+const ASSET_URL = `${API_URL}/assets/`;
+
+let kurikulum = [];
+
+try {
+  const response = await fetch(`${API_URL}/items/kurikulum?sort=semester`);
+
+  if (!response.ok) {
+    throw new Error(`Gagal mengambil kurikulum (status: ${response.status})`);
+  }
+
+  const data = await response.json();
+  kurikulum = data.data || [];
+} catch (error: any) {
+  console.warn("Gagal mengambil data kurikulum:", error?.message || error);
+}
 
 const kurikulumPerSemester = kurikulum.reduce((acc: any, item: any) => {
   if (!acc[item.semester]) acc[item.semester] = [];

@@ -1,11 +1,3 @@
----
-import { useTranslation } from "@/i18n/utils";
-
-const lang = Astro.currentLocale || "id";
-console.log("Bahasa saat ini:", lang);
-const { translate } = useTranslation(lang);
----
-
 <nav
     class="w-full fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-sm"
 >
@@ -25,31 +17,6 @@ const { translate } = useTranslation(lang);
             <a href="#" class="hover:text-yellow-400 transition-colors">Mitra</a
             >
             <div class="h-3 w-[1px] bg-white/20"></div>
-            <div class="flex items-center gap-1">
-                <select
-                    id="lang-switch"
-                    class="bg-transparent text-white cursor-pointer focus:outline-none border-none outline-none appearance-none"
-                >
-                    <option
-                        value="id"
-                        selected={lang === "id"}
-                        class="text-gray-800">ID</option
-                    >
-                    <option
-                        value="en"
-                        selected={lang === "en"}
-                        class="text-gray-800">EN</option
-                    >
-                </select>
-                <svg
-                    class="w-2 h-2 opacity-60"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    ><path
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    ></path></svg
-                >
-            </div>
         </div>
     </div>
 
@@ -108,7 +75,7 @@ const { translate } = useTranslation(lang);
                 class="hidden lg:flex items-center gap-1 text-[13px] font-bold text-slate-700 uppercase shrink-0"
             >
                 <a
-                    href={lang === "id" ? "/" : "/en"}
+                    href="/"
                     class="px-3 py-1 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50"
                     >Beranda</a
                 >

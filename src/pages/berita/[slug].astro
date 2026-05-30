@@ -4,22 +4,37 @@ import Layout from "../../layouts/Layout.astro";
 export const prerender = false;
 
 const { slug } = Astro.params;
-const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:8055";
+const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
+const ASSET_URL = `${API_URL}/assets/`;
 
-const [res, relatedRes] = await Promise.all([
-    fetch(
-        `${API_URL}/items/article?filter[slug][_eq]=${slug}&fields=id,title,content,publish,thumbnail,tags,category.*,author`,
-    ),
-    fetch(
-        `${API_URL}/items/article?filter[slug][_neq]=${slug}&limit=3&fields=slug,title,content,publish,thumbnail,category.*,author.id,author.first_name,author.last_name`,
-    ),
-]);
+let article;
+let related = [];
 
-const json = await res.json();
-const relatedJson = await relatedRes.json();
+try {
+    const [res, relatedRes] = await Promise.all([
+        fetch(
+            `${API_URL}/items/article?filter[slug][_eq]=${slug}&fields=id,title,content,publish,thumbnail,tags,category.*,author`,
+        ),
+        fetch(
+            `${API_URL}/items/article?filter[slug][_neq]=${slug}&limit=3&fields=slug,title,content,publish,thumbnail,category.*,author.id,author.first_name,author.last_name`,
+        ),
+    ]);
 
-const article = json.data?.[0];
-const related = relatedJson.data || [];
+    if (!res.ok || !relatedRes.ok) {
+        throw new Error(
+            `Gagal mengambil detail berita (status: ${res.status}/${relatedRes.status})`,
+        );
+    }
+
+    const json = await res.json();
+    const relatedJson = await relatedRes.json();
+
+    article = json.data?.[0];
+    related = relatedJson.data || [];
+} catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn("Gagal mengambil detail berita:", message);
+}
 
 if (!article) {
     return Astro.redirect("/404");

@@ -1,12 +1,25 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"],
+  "include": [
+    ".astro/types.d.ts",
+    "**/*"
+  ],
+  "exclude": [
+    "dist"
+  ],
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
-    "types": ["astro/client"]
+    // NOTE: project extends astro/tsconfigs/strict which enables strict checks
+    // Many .astro files use JS-style templates where adding full TypeScript
+    // annotations everywhere is noisy. Disable `noImplicitAny` to reduce
+    // repetitive diagnostics. If you prefer stricter typing, revert this
+    // and annotate callbacks with explicit types (e.g. `(item: any)`).
+    "noImplicitAny": false,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
   }
 }

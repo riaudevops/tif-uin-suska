@@ -10,7 +10,7 @@ const statistikAlumni = [
 <section class="py-12 bg-white border-b border-gray-100">
 <div class="container mx-auto px-6">
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
-    {statistikAlumni.map(stat => (
+    {statistikAlumni.map((stat: any) => (
         <div class="text-center p-6 border-r last:border-0 border-gray-100">
         <svg class="w-8 h-8 mx-auto mb-4 text-[#004d2c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={stat.icon}></path>

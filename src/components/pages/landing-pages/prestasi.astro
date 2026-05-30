@@ -1,7 +1,19 @@
----
 
 ---
+const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
 
+let prestasiData: any[] = [];
+
+try {
+  const res = await fetch(`${API_URL}/items/prestasi?sort=-tahun&limit=6`);
+  if (res.ok) {
+    const json = await res.json();
+    prestasiData = json.data || [];
+  }
+} catch (error) {
+  const message = error instanceof Error ? error.message : String(error);
+  console.warn("Gagal mengambil prestasi landing:", message);
+}
 <div class="min-h-screen py-16 px-6 bg-[#004d2c]">
 
   {/* HEADER */}
@@ -15,9 +27,8 @@
   {/* GRID PRESTASI */}
   <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 
-    {prestasiData.map((item, index) => (
+    {prestasiData.map((item: any, index: number) => (
       <div
-        key={index}
         class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition-transform duration-300 relative"
       >
 

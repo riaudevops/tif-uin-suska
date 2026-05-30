@@ -1,5 +1,5 @@
 ---
-const API_URL = import.meta.env.PUBLIC_API_URL;
+const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
 
 let agendaKegiatan = [];
 
@@ -15,7 +15,7 @@ try {
   
   const dataDirectus = await response.json();
 
-  agendaKegiatan = dataDirectus.data.map((item) => {
+  agendaKegiatan = dataDirectus.data.map((item: any) => {
     const dateObj = item.tanggal_pelaksanaan ? new Date(item.tanggal_pelaksanaan) : new Date();
     const jam = dateObj.getHours().toString().padStart(2, '0');
     const menit = dateObj.getMinutes().toString().padStart(2, '0');
@@ -35,10 +35,11 @@ try {
     };
   });
 } catch (error) {
-  console.error("Error dari Astro:", error.message);
+  const message = error instanceof Error ? error.message : String(error);
+  console.error("Error dari Astro:", message);
 }
 
-const getKategoriClass = (kat) => {
+const getKategoriClass = (kat: string) => {
   switch(kat) {
     case 'Akademik': return 'bg-red-100 text-red-700 border-red-200';
     case 'Seminar': return 'bg-blue-100 text-blue-700 border-blue-200';
@@ -88,7 +89,7 @@ const getKategoriClass = (kat) => {
       </div>
     ) : (
       <div class="grid gap-8 lg:grid-cols-2">
-        {agendaKegiatan.map((item, index) => (
+        {agendaKegiatan.map((item: any, index: number) => (
           <div 
             class="agenda-card group cursor-pointer bg-white rounded-3xl p-1 shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100 flex flex-col md:flex-row overflow-hidden"
             data-index={index} 

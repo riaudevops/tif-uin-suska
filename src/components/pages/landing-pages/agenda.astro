@@ -1,5 +1,5 @@
 ---
-const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:8055";
+const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
 const ASSET_URL = `${API_URL}/assets/`;
 
 let posts = [];
@@ -12,7 +12,7 @@ try {
   
   const dataDirectus = await response.json();
 
-  posts = dataDirectus.data.map((item) => {
+  posts = dataDirectus.data.map((item: any) => {
     const dateObj = item.tanggal_pelaksanaan ? new Date(item.tanggal_pelaksanaan) : new Date();
     
     const formattedDate = dateObj.toLocaleDateString('id-ID', { 
@@ -29,7 +29,8 @@ try {
     };
   });
 } catch (error) {
-  console.error("Error Fetching Agenda untuk Beranda:", error.message);
+  const message = error instanceof Error ? error.message : String(error);
+  console.error("Error Fetching Agenda untuk Beranda:", message);
 }
 ---
 
@@ -53,7 +54,7 @@ try {
       </div>
     ) : (
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {posts.map((post) => (
+        {posts.map((post: any) => (
           <div class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-300 group border border-slate-100">
             
             {/* Gambar */}

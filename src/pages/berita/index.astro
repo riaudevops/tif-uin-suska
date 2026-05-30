@@ -1,7 +1,8 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 
-const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:8055";
+const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
+const ASSET_URL = `${API_URL}/assets/`;
 
 let posts = [];
 
@@ -129,7 +130,7 @@ const categories = [
 
                     <div class="flex flex-wrap gap-2" id="filter-container">
                         {
-                            categories.map((cat) => (
+                            categories.map((cat: string) => (
                                 <button
                                     data-category={cat}
                                     class={`filter-btn px-6 py-2 rounded-full text-xs font-black tracking-widest uppercase transition-all duration-300 border-2 shadow-sm ${
