@@ -234,7 +234,6 @@ const categories = [
 </Layout>
 
 <script is:inline>
-    // Script dipertahankan dengan sedikit perbaikan logika styling agar konsisten
     document.addEventListener("astro:page-load", initFilter);
     document.addEventListener("DOMContentLoaded", initFilter);
 
@@ -245,7 +244,6 @@ const categories = [
         if (!buttons.length || !items.length) return;
 
         buttons.forEach((btn) => {
-            // Hapus event listener lama agar tidak dobel saat pindah halaman (View Transitions)
             btn.replaceWith(btn.cloneNode(true));
         });
 
@@ -255,7 +253,6 @@ const categories = [
             btn.addEventListener("click", () => {
                 const category = btn.dataset.category?.trim();
 
-                // Reset semua tombol ke style default
                 newButtons.forEach((b) => {
                     b.classList.remove(
                         "bg-[#004d2c]",
@@ -270,7 +267,6 @@ const categories = [
                     );
                 });
 
-                // Set tombol yang di-klik ke style aktif
                 btn.classList.add(
                     "bg-[#004d2c]",
                     "text-white",
@@ -288,7 +284,6 @@ const categories = [
                     const itemCat = item.dataset.category?.trim();
                     if (category === "Semua" || itemCat === category) {
                         item.style.display = "flex";
-                        // Efek fade-in sederhana
                         item.style.opacity = "0";
                         setTimeout(() => (item.style.opacity = "1"), 50);
                     } else {
