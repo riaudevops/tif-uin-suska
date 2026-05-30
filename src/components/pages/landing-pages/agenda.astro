@@ -1,0 +1,108 @@
+---
+const API_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:8055";
+const ASSET_URL = `${API_URL}/assets/`;
+
+let posts = [];
+
+try {
+  const fetchUrl = `${API_URL}/items/agenda?fields=id,title,status,lokasi,deskripsi,thumbnail,tanggal_pelaksanaan&limit=3&sort=-tanggal_pelaksanaan`;
+  const response = await fetch(fetchUrl);
+  
+  if (!response.ok) throw new Error("Gagal mengambil data dari Directus");
+  
+  const dataDirectus = await response.json();
+
+  posts = dataDirectus.data.map((item) => {
+    const dateObj = item.tanggal_pelaksanaan ? new Date(item.tanggal_pelaksanaan) : new Date();
+    
+    const formattedDate = dateObj.toLocaleDateString('id-ID', { 
+      day: 'numeric', 
+      month: 'long', 
+      year: 'numeric' 
+    });
+
+    return {
+      title: item.title || "Agenda Tanpa Judul",
+      date: formattedDate,
+      content: item.deskripsi || "Tidak ada deskripsi untuk agenda ini.",
+      thumbnailUrl: item.thumbnail ? `${ASSET_URL}${item.thumbnail}` : '/landing-pages/gedung.jpg'
+    };
+  });
+} catch (error) {
+  console.error("Error Fetching Agenda untuk Beranda:", error.message);
+}
+---
+
+<section class="relative py-24 px-6 overflow-hidden bg-[#022c22]">
+  <div class="absolute top-0 left-1/4 w-96 h-96 bg-green-500/10 rounded-full blur-[120px]"></div>
+  <div class="absolute inset-0 bg-[url('/landing-pages/gedung.jpg')] bg-cover bg-center opacity-15"></div> 
+  
+  <div class="relative z-10 max-w-7xl mx-auto">
+    <div class="mb-12 border-l-4 border-yellow-400 pl-6">
+      <h2 class="text-4xl font-bold text-white tracking-tight">
+        TIF <span class="text-yellow-400">Agenda</span>
+      </h2>
+      <p class="text-gray-300 mt-2 max-w-2xl">
+        Informasi terbaru seputar kegiatan akademik, seminar, dan pengembangan keilmuan di Program Studi Teknik Informatika.
+      </p>
+    </div>
+
+    {posts.length === 0 ? (
+      <div class="text-center py-10 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm">
+        <p class="text-gray-400">Belum ada agenda terbaru.</p>
+      </div>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {posts.map((post) => (
+          <div class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-300 group border border-slate-100">
+            
+            {/* Gambar */}
+            <div class="overflow-hidden h-52 bg-slate-100 relative">
+              <img 
+                src={post.thumbnailUrl}
+                alt={post.title} 
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+              />
+            </div>
+
+            <div class="p-6 flex flex-col flex-grow">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="w-2 h-2 bg-yellow-400 rounded-full"></span>
+                <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider">
+                  {post.date}
+                </span>
+              </div>
+
+              <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-emerald-700 transition-colors line-clamp-2">
+                {post.title}
+              </h3>
+
+              <p class="text-gray-600 text-sm mb-6 line-clamp-3">
+                {post.content.replace(/<[^>]+>/g, "")}
+              </p>
+
+              <div class="mt-auto pt-4 border-t border-slate-50">
+                <a
+                  href="/agenda"
+                  class="inline-flex items-center font-bold rounded-full text-sm text-emerald-800 hover:text-yellow-600 transition-colors group/link"
+                >
+                  Lihat Detail Agenda
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+
+    <div class="mt-16 text-center">
+      <a href="/agenda" class="px-8 py-3 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-[#0B2C24] transition-all inline-block">
+        Lihat Semua Agenda
+      </a>
+    </div>
+
+  </div>
+</section>
