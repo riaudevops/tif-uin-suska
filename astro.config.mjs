@@ -1,6 +1,6 @@
 import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite"; // Gunakan kembali Vite plugin
 import vercel from "@astrojs/vercel";
 
 export default defineConfig({
@@ -8,7 +8,7 @@ export default defineConfig({
     defaultLocale: "id",
     locales: ["id", "en"],
     routing: {
-      prefixDefaultLocale: false
+      prefixDefaultLocale: false,
     },
   },
 
@@ -16,13 +16,16 @@ export default defineConfig({
   adapter: vercel({
     webAnalytics: {
       enabled: true,
-    }
+    },
   }),
-  
+
+  // 1. TAMBAHKAN DI SINI: Tailwind v4 masuk ke dalam plugin Vite
+  vite: {
+    plugins: [tailwindcss()],
+  },
+
   integrations: [
     react(),
-    tailwind({
-      applyBaseStyles: false,
-    }),
+    // 2. HAPUS Tailwind dari daftar integrations ini
   ],
 });
