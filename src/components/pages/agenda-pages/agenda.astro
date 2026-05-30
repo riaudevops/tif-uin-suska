@@ -1,50 +1,42 @@
 ---
-const agendaKegiatan = [
-  {
-    tanggal: "15",
-    bulan: "Okt",
-    tahun: "2026",
-    judul: "Seminar Internasional",
-    waktu: "08:00 - 16:00 WIB",
-    lokasi: "Aula Gedung Teater FST",
-    kategori: "Seminar",
-    deskripsi: "Pertemuan tahunan peneliti dan praktisi IT untuk berbagi inovasi terbaru.",
-    status: "Mendatang"
-  },
-  {
-    tanggal: "20",
-    bulan: "Okt",
-    tahun: "2025",
-    judul: "Workshop UI/UX Design with Figma",
-    waktu: "13:30 - 15:30 WIB",
-    lokasi: "Lab. Multimedia",
-    kategori: "Workshop",
-    deskripsi: "Pelatihan intensif desain antarmuka pengguna untuk mahasiswa semester 3 & 5.",
-    status: "Mendatang"
-  },
-  {
-    tanggal: "02",
-    bulan: "Nov",
-    tahun: "2025",
-    judul: "Sidang Tugas Akhir Periode I",
-    waktu: "08:00 - Selesai",
-    lokasi: "Ruang Rapat Jurusan",
-    kategori: "Akademik",
-    deskripsi: "Pelaksanaan ujian lisan bagi mahasiswa tingkat akhir yang telah menyelesaikan skripsi.",
-    status: "Penting"
-  },
-  {
-    tanggal: "12",
-    bulan: "Nov",
-    tahun: "2025",
-    judul: "HIMATIF Anniversary & Expo",
-    waktu: "09:00 - 21:00 WIB",
-    lokasi: "Lapangan Parkir FST",
-    kategori: "Himpunan",
-    deskripsi: "Perayaan ulang tahun himpunan mahasiswa dengan pameran karya teknologi.",
-    status: "Mendatang"
+const API_URL = import.meta.env.PUBLIC_API_URL;
+
+let agendaKegiatan = [];
+
+try {
+  const fetchUrl = `${API_URL}/items/agenda?fields=id,title,status,lokasi,deskripsi,link_pendaftaran,kategori.*,tanggal_pelaksanaan`;
+  const response = await fetch(fetchUrl);
+  
+  if (!response.ok) {
+    const errorDetails = await response.json(); 
+    console.error("ALASAN ERROR DIRECTUS:", JSON.stringify(errorDetails, null, 2));
+    throw new Error(`Gagal (Status: ${response.status})`);
   }
-];
+  
+  const dataDirectus = await response.json();
+
+  agendaKegiatan = dataDirectus.data.map((item) => {
+    const dateObj = item.tanggal_pelaksanaan ? new Date(item.tanggal_pelaksanaan) : new Date();
+    const jam = dateObj.getHours().toString().padStart(2, '0');
+    const menit = dateObj.getMinutes().toString().padStart(2, '0');
+    const waktuFormat = `${jam}:${menit} WIB`;
+
+    return {
+      judul: item.title || 'Tanpa Judul',
+      tanggal: dateObj.getDate().toString().padStart(2, '0'),
+      bulan: dateObj.toLocaleString('id-ID', { month: 'short' }),
+      tahun: dateObj.getFullYear().toString(),
+      waktu: waktuFormat, 
+      lokasi: item.lokasi || '-',
+      kategori: item.kategori?.nama_kategori || item.kategori?.nama || 'Umum', 
+      deskripsi: item.deskripsi || '-',
+      status: item.status,
+      linkPendaftaran: item.link_pendaftaran 
+    };
+  });
+} catch (error) {
+  console.error("Error dari Astro:", error.message);
+}
 
 const getKategoriClass = (kat) => {
   switch(kat) {
@@ -54,7 +46,6 @@ const getKategoriClass = (kat) => {
     default: return 'bg-green-100 text-green-700 border-green-200';
   }
 };
-
 ---
 
 <nav class="max-w-7xl mx-auto px-8 mt-12 text-sm">
@@ -72,40 +63,51 @@ const getKategoriClass = (kat) => {
   </ol>
 </nav>
 
-<section class="py-6 bg-white min-h-screen">
-    <div class="container mx-auto px-6">
-        <div class="mb-16">
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-                <div class="relative">
-                <div class="absolute -left-5 top-0 bottom-0 w-1.5 bg-[#004d2c] rounded-full"></div>
-                    <h2 class="text-[#004d2c] text-sm font-bold tracking-[0.3em] uppercase mb-3">Calendar of Events</h2>
-                    <h1 class="text-5xl font-black text-[#004d2c] tracking-tight leading-tight">
-                        Agenda
-                    </h1>
-                    <p class="text-slate-500 mt-2 font-medium">
-                        Berikut adalah agenda kegiatan terbaru dari prodi Teknik Informatika. Pastikan untuk mencatat tanggal penting dan bergabung dalam berbagai acara yang kami selenggarakan!
-                    </p>
-                </div>
+<section class="py-6 bg-white min-h-screen relative">
+  <div class="container mx-auto px-6">
+    
+    <div class="mb-16 mt-8">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+            <div class="relative">
+            <div class="absolute -left-5 top-0 bottom-0 w-1.5 bg-[#004d2c] rounded-full"></div>
+                <h2 class="text-[#004d2c] text-sm font-bold tracking-[0.3em] uppercase mb-3">Calendar of Events</h2>
+                <h1 class="text-5xl font-black text-[#004d2c] tracking-tight leading-tight">
+                    Agenda
+                </h1>
+                <p class="text-slate-500 mt-2 font-medium max-w-2xl">
+                    Berikut adalah agenda kegiatan terbaru dari prodi Teknik Informatika. Pastikan untuk mencatat tanggal penting dan bergabung dalam berbagai acara yang kami selenggarakan!
+                </p>
             </div>
         </div>
+    </div>
 
+    {/* --- List Agenda dari Directus --- */}
+    {agendaKegiatan.length === 0 ? (
+      <div class="text-center py-20 bg-slate-50 rounded-3xl border border-slate-100">
+        <p class="text-slate-500 font-medium">Belum ada agenda yang tersedia saat ini.</p>
+      </div>
+    ) : (
       <div class="grid gap-8 lg:grid-cols-2">
-        {agendaKegiatan.map((item) => (
-          <div class="group bg-white rounded-3xl p-1 shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100 flex flex-col md:flex-row overflow-hidden">
-            
+        {agendaKegiatan.map((item, index) => (
+          <div 
+            class="agenda-card group cursor-pointer bg-white rounded-3xl p-1 shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100 flex flex-col md:flex-row overflow-hidden"
+            data-index={index} 
+          >
+            {/* Bagian Tanggal */}
             <div class="bg-[#004d2c] text-white p-6 md:w-32 flex flex-col items-center justify-center text-center group-hover:bg-yellow-600 transition-colors duration-500">
               <span class="text-3xl font-black leading-none">{item.tanggal}</span>
               <span class="text-sm font-bold uppercase tracking-widest mt-1">{item.bulan}</span>
               <span class="text-xs opacity-70 mt-1">{item.tahun}</span>
             </div>
 
+            {/* Bagian Konten Kanan */}
             <div class="p-8 flex-1 relative">
               <div class="flex justify-between items-start mb-4">
                 <span class={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${getKategoriClass(item.kategori)}`}>
                   {item.kategori}
                 </span>
                 {item.status === 'Penting' && (
-                  <span class="flex h-2 w-2">
+                  <span class="flex h-2 w-2" title="Penting">
                     <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-red-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                   </span>
@@ -122,27 +124,142 @@ const getKategoriClass = (kat) => {
 
               <div class="flex flex-wrap gap-4 pt-4 border-t border-slate-50">
                 <div class="flex items-center gap-2 text-slate-400 text-xs font-medium">
-                  <svg class="w-4 h-4 text-[#004d2c]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                  {item.waktu}
+                  ⏱ {item.waktu}
                 </div>
                 <div class="flex items-center gap-2 text-slate-400 text-xs font-medium">
-                  <svg class="w-4 h-4 text-[#004d2c]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                  {item.lokasi}
+                  📍 {item.lokasi}
                 </div>
               </div>
             </div>
           </div>
         ))}
       </div>
+    )}
 
-      <div class="mt-20 bg-[#004d2c] rounded-[2rem] p-10 text-center text-white relative overflow-hidden shadow-2xl shadow-green-900/20">
-        <div class="relative z-10">
-          <h2 class="text-2xl font-bold mb-4">Ingin berkolaborasi dalam kegiatan kami?</h2>
-          <p class="text-green-100/80 mb-8 max-w-xl mx-auto text-sm">Hubungi sekretariat jurusan untuk informasi lebih lanjut mengenai pengajuan kegiatan atau kemitraan acara.</p>
-          <a href="mailto:tif@uin-suska.ac.id" class="inline-block px-8 py-3 bg-yellow-500 hover:bg-yellow-400 text-[#004d2c] font-black rounded-full transition-all transform hover:scale-105 uppercase text-xs tracking-widest"> Hubungi Kami </a>
+    <div class="mt-20 bg-[#004d2c] rounded-[2rem] p-10 text-center text-white relative overflow-hidden shadow-2xl shadow-green-900/20">
+      <div class="relative z-10">
+        <h2 class="text-2xl font-bold mb-4">Ingin berkolaborasi dalam kegiatan kami?</h2>
+        <p class="text-green-100/80 mb-8 max-w-xl mx-auto text-sm">Hubungi sekretariat jurusan untuk informasi lebih lanjut mengenai pengajuan kegiatan atau kemitraan acara.</p>
+        <a href="mailto:tif@uin-suska.ac.id" class="inline-block px-8 py-3 bg-yellow-500 hover:bg-yellow-400 text-[#004d2c] font-black rounded-full transition-all transform hover:scale-105 uppercase text-xs tracking-widest"> Hubungi Kami </a>
+      </div>
+      <div class="absolute -right-20 -top-20 w-64 h-64 bg-green-700/30 rounded-full"></div>
+    </div>
+
+  </div>
+</section>
+
+<div id="agenda-modal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity" role="dialog" aria-modal="true" aria-labelledby="modal-judul">
+  
+  <div class="close-modal absolute inset-0 cursor-pointer" aria-label="Tutup modal"></div>
+
+  <div class="relative bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden">
+    
+    <div class="bg-[#004d2c] px-6 py-4 flex justify-between items-center text-white">
+      <h3 class="font-bold text-lg">Detail Agenda</h3>
+      <button class="close-modal text-white/70 hover:text-white transition-colors bg-white/10 hover:bg-white/20 rounded-full p-2" aria-label="Tutup">
+        ✕
+      </button>
+    </div>
+
+    <div class="p-8">
+      <div class="mb-2">
+        <span id="modal-kategori" class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border"></span>
+      </div>
+      
+      <h2 id="modal-judul" class="text-2xl font-black text-slate-800 mb-2"></h2>
+      <p id="modal-deskripsi" class="text-slate-600 mb-6 leading-relaxed"></p>
+
+      <div class="bg-slate-50 p-4 rounded-2xl space-y-3 mb-8 border border-slate-100">
+        <div class="flex items-center gap-3 text-sm text-slate-600 font-medium">
+          📅 <span id="modal-tanggal"></span>
         </div>
-        <div class="absolute -right-20 -top-20 w-64 h-64 bg-green-700/30 rounded-full"></div>
+        <div class="flex items-center gap-3 text-sm text-slate-600 font-medium">
+          ⏱ <span id="modal-waktu"></span>
+        </div>
+        <div class="flex items-center gap-3 text-sm text-slate-600 font-medium">
+          📍 <span id="modal-lokasi"></span>
+        </div>
       </div>
 
+      <div id="modal-action-area"></div>
     </div>
-  </section>
+  </div>
+</div>
+
+<script define:vars={{ agendaData: agendaKegiatan }}>
+  const cards = document.querySelectorAll('.agenda-card');
+  const modal = document.getElementById('agenda-modal');
+  const closeModalElements = document.querySelectorAll('.close-modal');
+
+  const mKategori = document.getElementById('modal-kategori');
+  const mJudul = document.getElementById('modal-judul');
+  const mDeskripsi = document.getElementById('modal-deskripsi');
+  const mTanggal = document.getElementById('modal-tanggal');
+  const mWaktu = document.getElementById('modal-waktu');
+  const mLokasi = document.getElementById('modal-lokasi');
+  const mActionArea = document.getElementById('modal-action-area');
+
+  const getClientKategoriClass = (kat) => {
+    switch(kat) {
+      case 'Akademik': return 'bg-red-100 text-red-700 border-red-200';
+      case 'Seminar': return 'bg-blue-100 text-blue-700 border-blue-200';
+      case 'Workshop': return 'bg-purple-100 text-purple-700 border-purple-200';
+      default: return 'bg-green-100 text-green-700 border-green-200';
+    }
+  };
+
+  const openModal = (index) => {
+    const data = agendaData[index];
+    if (!data) return;
+
+    mKategori.className = `px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${getClientKategoriClass(data.kategori)}`;
+    mKategori.textContent = data.kategori;
+    
+    mJudul.textContent = data.judul;
+    mDeskripsi.textContent = data.deskripsi;
+    mTanggal.textContent = `${data.tanggal} ${data.bulan} ${data.tahun}`;
+    mWaktu.textContent = data.waktu;
+    mLokasi.textContent = data.lokasi;
+
+    if (data.linkPendaftaran) {
+      mActionArea.innerHTML = `
+        <a href="${data.linkPendaftaran}" target="_blank" rel="noopener noreferrer" 
+           class="w-full block text-center py-3 px-4 bg-[#004d2c] hover:bg-[#00361f] text-white font-bold rounded-xl transition-colors shadow-lg shadow-green-900/20 focus:ring-4 focus:ring-green-300">
+          Daftar Sekarang
+        </a>
+      `;
+    } else {
+      mActionArea.innerHTML = `
+        <div class="text-center p-3 bg-slate-50 text-slate-400 rounded-xl text-sm border border-slate-100 border-dashed">
+          Tidak memerlukan pendaftaran khusus
+        </div>
+      `;
+    }
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden'; 
+  };
+
+  const closeModal = () => {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = ''; 
+  };
+
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      openModal(card.getAttribute('data-index'));
+    });
+  });
+
+  closeModalElements.forEach(el => {
+    el.addEventListener('click', closeModal);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+      closeModal();
+    }
+  });
+</script>
