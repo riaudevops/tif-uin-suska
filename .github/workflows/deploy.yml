@@ -48,6 +48,7 @@ jobs:
           push: true
           build-args: |
             BASE_API_URL=${{ vars.BASE_API_URL != '' && vars.BASE_API_URL || secrets.BASE_API_URL }}
+            PUBLIC_BASE_ASSETS_URL=${{ vars.PUBLIC_BASE_ASSETS_URL != '' && vars.PUBLIC_BASE_ASSETS_URL || secrets.PUBLIC_BASE_ASSETS_URL }}
             HOST=${{ vars.HOST != '' && vars.HOST || '0.0.0.0' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -59,7 +60,7 @@ jobs:
         env:
           B_USER: ${{ secrets.BASIC_AUTH_USER }}
           B_PASS: ${{ secrets.BASIC_AUTH_PASS }}
-          B_URL: ${{ secrets.PORTAINER_WEBHOOK_URL }} # Cukup panggil 1 nama saja!
+          B_URL: ${{ secrets.PORTAINER_WEBHOOK_URL }}
         run: |
           echo "🚀 Triggering Portainer Webhook..."
           curl -sS --fail -u "$B_USER:$B_PASS" -X POST "$B_URL"
