@@ -161,8 +161,6 @@
           </div>
         </div>
     </div>
-
-    <!-- Slide Template -->
      
 </div>
 
@@ -203,7 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let index = 0;
   let interval;
 
-  /* ====== CREATE DOTS ====== */
   for (let i = 0; i < total; i++) {
     const dot = document.createElement('button');
     dot.className =
@@ -221,7 +218,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const dots = indicators.children;
 
-  /* ====== UPDATE SLIDE ====== */
   function update() {
     slider.style.transform = `translateX(-${index * 100}%)`;
 
@@ -232,7 +228,6 @@ document.addEventListener('DOMContentLoaded', () => {
     dots[index].classList.add('bg-white');
   }
 
-  /* ====== NAV BUTTONS ====== */
   nextBtn.addEventListener('click', () => {
     index = (index + 1) % total;
     update();
@@ -245,12 +240,11 @@ document.addEventListener('DOMContentLoaded', () => {
     restartAutoSlide();
   });
 
-  /* ====== AUTO SLIDE ====== */
   function startAutoSlide() {
     interval = setInterval(() => {
       index = (index + 1) % total;
       update();
-    }, 7000); // 7 detik (akademik safe)
+    }, 7000); 
   }
 
   function restartAutoSlide() {
@@ -258,7 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
     startAutoSlide();
   }
 
-  /* INIT */
   update();
   startAutoSlide();
 });
