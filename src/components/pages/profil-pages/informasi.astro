@@ -1,70 +1,162 @@
-<section class="relative bg-gradient-to-br from-green-900 via-emerald-900 to-green-800">
-  <div class="max-w-7xl mx-auto px-6 py-20">
-    
-    <div class="bg-white rounded-3xl shadow-sm overflow-hidden">
-      
-      <div class="grid grid-cols-1 lg:grid-cols-12 items-stretch">
-        
-        <div class="lg:col-span-4 bg-[#004d2c] p-10 flex flex-col justify-between text-white">
-          <div>
-            <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full mb-6">
-              <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.01a1 1 0 102 0V5zm0 4a1 1 0 10-2 0v4a1 1 0 102 0V9zm-1 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
-              </svg>
-              <span class="text-[10px] font-bold uppercase tracking-wider">Identitas Prodi</span>
-            </div>
-            <h2 class="text-3xl font-bold leading-tight mb-4">Informasi <br/>Dasar Umum</h2>
-            <p class="text-emerald-100/70 text-sm leading-relaxed font-light">
-              Data resmi pendirian dan identitas administratif Program Studi Teknik Informatika UIN Suska Riau.
-            </p>
-          </div>
+<section class="max-w-7xl mx-auto px-8 py-16 lg:py-24">
+    <div
+        class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100"
+    >
+        <div
+            class="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-slate-100"
+        >
+            <!-- Identitas Prodi (Left Column) -->
+            <div
+                class="bg-emerald-800 p-8 md:p-10 flex flex-col justify-between text-white"
+            >
+                <div>
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full mb-6"
+                    >
+                        <svg
+                            class="w-4 h-4 text-yellow-400"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"
+                            ></path><path
+                                fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.01a1 1 0 102 0V5zm0 4a1 1 0 10-2 0v4a1 1 0 102 0V9zm-1 9a1 1 0 100-2 1 1 0 000 2z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span
+                            class="text-[10px] font-bold uppercase tracking-wider"
+                            >Identitas Prodi</span
+                        >
+                    </div>
+                    <h2 class="text-3xl font-bold leading-tight mb-4">
+                        Informasi <br />Dasar Umum
+                    </h2>
+                    <p
+                        class="text-emerald-100/70 text-sm leading-relaxed font-light"
+                    >
+                        Data resmi pendirian dan identitas administratif Program
+                        Studi Teknik Informatika UIN Suska Riau.
+                    </p>
+                </div>
 
-          <div class="mt-12 pt-8 border-t border-white/10">
-            <span class="text-[10px] block uppercase tracking-widest text-emerald-300 mb-1">Berdiri Sejak</span>
-            <span class="text-2xl font-black text-yellow-400">September 1999</span>
-          </div>
+                <div class="mt-12 pt-8 border-t border-white/10">
+                    <span
+                        class="text-xs block uppercase tracking-widest text-emerald-300 mb-2"
+                        >Didirikan Pada</span
+                    >
+                    <span class="text-3xl font-black text-yellow-400"
+                        >September 1999</span
+                    >
+                </div>
+            </div>
+
+            <!-- Detail Informasi (Middle Column) -->
+            <div class="p-8 md:p-10 lg:col-span-2">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                    <div class="space-y-8">
+                        <div>
+                            <span
+                                class="text-xs font-bold text-emerald-700 uppercase tracking-widest block mb-2"
+                                >Fakultas</span
+                            >
+                            <p
+                                class="text-slate-800 font-semibold text-lg border-l-4 border-yellow-400 pl-4"
+                            >
+                                Sains dan Teknologi
+                            </p>
+                        </div>
+                        <div>
+                            <span
+                                class="text-xs font-bold text-emerald-700 uppercase tracking-widest block mb-2"
+                                >Perguruan Tinggi</span
+                            >
+                            <p
+                                class="text-slate-800 font-medium leading-snug border-l-4 border-yellow-400 pl-4"
+                            >
+                                UIN Sultan Syarif Kasim Riau
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <span
+                            class="text-xs font-bold text-slate-500 uppercase tracking-widest block"
+                            >Riwayat Legalitas</span
+                        >
+
+                        <div
+                            class="relative pl-6 pb-2 border-l border-slate-200"
+                        >
+                            <div
+                                class="absolute -left-[6px] top-1 w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-white"
+                            >
+                            </div>
+                            <p class="text-sm font-bold text-slate-800">
+                                4469/D/T/2004 <span
+                                    class="font-normal text-slate-500 ml-1"
+                                    >(14 Mei 1999)</span
+                                >
+                            </p>
+                            <p class="text-xs text-slate-600 mt-1">
+                                SK Pendirian - Dirjen Binbaga Islam
+                            </p>
+                        </div>
+
+                        <div
+                            class="relative pl-6 pb-2 border-l border-slate-200"
+                        >
+                            <div
+                                class="absolute -left-[6px] top-1 w-3 h-3 rounded-full bg-yellow-400 ring-2 ring-white"
+                            >
+                            </div>
+                            <p class="text-sm font-bold text-slate-800">
+                                4469/D/T/2004 <span
+                                    class="font-normal text-slate-500 ml-1"
+                                    >(12 Nov 2004)</span
+                                >
+                            </p>
+                            <p class="text-xs text-slate-600 mt-1">
+                                SK Lanjutan - Dirjen Dikti Depdiknas
+                            </p>
+                        </div>
+
+                        <div class="relative pl-6 border-l border-slate-200">
+                            <div
+                                class="absolute -left-[6px] top-1 w-3 h-3 rounded-full bg-yellow-400 ring-2 ring-white"
+                            >
+                            </div>
+                            <p class="text-sm font-bold text-slate-800">
+                                DJ.II/26/2006 <span
+                                    class="font-normal text-slate-500 ml-1"
+                                    >(12 Nov 2004)</span
+                                >
+                            </p>
+                            <p class="text-xs text-slate-600 mt-1">
+                                SK Lanjutan - Dirjen Binbaga Islam
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="lg:col-span-8 p-8 md:p-12">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
-            
-            <div class="space-y-8">
-              <div>
-                <span class="text-[11px] font-bold text-emerald-700 uppercase tracking-widest block mb-2">Fakultas</span>
-                <p class="text-slate-800 font-semibold text-lg border-l-2 border-emerald-500 pl-4">Sains dan Teknologi</p>
-              </div>
-              <div>
-                <span class="text-[11px] font-bold text-emerald-700 uppercase tracking-widest block mb-2">Perguruan Tinggi</span>
-                <p class="text-slate-800 font-medium leading-snug">UIN Sultan Syarif Kasim Riau</p>
-              </div>
-            </div>
-
-            <div class="space-y-6">
-              <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block">Riwayat Legalitas</span>
-              
-              <div class="relative pl-6 pb-2 border-l border-slate-100">
-                <div class="absolute -left-[5px] top-1 w-2 h-2 rounded-full bg-emerald-500"></div>
-                <p class="text-sm font-bold text-slate-800">4469/D/T/2004 <span class="font-normal text-slate-400 ml-1">(14 Mei 1999)</span></p>
-                <p class="text-[11px] text-slate-500 mt-1">SK Pendirian - Dirjen Binbaga Islam</p>
-              </div>
-
-              <div class="relative pl-6 pb-2 border-l border-slate-100">
-                <div class="absolute -left-[5px] top-1 w-2 h-2 rounded-full bg-slate-300"></div>
-                <p class="text-sm font-bold text-slate-800">4469/D/T/2004 <span class="font-normal text-slate-400 ml-1">(12 Nov 2004)</span></p>
-                <p class="text-[11px] text-slate-500 mt-1">SK Lanjutan - Dirjen Dikti Depdiknas</p>
-              </div>
-
-              <div class="relative pl-6 border-l border-slate-100">
-                <div class="absolute -left-[5px] top-1 w-2 h-2 rounded-full bg-slate-300"></div>
-                <p class="text-sm font-bold text-slate-800">DJ.II/26/2006 <span class="font-normal text-slate-400 ml-1">(12 Nov 2004)</span></p>
-                <p class="text-[11px] text-slate-500 mt-1">SK Lanjutan - Dirjen Binbaga Islam</p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
     </div>
-  </div>
 </section>
+
+<style>
+    @keyframes pulse-slow {
+        0%,
+        100% {
+            transform: scale(1);
+            opacity: 0.8;
+        }
+        50% {
+            transform: scale(1.05);
+            opacity: 1;
+        }
+    }
+
+    .animate-pulse-slow {
+        animation: pulse-slow 4s infinite ease-in-out;
+    }
+</style>
