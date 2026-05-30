@@ -25,12 +25,6 @@ const squads = [
     image: "https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&q=80&w=400",
   }
 ];
-
-const futureIdeas = [
-  { title: "Interdisciplinary Grants", desc: "Pendanaan internal untuk riset gabungan antar lab." },
-  { title: "Open-Access Repository", desc: "Pusat data hasil eksperimen yang dapat diakses publik." },
-  { title: "Industry Fellowship", desc: "Program magang intensif bagi anggota lab di perusahaan mitra." }
-];
 ---
 
 <section class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
@@ -67,28 +61,4 @@ const futureIdeas = [
         </div>
     </article>
     ))}
-</section>
-
-<section class="max-w-5xl mx-auto bg-slate-900 rounded-[2.5rem] p-10 md:p-16 text-white relative overflow-hidden">
-    <div class="absolute top-0 right-0 w-64 h-64 bg-blue-600/20 blur-[100px]"></div>
-    
-    <div class="relative z-10">
-    <h2 class="text-3xl font-bold mb-10 flex items-center">
-        <span class="w-8 h-[2px] bg-blue-500 mr-4"></span>
-        Future Roadmap & Ideas
-    </h2>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {futureIdeas.map((idea) => (
-        <div class="group">
-            <h4 class="text-blue-400 font-bold mb-2 group-hover:translate-x-1 transition-transform inline-block underline decoration-blue-800 underline-offset-4">
-            {idea.title}
-            </h4>
-            <p class="text-slate-400 text-sm leading-relaxed">
-            {idea.desc}
-            </p>
-        </div>
-        ))}
-    </div>
-    </div>
 </section>
