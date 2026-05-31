@@ -320,55 +320,93 @@
     >
     </div>
 
-    <div
-        id="mobile-menu"
-        class="lg:hidden absolute top-full left-0 right-0 bg-white shadow-2xl hidden border-t border-gray-100"
-    >
-        <div
-            class="container mx-auto py-6 px-6 flex flex-col gap-1 max-h-[80vh] overflow-y-auto"
-        >
-            <a
-                href="/"
-                class="py-3 px-4 font-bold text-slate-800 hover:bg-green-50 rounded-xl transition"
-                >Beranda</a
-            >
-            <div class="h-[1px] bg-gray-100 my-1"></div>
-            <p
-                class="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2"
-            >
-                Menu Utama
-            </p>
-            <a
-                href="/profil"
-                class="py-3 px-4 text-slate-700 hover:bg-green-50 rounded-xl transition"
-                >Profil</a
-            >
-            <a
-                href="/akademik"
-                class="py-3 px-4 text-slate-700 hover:bg-green-50 rounded-xl transition"
-                >Akademik</a
-            >
-            <a
-                href="/penelitian"
-                class="py-3 px-4 text-slate-700 hover:bg-green-50 rounded-xl transition"
-                >Penelitian</a
-            >
-            <a
-                href="/berita"
-                class="py-3 px-4 text-slate-700 hover:bg-green-50 rounded-xl transition"
-                >Berita</a
-            >
-            <a
-                href="/alumni"
-                class="py-3 px-4 text-slate-700 hover:bg-green-50 rounded-xl transition"
-                >Alumni</a
-            >
-            <a
-                href="https://hima.tif.uin-suska.ac.id/"
-                target="_blank"
-                class="mt-4 py-4 px-4 bg-[#004d2c] text-white text-center font-bold rounded-xl transition"
-                >HIMATIF</a
-            >
+    <div id="mobile-menu"
+        class="lg:hidden absolute top-full left-0 right-0 bg-white shadow-xl hidden border-t border-gray-100">
+        <div class="flex flex-col py-2 px-3 max-h-[80vh] overflow-y-auto">
+            <a href="/" class="py-3 px-4 text-sm font-medium text-slate-800 hover:text-[#004d2c] hover:bg-slate-50 rounded-lg transition-colors">
+                Beranda
+            </a>
+
+            <div class="flex flex-col">
+                <button 
+                    type="button" 
+                    aria-expanded="false"
+                    class="group flex items-center justify-between py-3 px-4 text-sm font-medium text-slate-800 hover:text-[#004d2c] hover:bg-slate-50 rounded-lg transition-colors text-left w-full"
+                    data-menu-btn="profil-mobile"
+                >
+                    Profil
+                    <svg class="w-4 h-4 text-slate-400 transition-transform duration-300 group-aria-expanded:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                
+                <div id="menu-profil-mobile" class="hidden flex-col pb-2 pt-1 space-y-1" data-menu="profil-mobile">
+                    <a href="/profil-pages/sejarah" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Sejarah</a>
+                    <a href="/visimisi-pages/visimisi" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Visi, Misi, Tujuan, dan Strategi</a>
+                    <a href="/rencana-pages/rencana" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Rencana Strategi</a>
+                    <a href="/panduan-pages/panduan" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Panduan Pengelolaan Pendidikan</a>
+                    <a href="/struktur-pages/struktur" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Struktur Organisasi</a>
+                    <a href="/dosen-pages/dosen" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Dosen</a>
+                    <a href="/laboratorium-pages/laboratorium" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Laboratorium</a>
+                    <a href="/ruang-kelas" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Ruang Kelas</a>
+                    <a href="/prestasi-pages/prestasi" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Prestasi</a>
+                </div>
+            </div>
+
+            <div class="flex flex-col">
+                <button 
+                    type="button" 
+                    aria-expanded="false"
+                    class="group flex items-center justify-between py-3 px-4 text-sm font-medium text-slate-800 hover:text-[#004d2c] hover:bg-slate-50 rounded-lg transition-colors text-left w-full"
+                    data-menu-btn="akademik-mobile"
+                >
+                    Akademik
+                    <svg class="w-4 h-4 text-slate-400 transition-transform duration-300 group-aria-expanded:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                
+                <div id="menu-akademik-mobile" class="hidden flex-col pb-2 pt-1 space-y-1" data-menu="akademik-mobile">
+                    <a href="https://pmb.uin-suska.ac.id/" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Penerimaan</a>
+                    <a href="https://linktr.ee/administrasi_prodi_tif" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Pelayanan Administrasi</a>
+                    <a href="/kurikulum-pages/kurikulum" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Kurikulum</a>
+                    <a href="https://pmt.uin-suska.ac.id/wp-content/uploads/2025/08/Kalender-Akademik-UIN-Suska-Riau-Tahun-2025-2026.pdf" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Kalender Akademik</a>
+                    <a href="/beasiswa" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Beasiswa</a>
+                    <a href="/tugas-akhir" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Info Tugas Akhir (TA)</a>
+                    <a href="/kerja-praktik" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Info Kerja Praktik (KP)</a>
+                    <a href="/labssquad-pages/labssquad" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Labs Squad</a>
+                </div>
+            </div>
+
+            <div class="flex flex-col">
+                <button 
+                    type="button" 
+                    aria-expanded="false"
+                    class="group flex items-center justify-between py-3 px-4 text-sm font-medium text-slate-800 hover:text-[#004d2c] hover:bg-slate-50 rounded-lg transition-colors text-left w-full"
+                    data-menu-btn="penelitian-mobile"
+                >
+                    Penelitian
+                    <svg class="w-4 h-4 text-slate-400 transition-transform duration-300 group-aria-expanded:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                
+                <div id="menu-penelitian-mobile" class="hidden flex-col pb-2 pt-1 space-y-1" data-menu="penelitian-mobile">
+                    <a href="https://ejournal.uin-suska.ac.id/index.php/coreit" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Jurnal COreIT</a>
+                    <a href="/aiorc-pages/aiorc" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">AIORC</a>
+                    <a href="/software-pages/software" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Software Engineering</a>
+                    <a href="/information-pages/information" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">Information Technology</a>
+                </div>
+            </div>
+
+            <a href="/berita" class="py-3 px-4 text-sm font-medium text-slate-800 hover:text-[#004d2c] hover:bg-slate-50 rounded-lg transition-colors">Berita</a>
+            <a href="/alumni" class="py-3 px-4 text-sm font-medium text-slate-800 hover:text-[#004d2c] hover:bg-slate-50 rounded-lg transition-colors">Alumni</a>
+            
+            <div class="mt-4 px-2 pb-4">
+                <a href="https://hima.tif.uin-suska.ac.id/" target="_blank" class="block w-full py-3 px-4 bg-[#004d2c] text-white text-sm text-center font-bold rounded-xl hover:bg-yellow-600 transition-colors shadow-md">
+                    HIMATIF
+                </a>
+            </div>
         </div>
     </div>
 </nav>
