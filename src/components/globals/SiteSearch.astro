@@ -1,0 +1,210 @@
+---
+/** Modal pencarian situs — satu instance per halaman */
+---
+
+<div data-site-search-root>
+	<div
+		data-search-modal
+		class="fixed inset-0 z-[100] hidden items-start justify-center pt-[12vh] px-4"
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="site-search-title"
+	>
+		<div data-search-backdrop class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+
+		<div
+			class="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden"
+		>
+			<div class="flex items-center gap-3 px-4 py-3 border-b border-slate-100">
+				<svg
+					class="w-5 h-5 text-slate-400 shrink-0"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+				</svg>
+				<label for="site-search-input" class="sr-only" id="site-search-title">Cari konten</label>
+				<input
+					id="site-search-input"
+					data-search-input
+					type="search"
+					placeholder="Cari halaman, berita, dosen, agenda..."
+					autocomplete="off"
+					class="flex-1 text-sm text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
+				/>
+				<kbd
+					class="hidden sm:inline-flex items-center px-2 py-0.5 text-[10px] font-semibold text-slate-400 bg-slate-100 rounded border border-slate-200"
+					>Esc</kbd
+				>
+			</div>
+
+			<div data-search-status class="px-4 py-2 text-xs text-slate-500 border-b border-slate-50 hidden">
+			</div>
+
+			<ul data-search-results class="max-h-[50vh] overflow-y-auto py-2" role="listbox"></ul>
+
+			<div data-search-empty class="hidden px-4 py-8 text-center text-sm text-slate-500">
+				Tidak ada hasil. Coba kata kunci lain.
+			</div>
+
+			<div data-search-hint class="px-4 py-3 text-[11px] text-slate-400 border-t border-slate-50">
+				Tips: ketik nama dosen, judul berita, atau nama halaman
+			</div>
+		</div>
+	</div>
+</div>
+
+<script is:inline>
+	function initSiteSearch() {
+		const root = document.querySelector("[data-site-search-root]");
+		if (!root || root.dataset.searchReady === "1") return;
+		root.dataset.searchReady = "1";
+
+		const modal = root.querySelector("[data-search-modal]");
+		const backdrop = root.querySelector("[data-search-backdrop]");
+		const input = root.querySelector("[data-search-input]");
+		const resultsEl = root.querySelector("[data-search-results]");
+		const emptyEl = root.querySelector("[data-search-empty]");
+		const hintEl = root.querySelector("[data-search-hint]");
+		const statusEl = root.querySelector("[data-search-status]");
+
+		if (!modal || !input || !resultsEl) return;
+
+		/** @type {{ title: string, url: string, category: string, keywords: string }[]} */
+		let index = [];
+		let indexLoaded = false;
+		let indexLoading = false;
+
+		function normalize(text) {
+			return String(text)
+				.toLowerCase()
+				.normalize("NFD")
+				.replace(/[\u0300-\u036f]/g, "");
+		}
+
+		function filterItems(query) {
+			const q = normalize(query.trim());
+			if (!q) return [];
+			return index
+				.filter((item) => {
+					const haystack = normalize(
+						`${item.title} ${item.keywords} ${item.category}`,
+					);
+					return haystack.includes(q);
+				})
+				.slice(0, 12);
+		}
+
+		function renderResults(query) {
+			const items = filterItems(query);
+			resultsEl.innerHTML = "";
+
+			if (!query.trim()) {
+				emptyEl?.classList.add("hidden");
+				hintEl?.classList.remove("hidden");
+				statusEl?.classList.add("hidden");
+				return;
+			}
+
+			hintEl?.classList.add("hidden");
+
+			if (items.length === 0) {
+				emptyEl?.classList.remove("hidden");
+				statusEl?.classList.add("hidden");
+				return;
+			}
+
+			emptyEl?.classList.add("hidden");
+			statusEl?.classList.remove("hidden");
+			if (statusEl) statusEl.textContent = `${items.length} hasil ditemukan`;
+
+			items.forEach((item) => {
+				const li = document.createElement("li");
+				li.setAttribute("role", "option");
+				const a = document.createElement("a");
+				a.href = item.url;
+				a.className =
+					"flex items-center justify-between gap-3 px-4 py-2.5 hover:bg-green-50 transition-colors group";
+				a.innerHTML = `<span class="text-sm font-medium text-slate-800 group-hover:text-[#004d2c]">${item.title}</span><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 shrink-0">${item.category}</span>`;
+				a.addEventListener("click", closeModal);
+				li.appendChild(a);
+				resultsEl.appendChild(li);
+			});
+		}
+
+		async function loadIndex() {
+			if (indexLoaded || indexLoading) return;
+			indexLoading = true;
+			if (statusEl) {
+				statusEl.classList.remove("hidden");
+				statusEl.textContent = "Memuat indeks pencarian...";
+			}
+			try {
+				const res = await fetch("/api/search-index.json");
+				if (res.ok) {
+					index = await res.json();
+					indexLoaded = true;
+				}
+			} catch {
+				if (statusEl) statusEl.textContent = "Gagal memuat data pencarian.";
+			} finally {
+				indexLoading = false;
+				if (!indexLoaded && statusEl) {
+					statusEl.textContent = "Pencarian tidak tersedia saat ini.";
+				} else if (indexLoaded) {
+					statusEl?.classList.add("hidden");
+				}
+			}
+		}
+
+		function openModal() {
+			modal.classList.remove("hidden");
+			modal.classList.add("flex");
+			document.body.style.overflow = "hidden";
+			loadIndex().then(() => {
+				input.value = "";
+				renderResults("");
+				input.focus();
+			});
+		}
+
+		function closeModal() {
+			modal.classList.add("hidden");
+			modal.classList.remove("flex");
+			document.body.style.overflow = "";
+		}
+
+		document.querySelectorAll("[data-search-trigger]").forEach((btn) => {
+			btn.addEventListener("click", (e) => {
+				e.stopPropagation();
+				openModal();
+			});
+		});
+
+		backdrop?.addEventListener("click", closeModal);
+
+		input.addEventListener("input", () => {
+			renderResults(input.value);
+		});
+
+		document.addEventListener("keydown", (e) => {
+			if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+				e.preventDefault();
+				if (modal.classList.contains("hidden")) openModal();
+				else closeModal();
+			}
+			if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+				closeModal();
+			}
+		});
+	}
+
+	document.addEventListener("DOMContentLoaded", initSiteSearch);
+	document.addEventListener("astro:page-load", initSiteSearch);
+</script>
