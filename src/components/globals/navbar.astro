@@ -1,3 +1,8 @@
+---
+import SiteSearch from "./SiteSearch.astro";
+import SearchTrigger from "./SearchTrigger.astro";
+---
+
 <nav
     class="w-full fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-sm"
 >
@@ -274,10 +279,11 @@
                     >Alumni</a
                 >
 
+                <div class="ml-2 flex items-center gap-2">
                 <a
                     href="https://hima.tif.uin-suska.ac.id/"
                     target="_blank"
-                    class="ml-4 px-5 py-2 bg-[#004d2c] text-white rounded-full hover:bg-yellow-600 transition shadow-md shadow-green-100 flex items-center gap-2"
+                    class="px-5 py-2 bg-[#004d2c] text-white rounded-full hover:bg-yellow-600 transition shadow-md shadow-green-100 flex items-center gap-2"
                 >
                     HIMATIF
                     <svg
@@ -292,12 +298,16 @@
                             stroke-linejoin="round"></path></svg
                     >
                 </a>
+                    <SearchTrigger />
+                </div>
             </div>
 
+            <div class="lg:hidden flex items-center gap-2">
+                <SearchTrigger />
             <button
                 aria-expanded="false"
                 type="button"
-                class="lg:hidden p-2 text-slate-800"
+                class="p-2 text-slate-800"
                 id="mobile-menu-btn"
             >
                 <svg
@@ -312,6 +322,7 @@
                         d="M4 6h16M4 12h16m-7 6h7"></path></svg
                 >
             </button>
+            </div>
         </div>
     </div>
 
@@ -403,13 +414,16 @@
             <a href="/agenda-pages/agenda" class="py-3 px-4 text-sm font-medium text-slate-800 hover:text-[#004d2c] hover:bg-slate-50 rounded-lg transition-colors">Agenda</a>
             <a href="/alumni-pages/alumni" class="py-3 px-4 text-sm font-medium text-slate-800 hover:text-[#004d2c] hover:bg-slate-50 rounded-lg transition-colors">Alumni</a>
             
-            <div class="mt-4 px-2 pb-4">
+            <div class="mt-4 px-2 pb-4 flex flex-col gap-3">
                 <a href="https://hima.tif.uin-suska.ac.id/" target="_blank" class="block w-full py-3 px-4 bg-[#004d2c] text-white text-sm text-center font-bold rounded-xl hover:bg-yellow-600 transition-colors shadow-md">
                     HIMATIF
                 </a>
+                <SearchTrigger showLabel class="!rounded-xl border-slate-200" />
             </div>
         </div>
     </div>
+
+    <SiteSearch />
 </nav>
 
 <script is:inline>
