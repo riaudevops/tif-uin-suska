@@ -1,93 +1,48 @@
----
-import Layout from "@/layouts/Layout.astro";
+<nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
+    <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100 font-sans">
+        <li class="flex items-center">
+            <a href="/" class="flex items-center hover:text-[#004d2c] transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                Beranda
+            </a>
+        </li>
+        <li class="text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </li>
+        <li class="hover:text-[#004d2c] cursor-pointer transition-colors">
+            Akademik
+        </li>
+        <li class="text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </li>
+        <li class="text-[#004d2c] font-bold tracking-tight">
+            Kurikulum
+        </li>
+    </ol>
+</nav>
 
-const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
-const ASSET_URL = `${API_URL}/assets/`;
+<section class="bg-gradient-to-b from-gray-50 to-white py-12 overflow-hidden font-sans">
+  <div class="container mx-auto px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      
+      <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block font-sans">
+        Akademik
+      </span>
 
-let kurikulum = [];
-
-try {
-  const response = await fetch(`${API_URL}/items/kurikulum?sort=semester`);
-
-  if (!response.ok) {
-    throw new Error(`Gagal mengambil kurikulum (status: ${response.status})`);
-  }
-
-  const data = await response.json();
-  kurikulum = data.data || [];
-} catch (error: any) {
-  console.warn("Gagal mengambil data kurikulum:", error?.message || error);
-}
-
-const kurikulumPerSemester = kurikulum.reduce((acc: any, item: any) => {
-  if (!acc[item.semester]) acc[item.semester] = [];
-  acc[item.semester].push(item);
-  return acc;
-}, {});
----
-
-<Layout title="Kurikulum Teknik Informatika">
-  <main class="max-w-6xl mx-auto px-6 py-16">
-    
-    <div class="mb-12">
-      <h1 class="text-4xl font-black text-slate-900 mb-4">Kurikulum <span class="text-emerald-700">2025</span></h1>
-      <p class="text-slate-600 max-w-2xl">
-        Program Studi Teknik Informatika UIN Sultan Syarif Kasim Riau berfokus pada pengembangan kemampuan teknis dan kompetensi profesional dalam bidang teknologi informasi dan komunikasi.
+      <h1 class="text-4xl md:text-5xl font-black text-[#004d2c] mb-6 leading-tight font-heading">
+        Kurikulum
+      </h1>
+      
+      <p class="text-lg text-gray-600 mb-8 leading-relaxed font-sans max-w-2xl mx-auto">
+        Program Studi Teknik Informatika UIN Sultan Syarif Kasim Riau berfokus pada pengembangan kemampuan teknis dan kompetensi profesional dalam bidang teknologi informasi dan komunikasi melalui kurikulum berbasis KKNI dan OBE.
       </p>
+
     </div>
-
-    <div class="space-y-12">
-      {Object.entries(kurikulumPerSemester).map(([semester, courses]: [string, any]) => (
-        <section>
-          <div class="flex items-center gap-4 mb-6">
-            <h2 class="text-xl font-bold text-emerald-800 bg-emerald-100 px-6 py-2 rounded-full">
-              Semester {semester}
-            </h2>
-            <div class="h-px bg-slate-200 flex-1"></div>
-          </div>
-
-          <div class="hidden md:block overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
-            <table class="w-full text-left text-sm">
-              <thead class="bg-slate-50 text-slate-600 font-bold uppercase text-xs tracking-wider">
-                <tr>
-                  <th class="px-6 py-4">Kode MK</th>
-                  <th class="px-6 py-4">Nama Mata Kuliah</th>
-                  <th class="px-6 py-4">SKS</th>
-                  <th class="px-6 py-4">Jenis</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-100 bg-white">
-                {courses.map((mk: any) => (
-                  <tr class="hover:bg-slate-50 transition">
-                    <td class="px-6 py-4 font-mono text-slate-500">{mk.kode_mk}</td>
-                    <td class="px-6 py-4 font-semibold text-slate-900">{mk.nama_mk}</td>
-                    <td class="px-6 py-4 font-bold text-slate-700">{mk.sks}</td>
-                    <td class="px-6 py-4">
-                      <span class={`px-3 py-1 rounded-full text-[10px] font-bold ${mk.jenis === 'Wajib' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
-                        {mk.jenis}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div class="md:hidden space-y-4">
-            {courses.map((mk: any) => (
-              <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex justify-between items-center">
-                <div>
-                  <p class="text-xs font-bold text-slate-400">{mk.kode_mk}</p>
-                  <p class="font-bold text-slate-900">{mk.nama_mk}</p>
-                </div>
-                <div class="text-right">
-                  <p class="font-bold text-emerald-700 text-lg">{mk.sks} SKS</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      ))}
-    </div>
-  </main>
-</Layout>
+  </div>
+</section>

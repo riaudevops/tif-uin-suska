@@ -1,0 +1,417 @@
+---
+const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
+
+let rawKurikulum = [];
+
+try {
+  const response = await fetch(`${API_URL}/items/kurikulum?limit=-1`);
+  if (response.ok) {
+    const json = await response.json();
+    rawKurikulum = json.data || [];
+  } else {
+    console.warn("Directus API returned non-OK status. Using fallback data.");
+  }
+} catch (error: any) {
+  console.warn("Failed to fetch from Directus API, using fallback data:", error?.message || error);
+}
+
+// Fallback mock data matching the user's screenshots
+const fallbackKurikulum = [
+  // SEMESTER I (Kurikulum 2025)
+  { kurikulum: "2025", semester: 1, kode_mk: "MK01", kode_resmi: "PIF251101", nama_mk: "Algoritma dan Pemrograman", singkatan: "AP", sks: 3, prasyarat: "Paket Wajib" },
+  { kurikulum: "2025", semester: 1, kode_mk: "MK03", kode_resmi: "UIN252006", nama_mk: "Aqidah Akhlak", singkatan: "AA", sks: 2, prasyarat: "Paket Wajib" },
+  { kurikulum: "2025", semester: 1, kode_mk: "MK04", kode_resmi: "PIF251102", nama_mk: "Arsitektur dan Organisasi Komputer", singkatan: "AOK", sks: 2, prasyarat: "Paket Wajib" },
+  { kurikulum: "2025", semester: 1, kode_mk: "MK06", kode_resmi: "UIN252008", nama_mk: "Bahasa Indonesia", singkatan: "BI", sks: 2, prasyarat: "Paket Wajib" },
+  { kurikulum: "2025", semester: 1, kode_mk: "MK13", kode_resmi: "UIN252007", nama_mk: "Fiqih", singkatan: "FQ", sks: 2, prasyarat: "Paket Wajib" },
+  { kurikulum: "2025", semester: 1, kode_mk: "MK18", kode_resmi: "PIF251103", nama_mk: "Kalkulus 1", singkatan: "KK1", sks: 3, prasyarat: "Paket Wajib" },
+  { kurikulum: "2025", semester: 1, kode_mk: "MK28", kode_resmi: "UIN252001", nama_mk: "Pancasila dan Kewarganegaraan", singkatan: "PK", sks: 2, prasyarat: "Paket Wajib" },
+  { kurikulum: "2025", semester: 1, kode_mk: "MK31", kode_resmi: "PIF251104", nama_mk: "Pengantar Teknologi Informasi", singkatan: "PTI", sks: 2, prasyarat: "Paket Wajib" },
+  { kurikulum: "2025", semester: 1, kode_mk: "MK40", kode_resmi: "PIF251105", nama_mk: "Sistem Operasi", singkatan: "SO", sks: 3, prasyarat: "Paket Wajib" },
+
+  // SEMESTER II (Kurikulum 2025)
+  { kurikulum: "2025", semester: 2, kode_mk: "MK02", kode_resmi: "PIF251206", nama_mk: "Aljabar Linear", singkatan: "AL", sks: 3, prasyarat: "" },
+  { kurikulum: "2025", semester: 2, kode_mk: "MK05", kode_resmi: "UIN252009", nama_mk: "Bahasa Arab", singkatan: "BA", sks: 2, prasyarat: "" },
+  { kurikulum: "2025", semester: 2, kode_mk: "MK07", kode_resmi: "UIN252012", nama_mk: "Bahasa Inggris", singkatan: "ENG", sks: 2, prasyarat: "" },
+  { kurikulum: "2025", semester: 2, kode_mk: "MK17", kode_resmi: "PIF251207", nama_mk: "Jaringan Komputer", singkatan: "JK", sks: 3, prasyarat: "" },
+  { kurikulum: "2025", semester: 2, kode_mk: "MK19", kode_resmi: "PIF251208", nama_mk: "Kalkulus 2", singkatan: "KK2", sks: 3, prasyarat: "" },
+  { kurikulum: "2025", semester: 2, kode_mk: "MK26", kode_resmi: "PIF251209", nama_mk: "Matematika Diskrit 1", singkatan: "MD1", sks: 3, prasyarat: "" },
+  { kurikulum: "2025", semester: 2, kode_mk: "MK30", kode_resmi: "PIF251210", nama_mk: "Pemrograman Berorientasi Objek", singkatan: "PBO", sks: 3, prasyarat: "" },
+  { kurikulum: "2025", semester: 2, kode_mk: "MK12", kode_resmi: "UIN252011", nama_mk: "Studi Islam", singkatan: "SI", sks: 2, prasyarat: "" },
+
+  // SEMESTER III (Kurikulum 2025)
+  { kurikulum: "2025", semester: 3, kode_mk: "MK08", kode_resmi: "PIF251311", nama_mk: "Struktur Data", singkatan: "SD", sks: 3, prasyarat: "Pemrograman Berorientasi Objek" },
+  { kurikulum: "2025", semester: 3, kode_mk: "MK09", kode_resmi: "PIF251312", nama_mk: "Basis Data", singkatan: "BD", sks: 3, prasyarat: "" },
+  { kurikulum: "2025", semester: 3, kode_mk: "MK20", kode_resmi: "PIF251313", nama_mk: "Kalkulus Lanjut", singkatan: "KL", sks: 3, prasyarat: "Kalkulus 2" },
+  { kurikulum: "2025", semester: 3, kode_mk: "MK27", kode_resmi: "PIF251314", nama_mk: "Matematika Diskrit 2", singkatan: "MD2", sks: 3, prasyarat: "Matematika Diskrit 1" },
+  { kurikulum: "2025", semester: 3, kode_mk: "MK32", kode_resmi: "PIF251315", nama_mk: "Pemrograman Web", singkatan: "PW", sks: 3, prasyarat: "Algoritma dan Pemrograman" },
+  { kurikulum: "2025", semester: 3, kode_mk: "MK14", kode_resmi: "UIN252013", nama_mk: "Akhlak Tasawuf", singkatan: "AT", sks: 2, prasyarat: "" },
+  { kurikulum: "2025", semester: 3, kode_mk: "MK15", kode_resmi: "UIN252014", nama_mk: "Ulumul Qur'an", singkatan: "UQ", sks: 2, prasyarat: "" },
+  { kurikulum: "2025", semester: 3, kode_mk: "MK16", kode_resmi: "UIN252015", nama_mk: "Ulumul Hadits", singkatan: "UH", sks: 2, prasyarat: "" },
+
+  // SEMESTER IV (Kurikulum 2025)
+  { kurikulum: "2025", semester: 4, kode_mk: "MK10", kode_resmi: "PIF251416", nama_mk: "Sistem Basis Data", singkatan: "SBD", sks: 3, prasyarat: "Basis Data" },
+  { kurikulum: "2025", semester: 4, kode_mk: "MK11", kode_resmi: "PIF251417", nama_mk: "Rekayasa Perangkat Lunak", singkatan: "RPL", sks: 3, prasyarat: "Struktur Data" },
+  { kurikulum: "2025", semester: 4, kode_mk: "MK21", kode_resmi: "PIF251418", nama_mk: "Statistika dan Probabilitas", singkatan: "SP", sks: 3, prasyarat: "" },
+  { kurikulum: "2025", semester: 4, kode_mk: "MK22", kode_resmi: "PIF251419", nama_mk: "Metode Numerik", singkatan: "MN", sks: 3, prasyarat: "Kalkulus Lanjut" },
+  { kurikulum: "2025", semester: 4, kode_mk: "MK33", kode_resmi: "PIF251420", nama_mk: "Pemrograman Mobile", singkatan: "PM", sks: 3, prasyarat: "Pemrograman Berorientasi Objek" },
+  { kurikulum: "2025", semester: 4, kode_mk: "MK34", kode_resmi: "PIF251421", nama_mk: "Desain dan Analisis Algoritma", singkatan: "DAA", sks: 3, prasyarat: "Algoritma dan Pemrograman" },
+  { kurikulum: "2025", semester: 4, kode_mk: "MK35", kode_resmi: "PIF251422", nama_mk: "Grafika Komputer", singkatan: "GK", sks: 3, prasyarat: "" },
+
+  // SEMESTER V (Kurikulum 2025)
+  { kurikulum: "2025", semester: 5, kode_mk: "MK12", kode_resmi: "PIF251523", nama_mk: "Interaksi Manusia dan Komputer", singkatan: "IMK", sks: 3, prasyarat: "" },
+  { kurikulum: "2025", semester: 5, kode_mk: "MK23", kode_resmi: "PIF251524", nama_mk: "Kecerdasan Buatan", singkatan: "KB", sks: 3, prasyarat: "Matematika Diskrit 2" },
+  { kurikulum: "2025", semester: 5, kode_mk: "MK36", kode_resmi: "PIF251525", nama_mk: "Keamanan Komputer", singkatan: "KK", sks: 3, prasyarat: "Jaringan Komputer" },
+  { kurikulum: "2025", semester: 5, kode_mk: "MK37", kode_resmi: "PIF251526", nama_mk: "Etika Profesi IT", singkatan: "EP", sks: 2, prasyarat: "" },
+  { kurikulum: "2025", semester: 5, kode_mk: "MK38", kode_resmi: "PIF251527", nama_mk: "Pengolahan Citra Digital", singkatan: "PCD", sks: 3, prasyarat: "Grafika Komputer" },
+  { kurikulum: "2025", semester: 5, kode_mk: "MK39", kode_resmi: "PIF251528", nama_mk: "Sistem Terdistribusi", singkatan: "ST", sks: 3, prasyarat: "Sistem Operasi" },
+  { kurikulum: "2025", semester: 5, kode_mk: "MK41", kode_resmi: "PIF251529", nama_mk: "Kriptografi", singkatan: "KR", sks: 2, prasyarat: "" },
+  { kurikulum: "2025", semester: 5, kode_mk: "MK42", kode_resmi: "PIF251530", nama_mk: "Manajemen Proyek TI", singkatan: "MPTI", sks: 2, prasyarat: "" },
+
+  // SEMESTER VI (Kurikulum 2025)
+  { kurikulum: "2025", semester: 6, kode_mk: "MK29", kode_resmi: "UIN252002", nama_mk: "Kewarganegaraan", singkatan: "KWN", sks: 2, prasyarat: "" },
+  { kurikulum: "2025", semester: 6, kode_mk: "MK43", kode_resmi: "PIF251631", nama_mk: "Data Mining", singkatan: "DM", sks: 3, prasyarat: "Kecerdasan Buatan" },
+  { kurikulum: "2025", semester: 6, kode_mk: "MK44", kode_resmi: "PIF251632", nama_mk: "Pengujian Perangkat Lunak", singkatan: "PPL", sks: 3, prasyarat: "Rekayasa Perangkat Lunak" },
+  { kurikulum: "2025", semester: 6, kode_mk: "MK45", kode_resmi: "PIF251633", nama_mk: "Jaringan Komputer Lanjut", singkatan: "JKL", sks: 3, prasyarat: "Jaringan Komputer" },
+  { kurikulum: "2025", semester: 6, kode_mk: "MK46", kode_resmi: "PIF251634", nama_mk: "Kerja Praktik (KP)", singkatan: "KP", sks: 2, prasyarat: "Minimal telah mengambil 80 SKS" },
+  { kurikulum: "2025", semester: 6, kode_mk: "MK48", kode_resmi: "PIF251635", nama_mk: "Mata Kuliah Pilihan 1", singkatan: "", sks: 3, prasyarat: "" },
+  { kurikulum: "2025", semester: 6, kode_mk: "MK51", kode_resmi: "PIF251636", nama_mk: "Mata Kuliah Pilihan 2", singkatan: "", sks: 3, prasyarat: "" },
+  { kurikulum: "2025", semester: 6, kode_mk: "MK52", kode_resmi: "PIF251637", nama_mk: "Mata Kuliah Pilihan 3", singkatan: "", sks: 3, prasyarat: "" },
+
+  // SEMESTER VII (Kurikulum 2025)
+  { kurikulum: "2025", semester: 7, kode_mk: "MK24", kode_resmi: "PIF251735", nama_mk: "Kewirausahaan IT", singkatan: "KIT", sks: 2, prasyarat: "" },
+  { kurikulum: "2025", semester: 7, kode_mk: "MK25", kode_resmi: "PIF251736", nama_mk: "Komputasi Paralel dan Terdistribusi", singkatan: "KPT", sks: 2, prasyarat: "Jaringan Komputer (Minimal C)" },
+  { kurikulum: "2025", semester: 7, kode_mk: "MK47", kode_resmi: "UIN252017", nama_mk: "Kuliah Kerja Nyata (KKN)", singkatan: "KKN", sks: 4, prasyarat: "Minimal telah mengambil 100 SKS" },
+  { kurikulum: "2025", semester: 7, kode_mk: "MK49", kode_resmi: "PIF251737", nama_mk: "Metodologi Penelitian", singkatan: "MP", sks: 2, prasyarat: "Tata Tulis Karya Ilmiah (Sudah Mengambil)" },
+  { kurikulum: "2025", semester: 7, kode_mk: "", kode_resmi: "", nama_mk: "Mata Kuliah Pilihan 4", singkatan: "", sks: 3, prasyarat: "Minimal telah mengambil 80 SKS" },
+  { kurikulum: "2025", semester: 7, kode_mk: "", kode_resmi: "", nama_mk: "Mata Kuliah Pilihan 5", singkatan: "", sks: 3, prasyarat: "Minimal telah mengambil 80 SKS" },
+
+  // SEMESTER VIII (Kurikulum 2025)
+  { kurikulum: "2025", semester: 8, kode_mk: "MK50", kode_resmi: "PIF251838", nama_mk: "Tugas Akhir", singkatan: "TA", sks: 3, prasyarat: "Metodologi Penelitian (Sudah Mengambil)" },
+
+  // KURIKULUM 2020 (MOCK COURSES)
+  { kurikulum: "2020", semester: 1, kode_mk: "MK01", kode_resmi: "TIF201101", nama_mk: "Pengantar Teknologi Informasi", singkatan: "PTI", sks: 3, prasyarat: "Paket Wajib" },
+  { kurikulum: "2020", semester: 1, kode_mk: "MK02", kode_resmi: "TIF201102", nama_mk: "Kalkulus 1", singkatan: "KAL1", sks: 3, prasyarat: "Paket Wajib" },
+  { kurikulum: "2020", semester: 1, kode_mk: "MK03", kode_resmi: "TIF201103", nama_mk: "Algoritma Pemrograman", singkatan: "ALPRO", sks: 4, prasyarat: "Paket Wajib" },
+  { kurikulum: "2020", semester: 2, kode_mk: "MK04", kode_resmi: "TIF201204", nama_mk: "Kalkulus 2", singkatan: "KAL2", sks: 3, prasyarat: "Kalkulus 1" },
+  { kurikulum: "2020", semester: 2, kode_mk: "MK05", kode_resmi: "TIF201205", nama_mk: "Struktur Data", singkatan: "SD", sks: 4, prasyarat: "Algoritma Pemrograman" },
+  { kurikulum: "2020", semester: 7, kode_mk: "MK30", kode_resmi: "TIF201730", nama_mk: "Kerja Praktik", singkatan: "KP", sks: 2, prasyarat: "Minimal 100 SKS" },
+  { kurikulum: "2020", semester: 8, kode_mk: "MK31", kode_resmi: "TIF201831", nama_mk: "Skripsi / Tugas Akhir", singkatan: "TA", sks: 6, prasyarat: "Lulus Metodologi Penelitian" },
+
+  // KURIKULUM 2015 (MOCK COURSES)
+  { kurikulum: "2015", semester: 1, kode_mk: "INF1501", kode_resmi: "INF1501", nama_mk: "Pengantar TIK", singkatan: "PTIK", sks: 2, prasyarat: "-" },
+  { kurikulum: "2015", semester: 1, kode_mk: "INF1502", kode_resmi: "INF1502", nama_mk: "Matematika Dasar", singkatan: "MATDAS", sks: 3, prasyarat: "-" },
+  { kurikulum: "2015", semester: 1, kode_mk: "INF1503", kode_resmi: "INF1503", nama_mk: "Dasar Pemrograman", singkatan: "DASPRO", sks: 4, prasyarat: "-" },
+  { kurikulum: "2015", semester: 8, kode_mk: "INF1599", kode_resmi: "INF1599", nama_mk: "Tugas Akhir", singkatan: "TA", sks: 6, prasyarat: "-" }
+];
+
+const kurikulumList = rawKurikulum.length > 0 ? rawKurikulum : fallbackKurikulum;
+
+// Group by curriculum version and semester
+const curriculumVersions: { [version: string]: { [semester: number]: any[] } } = {};
+
+kurikulumList.forEach((item: any) => {
+  const v = String(item.kurikulum_versi || item.kurikulum || "2025");
+  if (!curriculumVersions[v]) curriculumVersions[v] = {};
+  
+  const sem = Number(item.semester || 1);
+  if (!curriculumVersions[v][sem]) curriculumVersions[v][sem] = [];
+  
+  curriculumVersions[v][sem].push({
+    kode_mk: item.kode_mk || "",
+    kode_resmi: item.kode_resmi || item.resmi || "",
+    nama_mk: item.nama_mk || item.nama_mata_kuliah || "",
+    singkatan: item.singkatan || "",
+    sks: Number(item.sks) || 0,
+    prasyarat: item.prasyarat || ""
+  });
+});
+
+// Sort semesters within each version
+Object.keys(curriculumVersions).forEach((v) => {
+  const semesters = curriculumVersions[v];
+  const sortedSemesters: { [semester: number]: any[] } = {};
+  Object.keys(semesters).sort((a, b) => Number(a) - Number(b)).forEach((semKey) => {
+    const sem = Number(semKey);
+    sortedSemesters[sem] = semesters[sem];
+  });
+  curriculumVersions[v] = sortedSemesters;
+});
+
+// Identify active curriculum (highest numeric or default latest)
+const versions = Object.keys(curriculumVersions).sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
+const activeVersion = versions[0] || "2025";
+const activeCurriculum = curriculumVersions[activeVersion] || {};
+
+// Remaining versions for accordions
+const accordionVersions = versions.filter(v => v !== activeVersion);
+
+// Helper function to convert Arabic to Roman numerals
+function romanize(num: number): string {
+  const lookup: { [key: string]: number } = { M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1 };
+  let roman = '';
+  let i;
+  for (i in lookup) {
+    while (num >= lookup[i]) {
+      roman += i;
+      num -= lookup[i];
+    }
+  }
+  return roman;
+}
+---
+
+<div class="max-w-6xl mx-auto px-6 py-6 font-sans">
+  <!-- Active Curriculum Section -->
+  <div class="mb-12">
+    <div class="flex items-center gap-4 mb-8">
+      <h2 class="text-2xl font-black text-[#004d2c] tracking-tight uppercase font-heading">
+        Kurikulum {activeVersion}
+      </h2>
+      <div class="h-[2px] bg-gradient-to-r from-green-700/20 to-transparent flex-1"></div>
+    </div>
+
+    <div class="space-y-12">
+      {Object.entries(activeCurriculum).map(([semester, courses]: [string, any]) => {
+        const totalSKS = courses.reduce((sum: number, c: any) => sum + c.sks, 0);
+
+        return (
+          <section class="relative">
+            <!-- Semester Header Row matching screenshots -->
+            <div class="flex justify-between items-center bg-slate-50 border border-slate-200/80 px-6 py-3.5 rounded-xl mb-4 font-bold text-slate-800 shadow-sm">
+              <span class="text-base font-black tracking-tight font-heading text-slate-900">
+                Semester {romanize(Number(semester))}
+              </span>
+              <span class="text-sm font-black text-[#004d2c] font-sans pr-14 md:pr-16">
+                {totalSKS} SKS
+              </span>
+            </div>
+
+            <!-- Desktop View: Grid Table -->
+            <div class="hidden md:block overflow-hidden rounded-2xl border border-slate-200/70 shadow-sm bg-white">
+              <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                  <tr class="bg-[#004d2c] text-white">
+                    <th class="py-4 px-6 font-bold uppercase text-[11px] tracking-wider text-center w-16">No</th>
+                    <th class="py-4 px-6 font-bold uppercase text-[11px] tracking-wider w-24">MK</th>
+                    <th class="py-4 px-6 font-bold uppercase text-[11px] tracking-wider w-36">Resmi</th>
+                    <th class="py-4 px-6 font-bold uppercase text-[11px] tracking-wider">Nama Mata Kuliah</th>
+                    <th class="py-4 px-6 font-bold uppercase text-[11px] tracking-wider w-28 text-center">Singkatan</th>
+                    <th class="py-4 px-6 font-bold uppercase text-[11px] tracking-wider w-20 text-center">SKS</th>
+                    <th class="py-4 px-6 font-bold uppercase text-[11px] tracking-wider w-64">Prasyarat</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                  {courses.map((c: any, index: number) => (
+                    <tr class="hover:bg-green-50/20 transition-colors duration-200">
+                      <td class="py-4 px-6 text-center text-slate-400 font-medium">{c.kode_mk || c.kode_resmi || c.nama_mk ? index + 1 : ""}</td>
+                      <td class="py-4 px-6 font-mono text-slate-500 font-semibold">{c.kode_mk || "-"}</td>
+                      <td class="py-4 px-6 font-mono text-slate-500 font-semibold">{c.kode_resmi || "-"}</td>
+                      <td class="py-4 px-6 font-bold text-slate-800 leading-snug">{c.nama_mk || "-"}</td>
+                      <td class="py-4 px-6 text-center font-bold text-slate-500">{c.singkatan || "-"}</td>
+                      <td class="py-4 px-6 text-center font-bold text-[#004d2c]">{c.sks}</td>
+                      <td class="py-4 px-6 text-slate-600 font-medium text-xs">
+                        {c.prasyarat ? (
+                          <span class={`px-2.5 py-1 rounded-full text-[10px] font-bold ${c.prasyarat.toLowerCase() === 'paket wajib' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-amber-50 text-amber-700 border border-amber-100'}`}>
+                            {c.prasyarat}
+                          </span>
+                        ) : (
+                          <span class="text-slate-300">-</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Mobile View: Cards List -->
+            <div class="md:hidden space-y-3">
+              {courses.map((c: any, index: number) => (
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-3 flex flex-col justify-between">
+                  <div class="flex justify-between items-start">
+                    <span class="text-[10px] font-bold px-2 py-0.5 bg-slate-100 text-slate-500 rounded-full font-mono">
+                      {c.kode_mk || "PILIHAN"}
+                    </span>
+                    <span class="text-xs font-mono font-bold text-slate-400">
+                      {c.kode_resmi || "-"}
+                    </span>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-slate-800 text-sm leading-snug">
+                      {c.nama_mk}
+                    </h4>
+                    {c.singkatan && (
+                      <p class="text-xs text-slate-400 font-bold mt-0.5">Singkatan: {c.singkatan}</p>
+                    )}
+                  </div>
+                  <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                    <div>
+                      <span class="text-slate-400">SKS:</span>
+                      <strong class="text-[#004d2c] font-black ml-1 text-sm">{c.sks} SKS</strong>
+                    </div>
+                    {c.prasyarat && (
+                      <span class={`px-2.5 py-0.5 rounded-full text-[9px] font-bold ${c.prasyarat.toLowerCase() === 'paket wajib' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-amber-50 text-amber-700 border border-amber-100'}`}>
+                        {c.prasyarat}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      })}
+    </div>
+  </div>
+
+  <!-- Accordion Sections for Older Curriculums -->
+  {accordionVersions.length > 0 && (
+    <div class="mt-20 space-y-4">
+      {accordionVersions.map((v) => {
+        const semesterData = curriculumVersions[v] || {};
+        return (
+          <div class="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
+            <!-- Accordion Header -->
+            <button
+              class="w-full flex items-center justify-between px-8 py-5 text-left bg-slate-50 hover:bg-slate-100/50 transition-colors duration-300 cursor-pointer font-bold text-slate-800 border-b border-slate-200/50"
+              data-accordion-trigger={v}
+              aria-expanded="false"
+            >
+              <span class="text-base md:text-lg font-black tracking-tight font-heading text-[#004d2c] uppercase">
+                Kurikulum {v}
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-slate-400 transition-transform duration-300 transform"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                data-accordion-icon
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            <!-- Accordion Content -->
+            <div class="hidden px-8 py-8 space-y-12 bg-white" data-accordion-content={v}>
+              {Object.entries(semesterData).map(([semester, courses]: [string, any]) => {
+                const totalSKS = courses.reduce((sum: number, c: any) => sum + c.sks, 0);
+                return (
+                  <section class="relative font-sans">
+                    <div class="flex justify-between items-center bg-slate-50 border border-slate-200/80 px-6 py-3 rounded-xl mb-4 font-bold text-slate-700 shadow-sm">
+                      <span class="text-sm font-bold font-heading text-slate-800">
+                        Semester {romanize(Number(semester))}
+                      </span>
+                      <span class="text-xs font-bold text-[#004d2c] font-sans pr-14 md:pr-16">
+                        {totalSKS} SKS
+                      </span>
+                    </div>
+
+                    <!-- Desktop Accordion Table -->
+                    <div class="hidden md:block overflow-hidden rounded-xl border border-slate-200/70 shadow-sm bg-white">
+                      <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                          <tr class="bg-slate-100 text-slate-700 border-b border-slate-200">
+                            <th class="py-3 px-5 font-bold uppercase text-[10px] tracking-wider text-center w-14">No</th>
+                            <th class="py-3 px-5 font-bold uppercase text-[10px] tracking-wider w-20">MK</th>
+                            <th class="py-3 px-5 font-bold uppercase text-[10px] tracking-wider w-32">Resmi</th>
+                            <th class="py-3 px-5 font-bold uppercase text-[10px] tracking-wider">Nama Mata Kuliah</th>
+                            <th class="py-3 px-5 font-bold uppercase text-[10px] tracking-wider w-24 text-center">Singkatan</th>
+                            <th class="py-3 px-5 font-bold uppercase text-[10px] tracking-wider w-16 text-center">SKS</th>
+                            <th class="py-3 px-5 font-bold uppercase text-[10px] tracking-wider w-56">Prasyarat</th>
+                          </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                          {courses.map((c: any, index: number) => (
+                            <tr class="hover:bg-slate-50 transition-colors duration-150">
+                              <td class="py-3 px-5 text-center text-slate-400">{index + 1}</td>
+                              <td class="py-3 px-5 font-mono text-slate-500">{c.kode_mk || "-"}</td>
+                              <td class="py-3 px-5 font-mono text-slate-500">{c.kode_resmi || "-"}</td>
+                              <td class="py-3 px-5 font-bold text-slate-700">{c.nama_mk || "-"}</td>
+                              <td class="py-3 px-5 text-center font-bold text-slate-400">{c.singkatan || "-"}</td>
+                              <td class="py-3 px-5 text-center font-bold text-[#004d2c]">{c.sks}</td>
+                              <td class="py-3 px-5 text-slate-500 text-[10px]">
+                                {c.prasyarat ? (
+                                  <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded border border-slate-200">
+                                    {c.prasyarat}
+                                  </span>
+                                ) : (
+                                  <span class="text-slate-300">-</span>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <!-- Mobile Accordion Card -->
+                    <div class="md:hidden space-y-3">
+                      {courses.map((c: any, index: number) => (
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2.5">
+                          <div class="flex justify-between items-center">
+                            <span class="text-[9px] font-bold px-1.5 py-0.5 bg-slate-100 text-slate-500 rounded font-mono">
+                              {c.kode_mk || "PILIHAN"}
+                            </span>
+                            <span class="text-[10px] font-mono text-slate-400">
+                              {c.kode_resmi || "-"}
+                            </span>
+                          </div>
+                          <h4 class="font-bold text-slate-700 text-xs leading-snug">
+                            {c.nama_mk}
+                          </h4>
+                          <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-[11px]">
+                            <div>
+                              <span class="text-slate-400">SKS:</span>
+                              <strong class="text-[#004d2c] font-black ml-1">{c.sks} SKS</strong>
+                            </div>
+                            {c.prasyarat && (
+                              <span class="px-1.5 py-0.5 bg-slate-50 text-slate-500 rounded text-[9px] font-semibold border border-slate-100">
+                                {c.prasyarat}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  )}
+</div>
+
+<script is:inline>
+  function initAccordions() {
+    const triggers = document.querySelectorAll('[data-accordion-trigger]');
+    triggers.forEach(trigger => {
+      // Re-bind to ensure no duplicate event listeners (important for SPAs / page-loads)
+      const newTrigger = trigger.cloneNode(true);
+      trigger.parentNode.replaceChild(newTrigger, trigger);
+
+      newTrigger.addEventListener('click', () => {
+        const version = newTrigger.getAttribute('data-accordion-trigger');
+        const content = document.querySelector(`[data-accordion-content="${version}"]`);
+        const icon = newTrigger.querySelector('[data-accordion-icon]');
+        const isExpanded = newTrigger.getAttribute('aria-expanded') === 'true';
+
+        newTrigger.setAttribute('aria-expanded', !isExpanded ? 'true' : 'false');
+
+        if (!isExpanded) {
+          content.classList.remove('hidden');
+          icon.classList.add('rotate-180');
+        } else {
+          content.classList.add('hidden');
+          icon.classList.remove('rotate-180');
+        }
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initAccordions);
+  document.addEventListener('astro:page-load', initAccordions);
+</script>
