@@ -64,22 +64,38 @@ const getKategoriClass = (kat: string) => {
   </ol>
 </nav>
 
-<section class="py-6 bg-white min-h-screen relative">
-  <div class="container mx-auto px-6">
-    
-    <div class="mb-16 mt-8">
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-            <div class="relative">
-            <div class="absolute -left-5 top-0 bottom-0 w-1.5 bg-[#004d2c] rounded-full"></div>
-                <h2 class="text-[#004d2c] text-sm font-bold tracking-[0.3em] uppercase mb-3">Calendar of Events</h2>
-                <h1 class="text-5xl font-black text-[#004d2c] tracking-tight leading-tight">
-                    Agenda
-                </h1>
-                <p class="text-slate-500 mt-2 font-medium max-w-2xl">
-                    Berikut adalah agenda kegiatan terbaru dari prodi Teknik Informatika. Pastikan untuk mencatat tanggal penting dan bergabung dalam berbagai acara yang kami selenggarakan!
-                </p>
-            </div>
+<!-- Improved Hero / Header -->
+<section class="bg-gradient-to-b from-white to-slate-50 py-12">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-10">
+      <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest inline-block">
+        Agenda & Event
+      </span>
+      <h1 class="text-4xl md:text-5xl font-black text-[#004d2c] mt-4 tracking-tight">
+        Agenda
+      </h1>
+      <p class="text-slate-600 mt-3 max-w-2xl mx-auto">
+        Berikut adalah agenda kegiatan terbaru dari prodi Teknik Informatika. Pastikan untuk mencatat tanggal penting dan bergabung dalam berbagai acara yang kami selenggarakan!
+      </p>
+    </div>
+
+    <div class="mb-12 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+      <div class="flex items-center gap-4 md:col-span-2">
+        <div class="h-12 w-12 rounded-full bg-[#004d2c] flex items-center justify-center text-white text-xl">📅</div>
+        <div>
+          <h3 class="text-lg font-bold text-[#004d2c]">Calendar of Events</h3>
+          <p class="text-sm text-slate-500">Lihat agenda terbaru dan informasi penting seputar kegiatan akademik dan non-akademik.</p>
         </div>
+      </div>
+
+      <div class="flex justify-start md:justify-end">
+        <!-- Placeholder for filters or add-event button -->
+        <div class="flex gap-2">
+          <button class="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:bg-slate-50">Semua</button>
+          <button class="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:bg-slate-50">Workshop</button>
+          <button class="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:bg-slate-50">Seminar</button>
+        </div>
+      </div>
     </div>
 
     {/* --- List Agenda dari Directus --- */}
