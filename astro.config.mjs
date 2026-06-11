@@ -14,6 +14,18 @@ export default defineConfig({
 
 	integrations: [react()],
 
+	i18n: {
+		defaultLocale: "id",
+		locales: ["id", "en"],
+		fallback: {
+			en: "id",
+		},
+		routing: {
+			prefixDefaultLocale: false,
+			fallbackType: "rewrite",
+		},
+	},
+
 	vite: {
 		resolve: {
 			alias: {
