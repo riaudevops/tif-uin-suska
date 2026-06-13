@@ -3,7 +3,7 @@ import SiteSearch from "./SiteSearch.astro";
 import SearchTrigger from "./SearchTrigger.astro";
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../lib/translations";
 
-const lang = getLocaleFromUrl(Astro.url);
+const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 ---
 
