@@ -1,5 +1,18 @@
 ---
 /** Modal pencarian situs — satu instance per halaman */
+import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const searchI18n = {
+  placeholder: t("search.placeholder"),
+  content: t("search.content"),
+  noresult: t("search.noresult"),
+  tips: t("search.tips"),
+  loading: lang === 'en' ? "Loading search index..." : "Memuat indeks pencarian...",
+  loadError: lang === 'en' ? "Failed to load search data." : "Gagal memuat data pencarian.",
+  unavailable: lang === 'en' ? "Search is currently unavailable." : "Pencarian tidak tersedia saat ini.",
+  resultsFound: lang === 'en' ? "results found" : "hasil ditemukan",
+};
 ---
 
 <div data-site-search-root>
@@ -29,12 +42,12 @@
 						stroke-width="2"
 						d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
 				</svg>
-				<label for="site-search-input" class="sr-only" id="site-search-title">Cari konten</label>
+				<label for="site-search-input" class="sr-only" id="site-search-title">{t("search.content")}</label>
 				<input
 					id="site-search-input"
 					data-search-input
 					type="search"
-					placeholder="Cari halaman, berita, dosen, agenda..."
+					placeholder={t("search.placeholder")}
 					autocomplete="off"
 					class="flex-1 text-sm text-slate-800 placeholder:text-slate-400 outline-none bg-transparent"
 				/>
@@ -50,17 +63,17 @@
 			<ul data-search-results class="max-h-[50vh] overflow-y-auto py-2" role="listbox"></ul>
 
 			<div data-search-empty class="hidden px-4 py-8 text-center text-sm text-slate-500">
-				Tidak ada hasil. Coba kata kunci lain.
+				{t("search.noresult")}
 			</div>
 
 			<div data-search-hint class="px-4 py-3 text-[11px] text-slate-400 border-t border-slate-50">
-				Tips: ketik nama dosen, judul berita, atau nama halaman
+				{t("search.tips")}
 			</div>
 		</div>
 	</div>
 </div>
 
-<script is:inline>
+<script define:vars={searchI18n}>
 	function initSiteSearch() {
 		const root = document.querySelector("[data-site-search-root]");
 		if (!root || root.dataset.searchReady === "1") return;
@@ -122,7 +135,7 @@
 
 			emptyEl?.classList.add("hidden");
 			statusEl?.classList.remove("hidden");
-			if (statusEl) statusEl.textContent = `${items.length} hasil ditemukan`;
+			if (statusEl) statusEl.textContent = `${items.length} ${searchI18n.resultsFound}`;
 
 			items.forEach((item) => {
 				const li = document.createElement("li");
@@ -143,7 +156,7 @@
 			indexLoading = true;
 			if (statusEl) {
 				statusEl.classList.remove("hidden");
-				statusEl.textContent = "Memuat indeks pencarian...";
+				statusEl.textContent = searchI18n.loading;
 			}
 			try {
 				const res = await fetch("/api/search-index.json");
@@ -152,11 +165,11 @@
 					indexLoaded = true;
 				}
 			} catch {
-				if (statusEl) statusEl.textContent = "Gagal memuat data pencarian.";
+				if (statusEl) statusEl.textContent = searchI18n.loadError;
 			} finally {
 				indexLoading = false;
 				if (!indexLoaded && statusEl) {
-					statusEl.textContent = "Pencarian tidak tersedia saat ini.";
+					statusEl.textContent = searchI18n.unavailable;
 				} else if (indexLoaded) {
 					statusEl?.classList.add("hidden");
 				}
