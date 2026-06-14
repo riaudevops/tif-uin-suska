@@ -1,15 +1,21 @@
+---
+import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+---
+
 <nav class="max-w-7xl mx-auto px-5 md:px-8 mt-24 md:mt-32 text-sm">
   <ol class="flex items-center space-x-2 text-slate-500">
     <li class="flex items-center">
-      <a href="/" class="hover:text-emerald-700 transition flex items-center gap-1">
+      <a href={localizePath("/", lang)} class="hover:text-emerald-700 transition flex items-center gap-1">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-        Beranda
+        {t("bread.home")}
       </a>
     </li>
     <li class="text-slate-300">/</li>
     <li>
-        <a href="/alumni-pages" class="hover:text-emerald-700 transition">
-            Alumni
+        <a href={localizePath("/alumni-pages", lang)} class="hover:text-emerald-700 transition">
+            {t("bread.alumni")}
         </a>
     </li>
   </ol>
@@ -35,22 +41,22 @@
       </div>
       
       <h1 class="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight leading-[1.1]">
-        Keluarga Besar <br/>
+        {t("page.alumni.title1")} <br/>
         <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600">
-          Alumni Informatika
+          {t("page.alumni.title2")}
         </span>
       </h1>
       
       <p class="text-emerald-100/80 max-w-2xl mx-auto text-sm md:text-lg mb-10 leading-relaxed px-4 md:px-0">
-        Menghubungkan ribuan profesional yang tersebar di berbagai sektor industri teknologi di seluruh dunia.
+        {t("page.alumni.desc")}
       </p>
 
       <div class="flex flex-col sm:flex-row justify-center gap-4">
         <a href="#" class="px-10 py-4 bg-yellow-500 text-[#004d2c] font-black rounded-3xl hover:bg-white transition-all transform hover:-translate-y-1 shadow-lg shadow-yellow-900/20 uppercase text-xs tracking-widest">
-          Tracer Study
+          {t("page.alumni.tracer")}
         </a>
         <a href="#" class="px-10 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white font-black rounded-3xl hover:bg-white/20 transition-all transform hover:-translate-y-1 uppercase text-xs tracking-widest">
-          Gabung IKATIF
+          {t("page.alumni.join")}
         </a>
       </div>
     </div>

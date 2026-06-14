@@ -1,4 +1,9 @@
 ---
+import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const isEn = lang === 'en';
+
 const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
 const ASSET_URL = `${API_URL}/assets/`;
 
@@ -22,11 +27,11 @@ try {
     
     <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
       <div>
-        <h3 class="text-3xl font-black text-slate-900 uppercase tracking-tight">Profil <span class="text-[#004d2c]">Dosen</span></h3>
-        <p class="text-slate-500 mt-2 font-medium">Mengenal lebih dekat para tenaga pendidik Program Studi Teknik Informatika.</p>
+        <h3 class="text-3xl font-black text-slate-900 uppercase tracking-tight">{isEn ? 'Lecturer' : 'Profil'} <span class="text-[#004d2c]">{isEn ? 'Profile' : 'Dosen'}</span></h3>
+        <p class="text-slate-500 mt-2 font-medium">{isEn ? 'Get to know the educators of the Informatics Engineering Study Program.' : 'Mengenal lebih dekat para tenaga pendidik Program Studi Teknik Informatika.'}</p>
       </div>
       <div class="flex flex-wrap gap-2">
-        <span class="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-full text-xs font-bold border border-emerald-100 cursor-pointer hover:bg-emerald-100 transition">Semua Bidang</span>
+        <span class="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-full text-xs font-bold border border-emerald-100 cursor-pointer hover:bg-emerald-100 transition">{isEn ? 'All Fields' : 'Semua Bidang'}</span>
         <span class="px-4 py-2 bg-white text-slate-600 rounded-full text-xs font-bold border border-slate-200 cursor-pointer hover:bg-slate-50 transition">Data Science</span>
         <span class="px-4 py-2 bg-white text-slate-600 rounded-full text-xs font-bold border border-slate-200 cursor-pointer hover:bg-slate-50 transition">Software Engineering</span>
       </div>
@@ -36,7 +41,7 @@ try {
       
       {dosenData.length === 0 ? (
         <div class="col-span-full text-center py-10">
-          <p class="text-slate-500">Data dosen belum tersedia.</p>
+          <p class="text-slate-500">{isEn ? 'Lecturer data is not yet available.' : 'Data dosen belum tersedia.'}</p>
         </div>
       ) : (
         dosenData.map((dosen: any) => (
@@ -67,7 +72,7 @@ try {
                   </li>
                   <li class="flex items-center gap-3">
                     <span class="text-slate-400">📍</span> 
-                    <span>Fakultas Sains dan Teknologi</span>
+                    <span>{isEn ? 'Faculty of Science and Technology' : 'Fakultas Sains dan Teknologi'}</span>
                   </li>
                   <li class="flex items-center gap-3">
                     <span class="text-slate-400">✉️</span> 
@@ -81,10 +86,10 @@ try {
               </div>
 
               <a 
-                href={`/dosen/${dosen.slug}`} 
+                href={localizePath(`/dosen/${dosen.slug}`, lang)} 
                 class="block w-full text-center py-2.5 bg-slate-100 hover:bg-[#004d2c] hover:text-white text-slate-600 font-bold rounded-xl transition-colors duration-300"
               >
-                Lihat Detail
+                {isEn ? 'View Details' : 'Lihat Detail'}
               </a>
             </div>
 

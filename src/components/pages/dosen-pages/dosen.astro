@@ -1,11 +1,17 @@
+---
+import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+---
+
 <nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
     <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100">
         <li class="flex items-center">
-            <a href="/" class="flex items-center hover:text-green-600 transition-colors">
+            <a href={localizePath("/", lang)} class="flex items-center hover:text-green-600 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
-                Beranda
+                {t("bread.home")}
             </a>
         </li>
         <li class="text-gray-300">
@@ -14,8 +20,8 @@
             </svg>
         </li>
         <li>
-            <a href="/profil" class="hover:text-green-600 transition-colors">
-                Profil
+            <a href={localizePath("/profil", lang)} class="hover:text-green-600 transition-colors">
+                {t("bread.profil")}
             </a>
         </li>
         <li class="text-gray-300">
@@ -24,7 +30,7 @@
             </svg>
         </li>
         <li class="text-green-700 font-bold tracking-tight">
-            Dosen
+            {t("bread.dosen")}
         </li>
     </ol>
 </nav>
@@ -34,15 +40,15 @@
     <div class="max-w-4xl mx-auto text-center">
       
       <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">
-        Akademisi
+        {t("page.dosen.badge")}
       </span>
 
       <h1 class="text-4xl md:text-5xl font-black text-green-900 mb-8 leading-tight">
-        Dosen
+        {t("page.dosen.title")}
       </h1>
       
       <p class="text-lg text-gray-600 mb-12 leading-relaxed">
-        Prodi Teknik Informatika UIN Sultan Syarif Kasim Riau memiliki dosen yang berpengalaman dan kompeten dalam bidangnya yang mengajar dan melatih para mahasiswa agar menjadi lulusan yang berkualitas dan siap untuk menghadapi dunia kerja.
+        {t("page.dosen.desc")}
       </p>
 
       <div class="relative group">

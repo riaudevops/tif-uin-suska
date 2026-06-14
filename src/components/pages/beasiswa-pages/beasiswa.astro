@@ -1,5 +1,8 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
 const API_URL = import.meta.env.BASE_API_URL || 'http://localhost:8055';
 let items = [];
 try {
@@ -25,24 +28,24 @@ try {
 <Layout title="Beasiswa">
   <nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
     <ol class="flex items-center space-x-2 text-slate-500">
-      <li><a href="/" class="hover:text-emerald-700">Beranda</a></li>
+      <li><a href={localizePath('/', lang)} class="hover:text-emerald-700">{t("bread.home")}</a></li>
       <li class="text-slate-300">/</li>
-      <li><a href="/profil" class="hover:text-emerald-700">Profil</a></li>
+      <li><a href={localizePath('/profil', lang)} class="hover:text-emerald-700">{t("bread.profil")}</a></li>
       <li class="text-slate-300">/</li>
-      <li class="text-emerald-800 font-semibold italic">Beasiswa</li>
+      <li class="text-emerald-800 font-semibold italic">{t("page.beasiswa.title")}</li>
     </ol>
   </nav>
 
   <section class="max-w-7xl mx-auto px-6 py-12">
     <div class="text-center max-w-3xl mx-auto mb-8">
-      <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest inline-block">Program Akademik</span>
-      <h1 class="text-4xl font-black text-[#004d2c] mt-4">Beasiswa</h1>
-      <p class="text-slate-600 mt-3">Informasi beasiswa dan dukungan pembiayaan pendidikan. Konten dikelola melalui Directus.</p>
+      <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest inline-block">{t("page.beasiswa.badge")}</span>
+      <h1 class="text-4xl font-black text-[#004d2c] mt-4">{t("page.beasiswa.title")}</h1>
+      <p class="text-slate-600 mt-3">{t("page.beasiswa.desc")}</p>
     </div>
 
     {items.length === 0 ? (
       <div class="text-center py-20 bg-slate-50 rounded-2xl border border-slate-100">
-        <p class="text-slate-500">Belum ada pengumuman beasiswa. Tambahkan entri ke koleksi <code>beasiswa</code> di Directus.</p>
+        <p class="text-slate-500">{t("page.beasiswa.empty")}</p>
       </div>
     ) : (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -54,7 +57,7 @@ try {
               <p class="text-sm text-slate-500 mb-4 line-clamp-2">{item.excerpt}</p>
               <div class="flex items-center justify-between">
                 <span class="text-xs text-slate-400">{item.date}</span>
-                <a class="text-sm font-semibold text-[#004d2c]" href={`/beasiswa/${item.slug}`}>Selengkapnya</a>
+                <a class="text-sm font-semibold text-[#004d2c]" href={localizePath(`/beasiswa/${item.slug}`, lang)}>{t("common.detail")}</a>
               </div>
             </div>
           </article>
