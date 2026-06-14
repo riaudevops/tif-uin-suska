@@ -7,9 +7,12 @@ import News from "../components/pages/landing-pages/news.astro";
 import Center from "../components/pages/landing-pages/center.astro";
 import Fasilitas from "../components/pages/landing-pages/fasilitas.astro";
 import Kurikulum from "../components/pages/landing-pages/kurikulum.astro";
+import { getLocaleFromUrl } from "../lib/translations";
+
+const lang = getLocaleFromUrl(Astro);
 ---
 
-<Layout title="Beranda"> 
+<Layout title={lang === 'en' ? "Home" : "Beranda"}> 
     <HomeSlider />
     <Center />
     <Agenda />

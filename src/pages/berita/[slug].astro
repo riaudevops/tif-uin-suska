@@ -1,5 +1,9 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const isEn = lang === 'en';
 
 export const prerender = false;
 
@@ -49,7 +53,7 @@ if (!article) {
             >
                 <li class="flex items-center">
                     <a
-                        href="/"
+                        href={localizePath('/', lang)}
                         class="flex items-center hover:text-green-600 transition-colors"
                     >
                         <svg
@@ -66,7 +70,7 @@ if (!article) {
                                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                             ></path>
                         </svg>
-                        Beranda
+                        {t('nav.home')}
                     </a>
                 </li>
                 <li class="text-gray-300">
@@ -86,8 +90,8 @@ if (!article) {
                 </li>
                 <li>
                     <a
-                        href="/berita"
-                        class="hover:text-green-600 transition-colors">Berita</a
+                        href={localizePath('/berita', lang)}
+                        class="hover:text-green-600 transition-colors">{isEn ? 'News' : 'Berita'}</a
                     >
                 </li>
                 <li class="text-gray-300">
@@ -130,11 +134,11 @@ if (!article) {
                 class="text-sm text-slate-600 flex flex-col sm:flex-row sm:gap-4"
             >
                 <div>
-                    Dipublikasikan pada
+                    {isEn ? 'Published on' : 'Dipublikasikan pada'}
                     <span class="font-medium">
                         {
                             new Date(article.publish).toLocaleDateString(
-                                "id-ID",
+                                lang === 'en' ? "en-US" : "id-ID",
                                 {
                                     day: "numeric",
                                     month: "long",
@@ -146,7 +150,7 @@ if (!article) {
                 </div>
 
                 <div class="text-sm text-slate-600">
-                    <span class="text-slate-500">Ditulis oleh : </span>
+                    <span class="text-slate-500">{isEn ? 'Written by: ' : 'Ditulis oleh : '}</span>
                     <span class="font-semibold text-slate-800">
                         {article.author}
                     </span>
@@ -202,12 +206,12 @@ if (!article) {
         {
             related.length > 0 && (
                 <div class="mt-16">
-                    <h2 class="text-2xl font-bold mb-6">Berita Lainnya</h2>
+                    <h2 class="text-2xl font-bold mb-6">{isEn ? 'Other News' : 'Berita Lainnya'}</h2>
 
                     <div class="grid md:grid-cols-3 gap-6">
                         {related.map((item: any) => (
                             <a
-                                href={`/berita/${item.slug}`}
+                                href={localizePath(`/berita/${item.slug}`, lang)}
                                 class="group block bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
                             >
                                 {item.thumbnail && (

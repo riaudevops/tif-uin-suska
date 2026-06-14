@@ -1,17 +1,21 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const isEn = lang === 'en';
 ---
 
-<Layout title="404 - Halaman Tidak Ditemukan">
+<Layout title={isEn ? "404 - Page Not Found" : "404 - Halaman Tidak Ditemukan"}>
   <!-- Breadcrumbs -->
   <nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
     <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100 font-sans">
       <li class="flex items-center">
-        <a href="/" class="flex items-center hover:text-[#004d2c] transition-colors">
+        <a href={localizePath('/', lang)} class="flex items-center hover:text-[#004d2c] transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
           </svg>
-          Beranda
+          {t('nav.home')}
         </a>
       </li>
       <li class="text-gray-300">
@@ -20,7 +24,7 @@ import Layout from "@/layouts/Layout.astro";
         </svg>
       </li>
       <li class="text-[#004d2c] font-bold tracking-tight">
-        404 - Tidak Ditemukan
+        {isEn ? '404 - Not Found' : '404 - Tidak Ditemukan'}
       </li>
     </ol>
   </nav>
@@ -30,13 +34,13 @@ import Layout from "@/layouts/Layout.astro";
     <div class="container mx-auto px-6">
       <div class="max-w-4xl mx-auto text-center">
         <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block font-sans">
-          Kesalahan
+          {isEn ? 'Error' : 'Kesalahan'}
         </span>
         <h1 class="text-4xl md:text-5xl font-black text-[#004d2c] mb-6 leading-tight font-heading">
-          Halaman Tidak Ditemukan
+          {isEn ? 'Page Not Found' : 'Halaman Tidak Ditemukan'}
         </h1>
         <p class="text-lg text-gray-600 mb-8 leading-relaxed font-sans max-w-2xl mx-auto">
-          Maaf, halaman yang Anda cari tidak dapat ditemukan. Mungkin halaman telah dipindahkan, dihapus, atau URL yang Anda masukkan salah.
+          {isEn ? 'Sorry, the page you are looking for cannot be found. The page may have been moved, deleted, or the URL you entered is incorrect.' : 'Maaf, halaman yang Anda cari tidak dapat ditemukan. Mungkin halaman telah dipindahkan, dihapus, atau URL yang Anda masukkan salah.'}
         </p>
       </div>
     </div>
@@ -79,24 +83,24 @@ import Layout from "@/layouts/Layout.astro";
           </div>
 
           <h2 class="text-2xl md:text-3xl font-black mb-3 font-heading tracking-tight leading-tight text-white drop-shadow-sm">
-            Oops! Halaman Hilang
+            {isEn ? 'Oops! Page Missing' : 'Oops! Halaman Hilang'}
           </h2>
           <div class="w-12 h-1 bg-yellow-400 rounded-full mb-5"></div>
           <p class="text-sm md:text-base text-blue-100/80 leading-relaxed font-sans font-medium mb-8">
-            Halaman yang Anda tuju tidak ada atau sudah tidak tersedia. Silakan kembali ke beranda atau gunakan navigasi di atas untuk menemukan informasi yang Anda butuhkan.
+            {isEn ? 'The page you are looking for does not exist or is no longer available. Please go back to the homepage or use the navigation above to find the information you need.' : 'Halaman yang Anda tuju tidak ada atau sudah tidak tersedia. Silakan kembali ke beranda atau gunakan navigasi di atas untuk menemukan informasi yang Anda butuhkan.'}
           </p>
 
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row gap-3">
             <a
-              href="/"
+              href={localizePath('/', lang)}
               id="btn-back-home"
               class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#004d2c] hover:bg-[#006b3c] text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg font-sans text-sm"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
-              Kembali ke Beranda
+              {isEn ? 'Back to Home' : 'Kembali ke Beranda'}
             </a>
             <button
               onclick="history.back()"
@@ -106,7 +110,7 @@ import Layout from "@/layouts/Layout.astro";
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
               </svg>
-              Halaman Sebelumnya
+              {isEn ? 'Previous Page' : 'Halaman Sebelumnya'}
             </button>
           </div>
         </div>
@@ -115,14 +119,14 @@ import Layout from "@/layouts/Layout.astro";
 
       <!-- Quick Links -->
       <div class="mt-12 text-center">
-        <p class="text-sm text-gray-500 font-sans mb-6 font-medium">Atau kunjungi halaman populer berikut:</p>
+        <p class="text-sm text-gray-500 font-sans mb-6 font-medium">{isEn ? 'Or visit the following popular pages:' : 'Atau kunjungi halaman populer berikut:'}</p>
         <div class="flex flex-wrap justify-center gap-3">
           {[
-            { href: "/profil-pages", label: "Profil Prodi" },
-            { href: "/kurikulum-pages", label: "Kurikulum" },
-            { href: "/dosen-pages", label: "Dosen" },
-            { href: "/laboratorium-pages", label: "Laboratorium" },
-            { href: "/berita", label: "Berita" },
+            { href: localizePath('/profil-pages', lang), label: isEn ? 'Study Program Profile' : 'Profil Prodi' },
+            { href: localizePath('/kurikulum-pages', lang), label: isEn ? 'Curriculum' : 'Kurikulum' },
+            { href: localizePath('/dosen-pages', lang), label: isEn ? 'Lecturers' : 'Dosen' },
+            { href: localizePath('/laboratorium-pages', lang), label: isEn ? 'Laboratory' : 'Laboratorium' },
+            { href: localizePath('/berita', lang), label: isEn ? 'News' : 'Berita' },
           ].map((link) => (
             <a
               href={link.href}

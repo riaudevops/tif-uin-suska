@@ -1,3 +1,10 @@
+---
+import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const isEn = lang === 'en';
+---
+
 <nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
     <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100">
         <li class="flex items-center">
@@ -5,7 +12,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
-                Beranda
+                {t("bread.home")}
             </a>
         </li>
         <li class="text-gray-300">
@@ -14,8 +21,8 @@
             </svg>
         </li>
         <li>
-            <a href="/profil" class="hover:text-green-600 transition-colors">
-                Profil
+            <a href={localizePath('/profil', lang)} class="hover:text-green-600 transition-colors">
+                {t("bread.profil")}
             </a>
         </li>
         <li class="text-gray-300">
@@ -24,7 +31,7 @@
             </svg>
         </li>
         <li class="text-green-700 font-bold tracking-tight">
-            Visi, Misi, Tujuan & Strategi
+            {isEn ? "Vision, Mission, Goals & Strategy" : "Visi, Misi, Tujuan & Strategi"}
         </li>
     </ol>
 </nav>
@@ -41,13 +48,13 @@
                     The Vision
                 </span>
                 <h1 class="text-4xl md:text-5xl font-black text-white leading-tight">
-                    Visi <br class="hidden md:block">Keilmuan
+                    {isEn ? "Scientific" : "Visi"} <br class="hidden md:block">{isEn ? "Vision" : "Keilmuan"}
                 </h1>
             </div>
 
             <div class="flex-1 border-t md:border-t-0 md:border-l border-yellow-400/40 pt-8 md:pt-0 md:pl-12">
                 <p class="text-green-50 text-xl md:text-2xl leading-relaxed font-light">
-                    "Menjadi Program Studi Teknik Informatika yang <span class="font-bold text-white underline decoration-yellow-400 underline-offset-4">unggul</span> dalam bidang <span class="font-bold text-white">Data Analytics</span> dan <span class="font-bold text-white">Software Development</span> yang mengintegrasikan <span class="italic text-green-200">Informatika dan Islam</span> di Indonesia pada tahun 2025."
+                    {isEn ? '"To become an Informatics Engineering study program that is ' : '"Menjadi Program Studi Teknik Informatika yang '}<span class="font-bold text-white underline decoration-yellow-400 underline-offset-4">{isEn ? "excellent" : "unggul"}</span>{isEn ? ' in the field of ' : ' dalam bidang '}<span class="font-bold text-white">{isEn ? "Data Analytics" : "Data Analytics"}</span>{isEn ? ' and ' : ' dan '}<span class="font-bold text-white">{isEn ? "Software Development" : "Software Development"}</span>{isEn ? ' integrating ' : ' yang mengintegrasikan '}<span class="italic text-green-200">{isEn ? "Informatics and Islam" : "Informatika dan Islam"}</span>{isEn ? ' in Indonesia by 2025."' : ' di Indonesia pada tahun 2025."'}
                 </p>
             </div>
         </div>

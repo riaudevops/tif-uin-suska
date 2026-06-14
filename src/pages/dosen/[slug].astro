@@ -1,5 +1,8 @@
 ---
 export const prerender = true; 
+import { getLocaleFromUrl } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const isEn = lang === 'en';
 
 type DosenPagePath = {
   params: { slug: string };
@@ -42,7 +45,7 @@ const ASSET_URL = `${API_URL}/assets/`;
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <title>{dosen.nama} | Teknik Informatika</title>
+  <title>{dosen.nama} | {isEn ? 'Informatics Engineering' : 'Teknik Informatika'}</title>
   <link rel="stylesheet" href="/src/styles/global.css" />
 </head>
 <body class="bg-slate-50 min-h-screen">
@@ -71,10 +74,10 @@ const ASSET_URL = `${API_URL}/assets/`;
 
         <div class="flex-1 w-full text-center md:text-left">
           <h1 class="text-4xl font-black text-slate-900">{dosen.nama}</h1>
-          <p class="text-emerald-700 font-bold text-lg mt-1">{dosen.jabatan || 'Dosen Pengajar'}</p>
+          <p class="text-emerald-700 font-bold text-lg mt-1">{dosen.jabatan || (isEn ? 'Teaching Staff' : 'Dosen Pengajar')}</p>
           
           <div class="mt-6 p-4 bg-emerald-50 rounded-xl">
-            <p class="font-bold text-emerald-800 text-sm mb-2">Pendidikan:</p>
+            <p class="font-bold text-emerald-800 text-sm mb-2">{isEn ? 'Education:' : 'Pendidikan:'}</p>
             <div class="text-slate-600 text-base" set:html={dosen.pendidikan?.replace(/\n/g, '<br/>') || '-'}></div>
           </div>
         </div>
@@ -82,7 +85,7 @@ const ASSET_URL = `${API_URL}/assets/`;
 
       <div class="grid md:grid-cols-2 gap-8 mt-12">
         <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-          <h3 class="font-black text-slate-800 text-xl mb-6">Informasi Akademik</h3>
+          <h3 class="font-black text-slate-800 text-xl mb-6">{isEn ? 'Academic Information' : 'Informasi Akademik'}</h3>
           <div class="space-y-6">
              <div>
                <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest">NIP</span>
@@ -96,7 +99,7 @@ const ASSET_URL = `${API_URL}/assets/`;
         </div>
 
         <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-          <h3 class="font-black text-slate-800 text-xl mb-6">Publikasi & Profil</h3>
+          <h3 class="font-black text-slate-800 text-xl mb-6">{isEn ? 'Publications & Profile' : 'Publikasi & Profil'}</h3>
           <div class="space-y-4">
             <a href={dosen.link_scholar || '#'} target="_blank" class="block p-4 rounded-xl bg-slate-50 hover:bg-emerald-50 transition border border-slate-100 text-slate-700 font-bold text-sm">
                🎓 Google Scholar
