@@ -1,3 +1,10 @@
+---
+import { getLocaleFromUrl } from "../../../lib/translations";
+
+const lang = getLocaleFromUrl(Astro);
+const isEn = lang === 'en';
+---
+
 <section class="relative">
   <div class="relative overflow-hidden shadow-2xl">
 
@@ -20,10 +27,10 @@
 
           <div>
             <h1 class="text-2xl md:text-3xl font-bold uppercase tracking-wide text-white leading-tight">
-              Teknik Informatika
+              {isEn ? "Informatics Engineering" : "Teknik Informatika"}
             </h1>
             <h2 class="text-lg md:text-xl font-light text-yellow-500 uppercase">
-              Fakultas Sains dan Teknologi
+              {isEn ? "Faculty of Science and Technology" : "Fakultas Sains dan Teknologi"}
             </h2>
           </div>
         </div>
@@ -40,21 +47,21 @@
       <!-- RIGHT : DESKRIPSI -->
       <div class="text-white max-w-xl">
         <p class="text-xs font-extrabold uppercase tracking-[0.25em] text-yellow-300">
-          Informasi Program Studi
+          {isEn ? "Study Program Information" : "Informasi Program Studi"}
         </p>
 
         <h3 class="text-3xl font-bold leading-snug">
-          Teknik Informatika
+          {isEn ? "Informatics Engineering" : "Teknik Informatika"}
         </h3>
 
-        <p class="text-white-400 leading-relaxed">
-          Program Studi Teknik Informatika UIN Sultan Syarif Kasim Riau
-          mengintegrasikan keilmuan teknologi informasi dengan nilai-nilai keislaman.
-          Fokus kami adalah mencetak lulusan yang unggul secara akademik, adaptif
-          terhadap perkembangan teknologi, serta beretika dan berintegritas.
+        <p class="text-white-400 leading-relaxed mt-2 text-sm opacity-90">
+          {isEn 
+            ? "The Informatics Engineering Study Program of UIN Sultan Syarif Kasim Riau integrates information technology sciences with Islamic values. Our focus is to produce graduates who are academically excellent, adaptive to technological developments, ethical, and possessing integrity."
+            : "Program Studi Teknik Informatika UIN Sultan Syarif Kasim Riau mengintegrasikan keilmuan teknologi informasi dengan nilai-nilai keislaman. Fokus kami adalah mencetak lulusan yang unggul secara akademik, adaptif terhadap perkembangan teknologi, serta beretika dan berintegritas."
+          }
         </p>
         <button class="mt-6 px-6 py-3 bg-yellow-400 text-green-900 font-semibold rounded-full shadow-lg shadow-yellow-900/30 hover:bg-yellow-500 hover:shadow-xl hover:shadow-yellow-900/40 transition-all duration-300">
-          Learn More
+          {isEn ? "Learn More" : "Selengkapnya"}
         </button>
       </div>
 
@@ -71,83 +78,83 @@
         <div class="mb-8">
           <h3 class="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
             <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-            Sistem UIN
+            {isEn ? "UIN Systems" : "Sistem UIN"}
           </h3>
-          <p class="text-sm text-emerald-200 mt-2">Layanan akademik terpadu tingkat universitas.</p>
+          <p class="text-sm text-emerald-200 mt-2">{isEn ? "Integrated academic services at the university level." : "Layanan akademik terpadu tingkat universitas."}</p>
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
           
           <a href="https://sireg.uin-suska.ac.id/" class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-emerald-900/40 hover:border-emerald-400/50 transition duration-300 flex flex-col">
             <h4 class="font-bold text-white mb-2 text-lg">SIREG</h4>
-            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">Sistem layanan akademik terpadu untuk mahasiswa.</p>
+            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{isEn ? "Integrated academic service system for students." : "Sistem layanan akademik terpadu untuk mahasiswa."}</p>
           </a>
           
           <a href="https://elearning.uin-suska.ac.id/" class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-emerald-900/40 hover:border-emerald-400/50 transition duration-300 flex flex-col">
             <h4 class="font-bold text-white mb-2 text-lg">E-Learning</h4>
-            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">Platform kelas virtual untuk tugas dan materi daring.</p>
+            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{isEn ? "Virtual classroom platform for online assignments and materials." : "Platform kelas virtual untuk tugas dan materi daring."}</p>
           </a>
           
           <a href="https://iraisenew.uin-suska.ac.id/" class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-emerald-900/40 hover:border-emerald-400/50 transition duration-300 flex flex-col">
             <h4 class="font-bold text-white mb-2 text-lg">IRaise</h4>
-            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">Sistem informasi untuk dosen dalam mengelola data akademik.</p>
+            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{isEn ? "Information system for lecturers to manage academic data." : "Sistem informasi untuk dosen dalam mengelola data akademik."}</p>
           </a>
-
+ 
           <a href="https://kkn.uin-suska.ac.id/" class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-emerald-900/40 hover:border-emerald-400/50 transition duration-300 flex flex-col">
             <h4 class="font-bold text-white mb-2 text-lg">KKN</h4>
-            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">Program kerja nyata untuk mahasiswa baru.</p>
+            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{isEn ? "Community service program for students." : "Program kerja nyata untuk mahasiswa baru."}</p>
           </a>
-
+ 
         </div>
       </div>
-
-
+ 
+ 
       <div class="flex flex-col">
         <div class="mb-8">
           <h3 class="text-2xl font-black text-yellow-400 uppercase tracking-tight flex items-center gap-3">
             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-            Sistem TIF
+            {isEn ? "TIF Systems" : "Sistem TIF"}
           </h3>
-          <p class="text-sm text-emerald-200 mt-2">Layanan khusus untuk mahasiswa Teknik Informatika.</p>
+          <p class="text-sm text-emerald-200 mt-2">{isEn ? "Specialized services for Informatics Engineering students." : "Layanan khusus untuk mahasiswa Teknik Informatika."}</p>
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
           
           <a href="https://dashboard.tif.uin-suska.ac.id/" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
             <h4 class="font-bold text-white mb-2 text-lg">Dashboard TIF</h4>
-            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">Aplikasi setoran murajaah dan pengelolaan kegiatan akademik.</p>
+            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{isEn ? "Application for murajaah deposits and academic activities management." : "Aplikasi setoran murajaah dan pengelolaan kegiatan akademik."}</p>
           </a>
           
           <a href="https://hima.tif.uin-suska.ac.id/" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
             <h4 class="font-bold text-white mb-2 text-lg">HIMATIF</h4>
-            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">Sistem layanan ketiga untuk mahasiswa Teknik Informatika.</p>
+            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{isEn ? "HIMATIF student portal and management services." : "Sistem layanan ketiga untuk mahasiswa Teknik Informatika."}</p>
           </a>
           
           <a href="https://dashboard-hima.tif.uin-suska.ac.id/" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
             <h4 class="font-bold text-white mb-2 text-lg">Dashboard HIMATIF</h4>
             <p class="text-xs text-emerald-100/80 leading-relaxed flex-1"></p>
           </a>
-
+ 
           <a href="https://play.google.com/store/apps/details?id=uinsuska.tif.dashboard.student&pcampaignid=web_share" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
-            <h4 class="font-bold text-white mb-2 text-lg">IntegraTIF Mahasiswa</h4>
-            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">Aplikasi setoran murajaah dan pengelolaan kegiatan akademik.</p>
+            <h4 class="font-bold text-white mb-2 text-lg">{isEn ? "IntegraTIF Student" : "IntegraTIF Mahasiswa"}</h4>
+            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{isEn ? "Application for murajaah deposits and academic activities management." : "Aplikasi setoran murajaah dan pengelolaan kegiatan akademik."}</p>
           </a>
           
           <a href="https://play.google.com/store/apps/details?id=uinsuska.tif.dashboard.staff&pcampaignid=web_share" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
-            <h4 class="font-bold text-white mb-2 text-lg">IntegraTIF Dosen</h4>
-            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">Aplikasi setoran murajaah dan pengelolaan kegiatan akademik.</p>
+            <h4 class="font-bold text-white mb-2 text-lg">{isEn ? "IntegraTIF Lecturer" : "IntegraTIF Dosen"}</h4>
+            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{isEn ? "Application for murajaah deposits and academic activities management." : "Aplikasi setoran murajaah dan pengelolaan kegiatan akademik."}</p>
           </a>
-
+ 
           <div class="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-gradient-to-r from-yellow-50 to-amber-100 border border-amber-200 shadow-sm">
             <div class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></div>
             <span class="text-sm font-semibold text-amber-800 tracking-wide">
-              Coming Soon APK IntegraTIF Versi iOS
+              {isEn ? "IntegraTIF App Coming Soon for iOS" : "Coming Soon APK IntegraTIF Versi iOS"}
             </span>
           </div>
-
+ 
         </div>
       </div>
-
+ 
     </div>
   </div>
 </section>

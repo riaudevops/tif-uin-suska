@@ -1,11 +1,18 @@
+---
+import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const isEn = lang === 'en';
+---
+
 <nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
     <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100">
         <li class="flex items-center">
-            <a href="/" class="flex items-center hover:text-green-600 transition-colors">
+            <a href={localizePath('/', lang)} class="flex items-center hover:text-green-600 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
-                Beranda
+                {t("bread.home")}
             </a>
         </li>
         <li class="text-gray-300">
@@ -14,8 +21,8 @@
             </svg>
         </li>
         <li>
-            <a href="/profil" class="hover:text-green-600 transition-colors">
-                Akademik
+            <a href={localizePath('/profil', lang)} class="hover:text-green-600 transition-colors">
+                {t("bread.akademik")}
             </a>
         </li>
         <li class="text-gray-300">
@@ -24,7 +31,7 @@
             </svg>
         </li>
         <li class="text-green-700 font-bold tracking-tight">
-            Labs Squad
+            {t("bread.labssquad")}
         </li>
     </ol>
 </nav>
@@ -33,7 +40,7 @@
     
     <div class="text-center max-w-3xl mx-auto mb-16">
         <span class="px-4 py-1.5 bg-green-50 text-green-700 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">
-            Divisi Riset & Pengembangan
+            {isEn ? "Research & Development Division" : "Divisi Riset & Pengembangan"}
         </span>
         
         <h1 class="text-4xl md:text-6xl font-black text-[#004d2c] mb-6 tracking-tight">
@@ -41,7 +48,7 @@
         </h1>
         
         <p class="text-lg text-slate-600 leading-relaxed">
-            Ekosistem kolaboratif mahasiswa Teknik Informatika UIN Suska Riau yang berfokus pada inovasi teknologi melalui berbagai bidang spesialisasi.
+            {isEn ? "A collaborative ecosystem of Informatics Engineering students at UIN Suska Riau focused on technological innovation through various specialization areas." : "Ekosistem kolaboratif mahasiswa Teknik Informatika UIN Suska Riau yang berfokus pada inovasi teknologi melalui berbagai bidang spesialisasi."}
         </p>
     </div>
 
@@ -53,11 +60,11 @@
             <div class="mb-auto">
                 <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-[10px] font-bold uppercase tracking-wider mb-4 inline-block border border-blue-100">Cloud & Server</span>
                 <h3 class="text-2xl font-bold text-slate-800 mb-3 group-hover:text-blue-600 transition-colors">Riau DevOps (RDO)</h3>
-                <p class="text-slate-500 text-sm leading-relaxed mb-6">Fokus pada kultur kolaborasi antara pengembangan perangkat lunak (Dev) dan operasi TI (Ops), implementasi CI/CD, cloud computing, dan infrastruktur server modern.</p>
+                <p class="text-slate-500 text-sm leading-relaxed mb-6">{isEn ? "Focused on collaboration culture between software development (Dev) and IT operations (Ops), CI/CD implementation, cloud computing, and modern server infrastructure." : "Fokus pada kultur kolaborasi antara pengembangan perangkat lunak (Dev) dan operasi TI (Ops), implementasi CI/CD, cloud computing, dan infrastruktur server modern."}</p>
             </div>
             
             <a href="#" class="inline-flex items-center text-sm font-bold text-[#004d2c] hover:text-[#05673f] mt-4">
-                Lihat Kegiatan <svg class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                {t("common.viewall")} <svg class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </a>
         </div>
 
@@ -67,11 +74,11 @@
             <div class="mb-auto">
                 <span class="px-3 py-1 bg-red-50 text-red-600 rounded-lg text-[10px] font-bold uppercase tracking-wider mb-4 inline-block border border-red-100">Cyber Security</span>
                 <h3 class="text-2xl font-bold text-slate-800 mb-3 group-hover:text-red-600 transition-colors">Aliansi Siber (ALISI)</h3>
-                <p class="text-slate-500 text-sm leading-relaxed mb-6">Mempelajari teknik keamanan jaringan, penetrasi sistem (ethical hacking), analisis malware, dan strategi pertahanan siber dari berbagai ancaman digital.</p>
+                <p class="text-slate-500 text-sm leading-relaxed mb-6">{isEn ? "Studying network security techniques, system penetration (ethical hacking), malware analysis, and cyber defense strategies against various digital threats." : "Mempelajari teknik keamanan jaringan, penetrasi sistem (ethical hacking), analisis malware, dan strategi pertahanan siber dari berbagai ancaman digital."}</p>
             </div>
             
             <a href="#" class="inline-flex items-center text-sm font-bold text-[#004d2c] hover:text-[#05673f] mt-4">
-                Lihat Kegiatan <svg class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                {t("common.viewall")} <svg class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </a>
         </div>
 
@@ -81,11 +88,11 @@
             <div class="mb-auto">
                 <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-lg text-[10px] font-bold uppercase tracking-wider mb-4 inline-block border border-purple-100">UI/UX Design</span>
                 <h3 class="text-2xl font-bold text-slate-800 mb-3 group-hover:text-purple-600 transition-colors">Figma Squad</h3>
-                <p class="text-slate-500 text-sm leading-relaxed mb-6">Wadah kreatif bagi desainer antarmuka (UI) dan pengalaman pengguna (UX) untuk menciptakan produk digital yang estetis, interaktif, dan berpusat pada pengguna.</p>
+                <p class="text-slate-500 text-sm leading-relaxed mb-6">{isEn ? "A creative platform for UI and UX designers to create aesthetic, interactive, and user-centered digital products." : "Wadah kreatif bagi desainer antarmuka (UI) dan pengalaman pengguna (UX) untuk menciptakan produk digital yang estetis, interaktif, dan berpusat pada pengguna."}</p>
             </div>
             
             <a href="#" class="inline-flex items-center text-sm font-bold text-[#004d2c] hover:text-[#05673f] mt-4">
-                Lihat Kegiatan <svg class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                {t("common.viewall")} <svg class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </a>
         </div>
 
@@ -95,11 +102,11 @@
             <div class="mb-auto">
                 <span class="px-3 py-1 bg-orange-50 text-orange-600 rounded-lg text-[10px] font-bold uppercase tracking-wider mb-4 inline-block border border-orange-100">AI & Internet of Things</span>
                 <h3 class="text-2xl font-bold text-slate-800 mb-3 group-hover:text-orange-600 transition-colors">AIOT</h3>
-                <p class="text-slate-500 text-sm leading-relaxed mb-6">Penelitian dan pengembangan teknologi masa depan yang mengintegrasikan kecerdasan buatan (Artificial Intelligence) dengan perangkat pintar (Internet of Things).</p>
+                <p class="text-slate-500 text-sm leading-relaxed mb-6">{isEn ? "Research and development of future technologies integrating Artificial Intelligence with Internet of Things devices." : "Penelitian dan pengembangan teknologi masa depan yang mengintegrasikan kecerdasan buatan (Artificial Intelligence) dengan perangkat pintar (Internet of Things)."}</p>
             </div>
             
             <a href="#" class="inline-flex items-center text-sm font-bold text-[#004d2c] hover:text-[#05673f] mt-4">
-                Lihat Kegiatan <svg class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                {t("common.viewall")} <svg class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </a>
         </div>
 
