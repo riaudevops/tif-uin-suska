@@ -1,0 +1,93 @@
+---
+import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const isEn = lang === 'en';
+
+const API_URL = import.meta.env.BASE_API_URL || 'http://localhost:8055';
+let aiorcInfo: any = null;
+
+try {
+  const res = await fetch(`${API_URL}/items/aiorc_info?limit=1`, { cache: 'no-store' });
+  if (res.ok) {
+    const json = await res.json();
+    if (json.data && json.data.length > 0) {
+      aiorcInfo = json.data[0];
+    }
+  }
+} catch (e) {
+  // Fallback
+}
+
+const mission = aiorcInfo?.mission_en && isEn
+  ? aiorcInfo.mission_en
+  : aiorcInfo?.mission
+  ?? (isEn
+    ? "Become a research center for lecturers and students in the Informatics Engineering Department with a focus on areas of expertise in Artificial Intelligence."
+    : "Menjadi pusat penelitian bagi dosen dan mahasiswa di Program Studi Teknik Informatika dengan fokus pada bidang keahlian Kecerdasan Buatan.");
+
+const vision = aiorcInfo?.vision_en && isEn
+  ? aiorcInfo.vision_en
+  : aiorcInfo?.vision
+  ?? (isEn
+    ? "AIORC is dedicated to being a center of researchers and innovators in Artificial Intelligence and Optimization at the national and international levels."
+    : "AIORC berdedikasi untuk menjadi pusat peneliti dan inovator di bidang Kecerdasan Buatan dan Optimasi di tingkat nasional maupun internasional.");
+---
+
+<section data-aos="fade-up" class="py-16 relative overflow-hidden max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+
+        <!-- Mission Card -->
+        <div class="group bg-white p-10 rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-fade-up delay-1">
+            <div class="w-14 h-14 bg-emerald-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-emerald-200 group-hover:rotate-6 transition-transform">
+                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+            </div>
+            <h3 class="text-xs font-bold text-amber-500 uppercase tracking-widest mb-2">
+                {isEn ? "Our Mission" : "Misi Kami"}
+            </h3>
+            <h4 class="text-2xl font-bold text-slate-900 mb-4">
+                {isEn ? "Mission" : "Misi"}
+            </h4>
+            <p class="text-slate-500 leading-relaxed text-lg">{mission}</p>
+        </div>
+
+        <!-- Vision Card -->
+        <div class="group bg-slate-900 p-10 rounded-3xl border border-slate-800 shadow-xl hover:shadow-emerald-900/20 hover:-translate-y-2 transition-all duration-500 animate-fade-up delay-2">
+            <div class="w-14 h-14 bg-amber-400 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-amber-900/20 group-hover:-rotate-6 transition-transform">
+                <svg class="w-7 h-7 text-emerald-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+            </div>
+            <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-2">
+                {isEn ? "Our Vision" : "Visi Kami"}
+            </h3>
+            <h4 class="text-2xl font-bold text-white mb-4">
+                {isEn ? "Vision" : "Visi"}
+            </h4>
+            <p class="text-slate-400 leading-relaxed text-lg">{vision}</p>
+        </div>
+
+    </div>
+
+    <!-- Research Focus Areas -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+        {[
+            { icon: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z", label: isEn ? "Machine Learning" : "Machine Learning" },
+            { icon: "M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4", label: isEn ? "Data Mining" : "Data Mining" },
+            { icon: "M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z", label: isEn ? "NLP" : "NLP" },
+            { icon: "M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z", label: isEn ? "Computer Vision" : "Computer Vision" },
+        ].map((item) => (
+            <div class="group bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg hover:border-emerald-200 transition-all duration-300 text-center animate-fade-up">
+                <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-emerald-100 transition-colors">
+                    <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={item.icon} />
+                    </svg>
+                </div>
+                <p class="text-sm font-bold text-slate-700">{item.label}</p>
+            </div>
+        ))}
+    </div>
+</section>

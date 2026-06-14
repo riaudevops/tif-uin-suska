@@ -1,0 +1,142 @@
+---
+import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const isEn = lang === 'en';
+
+const API_URL = import.meta.env.BASE_API_URL || 'http://localhost:8055';
+let researcherData: any[] = [];
+
+// Default fallback researchers (from original AIORC page)
+const fallbackResearchers = [
+  { name: "Dr.Alwis Nazir, M.Kom", research: "Datamining and Medical Information Science" },
+  { name: "Jasril, S.Si, M.Sc", research: "Natural Language Processing, Computer Vision, Image Processing, Information Retrieval and Soft Computing" },
+  { name: "Fitri Wulandari, S.Si, M.Kom", research: "Expert System, Decision Support System, Natural Language Processing, Soft Computing and Information Retrieval" },
+  { name: "Lestari Handayani, ST, M.Kom", research: "Natural Language Processing, Computer Vision, Image Processing, Information Retrieval and Soft Computing" },
+  { name: "DR. Rahmad Kurniawan, S.T., M.I.T.", research: "Machine learning, Expert System, Decision Support System, Data Mining & Optimization, Big Data, Data Warehouse and Intelligent System" },
+  { name: "Suwanto Sanjaya, S.T., M.Kom", research: "Image Processing, Database, Information Retrieval, Ontology and Semantic" },
+  { name: "Dr. Elin Khaerani, ST, M.Kom", research: "Expert System, Decision Support System and Soft Computing" },
+  { name: "Novi Yanti, ST, M.Kom", research: "Expert System, Decision Support System and Soft Computing" },
+  { name: "Elvi Budianita, ST, M.Cs", research: "Expert System, Decision Support System and Soft Computing" },
+  { name: "Iis Afrianty, ST, M.Sc", research: "Expert System, Artificial Neural Network, Decision Support System and Soft Computing" },
+  { name: "Siska Kurnia Gusti, M.Sc", research: "Expert System, Decision Support System and Soft Computing" },
+  { name: "Febi Yanto, M.Kom", research: "Image Processing, Cryptography, Digital Systems and Robotic" },
+  { name: "Fadila Syafria, ST, M.Kom", research: "Expert System, Decision Support System and Soft Computing" },
+  { name: "Surya Agustian, ST, M.Kom", research: "Expert System, Decision Support System and Soft Computing" },
+  { name: "Fitri Insani, ST, M.Kom", research: "Expert System, Decision Support System and Soft Computing" },
+];
+
+// Try to fetch from Directus
+try {
+  const res = await fetch(`${API_URL}/items/aiorc_researchers?sort=sort_order`, { cache: 'no-store' });
+  if (res.ok) {
+    const json = await res.json();
+    if (json.data && json.data.length > 0) {
+      researcherData = json.data.map((item: any) => ({
+        name: item.name || item.nama,
+        research: isEn ? (item.research_interest_en || item.research_interest || item.research) : (item.research_interest || item.research),
+        photo: item.photo,
+      }));
+    }
+  }
+} catch (e) {
+  // Use fallback
+}
+
+// Use fallback if no data from Directus
+if (researcherData.length === 0) {
+  researcherData = fallbackResearchers;
+}
+---
+
+<section data-aos="fade-up" class="overflow-hidden py-24 relative">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Section Header -->
+    <div class="flex items-center gap-4 mb-4">
+      <div class="h-1 w-12 bg-emerald-600 rounded-full"></div>
+      <span class="text-xs font-bold tracking-[0.4em] text-emerald-700 uppercase">
+        {isEn ? "Research Team" : "Tim Peneliti"}
+      </span>
+    </div>
+    <h2 data-aos="fade-up" class="text-3xl md:text-5xl font-black text-slate-900 tracking-tight mb-2">
+      {isEn ? "Researcher" : "Peneliti"}
+    </h2>
+    <p class="text-slate-500 text-lg mb-10 max-w-2xl">
+      {isEn
+        ? "Meet the researchers and their areas of expertise in Artificial Intelligence and Optimization."
+        : "Kenali para peneliti dan bidang keahlian mereka dalam Kecerdasan Buatan dan Optimasi."}
+    </p>
+
+    <!-- Table -->
+    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 overflow-hidden border border-slate-100">
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-separate border-spacing-0">
+          <thead>
+            <tr class="bg-[#004d2c] text-white">
+              <th class="py-5 px-6 font-bold uppercase text-[10px] tracking-[0.2em] text-center w-16 border-b border-white/10">No</th>
+              <th class="py-5 px-6 font-bold uppercase text-[10px] tracking-[0.2em] border-b border-white/10">{isEn ? "Researcher" : "Peneliti"}</th>
+              <th class="py-5 px-6 font-bold uppercase text-[10px] tracking-[0.2em] border-b border-white/10">{isEn ? "Research Interest" : "Bidang Riset (Research Interest)"}</th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y divide-slate-100">
+            {researcherData.map((item: any, index: number) => {
+              const researchItems = item.research ? item.research.split(/[,;]/).map((r: string) => r.trim()).filter(Boolean) : [];
+              return (
+                <tr class="hover:bg-emerald-50/40 transition-all duration-300 group">
+                  <td class="py-5 px-6 text-center text-slate-400 font-mono text-xs">{index + 1}</td>
+                  <td class="py-5 px-6">
+                    <div class="flex items-center gap-4">
+                      {item.photo ? (
+                        <img
+                          src={`${API_URL}/assets/${item.photo}`}
+                          alt={item.name}
+                          class="shrink-0 w-10 h-10 rounded-xl object-cover border border-emerald-200/50"
+                        />
+                      ) : (
+                        <div class="shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-100 to-slate-100 flex items-center justify-center text-xs font-black text-emerald-700 border border-emerald-200/50 uppercase">
+                          {item.name?.charAt(0) || "?"}
+                        </div>
+                      )}
+                      <p class="text-slate-800 font-bold text-sm leading-none group-hover:text-emerald-700 transition-colors">
+                        {item.name}
+                      </p>
+                    </div>
+                  </td>
+                  <td class="py-5 px-6">
+                    <div class="flex flex-wrap gap-2">
+                      {researchItems.length > 0 ? (
+                        researchItems.map((r: string) => (
+                          <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[11px] font-medium border border-slate-200 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 transition-colors">
+                            {r}
+                          </span>
+                        ))
+                      ) : (
+                        <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[11px] font-medium border border-slate-200">
+                          {item.research || "—"}
+                        </span>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="bg-slate-50/80 p-5 border-t border-slate-100 flex justify-between items-center">
+        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+          Total <span class="text-emerald-600">{researcherData.length}</span> {isEn ? "Researchers" : "Peneliti"}
+        </p>
+        <div class="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-slate-300">
+          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z"/></svg>
+          AIORC Research DB
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
