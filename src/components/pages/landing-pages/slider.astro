@@ -1,3 +1,8 @@
+---
+import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+---
 <section class="relative h-screen w-full pt-[115px] overflow-hidden">
   <div id="slides" class="flex h-full w-full transition-transform duration-700 ease-in-out">
  
@@ -7,30 +12,28 @@
         <div class="absolute inset-0 bg-gradient-to-r from-green-900/80 via-green-800/60 to-transparent z-10"></div>
           <div class="slide-content relative z-20 max-w-4xl text-center px-6">
           <span class="inline-block px-5 py-1.5 rounded-full bg-yellow-100 text-yellow-800 border border-yellow-300 text-sm font-semibold">
-            Program Studi Teknik Informatika
+            {t("hero.badge")}
           </span>
     
           <h1 class="mt-6 text-3xl md:text-5xl font-bold text-white">
-            Selamat Datang di
+            {lang === 'en' ? "Welcome to" : "Selamat Datang di"}
             <span class="block text-yellow-400 mt-2">
-              Teknik Informatika UIN Suska Riau
+              {lang === 'en' ? "Informatics Engineering UIN Suska Riau" : "Teknik Informatika UIN Suska Riau"}
             </span>
           </h1>
     
           <p class="mt-6 text-gray-100 text-lg max-w-3xl mx-auto leading-relaxed">
-            Teknik Informatika UIN Sultan Syarif Kasim Riau berkomitmen
-            membangun sumber daya manusia yang kompeten, inovatif, 
-            serta berdaya saing di era digital.
+            {t("hero.desc1")}
           </p>
     
           <div class="mt-10 flex justify-center gap-4">
-            <a href="/profil-pages/sejarah" 
+            <a href={localizePath("/profil-pages/sejarah", lang)} 
               class="px-8 py-3 rounded-full bg-yellow-500 text-green-900 hover:bg-yellow-400 font-bold transition shadow-lg">
-              Profil Prodi
+              {t("hero.cta.profil")}
             </a>
     
-            <a href="/akademik" class="px-8 py-3 rounded-full border-2 border-white text-white hover:bg-white hover:text-green-900 font-medium transition">
-              Informasi Akademik
+            <a href={localizePath("/akademik", lang)} class="px-8 py-3 rounded-full border-2 border-white text-white hover:bg-white hover:text-green-900 font-medium transition">
+              {t("hero.cta.akademik")}
             </a>
           </div>
         </div>
@@ -42,27 +45,24 @@
         <div class="absolute inset-0 bg-gradient-to-r from-green-900/80 via-green-800/60 to-transparent z-10"></div>
           <div class="slide-content relative z-20 max-w-4xl text-center px-6">
           <span class="inline-block px-5 py-1.5 rounded-full bg-yellow-100 text-yellow-800 border border-yellow-300 text-sm font-semibold">
-            Program Studi Teknik Informatika
+            {t("hero.badge")}
           </span>
     
           <h1 class="mt-6 text-3xl md:text-5xl font-bold text-white">
-            Selamat Datang di
+            {lang === 'en' ? "Welcome to" : "Selamat Datang di"}
             <span class="block text-yellow-400 mt-2">
-              Fakultas Sains dan Teknologi UIN Suska Riau
+              {lang === 'en' ? "Faculty of Science and Technology UIN Suska Riau" : "Fakultas Sains dan Teknologi UIN Suska Riau"}
             </span>
           </h1>
     
           <p class="mt-6 text-gray-100 text-lg max-w-3xl mx-auto leading-relaxed">
-            Fakultas Sains dan Teknologi didirikan pada akhir tahun 2001 
-            sebagai persiapan perubahan status dari Institut Agama Islam 
-            Negeri Sultan Syarif Qasim (IAIN SUSQA) Pekanbaru menjadi Universitas 
-            Islam Negeri Sultan Syarif Kasim Riau (UIN Suska) Riau.
+            {t("hero.desc2")}
           </p>
     
           <div class="mt-10 flex justify-center gap-4">
             <a href="https://fst.uin-suska.ac.id/" 
               class="px-8 py-3 rounded-full bg-yellow-500 text-green-900 hover:bg-yellow-400 font-bold transition shadow-lg">
-              Profil Fakultas
+              {t("hero.cta.fakultas")}
             </a>
           </div>
         </div>
@@ -74,26 +74,24 @@
         <div class="absolute inset-0 bg-gradient-to-r from-green-900/80 via-green-800/60 to-transparent z-10"></div>
           <div class="slide-content relative z-20 max-w-4xl text-center px-6">
           <span class="inline-block px-5 py-1.5 rounded-full bg-yellow-100 text-yellow-800 border border-yellow-300 text-sm font-semibold">
-            Program Studi Teknik Informatika
+            {t("hero.badge")}
           </span>
     
           <h1 class="mt-6 text-3xl md:text-5xl font-bold text-white">
-            Selamat Datang di
+            {lang === 'en' ? "Welcome to" : "Selamat Datang di"}
             <span class="block text-yellow-400 mt-2">
-              Dosen dan Staf Pengajar Berkualitas
+              {lang === 'en' ? "Our Qualified Lecturers and Teaching Staff" : "Dosen dan Staf Pengajar Berkualitas"}
             </span>
           </h1>
     
           <p class="mt-6 text-gray-100 text-lg max-w-3xl mx-auto leading-relaxed">
-            Dosen dan staf pengajar di Prodi Teknik Informatika UIN Suska Riau 
-            terdiri dari para ahli di bidang teknologi informasi yang berdedikasi 
-            tinggi dalam mendukung proses pembelajaran dan pengembangan riset.
+            {t("hero.desc3")}
           </p>
     
           <div class="mt-10 flex justify-center gap-4">
-            <a href="/dosen-pages/dosen" 
+            <a href={localizePath("/dosen-pages/dosen", lang)} 
               class="px-8 py-3 rounded-full bg-yellow-500 text-green-900 hover:bg-yellow-400 font-bold transition shadow-lg">
-              Profil Dosen
+              {t("hero.cta.dosen")}
             </a>
           </div>
         </div>
@@ -105,26 +103,23 @@
         <div class="absolute inset-0 bg-gradient-to-r from-green-900/80 via-green-800/60 to-transparent z-10"></div>
           <div class="slide-content relative z-20 max-w-4xl text-center px-6">
           <span class="inline-block px-5 py-1.5 rounded-full bg-yellow-100 text-yellow-800 border border-yellow-300 text-sm font-semibold">
-            Program Studi Teknik Informatika
+            {t("hero.badge")}
           </span>
     
           <h1 class="mt-6 text-3xl md:text-5xl font-bold text-white">
-            Selamat Datang di
+            {lang === 'en' ? "Welcome to" : "Selamat Datang di"}
             <span class="block text-yellow-400 mt-2">
-              Visi, Misi, dan Tujuan Prodi Teknik Informatika UIN Suska Riau
+              {lang === 'en' ? "Vision, Mission, and Goals of the Informatics Engineering Program" : "Visi, Misi, dan Tujuan Prodi Teknik Informatika UIN Suska Riau"}
             </span>
           </h1>
     
           <p class="mt-6 text-gray-100 text-lg max-w-3xl mx-auto leading-relaxed">
-            Visi Prodi Teknik Informatika UIN Suska Riau adalah menjadi program 
-            studi unggulan di bidang teknologi informasi yang berlandaskan nilai-nilai 
-            keislaman dan mampu bersaing secara global pada tahun 2030.
+            {t("hero.desc4")}
           </p>
     
           <div class="mt-10 flex justify-center gap-4">
-  
-            <a href="/visimisi-pages/visimisi" class="px-8 py-3 rounded-full border-2 border-white text-white hover:bg-white hover:text-green-900 font-medium transition">
-              Learn More
+            <a href={localizePath("/visimisi-pages/visimisi", lang)} class="px-8 py-3 rounded-full border-2 border-white text-white hover:bg-white hover:text-green-900 font-medium transition">
+              {t("hero.cta.visimisi")}
             </a>
           </div>
         </div>
@@ -136,27 +131,25 @@
         <div class="absolute inset-0 bg-gradient-to-r from-green-900/80 via-green-800/60 to-transparent z-10"></div>
           <div class="slide-content relative z-20 max-w-4xl text-center px-6">
           <span class="inline-block px-5 py-1.5 rounded-full bg-yellow-100 text-yellow-800 border border-yellow-300 text-sm font-semibold">
-            Program Studi Teknik Informatika
+            {t("hero.badge")}
           </span>
     
           <h1 class="mt-6 text-3xl md:text-5xl font-bold text-white">
-            Selamat Datang di
+            {lang === 'en' ? "Welcome to" : "Selamat Datang di"}
             <span class="block text-yellow-400 mt-2">
-              Prestasi Mahasiswa Teknik Informatika
+              {lang === 'en' ? "Achievements of Informatics Engineering Students" : "Prestasi Mahasiswa Teknik Informatika"}
             </span>
           </h1>
     
           <p class="mt-6 text-gray-100 text-lg max-w-3xl mx-auto leading-relaxed">
-            Mahasiswa Teknik Informatika UIN Suska Riau telah banyak meraih prestasi
-            baik di tingkat nasional maupun internasional, menunjukkan kompetensi dan
-            dedikasi yang tinggi dalam bidang teknologi informasi.
+            {t("hero.desc5")}
           </p>
     
           <div class="mt-10 flex justify-center gap-4">
-            <a href="/prestasi-pages/prestasi"
+            <a href={localizePath("/prestasi-pages/prestasi", lang)}
               class="px-8 py-3 rounded-full border-2 border-white text-white hover:bg-white hover:text-green-900 font-medium transition"
             >
-              Learn More
+              {t("hero.cta.prestasi")}
             </a>
           </div>
         </div>

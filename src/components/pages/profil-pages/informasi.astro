@@ -1,3 +1,10 @@
+---
+import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const isEn = lang === 'en';
+---
+
 <section class="max-w-7xl mx-auto px-8 py-16 lg:py-24">
     <div
         class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100"
@@ -26,24 +33,23 @@
                         </svg>
                         <span
                             class="text-[10px] font-bold uppercase tracking-wider"
-                            >Identitas Prodi</span
+                            >{isEn ? 'Study Program Identity' : 'Identitas Prodi'}</span
                         >
                     </div>
                     <h2 class="text-3xl font-bold leading-tight mb-4">
-                        Informasi <br />Dasar Umum
+                        {isEn ? 'General' : 'Informasi'} <br />{isEn ? 'Basic Information' : 'Dasar Umum'}
                     </h2>
                     <p
                         class="text-emerald-100/70 text-sm leading-relaxed font-light"
                     >
-                        Data resmi pendirian dan identitas administratif Program
-                        Studi Teknik Informatika UIN Suska Riau.
+                        {isEn ? 'Official establishment data and administrative identity of the Informatics Engineering Study Program at UIN Suska Riau.' : 'Data resmi pendirian dan identitas administratif Program Studi Teknik Informatika UIN Suska Riau.'}
                     </p>
                 </div>
 
                 <div class="mt-12 pt-8 border-t border-white/10">
                     <span
                         class="text-xs block uppercase tracking-widest text-emerald-300 mb-2"
-                        >Didirikan Pada</span
+                        >{isEn ? 'Established In' : 'Didirikan Pada'}</span
                     >
                     <span class="text-3xl font-black text-yellow-400"
                         >September 1999</span
@@ -58,18 +64,18 @@
                         <div>
                             <span
                                 class="text-xs font-bold text-emerald-700 uppercase tracking-widest block mb-2"
-                                >Fakultas</span
+                                >{isEn ? 'Faculty' : 'Fakultas'}</span
                             >
                             <p
                                 class="text-slate-800 font-semibold text-lg border-l-4 border-yellow-400 pl-4"
                             >
-                                Sains dan Teknologi
+                                {isEn ? 'Science and Technology' : 'Sains dan Teknologi'}
                             </p>
                         </div>
                         <div>
                             <span
                                 class="text-xs font-bold text-emerald-700 uppercase tracking-widest block mb-2"
-                                >Perguruan Tinggi</span
+                                >{isEn ? 'Higher Education' : 'Perguruan Tinggi'}</span
                             >
                             <p
                                 class="text-slate-800 font-medium leading-snug border-l-4 border-yellow-400 pl-4"
@@ -82,7 +88,7 @@
                     <div class="space-y-6">
                         <span
                             class="text-xs font-bold text-slate-500 uppercase tracking-widest block"
-                            >Riwayat Legalitas</span
+                            >{isEn ? 'Legality History' : 'Riwayat Legalitas'}</span
                         >
 
                         <div
@@ -99,7 +105,7 @@
                                 >
                             </p>
                             <p class="text-xs text-slate-600 mt-1">
-                                SK Pendirian - Dirjen Binbaga Islam
+                                {isEn ? 'Establishment Decree - Dirjen Binbaga Islam' : 'SK Pendirian - Dirjen Binbaga Islam'}
                             </p>
                         </div>
 
@@ -117,7 +123,7 @@
                                 >
                             </p>
                             <p class="text-xs text-slate-600 mt-1">
-                                SK Lanjutan - Dirjen Dikti Depdiknas
+                                {isEn ? 'Follow-up Decree - Dirjen Dikti Depdiknas' : 'SK Lanjutan - Dirjen Dikti Depdiknas'}
                             </p>
                         </div>
 
@@ -133,7 +139,7 @@
                                 >
                             </p>
                             <p class="text-xs text-slate-600 mt-1">
-                                SK Lanjutan - Dirjen Binbaga Islam
+                                {isEn ? 'Follow-up Decree - Dirjen Binbaga Islam' : 'SK Lanjutan - Dirjen Binbaga Islam'}
                             </p>
                         </div>
                     </div>
