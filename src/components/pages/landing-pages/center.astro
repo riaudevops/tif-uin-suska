@@ -1,3 +1,8 @@
+---
+import { getLocaleFromUrl, useTranslations } from "../../../lib/translations";
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+---
 <section class="relative w-full -mt-16">
     <div class="relative z-40 max-w-7xl mx-auto px-6 -mt-16 md:-mt-20">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -12,7 +17,7 @@
 
           <div>
             <p class="text-3xl font-bold text-green-900">30+</p>
-            <p class="text-gray-600 font-medium">Dosen</p>
+            <p class="text-gray-600 font-medium">{t("stats.dosen")}</p>
           </div>
         </div>
       </div>
@@ -27,7 +32,7 @@
 
           <div>
             <p class="text-3xl font-bold text-gray-900">1000+</p>
-            <p class="text-gray-600 font-medium">Mahasiswa</p>
+            <p class="text-gray-600 font-medium">{t("stats.mahasiswa")}</p>
           </div>
         </div>
       </div>
@@ -43,7 +48,7 @@
 
           <div>
             <p class="text-3xl font-bold text-gray-900">20+</p>
-            <p class="text-gray-600 font-medium">Alumni</p>
+            <p class="text-gray-600 font-medium">{t("stats.alumni")}</p>
           </div>
         </div>
       </div>
@@ -59,7 +64,7 @@
 
           <div>
             <p class="text-3xl font-bold text-gray-900">20+</p>
-            <p class="text-gray-600 font-medium">Ruang Perkuliahan</p>
+            <p class="text-gray-600 font-medium">{t("stats.ruang")}</p>
           </div>
         </div>
       </div>
@@ -85,18 +90,15 @@
     <!-- TEXT SECTION -->
     <div class="text-white">
       <p class="font-extrabold uppercase tracking-[0.2em] text-xs mb-4 text-yellow-300">
-        Universitas Islam Negeri Sultan Syarif Kasim Riau
+        {t("about.univ")}
       </p>
 
       <h3 class="text-3xl font-bold mb-6 leading-snug">
-        Pendidikan Teknologi Berbasis<br />
-        Keilmuan dan Nilai Keislaman
+        {t("about.title")}
       </h3>
 
       <p class="text-emerald-100 leading-relaxed max-w-xl">
-        Program Studi Teknik Informatika berkomitmen menghasilkan lulusan yang
-        kompeten secara akademik, profesional dalam praktik, serta berlandaskan
-        nilai etika dan keislaman.
+        {t("about.desc")}
       </p>
 
       </div>

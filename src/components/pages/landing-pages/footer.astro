@@ -6,6 +6,9 @@ import {
   Mail,
   Youtube,
 } from '@lucide/astro';
+import { getLocaleFromUrl, useTranslations } from "../../../lib/translations";
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
 ---
 
 <footer class="relative bg-slate-900 text-slate-300 pt-20">
@@ -22,19 +25,17 @@ import {
         </div>
         <div class="flex flex-col">
           <h1 class="text-2xl md:text-3xl font-bold tracking-wide text-white leading-tight uppercase">
-            Teknik <span class="text-[#004d2c]">Informatika</span>
+            {lang === 'en' ? <>Informatics <span class="text-[#004d2c]">Engineering</span></> : <>Teknik <span class="text-[#004d2c]">Informatika</span></>}
           </h1>
           <h2 class="text-lg md:text-xl font-light text-slate-400 leading-tight uppercase">
-            Fakultas Sains dan Teknologi
+            {lang === 'en' ? "Faculty of Science and Technology" : "Fakultas Sains dan Teknologi"}
           </h2>
         </div>
       </div>
 
       <div class="space-y-6">
         <p class="text-sm leading-relaxed text-slate-400 max-w-md">
-          Program Studi Teknik Informatika UIN Sultan Syarif Kasim Riau resmi memperoleh 
-          <strong class="text-slate-200">Akreditasi Unggul</strong> dari LAM INFOKOM (2025). 
-          Fokus pada integrasi teknologi informasi dengan nilai-nilai Keislaman.
+          {t("akreditasi.desc")}
         </p>
 
         <div class="flex flex-wrap items-center gap-6 pt-2">
@@ -47,7 +48,7 @@ import {
     </div>
 
     <div class="lg:col-span-3">
-      <h3 class="text-lg font-semibold text-white mb-6 border-b border-slate-800 pb-2">Kontak</h3>
+      <h3 class="text-lg font-semibold text-white mb-6 border-b border-slate-800 pb-2">{t("footer.contact")}</h3>
       <div class="space-y-4 text-sm opacity-90">
         <p class="leading-relaxed">
           Jl. HR. Soebrantas No.155 KM 18<br />
@@ -69,7 +70,7 @@ import {
     </div>
     
     <div class="lg:col-span-2 text-sm">
-      <h3 class="text-lg font-semibold text-white mb-6 border-b border-slate-800 pb-2">Layanan</h3>
+      <h3 class="text-lg font-semibold text-white mb-6 border-b border-slate-800 pb-2">{t("footer.layanan")}</h3>
       <ul class="space-y-3">
         <li><a href="https://sireg.uin-suska.ac.id/beranda-sireg-uin-suska-riau.html" class="hover:text-blue-400 transition">SIREG</a></li>
         <li><a href="https://iraisenew.uin-suska.ac.id" class="hover:text-blue-400 transition">IRaise</a></li>
@@ -92,7 +93,7 @@ import {
   <div class="max-w-7xl mx-auto px-6 mt-16 pt-10 border-t border-slate-800/50">
     <div class="flex flex-col md:flex-row justify-center gap-12 lg:gap-24 items-start">
       <div class="flex flex-col items-center">
-        <h3 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-4 text-center">Lokasi Kampus</h3>
+        <h3 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-4 text-center">{t("footer.lokasi")}</h3>
         <div class="w-[280px] h-[150px] rounded-xl overflow-hidden border border-slate-700 grayscale hover:grayscale-0 transition duration-500">
           <iframe 
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3205.0309365499875!2d101.35441385085029!3d0.4656198166098458!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d5ac01177a52af%3A0xbb3c60772e1579a!2sUniversitas%20Islam%20Negeri%20Sultan%20Syarif%20Kasim!5e0!3m2!1sid!2sid!4v1769956666957!5m2!1sid!2sid"
@@ -103,11 +104,11 @@ import {
       </div>
 
       <div class="flex flex-col items-center text-center">
-        <h3 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-4">Layanan Administrasi</h3>
+        <h3 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-4">{t("footer.layanan.admin")}</h3>
         <div class="bg-white p-2 rounded-lg w-[120px]">
           <img src="/qr/qrcode-tif-e1732246849890.jpeg" alt="QR Administrasi" class="w-full h-auto" />
         </div>
-        <p class="text-[10px] mt-3 text-slate-500 max-w-[150px]">Scan QR untuk akses cepat layanan administrasi akademik</p>
+        <p class="text-[10px] mt-3 text-slate-500 max-w-[150px]">{t("footer.qr.desc")}</p>
       </div>
     </div>
   </div>
@@ -115,7 +116,7 @@ import {
   <div class="mt-20 bg-slate-950 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-[11px] md:text-xs tracking-wide">
       <p class="text-slate-500 text-center md:text-left">
-        &copy; 2025 <span class="text-slate-300 font-medium">Teknik Informatika UIN Suska Riau</span>. All rights reserved.
+        {t("footer.copyright")}
       </p>
       
       <div class="flex gap-6 mt-4 md:mt-0 text-slate-500">

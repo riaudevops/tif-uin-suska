@@ -1,4 +1,8 @@
 ---
+import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+
 const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
 let posts = [];
 
@@ -30,13 +34,13 @@ const ASSET_URL = `${API_URL}/assets/`;
         TIF <span class="text-yellow-400">News</span>
       </h2>
       <p class="text-gray-300 mt-2 max-w-2xl">
-        Informasi terbaru seputar kegiatan akademik, seminar, dan pengembangan keilmuan di Program Studi Teknik Informatika.
+        {t("news.desc")}
       </p>
     </div>
 
     {posts.length === 0 ? (
       <div class="text-center py-10 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm">
-        <p class="text-gray-300">Berita belum tersedia saat ini.</p>
+        <p class="text-gray-300">{t("news.empty")}</p>
       </div>
     ) : (
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -69,10 +73,10 @@ const ASSET_URL = `${API_URL}/assets/`;
 
             <div class="mt-auto">
               <a
-                href={`/berita/${post.slug}`}
+                href={localizePath(`/berita/${post.slug}`, lang)}
                 class="inline-flex items-center font-bold rounded-full text-sm text-emerald-800 hover:text-yellow-600 transition-colors group/link"
               >
-                Baca Selengkapnya 
+                {t("common.readmore")}
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
@@ -85,8 +89,8 @@ const ASSET_URL = `${API_URL}/assets/`;
     )}
 
     <div class="mt-16 text-center">
-      <a href="/berita" class="px-8 py-3 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-[#0B2C24] transition-all">
-        Lihat Semua Berita
+      <a href={localizePath("/berita", lang)} class="px-8 py-3 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-[#0B2C24] transition-all">
+        {t("news.viewall")}
       </a>
     </div>
 

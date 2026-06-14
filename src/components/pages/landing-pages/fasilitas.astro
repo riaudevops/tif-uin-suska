@@ -1,52 +1,55 @@
+---
+import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+---
+
 <section class="py-7 bg-white">
   <!-- Heading -->
   <div class="max-w-4xl mx-auto text-center px-6 mb-20">
     <h2 class="text-3xl md:text-4xl font-bold text-green-900">
-      Fasilitas Program Studi
+      {t("facility.title")}
     </h2>
     <p class="mt-4 text-gray-600 leading-relaxed">
-      Sarana dan prasarana pendukung pembelajaran, penelitian, dan pengembangan
-      kompetensi mahasiswa secara berkelanjutan.
+      {t("facility.desc")}
     </p>
   </div>
 
   <!-- Fasilitas -->
   <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-6">
 
-    <a href="/laboratorium-pages/laboratorium" class="border border-gray-200 rounded-2xl p-8 transition hover:border-yellow-400 hover:shadow-lg block group">
+    <a href={localizePath("/laboratorium-pages/laboratorium", lang)} class="border border-gray-200 rounded-2xl p-8 transition hover:border-yellow-400 hover:shadow-lg block group">
       <h3 class="text-lg font-semibold text-green-800 flex items-center gap-4 mb-3 group-hover:text-green-950 transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M9.75 3v6.75L5.25 21h13.5L14.25 9.75V3" />
         </svg>
-        Laboratorium Komputer
+        {t("facility.lab.title")}
       </h3>
       <p class="text-gray-600 text-sm leading-relaxed mb-4">
-        Digunakan untuk praktikum mata kuliah, pengembangan proyek aplikasi sederhana,
-        serta mendukung kegiatan riset dan tugas akhir mahasiswa.
+        {t("facility.lab.desc")}
       </p>
       <div class="flex gap-2 text-xs">
-        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">Praktikum</span>
-        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">Proyek</span>
-        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">Riset</span>
+        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">{t("facility.lab.tag1")}</span>
+        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">{t("facility.lab.tag2")}</span>
+        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">{t("facility.lab.tag3")}</span>
       </div>
     </a>
 
-    <a href="/ruang-kelas" class="border border-gray-200 rounded-2xl p-8 transition hover:border-yellow-400 hover:shadow-lg block group">
+    <a href={localizePath("/ruangkelas/ruangkelas", lang)} class="border border-gray-200 rounded-2xl p-8 transition hover:border-yellow-400 hover:shadow-lg block group">
       <h3 class="text-lg font-semibold text-green-800 flex items-center gap-4 mb-3 group-hover:text-green-950 transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M3 10l9-6 9 6v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8z" />
         </svg>
-        Ruang Kelas Representatif
+        {t("facility.kelas.title")}
       </h3>
       <p class="text-gray-600 text-sm leading-relaxed mb-4">
-        Mendukung pembelajaran berbasis presentasi, diskusi kelompok, dan studi kasus
-        melalui fasilitas multimedia yang menunjang interaksi akademik.
+        {t("facility.kelas.desc")}
       </p>
       <div class="flex gap-2 text-xs">
-        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">Diskusi</span>
-        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">Presentasi</span>
+        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">{t("facility.kelas.tag1")}</span>
+        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">{t("facility.kelas.tag2")}</span>
       </div>
     </a>
 
@@ -56,16 +59,15 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M12 3v18m9-9H3" />
         </svg>
-        Akses Internet Kampus
+        {t("facility.internet.title")}
       </h3>
       <p class="text-gray-600 text-sm leading-relaxed mb-4">
-        Memfasilitasi akses sistem pembelajaran daring, literatur ilmiah,
-        serta kebutuhan pengembangan aplikasi dan kolaborasi akademik mahasiswa.
+        {t("facility.internet.desc")}
       </p>
       <div class="flex gap-2 text-xs">
-        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">E-Learning</span>
-        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">Riset</span>
-        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">Kolaborasi</span>
+        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">{t("facility.internet.tag1")}</span>
+        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">{t("facility.internet.tag2")}</span>
+        <span class="px-3 py-1 bg-yellow-500 text-white rounded-full">{t("facility.internet.tag3")}</span>
       </div>
     </div>
 

@@ -1,28 +1,30 @@
+---
+import { getLocaleFromUrl, useTranslations } from "../../../lib/translations";
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+---
+
 <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div class="order-2 lg:order-1">
                 <span class="inline-block px-3 py-1 mb-4 text-sm font-semibold text-yellow-700 bg-yellow-100 rounded-full">
-                    Kurikulum Masa Depan
+                    {t("kurikulum.badge")}
                 </span>
                 <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-8">
-                    Kurikulum Berbasis <span class="text-green-900">Kompetensi</span>
+                    {lang === 'en' ? <>Competency-Based <span class="text-green-900">Curriculum</span></> : <>Kurikulum Berbasis <span class="text-green-900">Kompetensi</span></>}
                 </h2>
                 <div class="space-y-6">
                     <p class="text-slate-600 text-lg leading-relaxed">
-                        Kurikulum kami dirancang secara strategis untuk mengembangkan 
-                        <span class="font-medium text-slate-900">kompetensi teknis dan non-teknis</span> 
-                        yang esensial di dunia kerja modern. Melalui pendekatan *project-based learning*, 
-                        mahasiswa ditantang untuk mentransformasi teori menjadi solusi nyata.
+                        {t("kurikulum.desc")}
                     </p>
                     <p class="text-slate-600 text-lg leading-relaxed border-l-4 border-green-900 pl-6 italic">
-                        "Kami memastikan setiap lulusan memiliki kesiapan penuh dalam menghadapi 
-                        dinamika industri teknologi informasi yang terus berkembang."
+                        "{t("kurikulum.quote")}"
                     </p>
                 </div>
                 <div class="mt-10">
                     <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-900 hover:bg-green-700 transition duration-300 shadow-lg">
-                        Lihat Detail Kurikulum
+                        {t("kurikulum.cta")}
                     </a>
                 </div>
             </div>
