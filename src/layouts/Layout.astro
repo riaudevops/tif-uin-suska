@@ -2,16 +2,26 @@
 import "../styles/global.css";
 import Navbar from "../components/globals/navbar.astro";
 import Footer from "../components/pages/landing-pages/footer.astro";
+import { getLocaleFromUrl } from "../lib/translations";
+
+interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
+const lang = getLocaleFromUrl(Astro);
+const isEn = lang === 'en';
 ---
 
 <!doctype html>
-<html>
+<html lang={lang}>
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link rel="icon" type="image/svg+xml" href="/logo/uin.png" />
+        <title>{title ? `${title} - ${isEn ? 'Informatics Engineering' : 'Teknik Informatika'} UIN Suska Riau` : `${isEn ? 'Informatics Engineering' : 'Teknik Informatika'} UIN Suska Riau`}</title>
     </head>
     <body class="bg-white">
         <Navbar />
