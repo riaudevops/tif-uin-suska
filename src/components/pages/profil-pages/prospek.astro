@@ -1,3 +1,10 @@
+---
+import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const isEn = lang === 'en';
+---
+
 <section class="relative mt-4 py-4 lg:py-16">
     <div class="max-w-7xl mx-auto px-8">
         <div
@@ -14,14 +21,14 @@
 
             <div class="relative z-20 text-white text-center w-full">
                 <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">
-                    Peluang Karir Masa Depan
+                    {isEn ? 'Future Career Opportunities' : 'Peluang Karir Masa Depan'}
                 </span>
                 <h1
                     class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mt-4"
                 >
-                    Prospek <span class="text-yellow-400">Pekerjaan</span>
+                    {isEn ? 'Job' : 'Prospek'} <span class="text-yellow-400">{isEn ? 'Prospects' : 'Pekerjaan'}</span>
                     <br />
-                    Lulusan Teknik Informatika
+                    {isEn ? 'Informatics Engineering Graduates' : 'Lulusan Teknik Informatika'}
                 </h1>
             </div>
         </div>
@@ -31,10 +38,10 @@
 <section class="max-w-7xl mx-auto px-8">
     <div class="text-center mb-12">
         <h2 class="text-3xl md:text-4xl font-bold text-emerald-900 mb-4">
-            Beragam Kesempatan Karir Menanti
+            {isEn ? 'Various Career Opportunities Await' : 'Beragam Kesempatan Karir Menanti'}
         </h2>
         <p class="text-slate-600 text-lg max-w-2xl mx-auto">
-            Lulusan Program Studi Teknik Informatika dibekali kompetensi adaptif dengan cakupan karier global yang luas mulai dari rekayasa perangkat lunak mutakhir hingga arsitektur dan tata kelola jaringan di berbagai sektor teknologi modern.
+            {isEn ? 'Graduates of the Informatics Engineering Study Program are equipped with adaptive competencies with broad global career coverage, from cutting-edge software engineering to network architecture and governance across various modern technology sectors.' : 'Lulusan Program Studi Teknik Informatika dibekali kompetensi adaptif dengan cakupan karier global yang luas mulai dari rekayasa perangkat lunak mutakhir hingga arsitektur dan tata kelola jaringan di berbagai sektor teknologi modern.'}
         </p>
     </div>
 
@@ -69,7 +76,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Mengembangkan, menguji, dan memelihara kode program.
+                {isEn ? 'Developing, testing, and maintaining program code.' : 'Mengembangkan, menguji, dan memelihara kode program.'}
             </p>
         </div>
 
@@ -99,7 +106,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Mengelola proyek teknologi dan tim IT.
+                {isEn ? 'Managing technology projects and IT teams.' : 'Mengelola proyek teknologi dan tim IT.'}
             </p>
         </div>
 
@@ -128,7 +135,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Mengelola sistem dan infrastruktur teknologi.
+                {isEn ? 'Managing systems and technology infrastructure.' : 'Mengelola sistem dan infrastruktur teknologi.'}
             </p>
         </div>
 
@@ -157,7 +164,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Memimpin tim IT dan mengawasi operasi teknologi.
+                {isEn ? 'Leading IT teams and overseeing technology operations.' : 'Memimpin tim IT dan mengawasi operasi teknologi.'}
             </p>
         </div>
 
@@ -187,7 +194,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Merencanakan dan mengelola proyek IT dari awal hingga akhir.
+                {isEn ? 'Planning and managing IT projects from start to finish.' : 'Merencanakan dan mengelola proyek IT dari awal hingga akhir.'}
             </p>
         </div>
 
@@ -216,7 +223,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Memberikan dukungan teknis kepada pengguna.
+                {isEn ? 'Providing technical support to users.' : 'Memberikan dukungan teknis kepada pengguna.'}
             </p>
         </div>
 
@@ -249,7 +256,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Menyediakan berbagai layanan teknologi informasi.
+                {isEn ? 'Providing various information technology services.' : 'Menyediakan berbagai layanan teknologi informasi.'}
             </p>
         </div>
 
@@ -279,7 +286,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Menganalisis kebutuhan sistem dan merancang solusi.
+                {isEn ? 'Analyzing system needs and designing solutions.' : 'Menganalisis kebutuhan sistem dan merancang solusi.'}
             </p>
         </div>
 
@@ -309,7 +316,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Mendesain, mengembangkan, dan memelihara sistem kompleks.
+                {isEn ? 'Designing, developing, and maintaining complex systems.' : 'Mendesain, mengembangkan, dan memelihara sistem kompleks.'}
             </p>
         </div>
 
@@ -339,7 +346,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Menggabungkan analisis sistem dengan pengembangan program.
+                {isEn ? 'Combining system analysis with program development.' : 'Menggabungkan analisis sistem dengan pengembangan program.'}
             </p>
         </div>
 
@@ -373,7 +380,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Mengelola, memelihara, dan mengamankan database.
+                {isEn ? 'Managing, maintaining, and securing databases.' : 'Mengelola, memelihara, dan mengamankan database.'}
             </p>
         </div>
 
@@ -402,7 +409,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Mengatur dan memelihara infrastruktur jaringan.
+                {isEn ? 'Managing and maintaining network infrastructure.' : 'Mengatur dan memelihara infrastruktur jaringan.'}
             </p>
         </div>
 
@@ -432,7 +439,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Mendesain dan mengimplementasikan solusi jaringan.
+                {isEn ? 'Designing and implementing network solutions.' : 'Mendesain dan mengimplementasikan solusi jaringan.'}
             </p>
         </div>
 
@@ -462,7 +469,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Membangun aplikasi perangkat lunak yang kompleks.
+                {isEn ? 'Building complex software applications.' : 'Membangun aplikasi perangkat lunak yang kompleks.'}
             </p>
         </div>
 
@@ -492,7 +499,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Membuat dan mengimplementasikan perangkat lunak.
+                {isEn ? 'Creating and implementing software.' : 'Membuat dan mengimplementasikan perangkat lunak.'}
             </p>
         </div>
 
@@ -522,7 +529,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Mendesain antarmuka pengguna situs web.
+                {isEn ? 'Designing website user interfaces.' : 'Mendesain antarmuka pengguna situs web.'}
             </p>
         </div>
 
@@ -552,7 +559,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Mengelola dan memelihara server web dan situs.
+                {isEn ? 'Managing and maintaining web servers and sites.' : 'Mengelola dan memelihara server web dan situs.'}
             </p>
         </div>
 
@@ -582,7 +589,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Membangun dan mengembangkan aplikasi web.
+                {isEn ? 'Building and developing web applications.' : 'Membangun dan mengembangkan aplikasi web.'}
             </p>
         </div>
 
@@ -612,7 +619,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Memberikan dukungan dan penyelesaian masalah teknis.
+                {isEn ? 'Providing support and resolving technical issues.' : 'Memberikan dukungan dan penyelesaian masalah teknis.'}
             </p>
         </div>
 
@@ -646,7 +653,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Melindungi sistem dan data dari ancaman siber.
+                {isEn ? 'Protecting systems and data from cyber threats.' : 'Melindungi sistem dan data dari ancaman siber.'}
             </p>
         </div>
 
@@ -676,7 +683,7 @@
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                Memimpin strategi teknologi informasi di sebuah organisasi.
+                {isEn ? 'Leading information technology strategy in an organization.' : 'Memimpin strategi teknologi informasi di sebuah organisasi.'}
             </p>
         </div>
     </div>
@@ -686,9 +693,7 @@
         class="bg-emerald-50 border-l-4 border-emerald-500 p-8 rounded-r-2xl text-base text-emerald-900 leading-relaxed mt-16 shadow-lg"
     >
         <p class="font-medium">
-            Lulusan juga memiliki peluang berkarier di berbagai posisi strategis
-            lainnya pada sektor pemerintahan, korporasi nasional maupun
-            multinasional, serta startup teknologi.
+            {isEn ? 'Graduates also have career opportunities in various other strategic positions in the government sector, national or multinational corporations, and technology startups.' : 'Lulusan juga memiliki peluang berkarier di berbagai posisi strategis lainnya pada sektor pemerintahan, korporasi nasional maupun multinasional, serta startup teknologi.'}
         </p>
     </div>
 </section>

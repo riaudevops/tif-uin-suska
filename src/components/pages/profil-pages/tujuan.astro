@@ -1,10 +1,17 @@
+---
+import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const isEn = lang === 'en';
+---
+
 <section class="relative mt-4 py-2">
     <div class="relative z-20 text-center w-full">
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-emerald-900 leading-tight tracking-tight mt-4">
-            Tujuan 
-                <span class="text-yellow-400">Prodi</span>
+            {isEn ? 'Study Program' : 'Tujuan'} 
+                <span class="text-yellow-400">{isEn ? 'Objectives' : 'Prodi'}</span>
             <br />
-            Teknik Informatika
+            {isEn ? 'Informatics Engineering' : 'Teknik Informatika'}
         </h1>
     </div>
 </section>
@@ -18,12 +25,11 @@
                     1
                 </div>
                 <h4 class="font-bold text-slate-900 text-lg group-hover:text-emerald-700 transition">
-                    Lulusan Unggul
+                    {isEn ? 'Superior Graduates' : 'Lulusan Unggul'}
                 </h4>
             </div>
             <p class="text-sm text-slate-600 leading-relaxed">
-                Menghasilkan lulusan yang unggul di bidang Informatika dan
-                memiliki akhlak yang Islami pada tahun 2033
+                {isEn ? 'Producing superior graduates in Informatics with Islamic morals by 2033' : 'Menghasilkan lulusan yang unggul di bidang Informatika dan memiliki akhlak yang Islami pada tahun 2033'}
             </p>
         </div>
 
@@ -33,12 +39,11 @@
                     2
                 </div>
                 <h4 class="font-bold text-slate-900 text-lg group-hover:text-emerald-700 transition">
-                    Kurikulum Integratif
+                    {isEn ? 'Integrative Curriculum' : 'Kurikulum Integratif'}
                 </h4>
             </div>
             <p class="text-sm text-slate-600 leading-relaxed">
-                Menghasilkan silabus dan kurikulum Informatika yang
-                mengintegrasikan keislaman pada tahun 2033
+                {isEn ? 'Producing an Informatics syllabus and curriculum that integrates Islamic values by 2033' : 'Menghasilkan silabus dan kurikulum Informatika yang mengintegrasikan keislaman pada tahun 2033'}
             </p>
         </div>
 
@@ -48,12 +53,11 @@
                     3
                 </div>
                 <h4 class="font-bold text-slate-900 text-lg group-hover:text-emerald-700 transition">
-                    Karya Ilmiah
+                    {isEn ? 'Scientific Works' : 'Karya Ilmiah'}
                 </h4>
             </div>
             <p class="text-sm text-slate-600 leading-relaxed">
-                Menghasilkan karya-karya ilmiah di bidang Informatika yang
-                mengintegrasikan nilai keislaman pada tahun 2033
+                {isEn ? 'Producing scientific works in Informatics that integrate Islamic values by 2033' : 'Menghasilkan karya-karya ilmiah di bidang Informatika yang mengintegrasikan nilai keislaman pada tahun 2033'}
             </p>
         </div>
 
@@ -63,12 +67,11 @@
                     4
                 </div>
                 <h4 class="font-bold text-slate-900 text-lg group-hover:text-emerald-700 transition">
-                    Kontribusi Inovatif
+                    {isEn ? 'Innovative Contribution' : 'Kontribusi Inovatif'}
                 </h4>
             </div>
             <p class="text-sm text-slate-600 leading-relaxed">
-                Berkonstribusi melalui pengetahuan integratif dan inovatif dalam
-                kajian Informatika untuk membangun bangsa pada tahun 2033
+                {isEn ? 'Contributing through integrative and innovative knowledge in Informatics to build the nation by 2033' : 'Berkonstribusi melalui pengetahuan integratif dan inovatif dalam kajian Informatika untuk membangun bangsa pada tahun 2033'}
             </p>
         </div>
 
