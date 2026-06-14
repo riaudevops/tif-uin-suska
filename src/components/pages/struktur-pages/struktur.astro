@@ -1,29 +1,33 @@
 ---
-const pimpinan = { jabatan: "Ketua Jurusan", nama: "Iwan Iskandar, S.T, M.T" };
-const sekretaris = { jabatan: "Sekretaris Jurusan", nama: "Reski Mai Candra, S.T, M.Sc" };
-const koordinatorTA = { jabatan: "Koordinator Tugas Akhir", nama: "Fadhilah Syafria, S.T, M.Kom" };
-const koordinatorKP = { jabatan: "Koordinator Kerja Praktek", nama: "Liza Afriyanti, M.Kom" };
-const administrasiAKademik = { jabatan: "Administrasi Akademik" };
-const administrasiUmum = { jabatan: "Administrasi Umum" };
+import { getLocaleFromUrl, useTranslations } from "../../../lib/translations";
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+
+const pimpinan = { jabatan: lang === 'en' ? "Head of Department" : "Ketua Jurusan", nama: "Iwan Iskandar, S.T, M.T" };
+const sekretaris = { jabatan: lang === 'en' ? "Department Secretary" : "Sekretaris Jurusan", nama: "Reski Mai Candra, S.T, M.Sc" };
+const koordinatorTA = { jabatan: lang === 'en' ? "Thesis Coordinator" : "Koordinator Tugas Akhir", nama: "Fadhilah Syafria, S.T, M.Kom" };
+const koordinatorKP = { jabatan: lang === 'en' ? "Internship Coordinator" : "Koordinator Kerja Praktek", nama: "Liza Afriyanti, M.Kom" };
+const administrasiAKademik = { jabatan: lang === 'en' ? "Academic Administration" : "Administrasi Akademik" };
+const administrasiUmum = { jabatan: lang === 'en' ? "General Administration" : "Administrasi Umum" };
 
 const lab = {
-  kepala: { jabatan: "Kepala Laboratorium", nama: "Muhammad Affandes, S.T, M.T" },
+  kepala: { jabatan: lang === 'en' ? "Head of Laboratory" : "Kepala Laboratorium", nama: "Muhammad Affandes, S.T, M.T" },
   sub: [
-    { peran: "Koord. Lab Technopreneur & Inkubator Bisnis", nama: "Nazruddin Safaat H, M.T" },
-    { peran: "Koord. Lab Riset Data Science dan Business Intelligence", nama: "Suwanto Sanjaya, S.T, M.Kom" },
-    { peran: "Koord. Lab Kecerdasan Buatan & Sains Komputer", nama: "Iis Afrianty, S.T, M.Sc" },
-    { peran: "Koord. Lab Pemrograman & Pengembangan Aplikasi", nama: "Pizaini, S.T, M.Kom" }
+    { peran: lang === 'en' ? "Coord. Technopreneur & Business Incubator Lab" : "Koord. Lab Technopreneur & Inkubator Bisnis", nama: "Nazruddin Safaat H, M.T" },
+    { peran: lang === 'en' ? "Coord. Data Science & Business Intelligence Research Lab" : "Koord. Lab Riset Data Science dan Business Intelligence", nama: "Suwanto Sanjaya, S.T, M.Kom" },
+    { peran: lang === 'en' ? "Coord. Artificial Intelligence & Computer Science Lab" : "Koord. Lab Kecerdasan Buatan & Sains Komputer", nama: "Iis Afrianty, S.T, M.Sc" },
+    { peran: lang === 'en' ? "Coord. Programming & Application Development Lab" : "Koord. Lab Pemrograman & Pengembangan Aplikasi", nama: "Pizaini, S.T, M.Kom" }
   ]
 };
 
-const bidang = ["Sistem Cerdas", "Rekayasa Perangkat Lunak", "Teknologi Informasi"];
+const bidang = [lang === 'en' ? "Intelligent Systems" : "Sistem Cerdas", lang === 'en' ? "Software Engineering" : "Rekayasa Perangkat Lunak", lang === 'en' ? "Information Technology" : "Teknologi Informasi"];
 ---
 
 <section class="py-10 bg-slate-50 overflow-hidden">
   <div class="max-w-7xl mx-auto px-6">
     
     <div class="text-center mb-20">
-      <h2 class="text-4xl font-black text-slate-900 mb-4">Struktur Organisasi</h2>
+      <h2 class="text-4xl font-black text-slate-900 mb-4">{t("page.struktur.title")}</h2>
     </div>
 
     <div class="relative flex flex-col items-center">
@@ -95,7 +99,7 @@ const bidang = ["Sistem Cerdas", "Rekayasa Perangkat Lunak", "Teknologi Informas
         <div class="lg:col-span-2 flex flex-col items-center relative">
           <div class="absolute -top-12 w-px h-12 bg-slate-300 hidden md:block"></div>
            <div class="bg-emerald-800 text-white p-4 rounded-xl shadow-lg w-full text-center mb-4">
-            <p class="text-[9px] font-bold uppercase text-emerald-200">Kepala Laboratorium</p>
+            <p class="text-[9px] font-bold uppercase text-emerald-200">{lab.kepala.jabatan}</p>
             <h4 class="font-bold text-xs">{lab.kepala.nama}</h4>
           </div>
           <div class="space-y-2 w-full border-l-2 border-emerald-200 pl-4">
@@ -112,10 +116,10 @@ const bidang = ["Sistem Cerdas", "Rekayasa Perangkat Lunak", "Teknologi Informas
           <div class="flex flex-col items-center gap-3 relative">
             <div class="absolute -top-12 w-px h-12 bg-slate-300 hidden md:block"></div>
             <div class="bg-white border-2 border-slate-200 p-4 rounded-2xl text-center min-h-[100px] flex items-center justify-center shadow-sm">
-              <h4 class="font-black text-slate-800 text-[10px] uppercase">Bidang Keahlian <br/> <span class="text-emerald-600">{item}</span></h4>
+              <h4 class="font-black text-slate-800 text-[10px] uppercase">{t("page.struktur.bidang")} <br/> <span class="text-emerald-600">{item}</span></h4>
             </div>
             <div class="bg-slate-100 p-2 rounded-lg border border-dashed border-slate-300 text-center">
-               <p class="text-[9px] font-bold text-slate-400">Dosen Bidang</p>
+               <p class="text-[9px] font-bold text-slate-400">{t("page.struktur.dosen")}</p>
             </div>
           </div>
         ))}
@@ -126,7 +130,7 @@ const bidang = ["Sistem Cerdas", "Rekayasa Perangkat Lunak", "Teknologi Informas
             <div class="absolute -top-12 w-px h-12 bg-slate-300 hidden md:block"></div>
             
             <div class="bg-white border border-slate-200 p-4 rounded-xl text-center text-[10px] font-bold uppercase text-slate-600 h-[100px] w-full flex items-center justify-center shadow-sm">
-              Redaktur Jurnal CoreIT
+              {lang === 'en' ? "CoreIT Journal Editor" : "Redaktur Jurnal CoreIT"}
             </div>
           </div>
 

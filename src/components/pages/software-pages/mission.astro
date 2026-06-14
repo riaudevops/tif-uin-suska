@@ -1,3 +1,9 @@
+---
+import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const isEn = lang === 'en';
+---
+
 <section class="py-6 relative overflow-hidden max-w-7xl mx-auto px-6">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24">
     <div class="group bg-white p-10 rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-fade-up delay-1">
@@ -5,8 +11,8 @@
             <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
         </div>
         <h3 class="text-xs font-bold text-amber-500 uppercase tracking-widest mb-2">Pilar 01</h3>
-        <h4 class="text-2xl font-bold text-slate-900 mb-4">Efisiensi</h4>
-        <p class="text-slate-500 leading-relaxed">Optimalisasi infrastruktur digital untuk mendukung proses komputasi riset yang cepat dan stabil.</p>
+        <h4 class="text-2xl font-bold text-slate-900 mb-4">{isEn ? "Efficiency" : "Efisiensi"}</h4>
+        <p class="text-slate-500 leading-relaxed">{isEn ? "Optimizing digital infrastructure to support fast and stable research computing processes." : "Optimalisasi infrastruktur digital untuk mendukung proses komputasi riset yang cepat dan stabil."}</p>
     </div>
 
     <div class="group bg-slate-900 p-10 rounded-3xl border border-slate-800 shadow-xl hover:shadow-emerald-900/20 hover:-translate-y-2 transition-all duration-500 animate-fade-up delay-2">
@@ -14,8 +20,8 @@
             <svg class="w-7 h-7 text-emerald-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
         </div>
         <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-2">Pilar 02</h3>
-        <h4 class="text-2xl font-bold text-white mb-4">Keamanan</h4>
-        <p class="text-slate-400 leading-relaxed">Implementasi protokol enkripsi dan manajemen akses data sensitif berstandar internasional.</p>
+        <h4 class="text-2xl font-bold text-white mb-4">{isEn ? "Security" : "Keamanan"}</h4>
+        <p class="text-slate-400 leading-relaxed">{isEn ? "Implementing international-standard encryption protocols and sensitive data access management." : "Implementasi protokol enkripsi dan manajemen akses data sensitif berstandar internasional."}</p>
     </div>
 
     <div class="group bg-white p-10 rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-fade-up delay-3">
@@ -23,14 +29,14 @@
             <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
         </div>
         <h3 class="text-xs font-bold text-amber-500 uppercase tracking-widest mb-2">Pilar 03</h3>
-        <h4 class="text-2xl font-bold text-slate-900 mb-4">Aksesibilitas</h4>
-        <p class="text-slate-500 leading-relaxed">Menyediakan platform kolaborasi digital yang inklusif bagi seluruh civitas akademika.</p>
+        <h4 class="text-2xl font-bold text-slate-900 mb-4">{isEn ? "Accessibility" : "Aksesibilitas"}</h4>
+        <p class="text-slate-500 leading-relaxed">{isEn ? "Providing an inclusive digital collaboration platform for the entire academic community." : "Menyediakan platform kolaborasi digital yang inklusif bagi seluruh civitas akademika."}</p>
     </div>
     </div>
 
     <div class="mt-24 text-center animate-fade-in delay-3">
     <a href="#" class="inline-flex items-center gap-3 px-10 py-4 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-2xl transition-all shadow-xl shadow-emerald-900/20 group uppercase tracking-widest text-xs">
-        Jelajahi Infrastruktur Kami
+        {isEn ? "Explore Our Infrastructure" : "Jelajahi Infrastruktur Kami"}
         <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
     </a>
     </div>
