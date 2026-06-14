@@ -1,11 +1,17 @@
+---
+import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const isEn = lang === 'en';
+---
+
 <section class="relative bg-gradient-to-br from-[#004d2c] via-green-800 to-green-700">
   <div class="max-w-7xl mx-auto px-6 py-20">
     <div class="mb-12 border-l-8 border-yellow-400 pl-6">
         <h1 class="text-4xl font-bold text-white tracking-tight">
-            Tujuan Program Studi
+            {isEn ? "Study Program Goals" : "Tujuan Program Studi"}
         </h1>
         <p class="text-lg text-yellow-200 mt-2 font-medium">
-            Fakultas Sains dan Teknologi UIN Suska Riau
+            {isEn ? "Faculty of Science and Technology UIN Suska Riau" : "Fakultas Sains dan Teknologi UIN Suska Riau"}
         </p>
     </div>
 
@@ -16,9 +22,9 @@
                 <span class="text-white text-2xl font-bold">01</span>
             </div>
             <div class="p-6 flex-1">
-                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#004d2c] transition-colors">Keunggulan IPTEK Nasional</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#004d2c] transition-colors">{isEn ? "National Science & Technology Excellence" : "Keunggulan IPTEK Nasional"}</h3>
                 <p class="text-gray-600 leading-relaxed">
-                    Menghasilkan lulusan yang mampu mengembangkan ilmu pengetahuan dan teknologi di bidang <span class="text-[#05673f] font-semibold">Data Analytics</span> dan <span class="text-[#05673f] font-semibold">Software Development</span> yang unggul serta kompetitif di tingkat nasional.
+                    {isEn ? "Producing graduates capable of developing science and technology in the field of" : "Menghasilkan lulusan yang mampu mengembangkan ilmu pengetahuan dan teknologi di bidang"} <span class="text-[#05673f] font-semibold">Data Analytics</span> {isEn ? "and" : "dan"} <span class="text-[#05673f] font-semibold">Software Development</span>{isEn ? " that are excellent and competitive at the national level." : " yang unggul serta kompetitif di tingkat nasional."}
                 </p>
             </div>
         </div>
@@ -28,9 +34,9 @@
                 <span class="text-white text-2xl font-bold">02</span>
             </div>
             <div class="p-6 flex-1">
-                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#004d2c] transition-colors">Karir Profesional & Transdisiplin</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#004d2c] transition-colors">{isEn ? "Professional Career & Transdisciplinary" : "Karir Profesional & Transdisiplin"}</h3>
                 <p class="text-gray-600 leading-relaxed">
-                    Mencetak profesional yang <span class="bg-green-100 px-1 rounded text-green-800">adaptif, produktif, dan inovatif</span>, serta memiliki kemampuan kolaborasi tinggi dalam pengembangan ilmu lintas disiplin (transdisiplin).
+                    {isEn ? 'Producing professionals who are ' : 'Mencetak profesional yang '}<span class="bg-green-100 px-1 rounded text-green-800">{isEn ? "adaptive, productive, and innovative" : "adaptif, produktif, dan inovatif"}</span>{isEn ? ', with high collaboration capabilities in transdisciplinary science development.' : ', serta memiliki kemampuan kolaborasi tinggi dalam pengembangan ilmu lintas disiplin (transdisiplin).'}
                 </p>
             </div>
         </div>
@@ -40,9 +46,9 @@
                 <span class="text-white text-2xl font-bold">03</span>
             </div>
             <div class="p-6 flex-1">
-                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#004d2c] transition-colors">Solusi Masyarakat & Nilai Keislaman</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#004d2c] transition-colors">{isEn ? "Community Solutions & Islamic Values" : "Solusi Masyarakat & Nilai Keislaman"}</h3>
                 <p class="text-gray-600 leading-relaxed">
-                    Memberikan solusi nyata bagi permasalahan masyarakat melalui penerapan <span class="font-semibold italic text-gray-800">Teknologi Informasi</span> yang selaras dengan integrasi <span class="text-[#05673f] font-semibold">nilai-nilai Islam</span>.
+                    {isEn ? 'Providing real solutions to community problems through the application of ' : 'Memberikan solusi nyata bagi permasalahan masyarakat melalui penerapan '}<span class="font-semibold italic text-gray-800">{isEn ? "Information Technology" : "Teknologi Informasi"}</span>{isEn ? ' in line with the integration of ' : ' yang selaras dengan integrasi '}<span class="text-[#05673f] font-semibold">{isEn ? "Islamic values" : "nilai-nilai Islam"}</span>.
                 </p>
             </div>
         </div>

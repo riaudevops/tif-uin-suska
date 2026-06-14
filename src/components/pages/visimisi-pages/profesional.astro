@@ -1,3 +1,10 @@
+---
+import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const isEn = lang === 'en';
+---
+
 <section class="relative py-16 lg:py-24 bg-slate-50 overflow-hidden">
   
   
@@ -8,7 +15,7 @@
           The Mission
         </span>
       <h2 class="text-3xl md:text-4xl lg:text-5xl font-black text-slate-800 tracking-tight uppercase">
-        Misi <span class="text-[#004d2c]">Keilmuan</span>
+        {isEn ? 'Scientific' : 'Misi'} <span class="text-[#004d2c]">{isEn ? 'Mission' : 'Keilmuan'}</span>
       </h2>
     </div>
 
@@ -24,37 +31,37 @@
         
         <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
           <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">Hardskill & Softskill</h4>
+            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Hardskill & Softskill' : 'Hardskill & Softskill'}</h4>
           </div>
           <p class="text-sm text-slate-600 leading-relaxed">
-            Mengembangkan proses pendidikan dan pengajaran yang meningkatkan Softskill dan Hardskill mahasiswa.
+            {isEn ? 'Developing educational and teaching processes that enhance students\' soft skills and hard skills.' : 'Mengembangkan proses pendidikan dan pengajaran yang meningkatkan Softskill dan Hardskill mahasiswa.'}
           </p>
         </div>
 
         <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
           <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">Atmosfer Akademik</h4>
+            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Academic Atmosphere' : 'Atmosfer Akademik'}</h4>
           </div>
           <p class="text-sm text-slate-600 leading-relaxed">
-            Mengembangkan atmosfer akademik yang religius berlandaskan ajaran Islam.
+            {isEn ? 'Developing a religious academic atmosphere based on Islamic teachings.' : 'Mengembangkan atmosfer akademik yang religius berlandaskan ajaran Islam.'}
           </p>
         </div>
 
         <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
           <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">Sertifikasi Keahlian</h4>
+            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Professional Certification' : 'Sertifikasi Keahlian'}</h4>
           </div>
           <p class="text-sm text-slate-600 leading-relaxed">
-            Meningkatkan kompetensi Mahasiswa dibidang keilmuan Data Analytics dan Software Development melalui berbagai pelatihan dan sertifikasi.
+            {isEn ? 'Enhancing student competence in Data Analytics and Software Development through various training and certifications.' : 'Meningkatkan kompetensi Mahasiswa dibidang keilmuan Data Analytics dan Software Development melalui berbagai pelatihan dan sertifikasi.'}
           </p>
         </div>
 
         <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
           <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">Sinergi Industri</h4>
+            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Industry Synergy' : 'Sinergi Industri'}</h4>
           </div>
           <p class="text-sm text-slate-600 leading-relaxed">
-            Meningkatkan kolaborasi dengan stakeholders dan praktisi guna meningkatkan kemampuan mahasiswa sesuai dengan kebutuhan pasar dan lingkungan kerja.
+            {isEn ? 'Enhancing collaboration with stakeholders and practitioners to improve student capabilities aligned with market needs and work environment.' : 'Meningkatkan kolaborasi dengan stakeholders dan praktisi guna meningkatkan kemampuan mahasiswa sesuai dengan kebutuhan pasar dan lingkungan kerja.'}
           </p>
         </div>
 
@@ -73,37 +80,37 @@
         
         <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
           <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">Solusi Masyarakat</h4>
+            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Community Solutions' : 'Solusi Masyarakat'}</h4>
           </div>
           <p class="text-sm text-slate-600 leading-relaxed">
-            Meningkatkan kuantitas penelitian dan kuantitas Pengabdian Masyarakat untuk memberikan solusi pemecahan masalah di lingkungan masyarakat.
+            {isEn ? 'Increasing the quantity of research and community service to provide problem-solving solutions in the community.' : 'Meningkatkan kuantitas penelitian dan kuantitas Pengabdian Masyarakat untuk memberikan solusi pemecahan masalah di lingkungan masyarakat.'}
           </p>
         </div>
 
         <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
           <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">Publikasi Ilmiah</h4>
+            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Scientific Publication' : 'Publikasi Ilmiah'}</h4>
           </div>
           <p class="text-sm text-slate-600 leading-relaxed">
-            Meningkatnya kuantitas dan produktivitas publikasi ilmiah di bidang pengabdian kepada masyarakat dari dosen dan mahasiswa.
+            {isEn ? 'Increasing the quantity and productivity of scientific publications in community service from lecturers and students.' : 'Meningkatnya kuantitas dan produktivitas publikasi ilmiah di bidang pengabdian kepada masyarakat dari dosen dan mahasiswa.'}
           </p>
         </div>
 
         <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
           <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">Integrasi Teknologi</h4>
+            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Technology Integration' : 'Integrasi Teknologi'}</h4>
           </div>
           <p class="text-sm text-slate-600 leading-relaxed">
-            Meningkatnya kontribusi dalam pembangunan masyarakat yang mengintegrasikan ilmu dan teknologi dengan Islam.
+            {isEn ? 'Increasing contribution to community development that integrates science and technology with Islam.' : 'Meningkatnya kontribusi dalam pembangunan masyarakat yang mengintegrasikan ilmu dan teknologi dengan Islam.'}
           </p>
         </div>
 
         <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
           <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">Jaringan Kerjasama</h4>
+            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Collaboration Network' : 'Jaringan Kerjasama'}</h4>
           </div>
           <p class="text-sm text-slate-600 leading-relaxed">
-            Terwujudnya kerjasama pengabdian kepada masyarakat yang berkelanjutan.
+            {isEn ? 'Realizing sustainable community service collaborations.' : 'Terwujudnya kerjasama pengabdian kepada masyarakat yang berkelanjutan.'}
           </p>
         </div>
 
