@@ -12,6 +12,7 @@ const searchI18n = {
   loadError: lang === 'en' ? "Failed to load search data." : "Gagal memuat data pencarian.",
   unavailable: lang === 'en' ? "Search is currently unavailable." : "Pencarian tidak tersedia saat ini.",
   resultsFound: lang === 'en' ? "results found" : "hasil ditemukan",
+  lang: lang,
 };
 ---
 
@@ -73,7 +74,7 @@ const searchI18n = {
 	</div>
 </div>
 
-<script define:vars={searchI18n}>
+<script define:vars={{ searchI18n }}>
 	function initSiteSearch() {
 		const root = document.querySelector("[data-site-search-root]");
 		if (!root || root.dataset.searchReady === "1") return;
@@ -93,6 +94,7 @@ const searchI18n = {
 		let index = [];
 		let indexLoaded = false;
 		let indexLoading = false;
+		let cachedLang = null;
 
 		function normalize(text) {
 			return String(text)
@@ -152,6 +154,11 @@ const searchI18n = {
 		}
 
 		async function loadIndex() {
+			// Invalidate cache if language changed
+			if (cachedLang !== searchI18n.lang) {
+				indexLoaded = false;
+				cachedLang = searchI18n.lang;
+			}
 			if (indexLoaded || indexLoading) return;
 			indexLoading = true;
 			if (statusEl) {
@@ -159,7 +166,7 @@ const searchI18n = {
 				statusEl.textContent = searchI18n.loading;
 			}
 			try {
-				const res = await fetch("/api/search-index.json");
+				const res = await fetch(`/api/search-index.json?lang=${searchI18n.lang}`);
 				if (res.ok) {
 					index = await res.json();
 					indexLoaded = true;
