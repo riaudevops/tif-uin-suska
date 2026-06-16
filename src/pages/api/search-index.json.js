@@ -2,9 +2,11 @@ import { buildSearchIndex } from "@/lib/search";
 
 export const prerender = false;
 
-export const GET = async () => {
+export const GET = async ({ request }) => {
     try {
-        const index = await buildSearchIndex();
+        const url = new URL(request.url);
+        const lang = url.searchParams.get("lang") || "id";
+        const index = await buildSearchIndex(lang);
         return new Response(JSON.stringify(index), {
             headers: {
                 "Content-Type": "application/json",
