@@ -198,6 +198,8 @@ export const ui = {
     "bread.kp": "Info Kerja Praktik (KP)",
     "bread.ta": "Info Tugas Akhir (TA)",
     "bread.labssquad": "Labs Squad",
+    "bread.penelitian": "Penelitian",
+    "bread.aiorc": "AIORC",
 
     // ─── Common UI ────────────────────────────────────────────
     "common.prev": "Sebelumnya",
@@ -467,6 +469,8 @@ export const ui = {
     "bread.kp": "Internship Information (KP)",
     "bread.ta": "Thesis Information (TA)",
     "bread.labssquad": "Labs Squad",
+    "bread.penelitian": "Research",
+    "bread.aiorc": "AIORC",
 
     // ─── Common UI ────────────────────────────────────────────
     "common.prev": "Previous",
