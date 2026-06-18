@@ -4,10 +4,10 @@ const lang = getLocaleFromUrl(Astro);
 const isEn = lang === 'en';
 ---
 
-<section class="max-w-6xl mx-auto p-6 md:p-12 bg-gray-50 rounded-3xl my-12 border border-gray-200">
+<section data-aos="fade-up" class="max-w-6xl mx-auto p-6 md:p-12 bg-gray-50 rounded-3xl my-12 border border-gray-200">
     <div class="text-center mb-12">
-        <h2 class="text-sm font-bold text-green-600 uppercase tracking-widest mb-2">Strategy & Action Plan</h2>
-        <h1 class="text-3xl md:text-5xl font-black text-gray-900 mb-4">
+        <h2 data-aos="fade-up" class="text-sm font-bold text-green-600 uppercase tracking-widest mb-2">Strategy & Action Plan</h2>
+        <h1 data-aos="fade-up" class="text-3xl md:text-5xl font-black text-gray-900 mb-4">
             {isEn ? "Achievement Strategy" : "Strategi Pencapaian"}
         </h1>
         <p class="text-xl md:text-2xl font-semibold text-gray-700 max-w-2xl mx-auto leading-tight italic">

@@ -4,9 +4,9 @@ const lang = getLocaleFromUrl(Astro);
 const isEn = lang === 'en';
 ---
 
-<section class="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-xl border border-gray-100 my-10">
+<section data-aos="fade-up" class="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-xl border border-gray-100 my-10">
     <div class="relative mb-8">
-        <h1 class="text-3xl md:text-4xl font-extrabold text-[#004d2c] tracking-tight pl-6 border-l-8 border-yellow-400">
+        <h1 data-aos="fade-up" class="text-3xl md:text-4xl font-extrabold text-[#004d2c] tracking-tight pl-6 border-l-8 border-yellow-400">
             Misi Keilmuan <span class="text-[#05673f] block text-2xl mt-1 uppercase tracking-widest">{isEn ? "Informatics Engineering Program" : "Prodi Teknik Informatika"}</span>
         </h1>
     </div>
