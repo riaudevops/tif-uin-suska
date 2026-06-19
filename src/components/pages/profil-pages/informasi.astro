@@ -5,7 +5,7 @@ const t = useTranslations(lang);
 const isEn = lang === 'en';
 ---
 
-<section class="max-w-7xl mx-auto px-8 py-16 lg:py-24">
+<section data-aos="fade-up" class="max-w-7xl mx-auto px-8 py-16 lg:py-24">
     <div
         class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100"
     >
@@ -36,7 +36,7 @@ const isEn = lang === 'en';
                             >{isEn ? 'Study Program Identity' : 'Identitas Prodi'}</span
                         >
                     </div>
-                    <h2 class="text-3xl font-bold leading-tight mb-4">
+                    <h2 data-aos="fade-up" class="text-3xl font-bold leading-tight mb-4">
                         {isEn ? 'General' : 'Informasi'} <br />{isEn ? 'Basic Information' : 'Dasar Umum'}
                     </h2>
                     <p

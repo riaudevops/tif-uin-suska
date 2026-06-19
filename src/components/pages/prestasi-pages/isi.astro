@@ -135,7 +135,7 @@ const getPrestasiColor = (prestasi: string) => {
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  function initPrestasi() {
     const rows = document.querySelectorAll('.prestasi-row');
     const btnPrev = document.getElementById('btn-prev') as HTMLButtonElement | null;
     const btnNext = document.getElementById('btn-next') as HTMLButtonElement | null;
@@ -192,5 +192,8 @@ const getPrestasiColor = (prestasi: string) => {
     }
 
     updateTable();
-  });
-</script>
+  }
+
+  document.addEventListener('DOMContentLoaded', initPrestasi);
+  document.addEventListener('astro:page-load', initPrestasi);
+</script>
