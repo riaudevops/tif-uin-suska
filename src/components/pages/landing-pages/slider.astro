@@ -182,17 +182,28 @@ const t = useTranslations(lang);
 </section>
 
 <script is:inline>
-document.addEventListener('DOMContentLoaded', () => {
+function initSlider() {
   const slider = document.getElementById('slides');
+  if (!slider) return;
+
   const slides = slider.children;
   const total = slides.length;
 
   const prevBtn = document.getElementById('prev');
   const nextBtn = document.getElementById('next');
   const indicators = document.getElementById('indicators');
+  if (!prevBtn || !nextBtn || !indicators) return;
+
+  // Clear indicators from any previous renders (to avoid doubling them during transitions)
+  indicators.innerHTML = '';
 
   let index = 0;
   let interval;
+
+  // Clear any existing active interval to prevent leaks
+  if (window.homeSliderInterval) {
+    clearInterval(window.homeSliderInterval);
+  }
 
   for (let i = 0; i < total; i++) {
     const dot = document.createElement('button');
@@ -218,7 +229,9 @@ document.addEventListener('DOMContentLoaded', () => {
       dots[i].classList.remove('bg-white');
       dots[i].classList.add('bg-white/40');
     }
-    dots[index].classList.add('bg-white');
+    if (dots[index]) {
+      dots[index].classList.add('bg-white');
+    }
   }
 
   nextBtn.addEventListener('click', () => {
@@ -238,6 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
       index = (index + 1) % total;
       update();
     }, 7000); 
+    window.homeSliderInterval = interval;
   }
 
   function restartAutoSlide() {
@@ -247,5 +261,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   update();
   startAutoSlide();
-});
+}
+
+document.addEventListener('DOMContentLoaded', initSlider);
+document.addEventListener('astro:page-load', initSlider);
 </script>
+
