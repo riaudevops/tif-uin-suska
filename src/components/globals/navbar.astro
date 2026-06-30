@@ -15,11 +15,11 @@ const t = useTranslations(lang);
         class="w-full bg-[#004d2c] text-white/90 text-[10px] py-1 md:text-xs uppercase tracking-widest font-medium"
     >
         <div
-            class="container w-full mx-auto px-6 py-1 flex justify-end items-center gap-6"
+            class="container w-full mx-auto px-4 sm:px-6 py-1 flex justify-end items-center gap-3 sm:gap-6"
         >
-            <a href={localizePath("/international-office", lang)} class="hover:text-yellow-400 transition-colors">{t("top.io")}</a>
-            <a href={localizePath("/akreditasi", lang)} class="hover:text-yellow-400 transition-colors">{t("top.akreditasi")}</a>
-            <a href={localizePath("/mitra", lang)} class="hover:text-yellow-400 transition-colors">{t("top.mitra")}</a>
+            <a href={localizePath("/international-office", lang)} class="hover:text-yellow-400 transition-colors whitespace-nowrap hidden sm:inline">{t("top.io")}</a>
+            <a href={localizePath("/akreditasi", lang)} class="hover:text-yellow-400 transition-colors whitespace-nowrap">{t("top.akreditasi")}</a>
+            <a href={localizePath("/mitra", lang)} class="hover:text-yellow-400 transition-colors whitespace-nowrap">{t("top.mitra")}</a>
             <div class="h-3 w-[1px] bg-white/20"></div>
             <div class="flex items-center gap-1.5 font-bold">
                 <a href={localizePath(Astro.url.pathname, 'id')} class={`px-1.5 py-0.5 rounded transition duration-200 ${lang === 'id' ? 'bg-yellow-500 text-[#004d2c] font-black' : 'text-white/80 hover:text-white hover:bg-white/10'}`}>ID</a>
@@ -31,31 +31,31 @@ const t = useTranslations(lang);
 
     <div class="bg-white/95 backdrop-blur-md border-b border-gray-100">
         <div
-            class="container w-full mx-auto flex items-center justify-between py-3 px-6"
+            class="container w-full mx-auto flex items-center justify-between py-2 sm:py-3 px-4 sm:px-6"
         >
             <div class="flex items-center gap-5 shrink-0">
                 <div
-                    class="flex flex-col items-center border-r-2 border-slate-100 pr-5 group cursor-pointer"
+                    class="flex flex-col items-center border-r-2 border-slate-100 pr-3 sm:pr-5 group cursor-pointer"
                 >
                     <img
                         src="/logo/uin.png"
                         alt="Logo UIN Suska"
-                        class="h-10 w-auto transform group-hover:scale-105 transition-transform duration-300"
+                        class="h-8 sm:h-10 w-auto transform group-hover:scale-105 transition-transform duration-300"
                     />
                     <span
-                        class="text-[9px] font-black text-blue-400 mt-1.5 uppercase tracking-tighter text-center leading-none"
+                        class="text-[8px] sm:text-[9px] font-black text-blue-400 mt-1 sm:mt-1.5 uppercase tracking-tighter text-center leading-none"
                     >
                         UIN Suska Riau
                     </span>
                 </div>
                 <div class="flex flex-col">
                     <h1
-                        class="text-lg md:text-xl font-black tracking-tight text-slate-800 leading-none uppercase"
+                        class="text-sm sm:text-lg md:text-xl font-black tracking-tight text-slate-800 leading-none uppercase"
                     >
                         {lang === 'en' ? <>Informatics <span class="text-[#004d2c]">Engineering</span></> : <>Teknik <span class="text-[#004d2c]">Informatika</span></>}
                     </h1>
                     <h2
-                        class="text-[11px] md:text-xs font-bold text-slate-500 mt-1 uppercase tracking-wider"
+                        class="text-[9px] sm:text-[11px] md:text-xs font-bold text-slate-500 mt-0.5 sm:mt-1 uppercase tracking-wider"
                     >
                         {t("nav.sub")}
                     </h2>
