@@ -15,24 +15,24 @@ const t = useTranslations(lang);
             {t("hero.badge")}
           </span>
     
-          <h1 class="mt-6 text-3xl md:text-5xl font-bold text-white">
+          <h1 class="mt-4 sm:mt-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
             {lang === 'en' ? "Welcome to" : "Selamat Datang di"}
             <span class="block text-yellow-400 mt-2">
               {lang === 'en' ? "Informatics Engineering UIN Suska Riau" : "Teknik Informatika UIN Suska Riau"}
             </span>
           </h1>
     
-          <p class="mt-6 text-gray-100 text-lg max-w-3xl mx-auto leading-relaxed">
+          <p class="mt-4 sm:mt-6 text-gray-100 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed">
             {t("hero.desc1")}
           </p>
     
-          <div class="mt-10 flex justify-center gap-4">
+          <div class="mt-6 sm:mt-10 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
             <a href={localizePath("/profil-pages/sejarah", lang)} 
-              class="px-8 py-3 rounded-full bg-yellow-500 text-green-900 hover:bg-yellow-400 font-bold transition shadow-lg">
+              class="px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-yellow-500 text-green-900 hover:bg-yellow-400 font-bold transition shadow-lg text-center whitespace-nowrap">
               {t("hero.cta.profil")}
             </a>
     
-            <a href={localizePath("/akademik", lang)} class="px-8 py-3 rounded-full border-2 border-white text-white hover:bg-white hover:text-green-900 font-medium transition">
+            <a href={localizePath("/akademik", lang)} class="px-6 sm:px-8 py-2.5 sm:py-3 rounded-full border-2 border-white text-white hover:bg-white hover:text-green-900 font-medium transition text-center whitespace-nowrap">
               {t("hero.cta.akademik")}
             </a>
           </div>
@@ -48,20 +48,20 @@ const t = useTranslations(lang);
             {t("hero.badge")}
           </span>
     
-          <h1 class="mt-6 text-3xl md:text-5xl font-bold text-white">
+          <h1 class="mt-4 sm:mt-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
             {lang === 'en' ? "Welcome to" : "Selamat Datang di"}
             <span class="block text-yellow-400 mt-2">
               {lang === 'en' ? "Faculty of Science and Technology UIN Suska Riau" : "Fakultas Sains dan Teknologi UIN Suska Riau"}
             </span>
           </h1>
     
-          <p class="mt-6 text-gray-100 text-lg max-w-3xl mx-auto leading-relaxed">
+          <p class="mt-4 sm:mt-6 text-gray-100 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed">
             {t("hero.desc2")}
           </p>
     
-          <div class="mt-10 flex justify-center gap-4">
+          <div class="mt-6 sm:mt-10 flex justify-center gap-3 sm:gap-4">
             <a href="https://fst.uin-suska.ac.id/" 
-              class="px-8 py-3 rounded-full bg-yellow-500 text-green-900 hover:bg-yellow-400 font-bold transition shadow-lg">
+              class="px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-yellow-500 text-green-900 hover:bg-yellow-400 font-bold transition shadow-lg text-center whitespace-nowrap">
               {t("hero.cta.fakultas")}
             </a>
           </div>
@@ -77,20 +77,20 @@ const t = useTranslations(lang);
             {t("hero.badge")}
           </span>
     
-          <h1 class="mt-6 text-3xl md:text-5xl font-bold text-white">
+          <h1 class="mt-4 sm:mt-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
             {lang === 'en' ? "Welcome to" : "Selamat Datang di"}
             <span class="block text-yellow-400 mt-2">
               {lang === 'en' ? "Our Qualified Lecturers and Teaching Staff" : "Dosen dan Staf Pengajar Berkualitas"}
             </span>
           </h1>
     
-          <p class="mt-6 text-gray-100 text-lg max-w-3xl mx-auto leading-relaxed">
+          <p class="mt-4 sm:mt-6 text-gray-100 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed">
             {t("hero.desc3")}
           </p>
     
-          <div class="mt-10 flex justify-center gap-4">
+          <div class="mt-6 sm:mt-10 flex justify-center gap-3 sm:gap-4">
             <a href={localizePath("/dosen-pages/dosen", lang)} 
-              class="px-8 py-3 rounded-full bg-yellow-500 text-green-900 hover:bg-yellow-400 font-bold transition shadow-lg">
+              class="px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-yellow-500 text-green-900 hover:bg-yellow-400 font-bold transition shadow-lg text-center whitespace-nowrap">
               {t("hero.cta.dosen")}
             </a>
           </div>
@@ -106,19 +106,19 @@ const t = useTranslations(lang);
             {t("hero.badge")}
           </span>
     
-          <h1 class="mt-6 text-3xl md:text-5xl font-bold text-white">
+          <h1 class="mt-4 sm:mt-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
             {lang === 'en' ? "Welcome to" : "Selamat Datang di"}
             <span class="block text-yellow-400 mt-2">
               {lang === 'en' ? "Vision, Mission, and Goals of the Informatics Engineering Program" : "Visi, Misi, dan Tujuan Prodi Teknik Informatika UIN Suska Riau"}
             </span>
           </h1>
     
-          <p class="mt-6 text-gray-100 text-lg max-w-3xl mx-auto leading-relaxed">
+          <p class="mt-4 sm:mt-6 text-gray-100 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed">
             {t("hero.desc4")}
           </p>
     
-          <div class="mt-10 flex justify-center gap-4">
-            <a href={localizePath("/visimisi-pages/visimisi", lang)} class="px-8 py-3 rounded-full border-2 border-white text-white hover:bg-white hover:text-green-900 font-medium transition">
+          <div class="mt-6 sm:mt-10 flex justify-center gap-3 sm:gap-4">
+            <a href={localizePath("/visimisi-pages/visimisi", lang)} class="px-6 sm:px-8 py-2.5 sm:py-3 rounded-full border-2 border-white text-white hover:bg-white hover:text-green-900 font-medium transition text-center whitespace-nowrap">
               {t("hero.cta.visimisi")}
             </a>
           </div>
@@ -134,20 +134,20 @@ const t = useTranslations(lang);
             {t("hero.badge")}
           </span>
     
-          <h1 class="mt-6 text-3xl md:text-5xl font-bold text-white">
+          <h1 class="mt-4 sm:mt-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
             {lang === 'en' ? "Welcome to" : "Selamat Datang di"}
             <span class="block text-yellow-400 mt-2">
               {lang === 'en' ? "Achievements of Informatics Engineering Students" : "Prestasi Mahasiswa Teknik Informatika"}
             </span>
           </h1>
     
-          <p class="mt-6 text-gray-100 text-lg max-w-3xl mx-auto leading-relaxed">
+          <p class="mt-4 sm:mt-6 text-gray-100 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed">
             {t("hero.desc5")}
           </p>
     
-          <div class="mt-10 flex justify-center gap-4">
+          <div class="mt-6 sm:mt-10 flex justify-center gap-3 sm:gap-4">
             <a href={localizePath("/prestasi-pages/prestasi", lang)}
-              class="px-8 py-3 rounded-full border-2 border-white text-white hover:bg-white hover:text-green-900 font-medium transition"
+              class="px-6 sm:px-8 py-2.5 sm:py-3 rounded-full border-2 border-white text-white hover:bg-white hover:text-green-900 font-medium transition text-center whitespace-nowrap"
             >
               {t("hero.cta.prestasi")}
             </a>
@@ -159,7 +159,7 @@ const t = useTranslations(lang);
 
 <!-- Tombol Prev -->
 <button id="prev"
-    class="absolute left-6 top-1/2 -translate-y-1/2 z-30 group flex items-center justify-center w-12 h-12 bg-white/20 hover:bg-white/90 border border-white/30 text-white hover:text-green-800 rounded-full backdrop-blur-md transition-all duration-300 shadow-lg active:scale-90"
+    class="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-30 group flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white/20 hover:bg-white/90 border border-white/30 text-white hover:text-green-800 rounded-full backdrop-blur-md transition-all duration-300 shadow-lg active:scale-90"
     aria-label="Previous Slide">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transform group-hover:-translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
@@ -168,7 +168,7 @@ const t = useTranslations(lang);
 
 <!-- Tombol Next -->
 <button id="next"
-    class="absolute right-6 top-1/2 -translate-y-1/2 z-30 group flex items-center justify-center w-12 h-12 bg-white/20 hover:bg-white/90 border border-white/30 text-white hover:text-green-800 rounded-full backdrop-blur-md transition-all duration-300 shadow-lg active:scale-90"
+    class="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-30 group flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white/20 hover:bg-white/90 border border-white/30 text-white hover:text-green-800 rounded-full backdrop-blur-md transition-all duration-300 shadow-lg active:scale-90"
     aria-label="Next Slide">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transform group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
