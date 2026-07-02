@@ -11,23 +11,23 @@ const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 ---
 
-<footer class="relative bg-slate-900 text-slate-300 pt-20">
+<footer class="relative bg-slate-900 text-slate-300 pt-14 sm:pt-20">
    <div class="absolute inset-0 bg-[url('/landing-pages/gedung-faste.jpg')] bg-cover bg-center opacity-5"></div>
-    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12">
     
-    <div class="lg:col-span-5 flex flex-col gap-8">
-      <div class="flex items-center gap-6">
-        <div class="flex flex-col items-center border-r border-slate-700 pr-6">
-          <img src="/logo/uin.png" alt="Logo UIN Suska" class="h-20 w-auto">
-          <span class="text-[10px] font-bold text-blue-400 mt-2 uppercase tracking-tighter text-center">
+    <div class="lg:col-span-5 flex flex-col gap-6 sm:gap-8">
+      <div class="flex items-center gap-4 sm:gap-6">
+        <div class="flex flex-col items-center border-r border-slate-700 pr-4 sm:pr-6">
+          <img src="/logo/uin.png" alt="Logo UIN Suska" class="h-14 sm:h-20 w-auto">
+          <span class="text-[9px] sm:text-[10px] font-bold text-blue-400 mt-1 sm:mt-2 uppercase tracking-tighter text-center">
             UIN Suska Riau
           </span>
         </div>
         <div class="flex flex-col">
-          <h1 class="text-2xl md:text-3xl font-bold tracking-wide text-white leading-tight uppercase">
+          <h1 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-wide text-white leading-tight uppercase">
             {lang === 'en' ? <>Informatics <span class="text-[#004d2c]">Engineering</span></> : <>Teknik <span class="text-[#004d2c]">Informatika</span></>}
           </h1>
-          <h2 class="text-lg md:text-xl font-light text-slate-400 leading-tight uppercase">
+          <h2 class="text-sm sm:text-lg md:text-xl font-light text-slate-400 leading-tight uppercase">
             {lang === 'en' ? "Faculty of Science and Technology" : "Fakultas Sains dan Teknologi"}
           </h2>
         </div>
@@ -90,8 +90,8 @@ const t = useTranslations(lang);
     </div>
   </div>
 
-  <div class="max-w-7xl mx-auto px-6 mt-16 pt-10 border-t border-slate-800/50">
-    <div class="flex flex-col md:flex-row justify-center gap-12 lg:gap-24 items-start">
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 mt-12 sm:mt-16 pt-8 sm:pt-10 border-t border-slate-800/50">
+    <div class="flex flex-col md:flex-row justify-center gap-8 sm:gap-12 lg:gap-24 items-start">
       <div class="flex flex-col items-center">
         <h3 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-4 text-center">{t("footer.lokasi")}</h3>
         <div class="w-[280px] h-[150px] rounded-xl overflow-hidden border border-slate-700 grayscale hover:grayscale-0 transition duration-500">
@@ -113,8 +113,8 @@ const t = useTranslations(lang);
     </div>
   </div>
 
-  <div class="mt-20 bg-slate-950 border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-[11px] md:text-xs tracking-wide">
+  <div class="relative z-10 mt-12 sm:mt-20 bg-slate-950 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 flex flex-col md:flex-row justify-between items-center text-[11px] md:text-xs tracking-wide">
       <p class="text-slate-500 text-center md:text-left">
         {t("footer.copyright")}
       </p>
