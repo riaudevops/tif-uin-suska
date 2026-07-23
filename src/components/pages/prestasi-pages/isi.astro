@@ -4,16 +4,14 @@ const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
 let prestasiData = [];
 
 try {
-  const response = await fetch(`${API_URL}/items/prestasi?sort=-tahun`);
-  
+  // field waktu di collection kita adalah "waktu_penyelenggaraan", bukan "tahun"
+  const response = await fetch(`${API_URL}/items/prestasi?sort=-waktu_penyelenggaraan`);
   if (!response.ok) {
     const errorDetails = await response.json();
     console.error("ERROR DIRECTUS:", JSON.stringify(errorDetails, null, 2));
     throw new Error(`Gagal (Status: ${response.status})`);
   }
-  
   const dataDirectus = await response.json();
-
   prestasiData = dataDirectus.data.map((item: any) => {
     return {
       kegiatan: item.nama_kegiatan || 'Tanpa Nama',
@@ -196,4 +194,4 @@ const getPrestasiColor = (prestasi: string) => {
 
   document.addEventListener('DOMContentLoaded', initPrestasi);
   document.addEventListener('astro:page-load', initPrestasi);
-</script>
+</script>
