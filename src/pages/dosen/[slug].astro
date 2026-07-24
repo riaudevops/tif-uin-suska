@@ -12,10 +12,9 @@ type DosenPagePath = {
 const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
 
 export async function getStaticPaths(): Promise<DosenPagePath[]> {
-  
 
   try {
-    const response = await fetch(`${API_URL}/items/dosen`);
+    const response = await fetch(`${API_URL}/items/dosen_tif`);
 
     if (!response.ok) {
       throw new Error(`Gagal mengambil dosen (status: ${response.status})`);
@@ -24,7 +23,7 @@ export async function getStaticPaths(): Promise<DosenPagePath[]> {
     const { data } = await response.json();
 
     return (data || []).map((dosen: any) => ({
-      params: { slug: dosen.slug },
+      params: { slug: dosen.slug || String(dosen.id) },
       props: { dosen },
     }));
   } catch (error) {
@@ -78,7 +77,16 @@ const ASSET_URL = `${API_URL}/assets/`;
           
           <div class="mt-6 p-4 bg-emerald-50 rounded-xl">
             <p class="font-bold text-emerald-800 text-sm mb-2">{isEn ? 'Education:' : 'Pendidikan:'}</p>
-            <div class="text-slate-600 text-base" set:html={dosen.pendidikan?.replace(/\n/g, '<br/>') || '-'}></div>
+            <div class="text-slate-600 text-base">
+              {Array.isArray(dosen.pendidikan) && dosen.pendidikan.length > 0
+                ? dosen.pendidikan.map((p: string, i: number) => (
+                    <>
+                      {p}
+                      {i < dosen.pendidikan.length - 1 && <br />}
+                    </>
+                  ))
+                : '-'}
+            </div>
           </div>
         </div>
       </div>

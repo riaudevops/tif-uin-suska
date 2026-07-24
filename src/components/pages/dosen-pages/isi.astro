@@ -10,10 +10,8 @@ const ASSET_URL = `${API_URL}/assets/`;
 let dosenData = [];
 
 try {
-  const response = await fetch(`${API_URL}/items/dosen`);
-  
-  if (!response.ok) throw new Error("Gagal mengambil data dosen");
-  
+  const response = await fetch(`${API_URL}/items/dosen_tif?sort=id`);
+  if (!response.ok) throw new Error(`Gagal mengambil data dosen (Status: ${response.status})`);
   const dataDirectus = await response.json();
   dosenData = dataDirectus.data;
 } catch (error) {
@@ -50,7 +48,7 @@ try {
             <div class="relative w-full sm:w-40 flex-shrink-0 mx-auto sm:mx-0">
               <div class="absolute inset-0 bg-slate-200 translate-x-3 translate-y-3 rounded-xl group-hover:translate-x-4 group-hover:translate-y-4 transition-transform duration-300"></div>
               <img 
-                src={`${ASSET_URL}${dosen.foto}`}
+                src={dosen.foto ? `${ASSET_URL}${dosen.foto}` : '/images/default-avatar.jpg'}
                 alt={dosen.nama} 
                 class="relative z-10 w-full h-full object-cover rounded-xl aspect-[3/4] grayscale group-hover:grayscale-0 transition-all duration-500"
               />
@@ -68,11 +66,20 @@ try {
                 <ul class="space-y-2.5 text-sm text-slate-600 mb-6">
                   <li class="flex items-start gap-3">
                     <span class="text-slate-400">🎓</span> 
-                    <span class="leading-snug" set:html={dosen.pendidikan?.replace(/\n/g, '<br/>') || '-'}></span>
+                    <span class="leading-snug">
+                      {Array.isArray(dosen.pendidikan) && dosen.pendidikan.length > 0
+                        ? dosen.pendidikan.map((p: string, i: number) => (
+                            <>
+                              {p}
+                              {i < dosen.pendidikan.length - 1 && <br />}
+                            </>
+                          ))
+                        : '-'}
+                    </span>
                   </li>
                   <li class="flex items-center gap-3">
                     <span class="text-slate-400">📍</span> 
-                    <span>{isEn ? 'Faculty of Science and Technology' : 'Fakultas Sains dan Teknologi'}</span>
+                    <span>{dosen.fakultas || (isEn ? 'Faculty of Science and Technology' : 'Fakultas Sains dan Teknologi')}</span>
                   </li>
                   <li class="flex items-center gap-3">
                     <span class="text-slate-400">✉️</span> 
@@ -86,7 +93,7 @@ try {
               </div>
 
               <a 
-                href={localizePath(`/dosen/${dosen.slug}`, lang)} 
+                href={localizePath(`/dosen/${dosen.slug || dosen.id}`, lang)} 
                 class="block w-full text-center py-2.5 bg-slate-100 hover:bg-[#004d2c] hover:text-white text-slate-600 font-bold rounded-xl transition-colors duration-300"
               >
                 {isEn ? 'View Details' : 'Lihat Detail'}
