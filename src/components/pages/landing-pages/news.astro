@@ -8,7 +8,7 @@ let posts = [];
 
 try {
   const res = await fetch(
-    `${API_URL}/items/article?fields=title,slug,thumbnail,publish,content&sort=-publish&limit=3`
+    `${API_URL}/items/berita?filter[status][_eq]=published&fields=id,title,title_alias,images,publish_up,introtext&sort=-publish_up&limit=3`
   );
 
   if (!res.ok) {
@@ -49,7 +49,7 @@ const ASSET_URL = `${API_URL}/assets/`;
           
           <div class="overflow-hidden h-52">
             <img 
-              src={`${ASSET_URL}${post.thumbnail}`}
+              src={post.images ? `${ASSET_URL}${post.images.split('|')[0]}` : "/default-thumbnail.jpg"}
               alt={post.title} 
               class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
             />
@@ -59,7 +59,7 @@ const ASSET_URL = `${API_URL}/assets/`;
             <div class="flex items-center gap-2 mb-3">
               <span class="w-2 h-2 bg-yellow-400 rounded-full"></span>
               <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider">
-                {post.publish ? new Date(post.publish).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "Tanggal tidak tersedia"}
+                {post.publish_up ? new Date(post.publish_up).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "Tanggal tidak tersedia"}
               </span>
             </div>
 
@@ -68,12 +68,12 @@ const ASSET_URL = `${API_URL}/assets/`;
             </h3>
 
             <p class="text-gray-600 text-sm mb-6 line-clamp-3">
-              {(post.content || "").replace(/<[^>]+>/g, "").slice(0, 100)}...
+              {(post.introtext || "").replace(/<[^>]+>/g, "").slice(0, 100)}...
             </p>
 
             <div class="mt-auto">
               <a
-                href={localizePath(`/berita/${post.slug}`, lang)}
+                href={localizePath(`/berita/${post.title_alias || post.id}`, lang)}
                 class="inline-flex items-center font-bold rounded-full text-sm text-emerald-800 hover:text-yellow-600 transition-colors group/link"
               >
                 {t("common.readmore")}
