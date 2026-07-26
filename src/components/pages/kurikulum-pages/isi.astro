@@ -9,117 +9,42 @@ try {
     const json = await response.json();
     rawKurikulum = json.data || [];
   } else {
-    console.warn("Directus API returned non-OK status. Using fallback data.");
+    console.warn("Directus API returned non-OK status.");
   }
 } catch (error: any) {
-  console.warn("Failed to fetch from Directus API, using fallback data:", error?.message || error);
+  console.warn("Failed to fetch from Directus API:", error?.message || error);
 }
 
-// Fallback mock data matching the user's screenshots
-const fallbackKurikulum = [
-  // SEMESTER I (Kurikulum 2025)
-  { kurikulum: "2025", semester: 1, kode_mk: "MK01", kode_resmi: "PIF251101", nama_mk: "Algoritma dan Pemrograman", singkatan: "AP", sks: 3, prasyarat: "Paket Wajib" },
-  { kurikulum: "2025", semester: 1, kode_mk: "MK03", kode_resmi: "UIN252006", nama_mk: "Aqidah Akhlak", singkatan: "AA", sks: 2, prasyarat: "Paket Wajib" },
-  { kurikulum: "2025", semester: 1, kode_mk: "MK04", kode_resmi: "PIF251102", nama_mk: "Arsitektur dan Organisasi Komputer", singkatan: "AOK", sks: 2, prasyarat: "Paket Wajib" },
-  { kurikulum: "2025", semester: 1, kode_mk: "MK06", kode_resmi: "UIN252008", nama_mk: "Bahasa Indonesia", singkatan: "BI", sks: 2, prasyarat: "Paket Wajib" },
-  { kurikulum: "2025", semester: 1, kode_mk: "MK13", kode_resmi: "UIN252007", nama_mk: "Fiqih", singkatan: "FQ", sks: 2, prasyarat: "Paket Wajib" },
-  { kurikulum: "2025", semester: 1, kode_mk: "MK18", kode_resmi: "PIF251103", nama_mk: "Kalkulus 1", singkatan: "KK1", sks: 3, prasyarat: "Paket Wajib" },
-  { kurikulum: "2025", semester: 1, kode_mk: "MK28", kode_resmi: "UIN252001", nama_mk: "Pancasila dan Kewarganegaraan", singkatan: "PK", sks: 2, prasyarat: "Paket Wajib" },
-  { kurikulum: "2025", semester: 1, kode_mk: "MK31", kode_resmi: "PIF251104", nama_mk: "Pengantar Teknologi Informasi", singkatan: "PTI", sks: 2, prasyarat: "Paket Wajib" },
-  { kurikulum: "2025", semester: 1, kode_mk: "MK40", kode_resmi: "PIF251105", nama_mk: "Sistem Operasi", singkatan: "SO", sks: 3, prasyarat: "Paket Wajib" },
+const kurikulumList = rawKurikulum;
 
-  // SEMESTER II (Kurikulum 2025)
-  { kurikulum: "2025", semester: 2, kode_mk: "MK02", kode_resmi: "PIF251206", nama_mk: "Aljabar Linear", singkatan: "AL", sks: 3, prasyarat: "" },
-  { kurikulum: "2025", semester: 2, kode_mk: "MK05", kode_resmi: "UIN252009", nama_mk: "Bahasa Arab", singkatan: "BA", sks: 2, prasyarat: "" },
-  { kurikulum: "2025", semester: 2, kode_mk: "MK07", kode_resmi: "UIN252012", nama_mk: "Bahasa Inggris", singkatan: "ENG", sks: 2, prasyarat: "" },
-  { kurikulum: "2025", semester: 2, kode_mk: "MK17", kode_resmi: "PIF251207", nama_mk: "Jaringan Komputer", singkatan: "JK", sks: 3, prasyarat: "" },
-  { kurikulum: "2025", semester: 2, kode_mk: "MK19", kode_resmi: "PIF251208", nama_mk: "Kalkulus 2", singkatan: "KK2", sks: 3, prasyarat: "" },
-  { kurikulum: "2025", semester: 2, kode_mk: "MK26", kode_resmi: "PIF251209", nama_mk: "Matematika Diskrit 1", singkatan: "MD1", sks: 3, prasyarat: "" },
-  { kurikulum: "2025", semester: 2, kode_mk: "MK30", kode_resmi: "PIF251210", nama_mk: "Pemrograman Berorientasi Objek", singkatan: "PBO", sks: 3, prasyarat: "" },
-  { kurikulum: "2025", semester: 2, kode_mk: "MK12", kode_resmi: "UIN252011", nama_mk: "Studi Islam", singkatan: "SI", sks: 2, prasyarat: "" },
-
-  // SEMESTER III (Kurikulum 2025)
-  { kurikulum: "2025", semester: 3, kode_mk: "MK08", kode_resmi: "PIF251311", nama_mk: "Struktur Data", singkatan: "SD", sks: 3, prasyarat: "Pemrograman Berorientasi Objek" },
-  { kurikulum: "2025", semester: 3, kode_mk: "MK09", kode_resmi: "PIF251312", nama_mk: "Basis Data", singkatan: "BD", sks: 3, prasyarat: "" },
-  { kurikulum: "2025", semester: 3, kode_mk: "MK20", kode_resmi: "PIF251313", nama_mk: "Kalkulus Lanjut", singkatan: "KL", sks: 3, prasyarat: "Kalkulus 2" },
-  { kurikulum: "2025", semester: 3, kode_mk: "MK27", kode_resmi: "PIF251314", nama_mk: "Matematika Diskrit 2", singkatan: "MD2", sks: 3, prasyarat: "Matematika Diskrit 1" },
-  { kurikulum: "2025", semester: 3, kode_mk: "MK32", kode_resmi: "PIF251315", nama_mk: "Pemrograman Web", singkatan: "PW", sks: 3, prasyarat: "Algoritma dan Pemrograman" },
-  { kurikulum: "2025", semester: 3, kode_mk: "MK14", kode_resmi: "UIN252013", nama_mk: "Akhlak Tasawuf", singkatan: "AT", sks: 2, prasyarat: "" },
-  { kurikulum: "2025", semester: 3, kode_mk: "MK15", kode_resmi: "UIN252014", nama_mk: "Ulumul Qur'an", singkatan: "UQ", sks: 2, prasyarat: "" },
-  { kurikulum: "2025", semester: 3, kode_mk: "MK16", kode_resmi: "UIN252015", nama_mk: "Ulumul Hadits", singkatan: "UH", sks: 2, prasyarat: "" },
-
-  // SEMESTER IV (Kurikulum 2025)
-  { kurikulum: "2025", semester: 4, kode_mk: "MK10", kode_resmi: "PIF251416", nama_mk: "Sistem Basis Data", singkatan: "SBD", sks: 3, prasyarat: "Basis Data" },
-  { kurikulum: "2025", semester: 4, kode_mk: "MK11", kode_resmi: "PIF251417", nama_mk: "Rekayasa Perangkat Lunak", singkatan: "RPL", sks: 3, prasyarat: "Struktur Data" },
-  { kurikulum: "2025", semester: 4, kode_mk: "MK21", kode_resmi: "PIF251418", nama_mk: "Statistika dan Probabilitas", singkatan: "SP", sks: 3, prasyarat: "" },
-  { kurikulum: "2025", semester: 4, kode_mk: "MK22", kode_resmi: "PIF251419", nama_mk: "Metode Numerik", singkatan: "MN", sks: 3, prasyarat: "Kalkulus Lanjut" },
-  { kurikulum: "2025", semester: 4, kode_mk: "MK33", kode_resmi: "PIF251420", nama_mk: "Pemrograman Mobile", singkatan: "PM", sks: 3, prasyarat: "Pemrograman Berorientasi Objek" },
-  { kurikulum: "2025", semester: 4, kode_mk: "MK34", kode_resmi: "PIF251421", nama_mk: "Desain dan Analisis Algoritma", singkatan: "DAA", sks: 3, prasyarat: "Algoritma dan Pemrograman" },
-  { kurikulum: "2025", semester: 4, kode_mk: "MK35", kode_resmi: "PIF251422", nama_mk: "Grafika Komputer", singkatan: "GK", sks: 3, prasyarat: "" },
-
-  // SEMESTER V (Kurikulum 2025)
-  { kurikulum: "2025", semester: 5, kode_mk: "MK12", kode_resmi: "PIF251523", nama_mk: "Interaksi Manusia dan Komputer", singkatan: "IMK", sks: 3, prasyarat: "" },
-  { kurikulum: "2025", semester: 5, kode_mk: "MK23", kode_resmi: "PIF251524", nama_mk: "Kecerdasan Buatan", singkatan: "KB", sks: 3, prasyarat: "Matematika Diskrit 2" },
-  { kurikulum: "2025", semester: 5, kode_mk: "MK36", kode_resmi: "PIF251525", nama_mk: "Keamanan Komputer", singkatan: "KK", sks: 3, prasyarat: "Jaringan Komputer" },
-  { kurikulum: "2025", semester: 5, kode_mk: "MK37", kode_resmi: "PIF251526", nama_mk: "Etika Profesi IT", singkatan: "EP", sks: 2, prasyarat: "" },
-  { kurikulum: "2025", semester: 5, kode_mk: "MK38", kode_resmi: "PIF251527", nama_mk: "Pengolahan Citra Digital", singkatan: "PCD", sks: 3, prasyarat: "Grafika Komputer" },
-  { kurikulum: "2025", semester: 5, kode_mk: "MK39", kode_resmi: "PIF251528", nama_mk: "Sistem Terdistribusi", singkatan: "ST", sks: 3, prasyarat: "Sistem Operasi" },
-  { kurikulum: "2025", semester: 5, kode_mk: "MK41", kode_resmi: "PIF251529", nama_mk: "Kriptografi", singkatan: "KR", sks: 2, prasyarat: "" },
-  { kurikulum: "2025", semester: 5, kode_mk: "MK42", kode_resmi: "PIF251530", nama_mk: "Manajemen Proyek TI", singkatan: "MPTI", sks: 2, prasyarat: "" },
-
-  // SEMESTER VI (Kurikulum 2025)
-  { kurikulum: "2025", semester: 6, kode_mk: "MK29", kode_resmi: "UIN252002", nama_mk: "Kewarganegaraan", singkatan: "KWN", sks: 2, prasyarat: "" },
-  { kurikulum: "2025", semester: 6, kode_mk: "MK43", kode_resmi: "PIF251631", nama_mk: "Data Mining", singkatan: "DM", sks: 3, prasyarat: "Kecerdasan Buatan" },
-  { kurikulum: "2025", semester: 6, kode_mk: "MK44", kode_resmi: "PIF251632", nama_mk: "Pengujian Perangkat Lunak", singkatan: "PPL", sks: 3, prasyarat: "Rekayasa Perangkat Lunak" },
-  { kurikulum: "2025", semester: 6, kode_mk: "MK45", kode_resmi: "PIF251633", nama_mk: "Jaringan Komputer Lanjut", singkatan: "JKL", sks: 3, prasyarat: "Jaringan Komputer" },
-  { kurikulum: "2025", semester: 6, kode_mk: "MK46", kode_resmi: "PIF251634", nama_mk: "Kerja Praktik (KP)", singkatan: "KP", sks: 2, prasyarat: "Minimal telah mengambil 80 SKS" },
-  { kurikulum: "2025", semester: 6, kode_mk: "MK48", kode_resmi: "PIF251635", nama_mk: "Mata Kuliah Pilihan 1", singkatan: "", sks: 3, prasyarat: "" },
-  { kurikulum: "2025", semester: 6, kode_mk: "MK51", kode_resmi: "PIF251636", nama_mk: "Mata Kuliah Pilihan 2", singkatan: "", sks: 3, prasyarat: "" },
-  { kurikulum: "2025", semester: 6, kode_mk: "MK52", kode_resmi: "PIF251637", nama_mk: "Mata Kuliah Pilihan 3", singkatan: "", sks: 3, prasyarat: "" },
-
-  // SEMESTER VII (Kurikulum 2025)
-  { kurikulum: "2025", semester: 7, kode_mk: "MK24", kode_resmi: "PIF251735", nama_mk: "Kewirausahaan IT", singkatan: "KIT", sks: 2, prasyarat: "" },
-  { kurikulum: "2025", semester: 7, kode_mk: "MK25", kode_resmi: "PIF251736", nama_mk: "Komputasi Paralel dan Terdistribusi", singkatan: "KPT", sks: 2, prasyarat: "Jaringan Komputer (Minimal C)" },
-  { kurikulum: "2025", semester: 7, kode_mk: "MK47", kode_resmi: "UIN252017", nama_mk: "Kuliah Kerja Nyata (KKN)", singkatan: "KKN", sks: 4, prasyarat: "Minimal telah mengambil 100 SKS" },
-  { kurikulum: "2025", semester: 7, kode_mk: "MK49", kode_resmi: "PIF251737", nama_mk: "Metodologi Penelitian", singkatan: "MP", sks: 2, prasyarat: "Tata Tulis Karya Ilmiah (Sudah Mengambil)" },
-  { kurikulum: "2025", semester: 7, kode_mk: "", kode_resmi: "", nama_mk: "Mata Kuliah Pilihan 4", singkatan: "", sks: 3, prasyarat: "Minimal telah mengambil 80 SKS" },
-  { kurikulum: "2025", semester: 7, kode_mk: "", kode_resmi: "", nama_mk: "Mata Kuliah Pilihan 5", singkatan: "", sks: 3, prasyarat: "Minimal telah mengambil 80 SKS" },
-
-  // SEMESTER VIII (Kurikulum 2025)
-  { kurikulum: "2025", semester: 8, kode_mk: "MK50", kode_resmi: "PIF251838", nama_mk: "Tugas Akhir", singkatan: "TA", sks: 3, prasyarat: "Metodologi Penelitian (Sudah Mengambil)" },
-
-  // KURIKULUM 2020 (MOCK COURSES)
-  { kurikulum: "2020", semester: 1, kode_mk: "MK01", kode_resmi: "TIF201101", nama_mk: "Pengantar Teknologi Informasi", singkatan: "PTI", sks: 3, prasyarat: "Paket Wajib" },
-  { kurikulum: "2020", semester: 1, kode_mk: "MK02", kode_resmi: "TIF201102", nama_mk: "Kalkulus 1", singkatan: "KAL1", sks: 3, prasyarat: "Paket Wajib" },
-  { kurikulum: "2020", semester: 1, kode_mk: "MK03", kode_resmi: "TIF201103", nama_mk: "Algoritma Pemrograman", singkatan: "ALPRO", sks: 4, prasyarat: "Paket Wajib" },
-  { kurikulum: "2020", semester: 2, kode_mk: "MK04", kode_resmi: "TIF201204", nama_mk: "Kalkulus 2", singkatan: "KAL2", sks: 3, prasyarat: "Kalkulus 1" },
-  { kurikulum: "2020", semester: 2, kode_mk: "MK05", kode_resmi: "TIF201205", nama_mk: "Struktur Data", singkatan: "SD", sks: 4, prasyarat: "Algoritma Pemrograman" },
-  { kurikulum: "2020", semester: 7, kode_mk: "MK30", kode_resmi: "TIF201730", nama_mk: "Kerja Praktik", singkatan: "KP", sks: 2, prasyarat: "Minimal 100 SKS" },
-  { kurikulum: "2020", semester: 8, kode_mk: "MK31", kode_resmi: "TIF201831", nama_mk: "Skripsi / Tugas Akhir", singkatan: "TA", sks: 6, prasyarat: "Lulus Metodologi Penelitian" },
-
-  // KURIKULUM 2015 (MOCK COURSES)
-  { kurikulum: "2015", semester: 1, kode_mk: "INF1501", kode_resmi: "INF1501", nama_mk: "Pengantar TIK", singkatan: "PTIK", sks: 2, prasyarat: "-" },
-  { kurikulum: "2015", semester: 1, kode_mk: "INF1502", kode_resmi: "INF1502", nama_mk: "Matematika Dasar", singkatan: "MATDAS", sks: 3, prasyarat: "-" },
-  { kurikulum: "2015", semester: 1, kode_mk: "INF1503", kode_resmi: "INF1503", nama_mk: "Dasar Pemrograman", singkatan: "DASPRO", sks: 4, prasyarat: "-" },
-  { kurikulum: "2015", semester: 8, kode_mk: "INF1599", kode_resmi: "INF1599", nama_mk: "Tugas Akhir", singkatan: "TA", sks: 6, prasyarat: "-" }
-];
-
-const kurikulumList = rawKurikulum.length > 0 ? rawKurikulum : fallbackKurikulum;
+// Helper: ubah "Semester I" / "Semester IV" dll jadi angka (1, 4, ...)
+function parseRomanSemester(semesterStr: string): number {
+  if (!semesterStr) return 1;
+  const roman = semesterStr.replace(/Semester\s*/i, "").trim().toUpperCase();
+  const lookup: { [key: string]: number } = { I: 1, V: 5, X: 10 };
+  let total = 0;
+  for (let i = 0; i < roman.length; i++) {
+    const current = lookup[roman[i]] || 0;
+    const next = lookup[roman[i + 1]] || 0;
+    total += current < next ? -current : current;
+  }
+  return total || 1;
+}
 
 // Group by curriculum version and semester
 const curriculumVersions: { [version: string]: { [semester: number]: any[] } } = {};
 
 kurikulumList.forEach((item: any) => {
-  const v = String(item.kurikulum_versi || item.kurikulum || "2025");
+  const v = String(item.tahun_kurikulum || "2025");
   if (!curriculumVersions[v]) curriculumVersions[v] = {};
-  
-  const sem = Number(item.semester || 1);
+
+  const sem = parseRomanSemester(item.semester);
   if (!curriculumVersions[v][sem]) curriculumVersions[v][sem] = [];
-  
+
   curriculumVersions[v][sem].push({
-    kode_mk: item.kode_mk || "",
-    kode_resmi: item.kode_resmi || item.resmi || "",
-    nama_mk: item.nama_mk || item.nama_mata_kuliah || "",
+    kode_mk: item.kode_internal || "",
+    kode_resmi: item.kode_resmi || "",
+    nama_mk: item.nama_matakuliah || "",
     singkatan: item.singkatan || "",
     sks: Number(item.sks) || 0,
     prasyarat: item.prasyarat || ""
@@ -161,6 +86,11 @@ function romanize(num: number): string {
 ---
 
 <div class="max-w-6xl mx-auto px-6 py-6 font-sans">
+  {versions.length === 0 && (
+  <div class="text-center py-20 text-slate-500">
+    Belum ada data kurikulum yang tersedia.
+  </div>
+)}
   <!-- Active Curriculum Section -->
   <div class="mb-12">
     <div class="flex items-center gap-4 mb-8">
