@@ -9,21 +9,25 @@ export const prerender = false;
 
 const { slug } = Astro.params;
 const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
-const ASSET_URL = `${API_URL}/assets/`;
 
 let article;
 let related = [];
 
 try {
+    // Deteksi apakah URL slug berupa angka (ID) atau teks (Alias)
+    const isId = /^\d+$/.test(slug); 
+    const filterParam = isId ? `filter[id][_eq]=${slug}` : `filter[title_alias][_eq]=${slug}`;
+
     const [res, relatedRes] = await Promise.all([
         fetch(
-            `${API_URL}/items/article?filter[slug][_eq]=${slug}&fields=id,title,content,publish,thumbnail,tags,category.*,author`,
+            `${API_URL}/items/berita?${filterParam}&fields=id,title,introtext,fulltext,publish_up,images,catid,created_by_alias`
         ),
         fetch(
-            `${API_URL}/items/article?filter[slug][_neq]=${slug}&limit=3&fields=slug,title,content,publish,thumbnail,category.*,author.id,author.first_name,author.last_name`,
+            // Related post tetap mengecualikan artikel yang sedang dibuka
+            `${API_URL}/items/berita?${filterParam.replace('[_eq]', '[_neq]')}&limit=3&fields=id,title_alias,title,introtext,publish_up,images,catid,created_by_alias`
         ),
     ]);
-
+    
     if (!res.ok || !relatedRes.ok) {
         throw new Error(
             `Gagal mengambil detail berita (status: ${res.status}/${relatedRes.status})`,
@@ -48,65 +52,28 @@ if (!article) {
 <Layout title={article.title}>
     <div class="max-w-5xl mx-auto px-6 py-10">
         <nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
-            <ol
-                class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100"
-            >
+            <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100">
                 <li class="flex items-center">
-                    <a
-                        href={localizePath('/', lang)}
-                        class="flex items-center hover:text-green-600 transition-colors"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-4 w-4 mr-1"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                            ></path>
+                    <a href={localizePath('/', lang)} class="flex items-center hover:text-green-600 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                         </svg>
                         {t('nav.home')}
                     </a>
                 </li>
                 <li class="text-gray-300">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M9 5l7 7-7 7"></path>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                 </li>
                 <li>
-                    <a
-                        href={localizePath('/berita', lang)}
-                        class="hover:text-green-600 transition-colors">{isEn ? 'News' : 'Berita'}</a
-                    >
+                    <a href={localizePath('/berita', lang)} class="hover:text-green-600 transition-colors">
+                        {isEn ? 'News' : 'Berita'}
+                    </a>
                 </li>
                 <li class="text-gray-300">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M9 5l7 7-7 7"></path>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                 </li>
                 <li class="text-green-700 font-bold tracking-tight">
@@ -116,9 +83,9 @@ if (!article) {
         </nav>
 
         {
-            article.category?.name && (
+            article.catid && (
                 <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold mt-4 inline-block">
-                    {article.category.name}
+                    Kategori ID: {article.catid}
                 </span>
             )
         }
@@ -127,24 +94,20 @@ if (!article) {
             {article.title}
         </h1>
 
-        <div
-            class="flex items-center justify-between flex-wrap gap-4 border-y py-4 mb-8"
-        >
-            <div
-                class="text-sm text-slate-600 flex flex-col sm:flex-row sm:gap-4"
-            >
+        <div class="flex items-center justify-between flex-wrap gap-4 border-y py-4 mb-8">
+            <div class="text-sm text-slate-600 flex flex-col sm:flex-row sm:gap-4">
                 <div>
                     {isEn ? 'Published on' : 'Dipublikasikan pada'}
-                    <span class="font-medium">
+                    <span class="font-medium ml-1">
                         {
-                            new Date(article.publish).toLocaleDateString(
+                            article.publish_up ? new Date(article.publish_up).toLocaleDateString(
                                 lang === 'en' ? "en-US" : "id-ID",
                                 {
                                     day: "numeric",
                                     month: "long",
                                     year: "numeric",
                                 },
-                            )
+                            ) : '-'
                         }
                     </span>
                 </div>
@@ -152,34 +115,22 @@ if (!article) {
                 <div class="text-sm text-slate-600">
                     <span class="text-slate-500">{isEn ? 'Written by: ' : 'Ditulis oleh : '}</span>
                     <span class="font-semibold text-slate-800">
-                        {article.author}
+                        {article.created_by_alias || 'Anonim'}
                     </span>
                 </div>
             </div>
 
             <div class="flex gap-3 text-sm">
-                <a
-                    href={`https://wa.me/?text=${encodeURIComponent(article.title + " " + Astro.url.href)}`}
-                    target="_blank"
-                    class="hover:text-emerald-600">WhatsApp</a
-                >
-                <a
-                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(Astro.url.href)}`}
-                    target="_blank"
-                    class="hover:text-emerald-600">Twitter</a
-                >
-                <a
-                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(Astro.url.href)}`}
-                    target="_blank"
-                    class="hover:text-emerald-600">Facebook</a
-                >
+                <a href={`https://wa.me/?text=${encodeURIComponent(article.title + " " + Astro.url.href)}`} target="_blank" class="hover:text-emerald-600">WhatsApp</a>
+                <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(Astro.url.href)}`} target="_blank" class="hover:text-emerald-600">Twitter</a>
+                <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(Astro.url.href)}`} target="_blank" class="hover:text-emerald-600">Facebook</a>
             </div>
         </div>
 
         {
-            article.thumbnail && (
+            article.images && (
                 <img
-                    src={`${API_URL}/assets/${article.thumbnail}`}
+                    src={`${API_URL}/assets/${article.images.split('|')[0]}`}
                     class="w-full h-[420px] object-cover rounded-2xl shadow-xl mb-10"
                     alt={article.title}
                 />
@@ -188,49 +139,29 @@ if (!article) {
 
         <div
             class="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-emerald-600"
-            set:html={article.content}
+            set:html={article.fulltext || article.introtext}
         />
 
-        {
-            article.tags && article.tags.length > 0 && (
-                <div class="mt-10 flex flex-wrap gap-2">
-                    {article.tags.map((tag: string) => (
-                        <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs">
-                            #{tag}
-                        </span>
-                    ))}
-                </div>
-            )
-        }
-
-        {
-            related.length > 0 && (
-                <div class="mt-16">
-                    <h2 class="text-2xl font-bold mb-6">{isEn ? 'Other News' : 'Berita Lainnya'}</h2>
-
-                    <div class="grid md:grid-cols-3 gap-6">
-                        {related.map((item: any) => (
-                            <a
-                                href={localizePath(`/berita/${item.slug}`, lang)}
-                                class="group block bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
-                            >
-                                {item.thumbnail && (
-                                    <img
-                                        src={`${API_URL}/assets/${item.thumbnail}`}
-                                        class="h-40 w-full object-cover group-hover:scale-105 transition"
-                                        alt={item.title}
-                                    />
-                                )}
-                                <div class="p-4">
-                                    <h3 class="font-semibold group-hover:text-emerald-600">
-                                        {item.title}
-                                    </h3>
-                                </div>
-                            </a>
-                        ))}
-                    </div>
-                </div>
-            )
-        }
+{related.map((item: any) => (
+    <a
+        // UBAH: Gunakan title_alias atau id
+        href={localizePath(`/berita/${item.title_alias || item.id}`, lang)}
+        class="group block bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
+    >
+        {/* UBAH: Gunakan images, bukan thumbnail */}
+        {item.images && (
+            <img
+                src={`${API_URL}/assets/${item.images.split('|')[0]}`}
+                class="h-40 w-full object-cover group-hover:scale-105 transition"
+                alt={item.title}
+            />
+        )}
+        <div class="p-4">
+            <h3 class="font-semibold group-hover:text-emerald-600">
+                {item.title}
+            </h3>
+        </div>
+    </a>
+))}
     </div>
 </Layout>
