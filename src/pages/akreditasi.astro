@@ -1,14 +1,39 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import { getLocaleFromUrl } from '../lib/translations';
+// 1. Tambahkan useTranslations dan localizePath
+import { getLocaleFromUrl, useTranslations, localizePath } from '../lib/translations';
 
 const lang = getLocaleFromUrl(Astro);
+// 2. Deklarasikan variabel t
+const t = useTranslations(lang);
 const isEn = lang === 'en';
 ---
 
 <Layout title={isEn ? "Accreditation" : "Akreditasi"}>
   <section data-aos="fade-up" class="max-w-7xl mx-auto px-6 py-20">
-    <div class="bg-white rounded-3xl p-8 shadow-lg border border-gray-100">
+    <nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
+      <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100">
+        <li class="flex items-center">
+          <a href={localizePath("/", lang)} class="flex items-center hover:text-green-600 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            {t("bread.home")}
+          </a>
+        </li>
+        <li class="text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="text-green-700 font-bold tracking-tight">
+          {/* 3. Ubah teks breadcrumb agar sesuai halaman */}
+          {isEn ? "Accreditation" : "Akreditasi"}
+        </li>
+      </ol>
+    </nav>
+    
+    <div class="bg-white rounded-3xl p-8 shadow-lg border border-gray-100 mt-6">
       <h1 data-aos="fade-up" class="text-3xl font-black text-[#004d2c]">{isEn ? "Accreditation" : "Akreditasi"}</h1>
       <p class="text-slate-600 mt-4">
         {isEn 
