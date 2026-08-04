@@ -3,119 +3,124 @@ import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
+
+const colorMap = {
+  emerald: { border: 'border-t-emerald-500', badge: 'bg-emerald-50 text-emerald-600', ring: 'group-hover:ring-emerald-500/20' },
+  blue:    { border: 'border-t-blue-500',    badge: 'bg-blue-50 text-blue-600',       ring: 'group-hover:ring-blue-500/20' },
+  purple:  { border: 'border-t-purple-500',  badge: 'bg-purple-50 text-purple-600',   ring: 'group-hover:ring-purple-500/20' },
+  amber:   { border: 'border-t-amber-500',   badge: 'bg-amber-50 text-amber-600',     ring: 'group-hover:ring-amber-500/20' },
+  rose:    { border: 'border-t-rose-500',    badge: 'bg-rose-50 text-rose-600',       ring: 'group-hover:ring-rose-500/20' },
+  cyan:    { border: 'border-t-cyan-500',    badge: 'bg-cyan-50 text-cyan-600',       ring: 'group-hover:ring-cyan-500/20' },
+  indigo:  { border: 'border-t-indigo-500',  badge: 'bg-indigo-50 text-indigo-600',   ring: 'group-hover:ring-indigo-500/20' },
+  teal:    { border: 'border-t-teal-500',    badge: 'bg-teal-50 text-teal-600',       ring: 'group-hover:ring-teal-500/20' },
+};
+
+const graduateCards = [
+  {
+    color: 'emerald',
+    icon: 'M13 10V3L4 14h7v7l9-11h-7z',
+    titleEn: 'Hardskill & Softskill',
+    titleId: 'Hardskill & Softskill',
+    descEn: "Developing educational and teaching processes that enhance students' soft skills and hard skills.",
+    descId: 'Mengembangkan proses pendidikan dan pengajaran yang meningkatkan Softskill dan Hardskill mahasiswa.',
+  },
+  {
+    color: 'blue',
+    icon: 'M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z',
+    titleEn: 'Academic Atmosphere',
+    titleId: 'Atmosfer Akademik',
+    descEn: 'Developing a religious academic atmosphere based on Islamic teachings.',
+    descId: 'Mengembangkan atmosfer akademik yang religius berlandaskan ajaran Islam.',
+  },
+  {
+    color: 'purple',
+    icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+    titleEn: 'Professional Certification',
+    titleId: 'Sertifikasi Keahlian',
+    descEn: 'Enhancing student competence in Data Analytics and Software Development through various training and certifications.',
+    descId: 'Meningkatkan kompetensi Mahasiswa dibidang keilmuan Data Analytics dan Software Development melalui berbagai pelatihan dan sertifikasi.',
+  },
+  {
+    color: 'amber',
+    icon: 'M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-1.13a4 4 0 10-8 0 4 4 0 008 0zm6 8v-2a4 4 0 00-3-3.87',
+    titleEn: 'Industry Synergy',
+    titleId: 'Sinergi Industri',
+    descEn: 'Enhancing collaboration with stakeholders and practitioners to improve student capabilities aligned with market needs and work environment.',
+    descId: 'Meningkatkan kolaborasi dengan stakeholders dan praktisi guna meningkatkan kemampuan mahasiswa sesuai dengan kebutuhan pasar dan lingkungan kerja.',
+  },
+  {
+    color: 'rose',
+    icon: 'M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-1.13a4 4 0 10-8 0 4 4 0 008 0zM12 4a4 4 0 100 8 4 4 0 000-8z',
+    titleEn: 'Community Solutions',
+    titleId: 'Solusi Masyarakat',
+    descEn: 'Increasing the quantity of research and community service to provide problem-solving solutions in the community.',
+    descId: 'Meningkatkan kuantitas penelitian dan kuantitas Pengabdian Masyarakat untuk memberikan solusi pemecahan masalah di lingkungan masyarakat.',
+  },
+  {
+    color: 'cyan',
+    icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
+    titleEn: 'Scientific Publication',
+    titleId: 'Publikasi Ilmiah',
+    descEn: 'Increasing the quantity and productivity of scientific publications in community service from lecturers and students.',
+    descId: 'Meningkatnya kuantitas dan produktivitas publikasi ilmiah di bidang pengabdian kepada masyarakat dari dosen dan mahasiswa.',
+  },
+  {
+    color: 'indigo',
+    icon: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+    titleEn: 'Technology Integration',
+    titleId: 'Integrasi Teknologi',
+    descEn: 'Increasing contribution to community development that integrates science and technology with Islam.',
+    descId: 'Meningkatnya kontribusi dalam pembangunan masyarakat yang mengintegrasikan ilmu dan teknologi dengan Islam.',
+  },
+  {
+    color: 'teal',
+    icon: 'M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-1.13a4 4 0 10-8 0 4 4 0 008 0zm-9 8v-2a4 4 0 013-3.87M13 7a4 4 0 11-8 0 4 4 0 018 0z',
+    titleEn: 'Collaboration Network',
+    titleId: 'Jaringan Kerjasama',
+    descEn: 'Realizing sustainable community service collaborations.',
+    descId: 'Terwujudnya kerjasama pengabdian kepada masyarakat yang berkelanjutan.',
+  },
+];
+
+const sections = [
+  { titleEn: 'Professional Graduates', titleId: 'Professional Graduates', cards: graduateCards.slice(0, 4) },
+  { titleEn: 'Contribution toward Civilized Society', titleId: 'Contribution toward Civilized Society', cards: graduateCards.slice(4, 8) },
+];
 ---
 
-<section data-aos="fade-up" class="relative py-16 lg:py-24 bg-slate-50 overflow-hidden">
-  
-  
+<section data-aos="fade-up" class="relative py-8 lg:py-12 bg-slate-50 overflow-hidden">
+
   <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-    
-    <div class="text-center max-w-3xl mx-auto mb-20">
-        <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">
-          The Mission
-        </span>
-      <h2 data-aos="fade-up" class="text-3xl md:text-4xl lg:text-5xl font-black text-slate-800 tracking-tight uppercase">
-        {isEn ? 'Scientific' : 'Misi'} <span class="text-[#004d2c]">{isEn ? 'Mission' : 'Keilmuan'}</span>
-      </h2>
-    </div>
+    {sections.map((sec, si) => (
+      <div class={si === 0 ? 'mb-20' : ''}>
+        <div class="flex items-center gap-4 mb-8">
+          <h3 class="text-xl md:text-2xl font-extrabold text-[#004d2c] tracking-tight whitespace-nowrap">
+            {isEn ? sec.titleEn : sec.titleId}
+          </h3>
+          <div class="h-[1px] w-full bg-gradient-to-r from-emerald-800/20 to-transparent"></div>
+        </div>
 
-    <div class="mb-20">
-      <div class="flex items-center gap-4 mb-8">
-        <h3 class="text-xl md:text-2xl font-extrabold text-[#004d2c] tracking-tight whitespace-nowrap">
-          Professional Graduates
-        </h3>
-        <div class="h-[1px] w-full bg-gradient-to-r from-emerald-800/20 to-transparent"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {sec.cards.map((card) => {
+            const c = colorMap[card.color];
+            return (
+              <div class={`group relative bg-white border border-slate-200/60 border-t-4 ${c.border} rounded-3xl p-8 shadow-sm hover:shadow-xl ring-1 ring-transparent ${c.ring} transition-all duration-300 transform hover:-translate-y-1`}>
+                <div class={`mb-5 w-12 h-12 rounded-2xl flex items-center justify-center ${c.badge}`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75">
+                    <path stroke-linecap="round" stroke-linejoin="round" d={card.icon} />
+                  </svg>
+                </div>
+                <h4 class="font-black text-slate-800 text-lg mb-3 group-hover:text-[#004d2c] transition-colors">
+                  {isEn ? card.titleEn : card.titleId}
+                </h4>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                  {isEn ? card.descEn : card.descId}
+                </p>
+              </div>
+            );
+          })}
+        </div>
       </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        
-        <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
-          <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Hardskill & Softskill' : 'Hardskill & Softskill'}</h4>
-          </div>
-          <p class="text-sm text-slate-600 leading-relaxed">
-            {isEn ? 'Developing educational and teaching processes that enhance students\' soft skills and hard skills.' : 'Mengembangkan proses pendidikan dan pengajaran yang meningkatkan Softskill dan Hardskill mahasiswa.'}
-          </p>
-        </div>
-
-        <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
-          <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Academic Atmosphere' : 'Atmosfer Akademik'}</h4>
-          </div>
-          <p class="text-sm text-slate-600 leading-relaxed">
-            {isEn ? 'Developing a religious academic atmosphere based on Islamic teachings.' : 'Mengembangkan atmosfer akademik yang religius berlandaskan ajaran Islam.'}
-          </p>
-        </div>
-
-        <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
-          <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Professional Certification' : 'Sertifikasi Keahlian'}</h4>
-          </div>
-          <p class="text-sm text-slate-600 leading-relaxed">
-            {isEn ? 'Enhancing student competence in Data Analytics and Software Development through various training and certifications.' : 'Meningkatkan kompetensi Mahasiswa dibidang keilmuan Data Analytics dan Software Development melalui berbagai pelatihan dan sertifikasi.'}
-          </p>
-        </div>
-
-        <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
-          <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Industry Synergy' : 'Sinergi Industri'}</h4>
-          </div>
-          <p class="text-sm text-slate-600 leading-relaxed">
-            {isEn ? 'Enhancing collaboration with stakeholders and practitioners to improve student capabilities aligned with market needs and work environment.' : 'Meningkatkan kolaborasi dengan stakeholders dan praktisi guna meningkatkan kemampuan mahasiswa sesuai dengan kebutuhan pasar dan lingkungan kerja.'}
-          </p>
-        </div>
-
-      </div>
-    </div>
-
-    <div>
-      <div class="flex items-center gap-4 mb-8">
-        <h3 class="text-xl md:text-2xl font-extrabold text-[#004d2c] tracking-tight whitespace-nowrap">
-          Contribution toward Civilized Society
-        </h3>
-        <div class="h-[1px] w-full bg-gradient-to-r from-emerald-800/20 to-transparent"></div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        
-        <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
-          <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Community Solutions' : 'Solusi Masyarakat'}</h4>
-          </div>
-          <p class="text-sm text-slate-600 leading-relaxed">
-            {isEn ? 'Increasing the quantity of research and community service to provide problem-solving solutions in the community.' : 'Meningkatkan kuantitas penelitian dan kuantitas Pengabdian Masyarakat untuk memberikan solusi pemecahan masalah di lingkungan masyarakat.'}
-          </p>
-        </div>
-
-        <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
-          <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Scientific Publication' : 'Publikasi Ilmiah'}</h4>
-          </div>
-          <p class="text-sm text-slate-600 leading-relaxed">
-            {isEn ? 'Increasing the quantity and productivity of scientific publications in community service from lecturers and students.' : 'Meningkatnya kuantitas dan produktivitas publikasi ilmiah di bidang pengabdian kepada masyarakat dari dosen dan mahasiswa.'}
-          </p>
-        </div>
-
-        <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
-          <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Technology Integration' : 'Integrasi Teknologi'}</h4>
-          </div>
-          <p class="text-sm text-slate-600 leading-relaxed">
-            {isEn ? 'Increasing contribution to community development that integrates science and technology with Islam.' : 'Meningkatnya kontribusi dalam pembangunan masyarakat yang mengintegrasikan ilmu dan teknologi dengan Islam.'}
-          </p>
-        </div>
-
-        <div class="group relative bg-white border border-slate-200/60 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
-          <div class="flex items-center justify-between mb-6">
-            <h4 class="font-black text-slate-800 text-lg pr-4 group-hover:text-[#004d2c] transition-colors">{isEn ? 'Collaboration Network' : 'Jaringan Kerjasama'}</h4>
-          </div>
-          <p class="text-sm text-slate-600 leading-relaxed">
-            {isEn ? 'Realizing sustainable community service collaborations.' : 'Terwujudnya kerjasama pengabdian kepada masyarakat yang berkelanjutan.'}
-          </p>
-        </div>
-
-      </div>
-    </div>
-
+    ))}
   </div>
 </section>
