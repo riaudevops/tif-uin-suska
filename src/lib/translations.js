@@ -46,8 +46,8 @@ export const ui = {
     "menu.labssquad": "Labs Squad",
 
     // ─── Sub-menus Penelitian ─────────────────────────────────
-    "menu.jurnal": "Jurnal COreIT",
-    "menu.aiorc": "AIORC",
+    "menu.jurnal": "Jurnal CoreIT",
+    "menu.aiorc": "Artificial Intelligence and Optimization Research Center (AIORC)",
     "menu.se": "Software Engineering",
     "menu.it": "Information Technology",
 
@@ -217,7 +217,7 @@ export const ui = {
     "page.dosen.badge": "Akademisi",
     "page.dosen.title": "Dosen",
     "page.dosen.desc": "Prodi Teknik Informatika UIN Sultan Syarif Kasim Riau memiliki dosen yang berpengalaman dan kompeten dalam bidangnya yang mengajar dan melatih para mahasiswa agar menjadi lulusan yang berkualitas dan siap untuk menghadapi dunia kerja.",
-    "page.sejarah.badge": "Legacy Since 1999",
+    "page.sejarah.badge": "Established since 1999",
     "page.sejarah.title1": "Sejarah",
     "page.sejarah.title2": "Prodi",
     "page.sejarah.title3": "Teknik Informatika",
@@ -317,8 +317,8 @@ export const ui = {
     "menu.labssquad": "Labs Squad",
 
     // ─── Sub-menus Penelitian ─────────────────────────────────
-    "menu.jurnal": "COreIT Journal",
-    "menu.aiorc": "AIORC",
+    "menu.jurnal": "CoreIT Journal",
+    "menu.aiorc": "Artificial Intelligence and Optimization Research Center (AIORC)",
     "menu.se": "Software Engineering",
     "menu.it": "Information Technology",
 
