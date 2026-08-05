@@ -1,64 +1,475 @@
 ---
-import Layout from '@/layouts/Layout.astro';
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+import {
+  Award,
+  FileText,
+  Download,
+  CheckCircle2,
+  Calendar,
+  DollarSign,
+  ArrowRight,
+  Sparkles,
+  BookOpen,
+  GraduationCap,
+  ExternalLink,
+  ShieldCheck,
+  Building2
+} from '@lucide/astro';
+
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
+const isEn = lang === 'en';
 const API_URL = import.meta.env.BASE_API_URL || 'http://localhost:8055';
-let items = [];
+
+interface BeasiswaItem {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  date: string;
+  thumbnail: string;
+  category?: string;
+  deadline?: string;
+}
+
+let items: BeasiswaItem[] = [];
+let fetchError = false;
+
 try {
-  const res = await fetch(`${API_URL}/items/beasiswa?fields=id,title,slug,excerpt,published_at,thumbnail`);
+  const res = await fetch(`${API_URL}/items/beasiswa?fields=id,title,slug,excerpt,published_at,thumbnail,category,deadline&sort=-published_at`);
   if (res.ok) {
     const data = await res.json();
-    items = data.data.map((d: any) => ({
+    items = (data.data || []).map((d: any) => ({
       id: d.id,
-      title: d.title || 'Tanpa Judul',
+      title: d.title || (isEn ? 'Untitled Scholarship' : 'Tanpa Judul'),
       slug: d.slug || d.id,
       excerpt: d.excerpt || '',
-      date: d.published_at ? new Date(d.published_at).toLocaleDateString('id-ID') : '' ,
-      thumbnail: d.thumbnail || ''
+      date: d.published_at 
+        ? new Date(d.published_at).toLocaleDateString(isEn ? 'en-US' : 'id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          }) 
+        : '',
+      thumbnail: d.thumbnail ? `${API_URL}/assets/${d.thumbnail}` : '',
+      category: d.category || (isEn ? 'Scholarship Program' : 'Program Beasiswa'),
+      deadline: d.deadline || ''
     }));
   } else {
-    console.error('Gagal memuat data Beasiswa', res.status);
+    fetchError = true;
   }
 } catch (e) {
-  console.error('Error fetch beasiswa', e);
+  console.error('Error fetching Beasiswa items:', e);
+  fetchError = true;
 }
+
+// Scholarship Categories Overview
+const scholarshipCategories = isEn ? [
+  {
+    title: "Government & KIP-K",
+    desc: "Full educational grants from KIP-Kuliah and provincial government (Pemprov Riau).",
+    badge: "Government",
+    icon: Building2
+  },
+  {
+    title: "Corporate & BI (GenBI)",
+    desc: "Monthly stipends and leadership training by Bank Indonesia, Djarum, BRI, and partners.",
+    badge: "Corporate",
+    icon: Award
+  },
+  {
+    title: "Achievement & Tahfizh",
+    desc: "Merit awards for academic excellence, competition winners, and Qur'an memorizers.",
+    badge: "Merit Based",
+    icon: Sparkles
+  },
+  {
+    title: "Financial Aid & UKT Support",
+    desc: "Tuition fee reduction schemes and emergency financial relief for active students.",
+    badge: "Tuition Relief",
+    icon: ShieldCheck
+  }
+] : [
+  {
+    title: "Beasiswa Pemerintah & KIP-K",
+    desc: "Bantuan biaya pendidikan penuh dari KIP-Kuliah dan Pemerintah Provinsi Riau.",
+    badge: "Pemerintah",
+    icon: Building2
+  },
+  {
+    title: "Beasiswa Mitra Bank & BUMN",
+    desc: "Uang saku bulanan dan pelatihan kepemimpinan dari Bank Indonesia (GenBI), Djarum, BRI, dll.",
+    badge: "Mitra Industri",
+    icon: Award
+  },
+  {
+    title: "Beasiswa Prestasi & Tahfizh",
+    desc: "Apresiasi bagi mahasiswa berprestasi nasional/internasional dan penghafal Al-Qur'an.",
+    badge: "Berdasarkan Prestasi",
+    icon: Sparkles
+  },
+  {
+    title: "Bantuan Keringanan UKT",
+    desc: "Skema penyesuaian kelompok UKT dan bantuan finansial bagi mahasiswa membutuhkan.",
+    badge: "Bantuan Finansial",
+    icon: ShieldCheck
+  }
+];
+
+// Workflow Steps
+const applicationSteps = isEn ? [
+  { step: "01", title: "Check Eligibility", desc: "Ensure GPA >= 3.00, active student status, and required certificates.", icon: CheckCircle2 },
+  { step: "02", title: "Prepare Documents", desc: "Gather transcript, recommendation letter, and statement of non-receipt of other grants.", icon: FileText },
+  { step: "03", title: "Online Application", desc: "Submit application form via iRaise portal or official partner link.", icon: GraduationCap },
+  { step: "04", title: "Interview & Selection", desc: "Administrative verification and interview by selection board.", icon: Award }
+] : [
+  { step: "01", title: "Cek Kriteria & IPK", desc: "Pastikan IPK minimal 3.00, status mahasiswa aktif, dan kelengkapan berkas.", icon: CheckCircle2 },
+  { step: "02", title: "Siapkan Berkas", desc: "Kumpulkan transkrip nilai, surat rekomendasi Prodi, dan surat pernyataan.", icon: FileText },
+  { step: "03", title: "Pendaftaran Online", desc: "Isi formulir melalui portal iRaise atau situs resmi penyedia beasiswa.", icon: GraduationCap },
+  { step: "04", title: "Seleksi & Wawancara", desc: "Verifikasi berkas administrasi dan wawancara oleh tim seleksi.", icon: Award }
+];
+
+const downloadResources = isEn ? [
+  { title: "Non-Receipt of Other Scholarship Statement Form", type: "DOCX", size: "280 KB", tag: "Form" },
+  { title: "Department Recommendation Request Template", type: "PDF", size: "450 KB", tag: "Template" },
+  { title: "Complete Scholarship Administrative Guide 2026", type: "PDF", size: "1.9 MB", tag: "Handbook" },
+] : [
+  { title: "Surat Pernyataan Tidak Sedang Menerima Beasiswa Lain", type: "DOCX", size: "280 KB", tag: "Formulir" },
+  { title: "Templat Surat Rekomendasi Ketua Program Studi", type: "PDF", size: "450 KB", tag: "Templat" },
+  { title: "Panduan Berkas & Persyaratan Beasiswa 2026", type: "PDF", size: "1.9 MB", tag: "Pedoman" },
+];
+
+// Fallback announcements if Directus empty
+const fallbackAnnouncements: BeasiswaItem[] = isEn ? [
+  {
+    id: 'bs-fb-1',
+    title: 'Bank Indonesia (GenBI) Scholarship Opening 2026',
+    slug: 'beasiswa-bank-indonesia-genbi-2026',
+    excerpt: 'Opportunity for active students in semester 4-6 to receive monthly stipends and join GenBI leadership community.',
+    date: '18 January 2026',
+    thumbnail: '/landing-pages/gedung-faste.jpg',
+    category: 'Bank Indonesia',
+    deadline: '28 February 2026'
+  },
+  {
+    id: 'bs-fb-2',
+    title: 'KIP Kuliah & Provincial Government Educational Grant Selection',
+    slug: 'pendaftaran-kip-kuliah-2026',
+    excerpt: 'Registration guidelines for new and ongoing informatics students for full tuition coverage.',
+    date: '10 January 2026',
+    thumbnail: '/dosen-pages/dosen.jpg',
+    category: 'KIP-Kuliah',
+    deadline: '15 March 2026'
+  },
+  {
+    id: 'bs-fb-3',
+    title: 'Djarum Beasiswa Plus Prestasi & Leadership Development',
+    slug: 'djarum-beasiswa-plus-2026',
+    excerpt: 'Merit-based scholarship program offering soft skills training and financial support for semester 4 students.',
+    date: '05 January 2026',
+    thumbnail: '/ruang-kelas/fst_mejadosen.jpg',
+    category: 'Djarum Plus',
+    deadline: '30 April 2026'
+  }
+] : [
+  {
+    id: 'bs-fb-1',
+    title: 'Pembukaan Pendaftaran Beasiswa Bank Indonesia (GenBI) Tahun 2026',
+    slug: 'beasiswa-bank-indonesia-genbi-2026',
+    excerpt: 'Kesempatan bagi mahasiswa aktif semester 4 dan 6 untuk mendapatkan bantuan uang saku bulanan dan pelatihan leadership.',
+    date: '18 Januari 2026',
+    thumbnail: '/landing-pages/gedung-faste.jpg',
+    category: 'Bank Indonesia',
+    deadline: '28 Februari 2026'
+  },
+  {
+    id: 'bs-fb-2',
+    title: 'Pendaftaran & Verifikasi Berkas KIP Kuliah & Beasiswa Pemprov Riau',
+    slug: 'pendaftaran-kip-kuliah-2026',
+    excerpt: 'Informasi dan alur verifikasi berkas bagi mahasiswa Teknik Informatika penerima bantuan biaya pendidikan penuh.',
+    date: '10 Januari 2026',
+    thumbnail: '/dosen-pages/dosen.jpg',
+    category: 'KIP-Kuliah',
+    deadline: '15 Maret 2026'
+  },
+  {
+    id: 'bs-fb-3',
+    title: 'Program Djarum Beasiswa Plus & Pelatihan Soft Skills Mahasiswa',
+    slug: 'djarum-beasiswa-plus-2026',
+    excerpt: 'Program beasiswa prestasi bagi mahasiswa semester 4 dengan bantuan dana serta pembekalan karakter dan kepemimpinan.',
+    date: '05 Januari 2026',
+    thumbnail: '/ruang-kelas/fst_mejadosen.jpg',
+    category: 'Djarum Plus',
+    deadline: '30 April 2026'
+  }
+];
+
+const displayItems = items.length > 0 ? items : fallbackAnnouncements;
 ---
 
-<Layout title="Beasiswa">
-  <nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
-    <ol class="flex items-center space-x-2 text-slate-500">
-      <li><a href={localizePath('/', lang)} class="hover:text-emerald-700">{t("bread.home")}</a></li>
+<div class="font-sans bg-slate-50/60 min-h-screen">
+  
+  {/* Breadcrumb Navigation */}
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 pb-4 text-sm">
+    <ol class="flex items-center flex-wrap gap-2 text-sm text-slate-500 py-3 border-b border-slate-100">
+      <li class="flex items-center">
+        <a href={localizePath('/', lang)} class="flex items-center hover:text-emerald-700 transition-colors">
+          <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          {t("bread.home")}
+        </a>
+      </li>
       <li class="text-slate-300">/</li>
-      <li><a href={localizePath('/profil', lang)} class="hover:text-emerald-700">{t("bread.profil")}</a></li>
+      <li>
+        <a href={localizePath('/profil', lang)} class="hover:text-emerald-700 transition-colors">
+          {t("bread.profil")}
+        </a>
+      </li>
       <li class="text-slate-300">/</li>
-      <li class="text-emerald-800 font-semibold italic">{t("page.beasiswa.title")}</li>
+      <li class="text-emerald-700 font-bold tracking-tight">
+        {t("page.beasiswa.title")}
+      </li>
     </ol>
   </nav>
 
-  <section data-aos="fade-up" class="max-w-7xl mx-auto px-6 py-12">
-    <div class="text-center max-w-3xl mx-auto mb-8">
-      <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest inline-block">{t("page.beasiswa.badge")}</span>
-      <h1 data-aos="fade-up" class="text-4xl font-black text-[#004d2c] mt-4">{t("page.beasiswa.title")}</h1>
-      <p class="text-slate-600 mt-3">{t("page.beasiswa.desc")}</p>
+  {/* Hero Header Section */}
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-2">
+    <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-emerald-950 to-teal-950 text-white p-8 sm:p-12 lg:p-16 shadow-2xl">
+      {/* Background Lighting Effects */}
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(20,184,166,0.25),transparent_50%)]"></div>
+      <div class="absolute -right-16 -bottom-16 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 max-w-3xl">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-teal-500/20 backdrop-blur-md border border-teal-400/30 text-teal-200 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+          <Award class="w-4 h-4 text-teal-300" />
+          {t("page.beasiswa.badge")}
+        </span>
+
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight mb-6">
+          {isEn ? 'Scholarship & Educational Grants' : 'Info & Program Beasiswa'}
+        </h1>
+
+        <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-8">
+          {isEn
+            ? 'Official portal for government scholarships, corporate partners, academic merit awards, and tuition fee relief for Informatics Engineering students.'
+            : 'Pusat informasi resmi berbagai skema beasiswa pemerintah, mitra industri, prestasi akademik, serta bantuan keringanan UKT bagi mahasiswa Teknik Informatika UIN Suska Riau.'}
+        </p>
+
+        {/* Quick Program Stats Strip */}
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-white/10 text-center sm:text-left">
+          <div>
+            <span class="block text-2xl sm:text-3xl font-black text-teal-400">15+ Skema</span>
+            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Scholarship Programs' : 'Pilihan Beasiswa'}</span>
+          </div>
+          <div>
+            <span class="block text-2xl sm:text-3xl font-black text-teal-400">Full / Partial</span>
+            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Tuition Coverage' : 'Cakupan Bantuan'}</span>
+          </div>
+          <div>
+            <span class="block text-2xl sm:text-3xl font-black text-teal-400">Sem 2 - 8</span>
+            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Eligible Semesters' : 'Semester Pengajuan'}</span>
+          </div>
+          <div>
+            <span class="block text-2xl sm:text-3xl font-black text-teal-400">IPK &ge; 3.00</span>
+            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Min. Academic Standard' : 'Syarat Minimal IPK'}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Scholarship Categories Overview */}
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <span class="px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-xs font-bold uppercase tracking-wider inline-block mb-3">
+        {isEn ? 'Scholarship Categories' : 'Kategori Beasiswa'}
+      </span>
+      <h2 class="text-2xl sm:text-3xl font-black text-slate-900">
+        {isEn ? 'Diverse Funding Opportunities' : 'Ragam Skema & Dukungan Pembiayaan'}
+      </h2>
+      <p class="text-slate-500 text-sm mt-2">
+        {isEn ? 'Explore available funding programs tailored to your academic profile.' : 'Jelajahi berbagai kategori beasiswa yang disesuaikan dengan kebutuhan dan prestasi mahasiswa.'}
+      </p>
     </div>
 
-    {items.length === 0 ? (
-      <div class="text-center py-20 bg-slate-50 rounded-2xl border border-slate-100">
-        <p class="text-slate-500">{t("page.beasiswa.empty")}</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {scholarshipCategories.map((item) => {
+        const IconComponent = item.icon;
+        return (
+          <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:border-teal-200 transition-all duration-300 relative group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <div class="w-12 h-12 bg-teal-50 text-teal-700 rounded-2xl flex items-center justify-center group-hover:bg-teal-600 group-hover:text-white transition-colors duration-300">
+                  <IconComponent class="w-6 h-6" />
+                </div>
+                <span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-lg group-hover:bg-teal-100 group-hover:text-teal-800 transition-colors">
+                  {item.badge}
+                </span>
+              </div>
+              <h3 class="font-bold text-slate-900 text-lg mb-2 group-hover:text-teal-700 transition-colors">
+                {item.title}
+              </h3>
+              <p class="text-slate-500 text-xs sm:text-sm leading-relaxed">
+                {item.desc}
+              </p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+
+  {/* Application Workflow Section */}
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+    <div class="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white rounded-3xl p-8 sm:p-12 shadow-xl">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="px-3 py-1 bg-teal-500/20 text-teal-300 rounded-full text-xs font-bold uppercase tracking-wider inline-block mb-3 border border-teal-400/30">
+          {isEn ? 'Application Steps' : 'Alur Pengajuan'}
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-black text-white">
+          {isEn ? 'General Scholarship Application Process' : 'Tata Cara & Langkah Pengajuan Beasiswa'}
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {applicationSteps.map((step) => {
+          const IconComp = step.icon;
+          return (
+            <div class="bg-white/5 backdrop-blur-md border border-white/10 p-6 rounded-2xl flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-4">
+                  <span class="text-xs font-bold text-teal-400 uppercase tracking-widest">{step.step}</span>
+                  <IconComp class="w-5 h-5 text-teal-400" />
+                </div>
+                <h4 class="font-bold text-white text-base mb-2">{step.title}</h4>
+                <p class="text-slate-300 text-xs leading-relaxed">{step.desc}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  {/* Essential Document Downloads Card */}
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+    <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-100 shadow-sm">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 pb-6 border-b border-slate-100">
+        <div>
+          <h3 class="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-3">
+            <Download class="w-6 h-6 text-teal-600" />
+            {isEn ? 'Download Scholarship Administrative Forms' : 'Unduh Berkas Administrasi Beasiswa'}
+          </h3>
+          <p class="text-slate-500 text-sm mt-1">
+            {isEn ? 'Download statement letters, recommendation forms, and administrative guides.' : 'Dokumen pendukung permohonan rekomendasi dan formulir pernyataan.'}
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {downloadResources.map((doc) => (
+          <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 hover:border-teal-200 hover:bg-teal-50/40 transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-0.5 bg-teal-100 text-teal-800 text-xs font-bold rounded-md">
+                  {doc.tag}
+                </span>
+                <span class="text-xs font-semibold text-slate-400">{doc.type} ({doc.size})</span>
+              </div>
+              <h4 class="font-bold text-slate-800 text-sm mb-4 leading-snug">
+                {doc.title}
+              </h4>
+            </div>
+
+            <a 
+              href="#"
+              onclick="alert('Dokumen resmi beasiswa dapat diunduh melalui portal akademik mahasisawa / iRaise.'); return false;"
+              class="inline-flex items-center justify-center gap-2 w-full py-2.5 bg-white hover:bg-teal-600 hover:text-white text-teal-700 font-bold text-xs rounded-xl border border-teal-200 transition-colors shadow-sm"
+            >
+              <Download class="w-4 h-4" />
+              {isEn ? 'Download File' : 'Unduh Dokumen'}
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* Main Announcements Grid Section */}
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+      <div>
+        <span class="px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-xs font-bold uppercase tracking-wider inline-block mb-2">
+          {isEn ? 'Latest Openings & News' : 'Pengumuman Beasiswa Terbuka'}
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900">
+          {isEn ? 'Active Scholarship Announcements' : 'Informasi Pengumuman Beasiswa'}
+        </h2>
+      </div>
+      <p class="text-slate-500 text-sm max-w-sm">
+        {isEn ? 'Check deadlines and registration links for active scholarship programs.' : 'Cek batas waktu pendaftaran dan persyaratan rincinya.'}
+      </p>
+    </div>
+
+    {displayItems.length === 0 ? (
+      <div class="text-center py-16 bg-white rounded-3xl border border-slate-100 shadow-sm">
+        <p class="text-slate-500 text-base mb-2">
+          {t("page.beasiswa.empty")}
+        </p>
       </div>
     ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.map(item => (
-          <article class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100">
-            {item.thumbnail && <img src={item.thumbnail} alt={item.title} class="w-full h-44 object-cover" />}
-            <div class="p-6">
-              <h3 class="text-lg font-bold text-slate-800 mb-2">{item.title}</h3>
-              <p class="text-sm text-slate-500 mb-4 line-clamp-2">{item.excerpt}</p>
-              <div class="flex items-center justify-between">
-                <span class="text-xs text-slate-400">{item.date}</span>
-                <a class="text-sm font-semibold text-[#004d2c]" href={localizePath(`/beasiswa/${item.slug}`, lang)}>{t("common.detail")}</a>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {displayItems.map((item) => (
+          <article class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              {/* Thumbnail Image */}
+              <div class="relative w-full h-48 bg-slate-100 overflow-hidden">
+                <img 
+                  src={item.thumbnail || '/landing-pages/gedung-faste.jpg'} 
+                  alt={item.title} 
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  onError="this.onerror=null; this.src='/landing-pages/gedung-faste.jpg';"
+                />
+                <span class="absolute top-4 left-4 px-3 py-1 bg-slate-900/80 backdrop-blur-md text-teal-300 text-xs font-bold rounded-full border border-teal-500/30">
+                  {item.category || (isEn ? 'Scholarship' : 'Beasiswa')}
+                </span>
               </div>
+
+              {/* Card Body */}
+              <div class="p-6">
+                <div class="flex items-center justify-between text-xs text-slate-400 mb-3">
+                  <div class="flex items-center gap-1.5">
+                    <Calendar class="w-3.5 h-3.5 text-teal-600" />
+                    <span>{item.date || (isEn ? 'Recent' : 'Terbaru')}</span>
+                  </div>
+
+                  {item.deadline && (
+                    <span class="px-2 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded font-semibold text-[11px]">
+                      Deadline: {item.deadline}
+                    </span>
+                  )}
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900 mb-3 group-hover:text-teal-700 transition-colors line-clamp-2 leading-snug">
+                  {item.title}
+                </h3>
+
+                <p class="text-slate-600 text-sm line-clamp-3 leading-relaxed mb-4">
+                  {item.excerpt || (isEn ? 'Click details to read complete requirements and application link.' : 'Klik selengkapnya untuk membaca kriteria dan formulir pendaftarannya.')}
+                </p>
+              </div>
+            </div>
+
+            {/* Footer Action */}
+            <div class="px-6 pb-6 pt-2 border-t border-slate-100 flex items-center justify-between">
+              <a 
+                href={localizePath(`/beasiswa/${item.slug}`, lang)} 
+                class="inline-flex items-center gap-1.5 text-sm font-bold text-teal-700 hover:text-teal-800 group-hover:translate-x-1 transition-transform"
+              >
+                {t("common.detail")}
+                <ArrowRight class="w-4 h-4" />
+              </a>
             </div>
           </article>
         ))}
@@ -66,4 +477,5 @@ try {
     )}
 
   </section>
-</Layout>
+
+</div>
