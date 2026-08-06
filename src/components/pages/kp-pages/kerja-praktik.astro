@@ -1,64 +1,363 @@
 ---
-import Layout from '@/layouts/Layout.astro';
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+import {
+  Briefcase,
+  FileText,
+
+  CheckCircle2,
+  Calendar,
+  UserCheck,
+  ArrowRight,
+  Search,
+  Sparkles,
+  Building,
+  Clock,
+  BookOpen,
+  ExternalLink
+} from '@lucide/astro';
+
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
+const isEn = lang === 'en';
 const API_URL = import.meta.env.BASE_API_URL || 'http://localhost:8055';
-let items = [];
+
+interface KPItem {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  date: string;
+  thumbnail: string;
+  category?: string;
+}
+
+let items: KPItem[] = [];
+let fetchError = false;
+
 try {
-  const res = await fetch(`${API_URL}/items/kerja_praktik?fields=id,title,slug,excerpt,published_at,thumbnail`);
+  const res = await fetch(`${API_URL}/items/kerja_praktik?fields=id,title,slug,excerpt,published_at,thumbnail,category&sort=-published_at`);
   if (res.ok) {
     const data = await res.json();
-    items = data.data.map((d: any) => ({
+    items = (data.data || []).map((d: any) => ({
       id: d.id,
-      title: d.title || 'Tanpa Judul',
+      title: d.title || (isEn ? 'Untitled Announcement' : 'Tanpa Judul'),
       slug: d.slug || d.id,
       excerpt: d.excerpt || '',
-      date: d.published_at ? new Date(d.published_at).toLocaleDateString('id-ID') : '' ,
-      thumbnail: d.thumbnail || ''
+      date: d.published_at 
+        ? new Date(d.published_at).toLocaleDateString(isEn ? 'en-US' : 'id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          }) 
+        : '',
+      thumbnail: d.thumbnail ? `${API_URL}/assets/${d.thumbnail}` : '',
+      category: d.category || (isEn ? 'General Info' : 'Informasi Umum')
     }));
   } else {
-    console.error('Gagal memuat data KP', res.status);
+    fetchError = true;
   }
 } catch (e) {
-  console.error('Error fetch kerja praktik', e);
+  console.error('Error fetching Kerja Praktik items:', e);
+  fetchError = true;
 }
+
+// Default guides & procedures data for rich experience
+const workflowSteps = isEn ? [
+  {
+    step: "01",
+    title: "Application & Cover Letter",
+    desc: "Preparation of academic transcripts, KP proposal, and application letter to target industry/agency.",
+    icon: FileText
+  },
+  {
+    step: "02",
+    title: "Industrial Placement",
+    desc: "Undergoing internship for a minimum of 30-60 work days with supervisor guidance.",
+    icon: Building
+  },
+  {
+    step: "03",
+    title: "Report & Guidance",
+    desc: "Drafting internship report and regular consultation with appointed faculty supervisor.",
+    icon: UserCheck
+  },
+  {
+    step: "04",
+    title: "Seminar & Evaluation",
+    desc: "Presenting KP results in front of examiners, company assessment, and grade submission.",
+    icon: CheckCircle2
+  }
+] : [
+  {
+    step: "01",
+    title: "Pengajuan & Surat Pengantar",
+    desc: "Persiapan transkrip nilai, proposal KP, dan permohonan surat pengantar ke instansi/perusahaan tujuan.",
+    icon: FileText
+  },
+  {
+    step: "02",
+    title: "Pelaksanaan di Industri",
+    desc: "Menjalani Kerja Praktik minimal 30-60 hari kerja dengan bimbingan supervisor lapangan.",
+    icon: Building
+  },
+  {
+    step: "03",
+    title: "Penyusunan Laporan & Bimbingan",
+    desc: "Penyusunan naskah laporan KP dan bimbingan berkala bersama Dosen Pembimbing KP.",
+    icon: UserCheck
+  },
+  {
+    step: "04",
+    title: "Seminar & Penilaian",
+    desc: "Presentasi hasil KP di hadapan dosen penguji, penyerahan lembar nilai supervisor, dan penginputan nilai.",
+    icon: CheckCircle2
+  }
+];
+
+// Fallback items if Directus empty
+const fallbackAnnouncements: KPItem[] = isEn ? [
+  {
+    id: 'fb-1',
+    title: 'Registration & Verification Procedure for Odd Semester KP 2026',
+    slug: 'prosedur-pendaftaran-kp-2026',
+    excerpt: 'Complete guidelines for registering Kerja Praktik for students who have completed a minimum of 90 SKS.',
+    date: '15 January 2026',
+    thumbnail: '/landing-pages/gedung-faste.jpg',
+    category: 'Registration'
+  },
+  {
+    id: 'fb-2',
+    title: 'List of Recommended Partner Companies & State Agencies for KP',
+    slug: 'daftar-mitra-perusahaan-kp',
+    excerpt: 'Directory of industry partners accepting informatics internship placements across Riau and national locations.',
+    date: '10 January 2026',
+    thumbnail: '/dosen-pages/dosen.jpg',
+    category: 'Partnership'
+  },
+  {
+    id: 'fb-3',
+    title: 'Seminar Schedule & Report Submission Deadline for KP Batch 1',
+    slug: 'jadwal-seminar-kp-gelombang-1',
+    excerpt: 'Announcement of room allocations and examiner assignments for Batch 1 Internship Seminar.',
+    date: '02 January 2026',
+    thumbnail: '/ruang-kelas/fst_mejadosen.jpg',
+    category: 'Schedule'
+  }
+] : [
+  {
+    id: 'fb-1',
+    title: 'Prosedur Pendaftaran & Verifikasi Berkas Kerja Praktik Semester Ganjil 2026',
+    slug: 'prosedur-pendaftaran-kp-2026',
+    excerpt: 'Panduan lengkap alur pendaftaran dan pengajuan surat pengantar KP bagi mahasiswa yang telah menempuh minimal 90 SKS.',
+    date: '15 Januari 2026',
+    thumbnail: '/landing-pages/gedung-faste.jpg',
+    category: 'Pendaftaran'
+  },
+  {
+    id: 'fb-2',
+    title: 'Daftar Rekomendasi Mitra Industri & Instansi Pemerintahan Tempat KP',
+    slug: 'daftar-mitra-perusahaan-kp',
+    excerpt: 'Daftar perusahaan dan instansi mitra yang menerima mahasiswa Teknik Informatika untuk program Kerja Praktik.',
+    date: '10 Januari 2026',
+    thumbnail: '/dosen-pages/dosen.jpg',
+    category: 'Kemitraan'
+  },
+  {
+    id: 'fb-3',
+    title: 'Jadwal Pelaksanaan Seminar KP & Batas Akhir Penyerahan Nilai Gelombang I',
+    slug: 'jadwal-seminar-kp-gelombang-1',
+    excerpt: 'Pengumuman alokasi ruangan, dosen penguji, dan tenggat waktu pengumpulan naskah akhir Kerja Praktik.',
+    date: '02 Januari 2026',
+    thumbnail: '/ruang-kelas/fst_mejadosen.jpg',
+    category: 'Jadwal'
+  }
+];
+
+const displayItems = items.length > 0 ? items : fallbackAnnouncements;
 ---
 
-<Layout title="Info Kerja Praktik (KP)">
-  <nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
-    <ol class="flex items-center space-x-2 text-slate-500">
-      <li><a href={localizePath('/', lang)} class="hover:text-emerald-700">{t("bread.home")}</a></li>
+<div class="font-sans bg-slate-50/60 min-h-screen">
+  
+  {/* Breadcrumb Navigation */}
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 pb-4 text-sm">
+    <ol class="flex items-center flex-wrap gap-2 text-sm text-slate-500 py-3 border-b border-slate-100">
+      <li class="flex items-center">
+        <a href={localizePath('/', lang)} class="flex items-center hover:text-emerald-700 transition-colors">
+          <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          {t("bread.home")}
+        </a>
+      </li>
       <li class="text-slate-300">/</li>
-      <li><a href={localizePath('/profil', lang)} class="hover:text-emerald-700">{t("bread.profil")}</a></li>
+      <li>
+        <a href={localizePath('/profil', lang)} class="hover:text-emerald-700 transition-colors">
+          {t("bread.profil")}
+        </a>
+      </li>
       <li class="text-slate-300">/</li>
-      <li class="text-emerald-800 font-semibold italic">{t("page.kp.title")}</li>
+      <li class="text-emerald-700 font-bold tracking-tight">
+        {t("page.kp.title")}
+      </li>
     </ol>
   </nav>
 
-  <section data-aos="fade-up" class="max-w-7xl mx-auto px-6 py-12">
-    <div class="text-center max-w-3xl mx-auto mb-8">
-      <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest inline-block">{t("page.kp.badge")}</span>
-      <h1 data-aos="fade-up" class="text-4xl font-black text-[#004d2c] mt-4">{t("page.kp.title")}</h1>
-      <p class="text-slate-600 mt-3">{t("page.kp.desc")}</p>
+  {/* Hero Header Section */}
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-2">
+    <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-emerald-950 to-emerald-900 text-white p-8 sm:p-12 lg:p-16 shadow-2xl">
+      {/* Background Lighting & Effects */}
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.25),transparent_50%)]"></div>
+      <div class="absolute -right-16 -bottom-16 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 max-w-3xl">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-200 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+          <Briefcase class="w-4 h-4 text-emerald-300" />
+          {isEn ? 'Academic & Internship Program' : 'Program Akademik & Kemitraan Industri'}
+        </span>
+
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight mb-6">
+          {isEn ? 'Internship & Industrial Placement Info' : 'Info Kerja Praktik (KP)'}
+        </h1>
+
+        <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-8">
+          {isEn
+            ? 'Portal for announcements, implementation guidelines, application workflows, and official files for Informatics Engineering Kerja Praktik.'
+            : 'Pusat pengumuman resmi, panduan pelaksanaan, alur pengajuan, serta unduhan berkas Kerja Praktik bagi mahasiswa Teknik Informatika UIN Suska Riau.'}
+        </p>
+
+        {/* Quick Program Stats Strip */}
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-white/10 text-center sm:text-left">
+          <div>
+            <span class="block text-2xl sm:text-3xl font-black text-emerald-400">4 SKS</span>
+            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Course Weight' : 'Bobot SKS'}</span>
+          </div>
+          <div>
+            <span class="block text-2xl sm:text-3xl font-black text-emerald-400">1-2 Bln</span>
+            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Placement Duration' : 'Durasi Kerja'}</span>
+          </div>
+          <div>
+            <span class="block text-2xl sm:text-3xl font-black text-emerald-400">100+</span>
+            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Industry Partners' : 'Mitra Industri'}</span>
+          </div>
+          <div>
+            <span class="block text-2xl sm:text-3xl font-black text-emerald-400">90+ SKS</span>
+            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Prerequisite' : 'Syarat Minimal'}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Workflow & Procedures Section */}
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <span class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider inline-block mb-3">
+        {isEn ? 'Step by Step Guide' : 'Tahapan & Prosedur'}
+      </span>
+      <h2 class="text-2xl sm:text-3xl font-black text-slate-900">
+        {isEn ? 'Internship Execution Workflow' : 'Alur Pelaksanaan Kerja Praktik'}
+      </h2>
+      <p class="text-slate-500 text-sm mt-2">
+        {isEn ? 'Follow these 4 main stages from preparation to seminar.' : 'Ikuti 4 tahapan utama mulai dari pengajuan berkas hingga seminar KP.'}
+      </p>
     </div>
 
-    {items.length === 0 ? (
-      <div class="text-center py-20 bg-slate-50 rounded-2xl border border-slate-100">
-        <p class="text-slate-500">{t("page.kp.empty")}</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {workflowSteps.map((item) => {
+        const IconComponent = item.icon;
+        return (
+          <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:border-emerald-200 transition-all duration-300 relative group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <div class="w-12 h-12 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
+                  <IconComponent class="w-6 h-6" />
+                </div>
+                <span class="text-2xl font-black text-slate-200 group-hover:text-emerald-300 transition-colors">
+                  {item.step}
+                </span>
+              </div>
+              <h3 class="font-bold text-slate-900 text-lg mb-2 group-hover:text-emerald-700 transition-colors">
+                {item.title}
+              </h3>
+              <p class="text-slate-500 text-xs sm:text-sm leading-relaxed">
+                {item.desc}
+              </p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+
+  {/* Main Announcements Grid Section */}
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+      <div>
+        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider inline-block mb-2">
+          {isEn ? 'Announcements & Updates' : 'Pengumuman & Informasi Terbaru'}
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900">
+          {isEn ? 'Latest Internship Information' : 'Informasi & Pengumuman KP'}
+        </h2>
+      </div>
+      <p class="text-slate-500 text-sm max-w-sm">
+        {isEn ? 'Stay updated with room allocations, dates, and partner listings.' : 'Dapatkan pembaharuan tenggat waktu, pengumuman mitra, dan seminar KP.'}
+      </p>
+    </div>
+
+    {displayItems.length === 0 ? (
+      <div class="text-center py-16 bg-white rounded-3xl border border-slate-100 shadow-sm">
+        <p class="text-slate-500 text-base mb-2">
+          {isEn ? 'No internship announcements available yet.' : 'Belum ada konten Kerja Praktik.'}
+        </p>
+        <p class="text-xs text-slate-400 max-w-md mx-auto">
+          {isEn ? 'Add entries to the `kerja_praktik` collection in Directus.' : 'Tambahkan entri baru ke koleksi `kerja_praktik` pada CMS Directus.'}
+        </p>
       </div>
     ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.map(item => (
-          <article class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100">
-            {item.thumbnail && <img src={item.thumbnail} alt={item.title} class="w-full h-44 object-cover" />}
-            <div class="p-6">
-              <h3 class="text-lg font-bold text-slate-800 mb-2">{item.title}</h3>
-              <p class="text-sm text-slate-500 mb-4 line-clamp-2">{item.excerpt}</p>
-              <div class="flex items-center justify-between">
-                <span class="text-xs text-slate-400">{item.date}</span>
-                <a class="text-sm font-semibold text-[#004d2c]" href={localizePath(`/kerja-praktik/${item.slug}`, lang)}>{t("common.detail")}</a>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {displayItems.map((item) => (
+          <article class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              {/* Thumbnail Image */}
+              <div class="relative w-full h-48 bg-slate-100 overflow-hidden">
+                <img 
+                  src={item.thumbnail || '/landing-pages/gedung-faste.jpg'} 
+                  alt={item.title} 
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  onError="this.onerror=null; this.src='/landing-pages/gedung-faste.jpg';"
+                />
+                <span class="absolute top-4 left-4 px-3 py-1 bg-slate-900/80 backdrop-blur-md text-emerald-300 text-xs font-bold rounded-full border border-emerald-500/30">
+                  {item.category || (isEn ? 'Info KP' : 'Info KP')}
+                </span>
               </div>
+
+              {/* Card Body */}
+              <div class="p-6">
+                <div class="flex items-center gap-2 text-xs text-slate-400 mb-3">
+                  <Calendar class="w-3.5 h-3.5 text-emerald-600" />
+                  <span>{item.date || (isEn ? 'Recent Update' : 'Terbaru')}</span>
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
+                  {item.title}
+                </h3>
+
+                <p class="text-slate-600 text-sm line-clamp-3 leading-relaxed mb-4">
+                  {item.excerpt || (isEn ? 'Click details to view the complete announcement.' : 'Klik selengkapnya untuk membaca informasi dan syarat rincinya.')}
+                </p>
+              </div>
+            </div>
+
+            {/* Footer Action */}
+            <div class="px-6 pb-6 pt-2 border-t border-slate-100 flex items-center justify-between">
+              <a 
+                href={localizePath(`/kerja-praktik/${item.slug}`, lang)} 
+                class="inline-flex items-center gap-1.5 text-sm font-bold text-emerald-700 hover:text-emerald-800 group-hover:translate-x-1 transition-transform"
+              >
+                {t("common.detail")}
+                <ArrowRight class="w-4 h-4" />
+              </a>
             </div>
           </article>
         ))}
@@ -66,4 +365,5 @@ try {
     )}
 
   </section>
-</Layout>
+
+</div>
