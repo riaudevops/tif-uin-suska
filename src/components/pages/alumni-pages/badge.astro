@@ -1,24 +1,20 @@
 ---
 const statistikAlumni = [
-  { label: "Total Alumni", nilai: "2,500+", icon: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" },
-  { label: "Masa Tunggu Kerja", nilai: "< 3 Bulan", icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" },
-  { label: "Bekerja di Luar Negeri", nilai: "15%", icon: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h1.5a2.5 2.5 0 012.5 2.5v.63" },
-  { label: "Wirausaha/Founder", nilai: "10%", icon: "M13 10V3L4 14h7v7l9-11h-7z" },
+  { label: "Total Alumni", nilai: "2,500+", warna: "#0B6E4F" },
+  { label: "Masa Tunggu Kerja", nilai: "< 3 Bulan", warna: "#F0B429" },
+  { label: "Bekerja di Luar Negeri", nilai: "15%", warna: "#1D5FAE" },
+  { label: "Wirausaha/Founder", nilai: "10%", warna: "#0B6E4F" },
 ];
 ---
 
-<section class="py-12 bg-white border-b border-gray-100">
-<div class="container mx-auto px-6">
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+<section class="relative py-16 z-10 max-w-7xl mx-auto -mt-8 md:-mt-10 px-5 md:px-8">
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
     {statistikAlumni.map((stat: any) => (
-        <div class="text-center p-6 border-r last:border-0 border-gray-100">
-        <svg class="w-8 h-8 mx-auto mb-4 text-[#004d2c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={stat.icon}></path>
-        </svg>
-        <div class="text-3xl font-black text-slate-800 mb-1">{stat.nilai}</div>
-        <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">{stat.label}</div>
-        </div>
+      <div class="bg-white rounded-2xl border border-slate-100 shadow-[0_4px_16px_rgb(0,0,0,0.06)] px-5 py-5">
+        <div class="w-8 h-1 rounded-full mb-3" style={`background-color:${stat.warna}`}></div>
+        <div class="text-2xl md:text-3xl font-extrabold text-[#1C1B18] mb-1">{stat.nilai}</div>
+        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">{stat.label}</div>
+      </div>
     ))}
-    </div>
-</div>
+  </div>
 </section>
