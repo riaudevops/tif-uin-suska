@@ -253,13 +253,16 @@ export async function buildSearchIndex(lang = "id") {
             `${API_URL}/items/article?fields=title,slug,category.name&sort=-publish&limit=100`,
             { cache: "no-store" },
         ),
-        fetch(`${API_URL}/items/dosen?fields=nama,slug,jabatan,email,nip`, { cache: "no-store" }),
+        fetch(`${API_URL}/items/dosen_tif?fields=id,nama,slug,jabatan,email,nip`, { cache: "no-store" }),
         fetch(`${API_URL}/items/agenda?fields=title,deskripsi,lokasi,kategori.nama_kategori&limit=50`, {
             cache: "no-store",
         }),
+        fetch(`${API_URL}/items/kerja_praktik?fields=id,title,slug,excerpt&limit=50`, { cache: "no-store" }),
+        fetch(`${API_URL}/items/tugas_akhir?fields=id,title,slug,excerpt&limit=50`, { cache: "no-store" }),
+        fetch(`${API_URL}/items/beasiswa?fields=id,title,slug,excerpt&limit=50`, { cache: "no-store" }),
     ]);
 
-    const [articlesRes, dosenRes, agendaRes] = fetches;
+    const [articlesRes, dosenRes, agendaRes, kpRes, taRes, beasiswaRes] = fetches;
 
     if (articlesRes.status === "fulfilled" && articlesRes.value.ok) {
         const json = await articlesRes.value.json();
@@ -299,6 +302,45 @@ export async function buildSearchIndex(lang = "id") {
                 url: isEn ? "/en/agenda-pages/agenda" : "/agenda-pages/agenda",
                 category: isEn ? "Agenda" : "Agenda",
                 keywords: `${agenda.title} ${agenda.deskripsi || ""} ${agenda.lokasi || ""} ${kategori} ${isEn ? "agenda events" : "agenda kegiatan"}`,
+            });
+        }
+    }
+
+    if (kpRes.status === "fulfilled" && kpRes.value.ok) {
+        const json = await kpRes.value.json();
+        for (const kp of json.data || []) {
+            if (!kp?.title || !kp?.slug) continue;
+            items.push({
+                title: kp.title,
+                url: isEn ? `/en/kerja-praktik/${kp.slug}` : `/kerja-praktik/${kp.slug}`,
+                category: isEn ? "Internship" : "Kerja Praktik",
+                keywords: `${kp.title} ${kp.excerpt || ""} ${isEn ? "internship kp" : "kerja praktik kp magang"}`,
+            });
+        }
+    }
+
+    if (taRes.status === "fulfilled" && taRes.value.ok) {
+        const json = await taRes.value.json();
+        for (const ta of json.data || []) {
+            if (!ta?.title || !ta?.slug) continue;
+            items.push({
+                title: ta.title,
+                url: isEn ? `/en/tugas-akhir/${ta.slug}` : `/tugas-akhir/${ta.slug}`,
+                category: isEn ? "Thesis" : "Tugas Akhir",
+                keywords: `${ta.title} ${ta.excerpt || ""} ${isEn ? "thesis final project" : "tugas akhir skripsi ta sempro munaqasyah"}`,
+            });
+        }
+    }
+
+    if (beasiswaRes.status === "fulfilled" && beasiswaRes.value.ok) {
+        const json = await beasiswaRes.value.json();
+        for (const bs of json.data || []) {
+            if (!bs?.title || !bs?.slug) continue;
+            items.push({
+                title: bs.title,
+                url: isEn ? `/en/beasiswa/${bs.slug}` : `/beasiswa/${bs.slug}`,
+                category: isEn ? "Scholarships" : "Beasiswa",
+                keywords: `${bs.title} ${bs.excerpt || ""} ${isEn ? "scholarship grant tuition funding" : "beasiswa bantuan ukt kip-k genbi"}`,
             });
         }
     }
