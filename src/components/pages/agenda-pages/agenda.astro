@@ -6,6 +6,7 @@ const t = useTranslations(lang);
 const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
 
 let agendaKegiatan = [];
+let categories: string[] = [];
 
 try {
   const fetchUrl = `${API_URL}/items/agenda?fields=id,title,status,lokasi,deskripsi,link_pendaftaran,kategori.*,tanggal_pelaksanaan`;
@@ -26,9 +27,10 @@ try {
     const waktuFormat = `${jam}:${menit} WIB`;
 
     return {
+      id: item.id,
       judul: item.title || 'Tanpa Judul',
       tanggal: dateObj.getDate().toString().padStart(2, '0'),
-      bulan: dateObj.toLocaleString('id-ID', { month: 'short' }),
+      bulan: dateObj.toLocaleString(lang === 'en' ? 'en-US' : 'id-ID', { month: 'short' }),
       tahun: dateObj.getFullYear().toString(),
       waktu: waktuFormat, 
       lokasi: item.lokasi || '-',
@@ -46,12 +48,19 @@ try {
 }
 
 const getKategoriClass = (kat: string) => {
-  switch(kat) {
-    case 'Akademik': return 'bg-red-100 text-red-700 border-red-200';
-    case 'Seminar': return 'bg-blue-100 text-blue-700 border-blue-200';
-    case 'Workshop': return 'bg-purple-100 text-purple-700 border-purple-200';
-    default: return 'bg-green-100 text-green-700 border-green-200';
-  }
+  if (!kat) return 'bg-slate-100 text-slate-700 border-slate-200';
+  const hash = kat.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const colors = [
+    'bg-red-100 text-red-700 border-red-200',
+    'bg-blue-100 text-blue-700 border-blue-200',
+    'bg-purple-100 text-purple-700 border-purple-200',
+    'bg-amber-100 text-amber-700 border-amber-200',
+    'bg-indigo-100 text-indigo-700 border-indigo-200',
+    'bg-pink-100 text-pink-700 border-pink-200',
+    'bg-teal-100 text-teal-700 border-teal-200',
+    'bg-green-100 text-green-700 border-green-200',
+  ];
+  return colors[hash % colors.length];
 };
 ---
 
@@ -89,17 +98,21 @@ const getKategoriClass = (kat: string) => {
       <div class="flex items-center gap-4 md:col-span-2">
         <div class="h-12 w-12 rounded-full bg-[#004d2c] flex items-center justify-center text-white text-xl">📅</div>
         <div>
-          <h3 class="text-lg font-bold text-[#004d2c]">Calendar of Events</h3>
+          <h3 class="text-lg font-bold text-[#004d2c]">{t("page.agenda.calendar")}</h3>
           <p class="text-sm text-slate-500">{t("page.agenda.calendar.desc")}</p>
         </div>
       </div>
 
       <div class="flex justify-start md:justify-end">
-        <!-- Placeholder for filters or add-event button -->
-        <div class="flex gap-2">
-          <button class="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:bg-slate-50">{t("page.agenda.filter.all")}</button>
-          <button class="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:bg-slate-50">Workshop</button>
-          <button class="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-semibold hover:bg-slate-50">Seminar</button>
+        <div class="flex gap-2 flex-wrap">
+          {categories.map((kat: string, idx: number) => (
+            <button 
+              class={`filter-btn px-4 py-2 border rounded-lg text-sm font-semibold transition-colors ${idx === 0 ? 'bg-[#004d2c] text-white border-[#004d2c]' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}
+              data-filter={kat === 'All' ? 'All' : kat}
+            >
+              {kat === 'All' ? t("page.agenda.filter.all") : kat}
+            </button>
+          ))}
         </div>
       </div>
     </div>
@@ -114,7 +127,8 @@ const getKategoriClass = (kat: string) => {
         {agendaKegiatan.map((item: any, index: number) => (
           <div 
             class="agenda-card group cursor-pointer bg-white rounded-3xl p-1 shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100 flex flex-col md:flex-row overflow-hidden"
-            data-index={index} 
+            data-index={index}
+            data-kategori={item.kategori}
           >
             {/* Bagian Tanggal */}
             <div class="bg-[#004d2c] text-white p-6 md:w-32 flex flex-col items-center justify-center text-center group-hover:bg-yellow-600 transition-colors duration-500">
@@ -223,13 +237,46 @@ const getKategoriClass = (kat: string) => {
   const mActionArea = document.getElementById('modal-action-area');
 
   const getClientKategoriClass = (kat) => {
-    switch(kat) {
-      case 'Akademik': return 'bg-red-100 text-red-700 border-red-200';
-      case 'Seminar': return 'bg-blue-100 text-blue-700 border-blue-200';
-      case 'Workshop': return 'bg-purple-100 text-purple-700 border-purple-200';
-      default: return 'bg-green-100 text-green-700 border-green-200';
-    }
+    if (!kat) return 'bg-slate-100 text-slate-700 border-slate-200';
+    const hash = kat.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const colors = [
+      'bg-red-100 text-red-700 border-red-200',
+      'bg-blue-100 text-blue-700 border-blue-200',
+      'bg-purple-100 text-purple-700 border-purple-200',
+      'bg-amber-100 text-amber-700 border-amber-200',
+      'bg-indigo-100 text-indigo-700 border-indigo-200',
+      'bg-pink-100 text-pink-700 border-pink-200',
+      'bg-teal-100 text-teal-700 border-teal-200',
+      'bg-green-100 text-green-700 border-green-200',
+    ];
+    return colors[hash % colors.length];
   };
+
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Reset all buttons to inactive state
+      filterBtns.forEach(b => {
+        b.classList.remove('bg-[#004d2c]', 'text-white', 'border-[#004d2c]');
+        b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
+      });
+      
+      // Set active state for clicked button
+      btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
+      btn.classList.add('bg-[#004d2c]', 'text-white', 'border-[#004d2c]');
+
+      const filterValue = btn.getAttribute('data-filter');
+      
+      cards.forEach(card => {
+        const kat = card.getAttribute('data-kategori');
+        if (filterValue === 'All' || kat === filterValue) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
 
   const openModal = (index) => {
     const data = agendaData[index];
@@ -285,4 +332,14 @@ const getKategoriClass = (kat: string) => {
       closeModal();
     }
   });
+
+  // Auto-open modal if 'id' parameter is present in URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const targetId = urlParams.get('id');
+  if (targetId) {
+    const targetIdx = agendaData.findIndex(item => String(item.id) === String(targetId));
+    if (targetIdx !== -1) {
+      openModal(targetIdx);
+    }
+  }
 </script>
