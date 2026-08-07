@@ -14,6 +14,19 @@ try {
   if (!response.ok) throw new Error(`Gagal mengambil data dosen (Status: ${response.status})`);
   const dataDirectus = await response.json();
   dosenData = dataDirectus.data;
+  // Sort by structural jabatan first, then regular dosen last
+  const getJabatanRank = (jabatan?: string): number => {
+    if (!jabatan) return 99;
+    const j = jabatan.toLowerCase();
+    if (j.includes('kepala prodi') || j.includes('kepala prodi') || j.includes('kepala program')) return 1;
+    if (j.includes('sekretaris prodi') || j.includes('sekretaris prodi') || j.includes('sekretaris')) return 2;
+    if (j.includes('koord. tugas akhir') || j.includes('koordinator ta')) return 3;
+    if (j.includes('koord. kerja praktek') || j.includes('koordinator kp')) return 4;
+    if (j.includes('Kepala Lab Pengembangan Aplikasi') || j.includes('kepala lab')) return 5;
+    if (j.includes('Kepala Lab Pengembangan Riset') || j.includes('kepala lab')) return 5;
+    return 99; // regular lecturers last
+  };
+  dosenData.sort((a, b) => getJabatanRank(a.jabatan) - getJabatanRank(b.jabatan));
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.error("Error fetching dosen:", message);
