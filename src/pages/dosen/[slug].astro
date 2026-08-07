@@ -13,10 +13,8 @@ import {
   UserCheck,
   FileText,
   Sparkles,
-  Share2,
   School,
-  BookmarkCheck,
-  Search
+  BookmarkCheck
 } from '@lucide/astro';
 
 export const prerender = false;
@@ -34,45 +32,51 @@ let otherDosen: any[] = [];
 let fetchError = false;
 
 try {
-  const isId = /^\d+$/.test(slug || '');
-  const filterParam = isId ? `filter[id][_eq]=${slug}` : `filter[slug][_eq]=${slug}`;
+  const cleanSlug = String(slug || '').trim();
+  const isId = /^\d+$/.test(cleanSlug);
 
-  const [dosenRes, listRes] = await Promise.all([
-    fetch(`${API_URL}/items/dosen_tif?${filterParam}`),
-    fetch(`${API_URL}/items/dosen_tif?limit=20&sort=id`),
-  ]);
+  // Ambil seluruh data dosen tanpa filter ketat di awal agar fungsi pencarian di Astro yang menangani pencocokannya secara akurat
+  const res = await fetch(`${API_URL}/items/dosen_tif?limit=-1&sort=id`);
 
-  if (dosenRes.ok) {
-    const json = await dosenRes.json();
-    dosen = json.data?.[0];
-  }
+  if (res.ok) {
+    const json = await res.json();
+    const allDosenData = json.data || [];
 
-  let allDosenData: any[] = [];
-  if (listRes.ok) {
-    const listJson = await listRes.json();
-    allDosenData = listJson.data || [];
-  }
+    if (allDosenData.length > 0) {
+      // Cari dosen berdasarkan ID, slug, atau nama yang di-slug-kan
+      dosen = allDosenData.find((d: any) => {
+        const dId = String(d.id);
+        const dSlug = String(d.slug || '').trim();
+        const dNamaSlug = d.nama ? d.nama.toLowerCase().replace(/[^a-z0-9]+/g, '-') : '';
+        
+        return dId === cleanSlug || dSlug === cleanSlug || dNamaSlug === cleanSlug.toLowerCase();
+      });
 
-  // Fallback: search in list if direct filter gave no result
-  if (!dosen && allDosenData.length > 0) {
-    dosen = allDosenData.find((d: any) => 
-      d.slug === slug || 
-      String(d.id) === slug || 
-      (d.nama && d.nama.toLowerCase().replace(/[^a-z0-9]+/g, '-') === slug?.toLowerCase())
-    );
-  }
+     // 1. Urutkan seluruh dosen berdasarkan prioritas jabatan terlebih dahulu
+      const positionPriority = (jabatan?: string): number => {
+        if (!jabatan) return 2;
+        const lower = jabatan.toLowerCase();
+        if (lower.includes('kepala prodi')) return 0;
+        if (lower.includes('sekretaris')) return 1;
+        return 2;
+      };
 
-  if (allDosenData.length > 0) {
-    otherDosen = allDosenData
-      .filter((d: any) => d.id !== dosen?.id && d.slug !== dosen?.slug)
-      .slice(0, 4);
+      const sortedDosen = [...allDosenData].sort((a, b) => {
+        return positionPriority(a.jabatan) - positionPriority(b.jabatan);
+      });
+
+      // 2. Filter agar dosen yang sedang dibuka tidak muncul di daftar "Dosen Lainnya", lalu ambil 4 teratas
+      otherDosen = sortedDosen
+        .filter((d: any) => String(d.id) !== String(dosen?.id))
+        .slice(0, 4);
+    }
   }
 } catch (error) {
   console.error("Gagal mengambil detail dosen:", error);
   fetchError = true;
 }
 
-// Parse education data into array cleanly
+// Parse data pendidikan secara bersih
 const parsePendidikan = (pendidikanData: any): string[] => {
   if (!pendidikanData) return [];
   if (Array.isArray(pendidikanData)) return pendidikanData.filter(Boolean);
@@ -83,16 +87,11 @@ const parsePendidikan = (pendidikanData: any): string[] => {
 };
 
 const pendidikanList = dosen ? parsePendidikan(dosen.pendidikan) : [];
-const isMale = dosen?.nama ? !dosen.nama.toLowerCase().includes('dr. dr') && !dosen.nama.toLowerCase().includes('ibu') : true;
 
-// Default expertise tags if not explicitly present in Directus model
-const defaultExpertise = isEn 
-  ? ['Software Engineering', 'Artificial Intelligence', 'Data Science', 'Computer Networks']
-  : ['Rekayasa Perangkat Lunak', 'Kecerdasan Buatan', 'Sains Data', 'Jaringan Komputer'];
-
-const keahlianList = dosen?.keahlian 
-  ? (Array.isArray(dosen.keahlian) ? dosen.keahlian : String(dosen.keahlian).split(/[\n,;]+/))
-  : (dosen?.bidang ? [dosen.bidang] : defaultExpertise);
+// Mengambil data bidang keahlian langsung dari Directus
+const keahlianList = dosen?.bidang_keahlian 
+  ? (Array.isArray(dosen.bidang_keahlian) ? dosen.bidang_keahlian : String(dosen.bidang_keahlian).split(/[\n,;]+/))
+  : [];
 ---
 
 <Layout title={dosen?.nama ? `${dosen.nama} - Profil Dosen` : (isEn ? 'Lecturer Profile' : 'Detail Dosen')}>
@@ -154,11 +153,9 @@ const keahlianList = dosen?.keahlian
       {/* Cover / Header Banner */}
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
         <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-emerald-950 via-emerald-900 to-slate-900 h-56 sm:h-72 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
-          {/* Decorative Pattern & Glow */}
           <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.25),transparent_60%)]"></div>
           <div class="absolute inset-0 bg-[url('/landing-pages/gedung-faste.jpg')] bg-cover bg-center opacity-10 mix-blend-overlay"></div>
           
-          {/* Back Button */}
           <div class="relative z-10">
             <a 
               href={localizePath("/dosen-pages/dosen", lang)}
@@ -169,7 +166,6 @@ const keahlianList = dosen?.keahlian
             </a>
           </div>
 
-          {/* Badge text on banner */}
           <div class="relative z-10 flex items-center justify-between text-white/80 text-xs sm:text-sm">
             <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 rounded-full text-emerald-200 font-bold uppercase tracking-wider">
               <Sparkles class="w-3.5 h-3.5" />
@@ -189,7 +185,6 @@ const keahlianList = dosen?.keahlian
         <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 sm:p-8 md:p-10 transition-all duration-300">
           <div class="flex flex-col md:flex-row items-center md:items-start gap-6 sm:gap-8">
             
-            {/* Lecturer Photo / Avatar */}
             <div class="relative group flex-shrink-0">
               <div class="w-36 h-48 sm:w-48 sm:h-64 rounded-2xl overflow-hidden bg-slate-100 shadow-xl border-4 border-white relative z-10 transition-transform duration-500 group-hover:scale-[1.02]">
                 <img 
@@ -202,7 +197,6 @@ const keahlianList = dosen?.keahlian
               <div class="absolute -inset-2 bg-gradient-to-tr from-emerald-600 to-teal-400 rounded-3xl blur-lg opacity-25 group-hover:opacity-40 transition duration-500"></div>
             </div>
 
-            {/* Main Info */}
             <div class="flex-1 w-full text-center md:text-left flex flex-col justify-between">
               <div>
                 <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-800 rounded-full text-xs font-bold mb-3 border border-emerald-100">
@@ -232,9 +226,9 @@ const keahlianList = dosen?.keahlian
                   </a>
                 )}
 
-                {dosen.link_scholar && (
+                {dosen.google_scholar && (
                   <a 
-                    href={dosen.link_scholar} 
+                    href={dosen.google_scholar} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold text-xs sm:text-sm rounded-xl transition-colors"
@@ -245,9 +239,9 @@ const keahlianList = dosen?.keahlian
                   </a>
                 )}
 
-                {dosen.link_sinta && (
+                {dosen.sinta && (
                   <a 
-                    href={dosen.link_sinta} 
+                    href={dosen.sinta} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     class="inline-flex items-center gap-2 px-4 py-2.5 bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 font-bold text-xs sm:text-sm rounded-xl transition-colors"
@@ -270,7 +264,6 @@ const keahlianList = dosen?.keahlian
           {/* Left Column: Academic & Contact Info */}
           <div class="lg:col-span-1 space-y-8">
             
-            {/* Academic Info Card */}
             <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
               <h3 class="font-black text-slate-900 text-lg sm:text-xl mb-6 flex items-center gap-3 border-b border-slate-100 pb-4">
                 <div class="w-10 h-10 bg-emerald-50 text-emerald-700 rounded-xl flex items-center justify-center">
@@ -325,7 +318,6 @@ const keahlianList = dosen?.keahlian
               </div>
             </div>
 
-            {/* Research Profiles & External Links Card */}
             <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
               <h3 class="font-black text-slate-900 text-lg sm:text-xl mb-6 flex items-center gap-3 border-b border-slate-100 pb-4">
                 <div class="w-10 h-10 bg-blue-50 text-blue-700 rounded-xl flex items-center justify-center">
@@ -336,11 +328,11 @@ const keahlianList = dosen?.keahlian
 
               <div class="space-y-3">
                 <a 
-                  href={dosen.link_scholar || '#'} 
-                  target={dosen.link_scholar ? "_blank" : "_self"} 
+                  href={dosen.google_scholar || '#'} 
+                  target={dosen.google_scholar ? "_blank" : "_self"} 
                   rel="noopener noreferrer"
                   class={`flex items-center justify-between p-4 rounded-2xl transition-all border ${
-                    dosen.link_scholar 
+                    dosen.google_scholar 
                       ? 'bg-blue-50/50 hover:bg-blue-50 border-blue-100 text-blue-900 font-bold hover:shadow-sm' 
                       : 'bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed'
                   }`}
@@ -350,19 +342,19 @@ const keahlianList = dosen?.keahlian
                     <div>
                       <p class="text-sm leading-tight">Google Scholar</p>
                       <p class="text-xs font-normal text-slate-500">
-                        {dosen.link_scholar ? (isEn ? 'View Citations & Articles' : 'Lihat Sitasi & Artikel') : (isEn ? 'Not linked' : 'Belum ditautkan')}
+                        {dosen.google_scholar ? (isEn ? 'View Citations & Articles' : 'Lihat Sitasi & Artikel') : (isEn ? 'Not linked' : 'Belum ditautkan')}
                       </p>
                     </div>
                   </div>
-                  {dosen.link_scholar && <ExternalLink class="w-4 h-4 text-blue-600" />}
+                  {dosen.google_scholar && <ExternalLink class="w-4 h-4 text-blue-600" />}
                 </a>
 
                 <a 
-                  href={dosen.link_sinta || '#'} 
-                  target={dosen.link_sinta ? "_blank" : "_self"} 
+                  href={dosen.sinta || '#'} 
+                  target={dosen.sinta ? "_blank" : "_self"} 
                   rel="noopener noreferrer"
                   class={`flex items-center justify-between p-4 rounded-2xl transition-all border ${
-                    dosen.link_sinta 
+                    dosen.sinta 
                       ? 'bg-emerald-50/50 hover:bg-emerald-50 border-emerald-100 text-emerald-900 font-bold hover:shadow-sm' 
                       : 'bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed'
                   }`}
@@ -372,11 +364,11 @@ const keahlianList = dosen?.keahlian
                     <div>
                       <p class="text-sm leading-tight">Sinta Kemdikbud</p>
                       <p class="text-xs font-normal text-slate-500">
-                        {dosen.link_sinta ? (isEn ? 'View Sinta Score & Metrics' : 'Lihat Skor & Portofolio Sinta') : (isEn ? 'Not linked' : 'Belum ditautkan')}
+                        {dosen.sinta ? (isEn ? 'View Sinta Score & Metrics' : 'Lihat Skor & Portofolio Sinta') : (isEn ? 'Not linked' : 'Belum ditautkan')}
                       </p>
                     </div>
                   </div>
-                  {dosen.link_sinta && <ExternalLink class="w-4 h-4 text-emerald-600" />}
+                  {dosen.sinta && <ExternalLink class="w-4 h-4 text-emerald-600" />}
                 </a>
               </div>
             </div>
@@ -386,7 +378,6 @@ const keahlianList = dosen?.keahlian
           {/* Right Column: Educational History & Research Interests */}
           <div class="lg:col-span-2 space-y-8">
             
-            {/* Educational History Card */}
             <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
               <h3 class="font-black text-slate-900 text-xl mb-6 flex items-center gap-3 border-b border-slate-100 pb-4">
                 <div class="w-10 h-10 bg-emerald-50 text-emerald-700 rounded-xl flex items-center justify-center">
@@ -418,7 +409,6 @@ const keahlianList = dosen?.keahlian
               )}
             </div>
 
-            {/* Expertise & Research Interests Card */}
             <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
               <h3 class="font-black text-slate-900 text-xl mb-6 flex items-center gap-3 border-b border-slate-100 pb-4">
                 <div class="w-10 h-10 bg-amber-50 text-amber-700 rounded-xl flex items-center justify-center">
@@ -427,14 +417,20 @@ const keahlianList = dosen?.keahlian
                 {isEn ? 'Research Interests & Expertise' : 'Bidang Keahlian & Riset'}
               </h3>
 
-              <div class="flex flex-wrap gap-2.5">
-                {keahlianList.map((item: string) => (
-                  <span class="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-emerald-100 hover:text-emerald-900 text-slate-700 text-sm font-semibold rounded-xl transition-all">
-                    <Sparkles class="w-3.5 h-3.5 text-emerald-600" />
-                    {item}
-                  </span>
-                ))}
-              </div>
+              {keahlianList.length > 0 ? (
+                <div class="flex flex-wrap gap-2.5">
+                  {keahlianList.map((item: string) => (
+                    <span class="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-emerald-100 hover:text-emerald-900 text-slate-700 text-sm font-semibold rounded-xl transition-all">
+                      <Sparkles class="w-3.5 h-3.5 text-emerald-600" />
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <div class="p-4 bg-slate-50 rounded-2xl text-slate-400 text-sm italic">
+                  {isEn ? 'No expertise tags provided.' : 'Belum ada bidang keahlian yang ditambahkan.'}
+                </div>
+              )}
             </div>
 
           </div>
@@ -501,4 +497,4 @@ const keahlianList = dosen?.keahlian
     </section>
   )}
 
-</Layout>
+</Layout>
