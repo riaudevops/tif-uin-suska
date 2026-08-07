@@ -20,11 +20,12 @@ try {
 
     const [res, relatedRes] = await Promise.all([
         fetch(
-            `${API_URL}/items/berita?${filterParam}&fields=id,title,introtext,fulltext,publish_up,images,catid,created_by_alias`
+            // Menghapus 'fulltext' agar tidak memicu error 403 dari Directus
+            `${API_URL}/items/berita?${filterParam}&fields=id,title,title_alias,introtext,publish_up,images,catid,created_by_alias`
         ),
         fetch(
-            // Related post tetap mengecualikan artikel yang sedang dibuka
-            `${API_URL}/items/berita?${filterParam.replace('[_eq]', '[_neq]')}&limit=3&fields=id,title_alias,title,introtext,publish_up,images,catid,created_by_alias`
+            // Menghapus 'slug' dan menyamakan field agar aman
+            `${API_URL}/items/berita?${filterParam.replace('[_eq]', '[_neq]')}&limit=3&fields=id,title,title_alias,introtext,publish_up,images,catid,created_by_alias`
         ),
     ]);
     
@@ -41,6 +42,7 @@ try {
     related = relatedJson.data || [];
 } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
+    // Jika masih gagal, cek Terminal/Console VS Code kamu untuk melihat error merah ini
     console.warn("Gagal mengambil detail berita:", message);
 }
 
@@ -139,29 +141,32 @@ if (!article) {
 
         <div
             class="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-emerald-600"
-            set:html={article.fulltext || article.introtext}
+            set:html={article.introtext}
         />
 
-{related.map((item: any) => (
-    <a
-        // UBAH: Gunakan title_alias atau id
-        href={localizePath(`/berita/${item.title_alias || item.id}`, lang)}
-        class="group block bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
-    >
-        {/* UBAH: Gunakan images, bukan thumbnail */}
-        {item.images && (
-            <img
-                src={`${API_URL}/assets/${item.images.split('|')[0]}`}
-                class="h-40 w-full object-cover group-hover:scale-105 transition"
-                alt={item.title}
-            />
-        )}
-        <div class="p-4">
-            <h3 class="font-semibold group-hover:text-emerald-600">
-                {item.title}
-            </h3>
+        <div class="mt-16">
+            <h2 class="text-2xl font-bold mb-6">{isEn ? 'Other News' : 'Berita Lainnya'}</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                {related.map((item: any) => (
+                    <a
+                        href={localizePath(`/berita/${item.title_alias || item.id}`, lang)}
+                        class="group block bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
+                    >
+                        {item.images && (
+                            <img
+                                src={`${API_URL}/assets/${item.images.split('|')[0]}`}
+                                class="h-40 w-full object-cover group-hover:scale-105 transition"
+                                alt={item.title}
+                            />
+                        )}
+                        <div class="p-4">
+                            <h3 class="font-semibold group-hover:text-emerald-600">
+                                {item.title}
+                            </h3>
+                        </div>
+                    </a>
+                ))}
+            </div>
         </div>
-    </a>
-))}
     </div>
 </Layout>
