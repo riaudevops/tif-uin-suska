@@ -21,6 +21,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.555.0",
+    "playwright": "^1.61.1",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "shadcn-ui": "^0.9.5",
@@ -28,5 +29,8 @@
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.3.0",
     "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.2.1"
   }
 }
