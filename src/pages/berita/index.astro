@@ -28,7 +28,6 @@ const categories = [
     isEn ? "All" : "Semua",
     ...new Set(
         posts
-            // UBAH: Dari post.category?.name menjadi post.catid
             .map((post: any) => post.catid)
             .filter((catid: any) => catid !== null && catid !== undefined),
     ),
@@ -36,63 +35,54 @@ const categories = [
 ---
 
 <Layout title={isEn ? "News" : "Berita"}>
-    <nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
-        <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100">
+    <nav class="max-w-7xl mx-auto px-6 sm:px-8 mt-32 text-sm">
+        <ol class="flex items-center flex-wrap gap-2 text-sm text-slate-500 py-3 border-b border-slate-100">
             <li class="flex items-center">
-                <a href={localizePath('/', lang)} class="flex items-center hover:text-green-600 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <a href={localizePath('/', lang)} class="flex items-center hover:text-[#004d2c] transition-colors gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
                     {t('nav.home')}
                 </a>
             </li>
-            <li class="text-gray-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </li>
-            <li>
-                <a href={localizePath('/berita', lang)} class="hover:text-green-600 transition-colors">
-                    {isEn ? 'News' : 'Berita'}
-                </a>
-            </li>
-            <li class="text-gray-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            </li>
-            <li class="text-green-700 font-bold tracking-tight">
-                {posts.length} {isEn ? 'News' : 'Berita'}
+            <li class="text-slate-300">/</li>
+            <li class="text-[#004d2c] font-bold italic">
+                {isEn ? 'News & Articles' : 'Berita & Informasi'}
             </li>
         </ol>
     </nav>
 
-    <section data-aos="fade-up" class="py-6 bg-[#f8fafc] min-h-screen">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="mb-16">
-                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-                    <div class="relative">
-                        <div class="absolute -left-5 top-0 bottom-0 w-1.5 bg-[#004d2c] rounded-full"></div>
-                        <h1 data-aos="fade-up" class="text-5xl font-black text-[#004d2c] tracking-tight leading-tight">
-                            {isEn ? 'News' : 'Berita'}
+    <section data-aos="fade-up" class="py-10 bg-slate-50 min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            
+            <!-- Page Header -->
+            <div class="mb-12">
+                <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-slate-200/60">
+                    <div>
+                        <span class="px-4 py-1.5 bg-yellow-100 text-yellow-800 rounded-full text-xs font-bold uppercase tracking-widest inline-block mb-3">
+                            {isEn ? "Official Newsroom" : "Berita & Pengumuman"}
+                        </span>
+                        <h1 data-aos="fade-up" class="text-4xl md:text-5xl font-black text-[#004d2c] tracking-tight uppercase leading-tight">
+                            {isEn ? 'News & ' : 'Berita '} <span class="text-yellow-500">{isEn ? 'Articles' : 'Informatika'}</span>
                         </h1>
-                        <p class="text-slate-500 mt-2 font-medium">
+                        <p class="text-slate-600 mt-2 max-w-2xl text-sm sm:text-base font-light">
                             {isEn 
-                                ? 'Latest news about activities and information from the Informatics Engineering Study Program. Don\'t forget to keep visiting this page for the latest information. Thank you for visiting!'
-                                : 'Berita terkini seputar kegiatan dan informasi dari prodi Teknik Informatika. Jangan lupa untuk selalu mengunjungi halaman ini untuk mendapatkan informasi terbaru. Terima kasih telah berkunjung!'
+                                ? 'Latest news, announcements, and information from the Informatics Engineering Study Program of UIN Suska Riau.'
+                                : 'Berita terkini, pengumuman resmi, dan artikel seputar kegiatan perkuliahan serta prestasi dari Program Studi Teknik Informatika.'
                             }
                         </p>
                     </div>
 
+                    <!-- Category Filters -->
                     <div class="flex flex-wrap gap-2" id="filter-container">
                         {
                             categories.map((cat: string) => (
                                 <button
                                     data-category={cat}
-                                    class={`filter-btn px-6 py-2 rounded-full text-xs font-black tracking-widest uppercase transition-all duration-300 border-2 shadow-sm ${
+                                    class={`filter-btn px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-300 border shadow-sm ${
                                         cat === (isEn ? "All" : "Semua")
-                                            ? "bg-[#004d2c] text-white border-[#004d2c] active-filter"
-                                            : "bg-white text-slate-400 border-slate-100 hover:border-yellow-400 hover:text-yellow-600"
+                                            ? "bg-[#004d2c] text-white border-[#004d2c] active-filter shadow-emerald-900/20"
+                                            : "bg-white text-slate-600 border-slate-200 hover:border-yellow-400 hover:text-[#004d2c]"
                                     }`}
                                 >
                                     {cat === (isEn ? "All" : "Semua") ? cat : `Kategori ${cat}`}
@@ -103,69 +93,102 @@ const categories = [
                 </div>
             </div>
 
+            <!-- News Grid -->
             {
                 posts.length === 0 ? (
-                    <div class="text-center py-20 text-slate-500">
-                        {isEn ? 'No news has been published at this time.' : 'Belum ada berita yang dipublikasikan saat ini.'}
+                    <div class="text-center py-20 bg-white rounded-3xl border border-slate-200 shadow-sm">
+                        <p class="text-slate-500 font-medium">
+                            {isEn ? 'No news has been published at this time.' : 'Belum ada berita yang dipublikasikan saat ini.'}
+                        </p>
                     </div>
                 ) : (
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10" id="news-grid">
-                        {posts.map((post: any) => (
-                            <div
-                                class="news-item group relative bg-white rounded-[2.5rem] p-4 border-2 border-transparent hover:border-yellow-400 transition-all duration-500 flex flex-col shadow-sm hover:shadow-xl"
-                                data-category={post.catid || "Uncategorized"}
-                            >
-                                <div class="relative h-60 overflow-hidden rounded-[2rem]">
-                                    <img
-                                        src={
-                                            post.images
-                                                ? `${API_URL}/assets/${post.images.split('|')[0]}`
-                                                : "/default-thumbnail.jpg"
-                                        }
-                                        class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                        alt={post.title}
-                                    />
-                                    {post.catid && (
-                                        <div class="absolute top-5 left-5">
-                                            <span class="bg-white/95 backdrop-blur text-[#004d2c] text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-sm">
-                                                Kategori {post.catid}
-                                            </span>
-                                        </div>
-                                    )}
-                                </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="news-grid">
+                        {posts.map((post: any) => {
+                            const cleanExcerpt = (post.introtext || "").replace(/<[^>]+>/g, "").trim();
+                            const postUrl = localizePath(`/berita/${post.title_alias || post.id}`, lang);
+                            const formattedDate = post.publish_up
+                                ? new Date(post.publish_up).toLocaleDateString(lang === 'en' ? "en-US" : "id-ID", {
+                                      day: "numeric",
+                                      month: "short",
+                                      year: "numeric",
+                                  })
+                                : (isEn ? "Date N/A" : "Tanggal N/A");
 
-                                <div class="px-4 py-8 flex flex-col flex-grow">
-                                    <div class="flex items-center gap-2 mb-4 text-slate-400 uppercase text-[11px] font-bold">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                        {post.publish_up
-                                            ? new Date(post.publish_up).toLocaleDateString(lang === 'en' ? "en-US" : "id-ID", {
-                                                  day: "numeric",
-                                                  month: "long",
-                                                  year: "numeric",
-                                              })
-                                            : (isEn ? "Date not available" : "Tanggal tidak tersedia")}
+                            return (
+                                <a
+                                    href={postUrl}
+                                    class="news-item group flex flex-col bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-slate-200/80 cursor-pointer"
+                                    data-category={post.catid || "Uncategorized"}
+                                >
+                                    <!-- Image Thumbnail -->
+                                    <div class="relative h-56 bg-slate-900 overflow-hidden">
+                                        <img
+                                            src={
+                                                post.images
+                                                    ? `${ASSET_URL}${post.images.split('|')[0]}`
+                                                    : "/landing-pages/gedung.jpg"
+                                            }
+                                            loading="lazy"
+                                            decoding="async"
+                                            class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                                            alt={post.title}
+                                        />
+                                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+                                        
+                                        <!-- Category Tag on Image -->
+                                        {post.catid && (
+                                            <div class="absolute top-4 left-4">
+                                                <span class="bg-black/40 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                                                    Kategori {post.catid}
+                                                </span>
+                                            </div>
+                                        )}
                                     </div>
 
-                                    <h2 data-aos="fade-up" class="font-black text-xl text-slate-800 group-hover:text-[#004d2c] transition-colors line-clamp-2">
-                                        {post.title}
-                                    </h2>
-
-                                    <a
-                                        href={localizePath(`/berita/${post.id}`, lang)}
-                                        class="mt-auto pt-8 flex items-center justify-between"
-                                    >
-                                        <span class="text-sm font-black text-[#004d2c] group-hover:text-yellow-600 transition-colors uppercase italic">
-                                            {isEn ? 'Read More' : 'Baca Selengkapnya'}
-                                        </span>
-                                        <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center transition-all duration-500 group-hover:bg-yellow-400 group-hover:rotate-[-45deg] group-hover:text-white group-hover:scale-110 shadow-inner">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                            </svg>
+                                    <!-- Content -->
+                                    <div class="p-7 flex flex-col flex-grow bg-white">
+                                        <!-- Date & Author info -->
+                                        <div class="flex items-center gap-3 mb-3 text-slate-400 text-xs font-medium">
+                                            <div class="flex items-center gap-1.5 text-emerald-700 font-bold uppercase tracking-wider text-[11px]">
+                                                <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
+                                                {formattedDate}
+                                            </div>
+                                            {post.created_by_alias && (
+                                                <>
+                                                    <span class="text-slate-300">•</span>
+                                                    <span class="text-slate-500 text-xs truncate max-w-[120px]">
+                                                        {post.created_by_alias}
+                                                    </span>
+                                                </>
+                                            )}
                                         </div>
-                                    </a>
-                                </div>
-                            </div>
-                        ))}
+
+                                        <!-- Title -->
+                                        <h2 class="font-bold text-xl text-slate-900 group-hover:text-[#004d2c] transition-colors line-clamp-2 leading-snug mb-3">
+                                            {post.title}
+                                        </h2>
+
+                                        <!-- Excerpt -->
+                                        <p class="text-slate-600 text-sm line-clamp-3 leading-relaxed font-light mb-6">
+                                            {cleanExcerpt ? (cleanExcerpt.length > 110 ? `${cleanExcerpt.slice(0, 110)}...` : cleanExcerpt) : (isEn ? 'No description available.' : 'Tidak ada ringkasan isi berita.')}
+                                        </p>
+
+                                        <!-- Card Footer Link -->
+                                        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
+                                            <span class="text-xs font-bold text-[#004d2c] group-hover:text-amber-600 transition-colors uppercase tracking-wider">
+                                                {isEn ? 'Read Article' : 'Baca Selengkapnya'}
+                                            </span>
+                                            
+                                            <div class="w-9 h-9 rounded-full bg-emerald-50 text-[#004d2c] group-hover:bg-[#004d2c] group-hover:text-yellow-400 flex items-center justify-center transition-all duration-300 shadow-sm group-hover:translate-x-1">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            );
+                        })}
                     </div>
                 )
             }
@@ -200,8 +223,8 @@ const categories = [
                     );
                     b.classList.add(
                         "bg-white",
-                        "text-slate-400",
-                        "border-slate-100",
+                        "text-slate-600",
+                        "border-slate-200",
                     );
                 });
 
@@ -213,11 +236,10 @@ const categories = [
                 );
                 btn.classList.remove(
                     "bg-white",
-                    "text-slate-400",
-                    "border-slate-100",
+                    "text-slate-600",
+                    "border-slate-200",
                 );
 
-                // Filter item berita
                 items.forEach((item) => {
                     const itemCat = item.dataset.category?.trim();
                     if (category === "Semua" || category === "All" || itemCat === category) {

@@ -1,18 +1,18 @@
 ---
 import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
 const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
 const isEn = lang === 'en';
 
 const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
 
-let softwareData = [];
+let softwareData: any[] = [];
 
-  try {
+try {
   const response = await fetch(`${API_URL}/items/software?limit=-1`);
   if (!response.ok) throw new Error("Gagal mengambil data software");
 
   const dataDirectus = await response.json();
-  
   softwareData = dataDirectus.data || [];
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
@@ -20,52 +20,74 @@ let softwareData = [];
 }
 ---
 
-<section data-aos="fade-up" class="animate-fade-up overflow-hidden py-24 relative">
-  <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 overflow-hidden border border-slate-100">
+<section data-aos="fade-up" class="py-16 px-4 sm:px-6 lg:px-8">
+  {/* Mengubah max-w-6xl menjadi max-w-7xl agar tabel lebih lebar dan proporsional */}
+  <div class="max-w-7xl mx-auto bg-white rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-100">
     
     <div class="overflow-x-auto">
-      <table class="w-full text-left border-separate border-spacing-0">
+      <table class="w-full text-left border-collapse">
         <thead>
           <tr class="bg-[#004d2c] text-white">
-            <th class="py-5 px-6 font-bold uppercase text-[10px] tracking-[0.2em] text-center w-20 border-b border-white/10">No</th>
-            <th class="py-5 px-6 font-bold uppercase text-[10px] tracking-[0.2em] border-b border-white/10">{isEn ? "Researcher" : "Peneliti"}</th>
-            <th class="py-5 px-6 font-bold uppercase text-[10px] tracking-[0.2em] border-b border-white/10">{isEn ? "Research Interest" : "Bidang Riset (Research Interest)"}</th>
+            <th class="py-5 px-8 font-bold uppercase text-xs tracking-[0.2em] text-center w-24 border-b border-white/10">No</th>
+            <th class="py-5 px-8 font-bold uppercase text-xs tracking-[0.2em] border-b border-white/10">{isEn ? "Researcher" : "Peneliti"}</th>
+            <th class="py-5 px-8 font-bold uppercase text-xs tracking-[0.2em] border-b border-white/10">{isEn ? "Research Interest" : "Bidang Riset (Research Interest)"}</th>
           </tr>
         </thead>
         
         <tbody class="divide-y divide-slate-100">
-          {softwareData.map((item: any, index: number) => (
-            <tr class="hover:bg-emerald-50/40 transition-all duration-300 group">
-              <td class="py-5 px-6 text-center text-slate-400 font-mono text-xs">{index + 1}</td>
-              <td class="py-5 px-6">
-                <div class="flex items-center gap-4">
-                  <div class="shrink-0 w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-100 to-slate-100 flex items-center justify-center text-xs font-black text-emerald-700 border border-emerald-200/50 uppercase">
-                    {item.name ? item.name.charAt(0) : '?'}
-                  </div>
-                  <p class="text-slate-800 font-bold text-sm leading-none group-hover:text-emerald-700 transition-colors">
-                    {item.name}
-                  </p>
-                </div>
-              </td>
-              <td class="py-5 px-6">
-                <div class="flex flex-wrap gap-2">
-                   <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[11px] font-medium border border-slate-200">
-                     {item.research_interest}
-                   </span>
-                </div>
+          {softwareData.length > 0 ? (
+            softwareData.map((item: any, index: number) => {
+              const interests = item.research_interest 
+                ? item.research_interest.split(/[,;]/).map((i: string) => i.trim()).filter(Boolean)
+                : [];
+
+              return (
+                <tr class="hover:bg-emerald-50/40 transition-all duration-200 group">
+                  <td class="py-5 px-8 text-center text-slate-400 font-mono text-sm">{index + 1}</td>
+                  <td class="py-5 px-8">
+                    <div class="flex items-center gap-4">
+                      {/* Avatar sedikit dibesarkan dari w-8 menjadi w-10 */}
+                      <div class="shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-100 to-slate-100 flex items-center justify-center text-sm font-black text-emerald-700 border border-emerald-200/50 uppercase">
+                        {item.name ? item.name.charAt(0) : '?'}
+                      </div>
+                      <p class="text-slate-800 font-bold text-base leading-tight group-hover:text-emerald-700 transition-colors">
+                        {item.name || 'Tanpa Nama'}
+                      </p>
+                    </div>
+                  </td>
+                  <td class="py-5 px-8">
+                    <div class="flex flex-wrap gap-2">
+                      {interests.length > 0 ? (
+                        interests.map((tag: string) => (
+                          <span class="px-3.5 py-1.5 bg-slate-100 text-slate-600 rounded-full text-xs font-medium border border-slate-200">
+                            {tag}
+                          </span>
+                        ))
+                      ) : (
+                        <span class="text-slate-400 text-sm">-</span>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              );
+            })
+          ) : (
+            <tr>
+              <td colspan="3" class="py-12 text-center text-slate-400 text-base font-medium">
+                {isEn ? "No data found" : "Data tidak tersedia"}
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>
     
-    <div class="bg-slate-50/80 p-5 border-t border-slate-100 flex justify-between items-center">
-      <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+    <div class="bg-slate-50/80 px-8 py-5 border-t border-slate-100 flex justify-between items-center">
+      <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">
         Total <span class="text-emerald-600">{softwareData.length}</span> {isEn ? "Innovators Found" : "Inovator Ditemukan"}
       </p>
-      <div class="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-slate-300">
-        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z"/></svg>
+      <div class="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z"/></svg>
         Academic DB v.2026
       </div>
     </div>

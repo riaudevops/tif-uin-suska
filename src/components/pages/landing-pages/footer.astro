@@ -6,7 +6,7 @@ import {
   Mail,
   Youtube,
 } from '@lucide/astro';
-import { getLocaleFromUrl, useTranslations } from "../../../lib/translations";
+import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 ---
@@ -61,10 +61,10 @@ const t = useTranslations(lang);
           tif@uin-suska.ac.id
         </a>
         <div class="flex gap-4 mt-6">
-          <a href="https://facebook.com/tifuinsuska" class="p-2 bg-slate-800 rounded-lg hover:bg-blue-600 hover:text-white transition"><Facebook size={18}/></a>
+          <a href="https://web.facebook.com/share/g/14nnsEYrm9n/" class="p-2 bg-slate-800 rounded-lg hover:bg-blue-600 hover:text-white transition"><Facebook size={18}/></a>
           <a href="https://instagram.com/tifuinsuska" class="p-2 bg-slate-800 rounded-lg hover:bg-pink-600 hover:text-white transition"><Instagram size={18}/></a>
-          <a href="https://github.com/tifuinsuska" class="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 hover:text-white transition"><Github size={18}/></a>
-          <a href="https://youtube.com/tifuinsuska" class="p-2 bg-slate-800 rounded-lg hover:bg-red-600 hover:text-white transition"><Youtube size={18}/></a>
+          <a href="https://github.com/tifsuska" class="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 hover:text-white transition"><Github size={18}/></a>
+          <a href="https://www.youtube.com/@teknikinformatikauinsuskar8865" class="p-2 bg-slate-800 rounded-lg hover:bg-red-600 hover:text-white transition"><Youtube size={18}/></a>
         </div>
       </div>
     </div>
@@ -72,7 +72,7 @@ const t = useTranslations(lang);
     <div class="lg:col-span-2 text-sm">
       <h3 class="text-lg font-semibold text-white mb-6 border-b border-slate-800 pb-2">{t("footer.layanan")}</h3>
       <ul class="space-y-3">
-        <li><a href="https://sireg.uin-suska.ac.id/beranda-sireg-uin-suska-riau.html" class="hover:text-blue-400 transition">SIREG</a></li>
+        <li><a href="https://sireg.uin-suska.ac.id/" class="hover:text-blue-400 transition">SIREG</a></li>
         <li><a href="https://iraisenew.uin-suska.ac.id" class="hover:text-blue-400 transition">IRaise</a></li>
         <li><a href="https://elearning.uin-suska.ac.id/login/index.php" class="hover:text-blue-400 transition">E-Learning</a></li>
         <li><a href="https://dashboard.tif.uin-suska.ac.id/" class="hover:text-blue-400 transition">Dashboard TIF</a></li>
@@ -82,10 +82,10 @@ const t = useTranslations(lang);
     <div class="lg:col-span-2 text-sm font-medium">
       <h3 class="text-lg font-semibold text-white mb-6 border-b border-slate-800 pb-2">LabsSquad</h3>
       <ul class="space-y-3">
-        <li><a href="https://riaudevops.id/" class="hover:text-emerald-400 transition">Riau DevOps</a></li>
+        <li><a href="https://www.instagram.com/riaudevops/" class="hover:text-emerald-400 transition">Riau DevOps</a></li>
         <li><a href="https://www.instagram.com/alisi.usr/" class="hover:text-emerald-400 transition">Aliansi Siber</a></li>
-        <li><a href="#" class="hover:text-emerald-400 transition">Figma Squad</a></li>
-        <li><a href="#" class="hover:text-emerald-400 transition">AIOT</a></li>
+        <li><a href="https://www.instagram.com/figmasquad/" class="hover:text-emerald-400 transition">Figma Squad</a></li>
+        <li><a href="https://www.instagram.com/aiot_research/" class="hover:text-emerald-400 transition">AIOT</a></li>
       </ul>
     </div>
   </div>
@@ -120,8 +120,8 @@ const t = useTranslations(lang);
       </p>
       
       <div class="flex gap-6 mt-4 md:mt-0 text-slate-500">
-        <a href="#" class="hover:text-white transition">Privacy Policy</a>
-        <a href="#" class="hover:text-white transition">Terms of Service</a>
+        <a href={localizePath("/privacy-policy", lang)} class="hover:text-white transition">Privacy Policy</a>
+        <a href={localizePath("/terms-of-service", lang)} class="hover:text-white transition">Terms of Service</a>
       </div>
     </div>
   </div>

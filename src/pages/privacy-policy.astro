@@ -1,0 +1,136 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getLocaleFromUrl, useTranslations, localizePath } from "@/lib/translations.js";
+
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const isEn = lang === 'en';
+---
+
+<Layout title={isEn ? "Privacy Policy" : "Kebijakan Privasi"}>
+  <nav class="max-w-7xl mx-auto px-6 sm:px-8 mt-32 text-sm">
+    <ol class="flex items-center flex-wrap gap-2 text-sm text-slate-500 py-3 border-b border-slate-100">
+      <li class="flex items-center">
+        <a href={localizePath('/', lang)} class="flex items-center hover:text-[#004d2c] transition-colors gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+          </svg>
+          {t('nav.home')}
+        </a>
+      </li>
+      <li class="text-slate-300">/</li>
+      <li class="text-[#004d2c] font-bold italic">
+        {isEn ? 'Privacy Policy' : 'Kebijakan Privasi'}
+      </li>
+    </ol>
+  </nav>
+
+  <section class="py-12 bg-slate-50 min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      
+      <!-- Header Banner -->
+      <div class="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-slate-200/80 mb-10">
+        <span class="px-4 py-1.5 bg-yellow-100 text-yellow-800 rounded-full text-xs font-bold uppercase tracking-widest inline-block mb-3">
+          {isEn ? "Legal & Data Protection" : "Perlindungan Data & Privasi"}
+        </span>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-[#004d2c] uppercase tracking-tight leading-tight">
+          {isEn ? "Privacy Policy" : "Kebijakan Privasi"}
+        </h1>
+        <p class="text-slate-500 mt-3 text-sm">
+          {isEn ? "Last Updated: August 2026" : "Terakhir diperbarui: Agustus 2026"}
+        </p>
+      </div>
+
+      <!-- Policy Content -->
+      <div class="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-slate-200/80 prose prose-slate max-w-none text-slate-700 font-light leading-relaxed">
+        {isEn ? (
+          <>
+            <h2 class="text-2xl font-bold text-slate-900 border-b pb-2">1. Introduction</h2>
+            <p>
+              Welcome to the official website of the Informatics Engineering Study Program, Faculty of Science and Technology, State Islamic University Sultan Syarif Kasim Riau (UIN Suska Riau). We are dedicated to respecting and protecting the privacy rights of our students, lecturers, alumni, and website visitors.
+            </p>
+
+            <h2 class="text-2xl font-bold text-slate-900 border-b pb-2 mt-8">2. Information We Collect</h2>
+            <p>We may collect personal and non-personal data through our portal and internal systems (such as IntegraTIF and academic dashboards):</p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li><strong>Academic & Identity Data:</strong> Full name, Student Identification Number (NIM/NIP), email address, study progress, and academic records.</li>
+              <li><strong>Technical Data:</strong> IP address, browser type, device information, and site interaction logs for system diagnostic purposes.</li>
+            </ul>
+
+            <h2 class="text-2xl font-bold text-slate-900 border-b pb-2 mt-8">3. How We Use Your Information</h2>
+            <p>Information gathered is strictly utilized for educational and administrative purposes, including:</p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>Facilitating academic administration, course registration, and student activity monitoring.</li>
+              <li>Verifying graduate and alumni authenticity for Tracer Study and accreditation requirements.</li>
+              <li>Enhancing security and maintaining service stability across all department web portals.</li>
+            </ul>
+
+            <h2 class="text-2xl font-bold text-slate-900 border-b pb-2 mt-8">4. Third-Party Sharing</h2>
+            <p>
+              We do not sell, rent, or trade your personal information. Data may only be shared with authorized educational oversight bodies (such as PDDikti, Ministry of Religious Affairs, or LAM INFOKOM) in compliance with national higher education reporting regulations.
+            </p>
+
+            <h2 class="text-2xl font-bold text-slate-900 border-b pb-2 mt-8">5. Data Security</h2>
+            <p>
+              We implement industry-standard technical and organizational security protocols to guard your data against unauthorized access, alteration, disclosure, or destruction.
+            </p>
+
+            <h2 class="text-2xl font-bold text-slate-900 border-b pb-2 mt-8">6. Contact Us</h2>
+            <p>
+              If you have any questions or concerns regarding this Privacy Policy, please contact our secretariat:
+            </p>
+            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 mt-4 not-prose">
+              <p class="font-bold text-[#004d2c]">Department of Informatics Engineering</p>
+              <p class="text-sm text-slate-600">Faculty of Science and Technology, UIN Suska Riau</p>
+              <p class="text-sm text-slate-600">Jl. H.R. Soebrantas No. 155 Km. 15 Tuah Madani, Pekanbaru - Riau</p>
+              <p class="text-sm text-slate-600 mt-2">Email: <a href="mailto:tif@uin-suska.ac.id" class="text-emerald-700 font-semibold underline">tif@uin-suska.ac.id</a></p>
+            </div>
+          </>
+        ) : (
+          <>
+            <h2 class="text-2xl font-bold text-slate-900 border-b pb-2">1. Pendahuluan</h2>
+            <p>
+              Selamat datang di website resmi Program Studi Teknik Informatika, Fakultas Sains dan Teknologi, Universitas Islam Negeri Sultan Syarif Kasim Riau (UIN Suska Riau). Kami berkomitmen tinggi untuk menghormati dan melindungi hak privasi seluruh mahasiswa, dosen, alumni, serta pengunjung situs kami.
+            </p>
+
+            <h2 class="text-2xl font-bold text-slate-900 border-b pb-2 mt-8">2. Informasi yang Kami Kumpulkan</h2>
+            <p>Kami dapat mengumpulkan informasi pribadi maupun teknis melalui portal website dan aplikasi internal prodi (seperti IntegraTIF & Dashboard TIF):</p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li><strong>Data Identitas & Akademik:</strong> Nama lengkap, Nomor Induk Mahasiswa/Pegawai (NIM/NIP), alamat email resmi, riwayat akademik, dan status kelulusan.</li>
+              <li><strong>Data Teknis:</strong> Alamat IP, jenis peramban (browser), informasi perangkat, serta statistik kunjungan halaman untuk keperluan diagnostik sistem.</li>
+            </ul>
+
+            <h2 class="text-2xl font-bold text-slate-900 border-b pb-2 mt-8">3. Penggunaan Informasi</h2>
+            <p>Informasi yang terkumpul digunakan secara khusus untuk kepentingan pendidikan dan administrasi kampus, seperti:</p>
+            <ul class="list-disc pl-6 space-y-2">
+              <li>Menyelenggarakan layanan administrasi akademik, pemantauan tugas akhir, dan setoran murajaah.</li>
+              <li>Melakukan verifikasi keabsahan ijazah alumni untuk kebutuhan Tracer Study dan pelaporan akreditasi instansi.</li>
+              <li>Menjaga keamanan jaringan dan stabilitas portal informasi jurusan dari risiko kejahatan siber.</li>
+            </ul>
+
+            <h2 class="text-2xl font-bold text-slate-900 border-b pb-2 mt-8">4. Pengungkapan Kepada Pihak Ketiga</h2>
+            <p>
+              Kami tidak memperjualbelikan atau menyebarluaskan data pribadi Anda kepada pihak luar. Pengungkapan data hanya dilakukan kepada lembaga resmi pemerintah (seperti PDDikti Kemendikbudristek, Kemenag RI, atau lembaga akreditasi LAM INFOKOM) sesuai dengan ketentuan hukum yang berlaku.
+            </p>
+
+            <h2 class="text-2xl font-bold text-slate-900 border-b pb-2 mt-8">5. Keamanan Data</h2>
+            <p>
+              Kami menerapkan standar keamanan teknis dan prosedur operasional yang memadai guna melindungi data pribadi Anda dari akses tanpa izin, perubahan tidak sah, penyalahgunaan, atau kebocoran data.
+            </p>
+
+            <h2 class="text-2xl font-bold text-slate-900 border-b pb-2 mt-8">6. Hubungi Kami</h2>
+            <p>
+              Jika Anda memiliki pertanyaan mengenai Kebijakan Privasi ini, silakan hubungi sekretariat kami:
+            </p>
+            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 mt-4 not-prose">
+              <p class="font-bold text-[#004d2c]">Program Studi Teknik Informatika</p>
+              <p class="text-sm text-slate-600">Fakultas Sains dan Teknologi, UIN Suska Riau</p>
+              <p class="text-sm text-slate-600">Jl. H.R. Soebrantas No. 155 Km. 15 Tuah Madani, Pekanbaru - Riau</p>
+              <p class="text-sm text-slate-600 mt-2">Email: <a href="mailto:tif@uin-suska.ac.id" class="text-emerald-700 font-semibold underline">tif@uin-suska.ac.id</a></p>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  </section>
+</Layout>

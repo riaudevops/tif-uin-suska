@@ -1,24 +1,40 @@
 ---
+import { getLocaleFromUrl, useTranslations } from "../../../lib/translations";
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+
 const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
 
 let prestasiData = [];
 
 try {
-  // field waktu di collection kita adalah "waktu_penyelenggaraan", bukan "tahun"
   const response = await fetch(`${API_URL}/items/prestasi?sort=-waktu_penyelenggaraan`);
   if (!response.ok) {
     const errorDetails = await response.json();
     console.error("ERROR DIRECTUS:", JSON.stringify(errorDetails, null, 2));
     throw new Error(`Gagal (Status: ${response.status})`);
   }
+  
   const dataDirectus = await response.json();
   prestasiData = dataDirectus.data.map((item: any) => {
+    let year = '-';
+    if (item.waktu_penyelenggaraan) {
+      if (!isNaN(item.waktu_penyelenggaraan)) {
+        year = String(item.waktu_penyelenggaraan);
+      } else {
+        const parsedDate = new Date(item.waktu_penyelenggaraan);
+        year = !isNaN(parsedDate.getTime()) ? parsedDate.getFullYear().toString() : String(item.waktu_penyelenggaraan);
+      }
+    }
+
+    const hasilPrestasi = item.prestasi && item.prestasi.trim() !== '' ? item.prestasi : '-';
+
     return {
       kegiatan: item.nama_kegiatan || 'Tanpa Nama',
       nama: item.mahasiswa || 'Anonim',
-      tahun: item.tahun || '-',
+      tahun: year,
       tingkat: item.tingkat || 'Lokal',
-      prestasi: item.pencapaian || 'Finalis'
+      prestasi: hasilPrestasi
     };
   });
 } catch (error) {
@@ -47,13 +63,13 @@ const getPrestasiColor = (prestasi: string) => {
       
       <div class="mb-12 text-center max-w-3xl mx-auto">
         <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">
-            Excellence & Achievements
+            {t("page.prestasi.badge")}
         </span>
         <h1 class="text-3xl md:text-4xl font-black text-slate-800 mb-4 tracking-tight uppercase">
-          Prestasi <span class="text-[#004d2c]">Mahasiswa</span>
+          {t("page.prestasi.title")} <span class="text-[#004d2c]">Mahasiswa</span>
         </h1>
         <p class="text-slate-600 leading-relaxed">
-          Daftar pencapaian mahasiswa Teknik Informatika UIN Suska Riau dalam berbagai kompetisi tingkat lokal, nasional, hingga internasional.
+          {t("page.prestasi.desc")}
         </p>
       </div>
 
@@ -62,19 +78,19 @@ const getPrestasiColor = (prestasi: string) => {
                 <table class="w-full text-left border-collapse">
                   <thead>
                     <tr class="bg-[#004d2c] text-white">
-                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider text-center w-16">No</th>
-                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">Nama Kegiatan</th>
-                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">Mahasiswa</th>
-                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider text-center">Tahun</th>
-                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">Tingkat</th>
-                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">Pencapaian</th>
+                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider text-center w-16">{t("page.prestasi.th.no")}</th>
+                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">{t("page.prestasi.th.nama")}</th>
+                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">{t("page.prestasi.th.mhs")}</th>
+                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider text-center">{t("page.prestasi.th.tahun")}</th>
+                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">{t("page.prestasi.th.tingkat")}</th>
+                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">{t("page.prestasi.th.capai")}</th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-slate-100" id="prestasi-tbody">
                     {prestasiData.length === 0 ? (
                       <tr>
                         <td colspan="6" class="py-10 text-center text-slate-400 font-medium text-sm">
-                          Belum ada data prestasi yang tersedia.
+                          {t("page.prestasi.empty")}
                         </td>
                       </tr>
                     ) : (
@@ -93,7 +109,7 @@ const getPrestasiColor = (prestasi: string) => {
                             </div>
                           </td>
                           <td class="py-5 px-6 text-center">
-                            <span class="text-slate-500 text-sm">{item.tahun}</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium uppercase">{item.tahun}</span>
                           </td>
                           <td class="py-5 px-6">
                             <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[10px] font-bold uppercase tracking-wide">
@@ -101,7 +117,7 @@ const getPrestasiColor = (prestasi: string) => {
                             </span>
                           </td>
                           <td class="py-5 px-6">
-                            <span class={`px-4 py-1.5 rounded-lg text-xs font-black border ${getPrestasiColor(item.prestasi)}`}>
+                            <span class={`px-4 py-1.5 rounded-full text-xs font-bold border ${getPrestasiColor(item.prestasi)}`}>
                               {item.prestasi}
                             </span>
                           </td>
@@ -113,18 +129,18 @@ const getPrestasiColor = (prestasi: string) => {
               </div>
         
         <div class="bg-slate-50/50 p-6 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p id="pagination-info" class="text-xs text-slate-400 font-medium font-mono uppercase tracking-tighter">
-            Menampilkan data...
+          <p id="pagination-info" class="text-xs text-slate-400 font-medium font-mono uppercase tracking-tighter" data-text-show={t("page.prestasi.show")}>
+            {t("page.prestasi.show")}
           </p>
           <div class="flex gap-2">
             <button id="btn-prev" class="px-4 py-2 text-xs font-bold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-[#004d2c] disabled:opacity-50 disabled:cursor-not-allowed transition-all">
-              &larr; Sebelumnya
+              &larr; {t("common.prev")}
             </button>
             <span id="page-number" class="px-4 py-2 text-xs font-bold text-[#004d2c] bg-green-50 border border-green-200 rounded-lg">
               1
             </span>
             <button id="btn-next" class="px-4 py-2 text-xs font-bold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-[#004d2c] disabled:opacity-50 disabled:cursor-not-allowed transition-all">
-              Selanjutnya &rarr;
+              {t("common.next")} &rarr;
             </button>
           </div>
     </div>
@@ -160,7 +176,8 @@ const getPrestasiColor = (prestasi: string) => {
       const currentStart = rows.length === 0 ? 0 : start + 1;
       
       if (pageInfo) {
-        pageInfo.textContent = `Menampilkan ${currentStart} - ${currentEnd} dari total ${rows.length} Records`;
+        const textShow = pageInfo.getAttribute('data-text-show') || "Menampilkan";
+        pageInfo.textContent = `${textShow} ${currentStart} - ${currentEnd} dari total ${rows.length} Records`;
       }
       
       if (pageNumber) {

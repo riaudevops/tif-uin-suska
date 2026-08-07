@@ -14,17 +14,14 @@ let article;
 let related = [];
 
 try {
-    // Deteksi apakah URL slug berupa angka (ID) atau teks (Alias)
     const isId = /^\d+$/.test(slug); 
     const filterParam = isId ? `filter[id][_eq]=${slug}` : `filter[title_alias][_eq]=${slug}`;
 
     const [res, relatedRes] = await Promise.all([
         fetch(
-            // Menghapus 'fulltext' agar tidak memicu error 403 dari Directus
             `${API_URL}/items/berita?${filterParam}&fields=id,title,title_alias,introtext,publish_up,images,catid,created_by_alias`
         ),
         fetch(
-            // Menghapus 'slug' dan menyamakan field agar aman
             `${API_URL}/items/berita?${filterParam.replace('[_eq]', '[_neq]')}&limit=3&fields=id,title,title_alias,introtext,publish_up,images,catid,created_by_alias`
         ),
     ]);
@@ -42,130 +39,139 @@ try {
     related = relatedJson.data || [];
 } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    // Jika masih gagal, cek Terminal/Console VS Code kamu untuk melihat error merah ini
     console.warn("Gagal mengambil detail berita:", message);
 }
 
 if (!article) {
     return Astro.redirect("/404");
 }
+
+const formattedDate = article.publish_up
+    ? new Date(article.publish_up).toLocaleDateString(lang === 'en' ? "en-US" : "id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+      })
+    : '-';
 ---
 
 <Layout title={article.title}>
-    <div class="max-w-5xl mx-auto px-6 py-10">
-        <nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
-            <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+        <!-- Breadcrumbs -->
+        <nav class="max-w-7xl mx-auto mt-28 text-sm">
+            <ol class="flex items-center flex-wrap gap-2 text-sm text-slate-500 py-3 border-b border-slate-100">
                 <li class="flex items-center">
-                    <a href={localizePath('/', lang)} class="flex items-center hover:text-green-600 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <a href={localizePath('/', lang)} class="flex items-center hover:text-[#004d2c] transition-colors gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                         </svg>
                         {t('nav.home')}
                     </a>
                 </li>
-                <li class="text-gray-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </li>
+                <li class="text-slate-300">/</li>
                 <li>
-                    <a href={localizePath('/berita', lang)} class="hover:text-green-600 transition-colors">
+                    <a href={localizePath('/berita', lang)} class="hover:text-[#004d2c] transition-colors">
                         {isEn ? 'News' : 'Berita'}
                     </a>
                 </li>
-                <li class="text-gray-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </li>
-                <li class="text-green-700 font-bold tracking-tight">
+                <li class="text-slate-300">/</li>
+                <li class="text-[#004d2c] font-bold tracking-tight truncate max-w-xs sm:max-w-md">
                     {article.title}
                 </li>
             </ol>
         </nav>
 
-        {
-            article.catid && (
-                <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold mt-4 inline-block">
-                    Kategori ID: {article.catid}
-                </span>
-            )
-        }
-
-        <h1 class="text-4xl md:text-5xl font-bold leading-tight mt-4 mb-6">
-            {article.title}
-        </h1>
-
-        <div class="flex items-center justify-between flex-wrap gap-4 border-y py-4 mb-8">
-            <div class="text-sm text-slate-600 flex flex-col sm:flex-row sm:gap-4">
-                <div>
-                    {isEn ? 'Published on' : 'Dipublikasikan pada'}
-                    <span class="font-medium ml-1">
-                        {
-                            article.publish_up ? new Date(article.publish_up).toLocaleDateString(
-                                lang === 'en' ? "en-US" : "id-ID",
-                                {
-                                    day: "numeric",
-                                    month: "long",
-                                    year: "numeric",
-                                },
-                            ) : '-'
-                        }
+        <!-- Article Header -->
+        <div class="mt-8">
+            {
+                article.catid && (
+                    <span class="bg-yellow-100 text-yellow-800 border border-yellow-300 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider inline-block mb-3">
+                        Kategori {article.catid}
                     </span>
+                )
+            }
+
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 leading-tight tracking-tight uppercase mb-6">
+                {article.title}
+            </h1>
+
+            <div class="flex items-center justify-between flex-wrap gap-4 border-y border-slate-100 py-4 mb-8">
+                <div class="text-xs sm:text-sm text-slate-600 flex flex-wrap items-center gap-3">
+                    <div class="flex items-center gap-1.5 text-emerald-800 font-bold">
+                        <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <span>{formattedDate}</span>
+                    </div>
+                    <span class="text-slate-300">•</span>
+                    <div class="flex items-center gap-1.5 text-slate-700">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                        <span class="font-medium">{article.created_by_alias || 'Redaksi Informatika'}</span>
+                    </div>
                 </div>
 
-                <div class="text-sm text-slate-600">
-                    <span class="text-slate-500">{isEn ? 'Written by: ' : 'Ditulis oleh : '}</span>
-                    <span class="font-semibold text-slate-800">
-                        {article.created_by_alias || 'Anonim'}
-                    </span>
+                <div class="flex items-center gap-3 text-xs font-bold uppercase tracking-wider">
+                    <span class="text-slate-400">{isEn ? 'Share:' : 'Bagikan:'}</span>
+                    <a href={`https://wa.me/?text=${encodeURIComponent(article.title + " " + Astro.url.href)}`} target="_blank" rel="noopener noreferrer" class="px-3 py-1 bg-green-50 text-green-700 hover:bg-green-600 hover:text-white rounded-full transition-colors border border-green-200">WhatsApp</a>
+                    <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(Astro.url.href)}`} target="_blank" rel="noopener noreferrer" class="px-3 py-1 bg-sky-50 text-sky-700 hover:bg-sky-500 hover:text-white rounded-full transition-colors border border-sky-200">Twitter</a>
+                    <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(Astro.url.href)}`} target="_blank" rel="noopener noreferrer" class="px-3 py-1 bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white rounded-full transition-colors border border-blue-200">Facebook</a>
                 </div>
             </div>
 
-            <div class="flex gap-3 text-sm">
-                <a href={`https://wa.me/?text=${encodeURIComponent(article.title + " " + Astro.url.href)}`} target="_blank" class="hover:text-emerald-600">WhatsApp</a>
-                <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(Astro.url.href)}`} target="_blank" class="hover:text-emerald-600">Twitter</a>
-                <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(Astro.url.href)}`} target="_blank" class="hover:text-emerald-600">Facebook</a>
-            </div>
-        </div>
+            <!-- Featured Image -->
+            {
+                article.images && (
+                    <div class="relative overflow-hidden rounded-3xl shadow-2xl mb-10 border border-slate-100">
+                        <img
+                            src={`${API_URL}/assets/${article.images.split('|')[0]}`}
+                            loading="lazy"
+                            decoding="async"
+                            class="w-full h-[350px] sm:h-[450px] object-cover"
+                            alt={article.title}
+                        />
+                    </div>
+                )
+            }
 
-        {
-            article.images && (
-                <img
-                    src={`${API_URL}/assets/${article.images.split('|')[0]}`}
-                    class="w-full h-[420px] object-cover rounded-2xl shadow-xl mb-10"
-                    alt={article.title}
-                />
-            )
-        }
+            <!-- Article Content -->
+            <div
+                class="prose prose-lg max-w-none text-slate-700 leading-relaxed font-light prose-headings:font-bold prose-headings:text-slate-900 prose-a:text-[#004d2c] prose-a:font-semibold hover:prose-a:text-yellow-600 border-b border-slate-100 pb-12"
+                set:html={article.introtext}
+            />
 
-        <div
-            class="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-emerald-600"
-            set:html={article.introtext}
-        />
-
-        <div class="mt-16">
-            <h2 class="text-2xl font-bold mb-6">{isEn ? 'Other News' : 'Berita Lainnya'}</h2>
-            <div class="grid md:grid-cols-3 gap-6">
-                {related.map((item: any) => (
-                    <a
-                        href={localizePath(`/berita/${item.title_alias || item.id}`, lang)}
-                        class="group block bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
-                    >
-                        {item.images && (
-                            <img
-                                src={`${API_URL}/assets/${item.images.split('|')[0]}`}
-                                class="h-40 w-full object-cover group-hover:scale-105 transition"
-                                alt={item.title}
-                            />
-                        )}
-                        <div class="p-4">
-                            <h3 class="font-semibold group-hover:text-emerald-600">
-                                {item.title}
-                            </h3>
-                        </div>
-                    </a>
-                ))}
+            <!-- Related News Section -->
+            <div class="mt-14">
+                <h2 class="text-2xl font-black text-slate-900 uppercase tracking-tight mb-8">
+                    {isEn ? 'Other News' : 'Berita Lainnya'}
+                </h2>
+                <div class="grid md:grid-cols-3 gap-6">
+                    {related.map((item: any) => (
+                        <a
+                            href={localizePath(`/berita/${item.title_alias || item.id}`, lang)}
+                            class="group block bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col"
+                        >
+                            <div class="h-40 overflow-hidden bg-slate-900">
+                                {item.images ? (
+                                    <img
+                                        src={`${API_URL}/assets/${item.images.split('|')[0]}`}
+                                        loading="lazy"
+                                        decoding="async"
+                                        class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                        alt={item.title}
+                                    />
+                                ) : (
+                                    <div class="w-full h-full flex items-center justify-center text-slate-400 text-xs">No Image</div>
+                                )}
+                            </div>
+                            <div class="p-5 flex flex-col flex-1">
+                                <h3 class="font-bold text-slate-900 group-hover:text-[#004d2c] transition-colors line-clamp-2 text-sm leading-snug mb-2">
+                                    {item.title}
+                                </h3>
+                                <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider mt-auto">
+                                    {isEn ? 'Read Article →' : 'Baca Artikel →'}
+                                </span>
+                            </div>
+                        </a>
+                    ))}
+                </div>
             </div>
         </div>
     </div>
