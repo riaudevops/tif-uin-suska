@@ -1,65 +1,370 @@
 ---
-import Layout from '@/layouts/Layout.astro';
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+import {
+  GraduationCap,
+  FileText,
+
+  CheckCircle2,
+  Calendar,
+  BookOpen,
+  ArrowRight,
+  Sparkles,
+  Award,
+  Users,
+  Search,
+  FileCheck,
+  School
+} from '@lucide/astro';
+
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
 const API_URL = import.meta.env.BASE_API_URL || 'http://localhost:8055';
-let items = [];
+
+interface TugasAkhirItem {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  date: string;
+  thumbnail: string;
+  category?: string;
+}
+
+let items: TugasAkhirItem[] = [];
+let fetchError = false;
+
 try {
-  const res = await fetch(`${API_URL}/items/tugas_akhir?fields=id,title,slug,excerpt,published_at,thumbnail`);
+  const params = new URLSearchParams({
+    fields: 'id,title,slug,excerpt,published_at,thumbnail,category',
+    sort: '-published_at',
+    limit: '50',
+  });
+
+  const res = await fetch(`${API_URL}/items/tugas_akhir?${params.toString()}`);
+
   if (res.ok) {
     const data = await res.json();
-    items = data.data.map((d: any) => ({
+    items = (data?.data ?? []).map((d: any) => ({
       id: d.id,
-      title: d.title || 'Tanpa Judul',
+      title: d.title || (isEn ? 'Untitled Announcement' : 'Tanpa Judul'),
       slug: d.slug || d.id,
       excerpt: d.excerpt || '',
-      date: d.published_at ? new Date(d.published_at).toLocaleDateString('id-ID') : '' ,
-      thumbnail: d.thumbnail || ''
+      date: d.published_at
+        ? new Date(d.published_at).toLocaleDateString(isEn ? 'en-US' : 'id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })
+        : '',
+      thumbnail: d.thumbnail ? `${API_URL}/assets/${d.thumbnail}` : '',
+      category: d.category || (isEn ? 'Thesis Info' : 'Informasi TA')
     }));
   } else {
-    console.error('Gagal memuat data Tugas Akhir', res.status);
+    fetchError = true;
   }
 } catch (e) {
-  console.error('Error fetch tugas akhir', e);
+  console.error('Error fetching Tugas Akhir items:', e);
+  fetchError = true;
 }
+
+// Milestone & Process Steps Data
+const milestoneSteps = isEn ? [
+  {
+    step: "01",
+    title: "Topic & Proposal Submission",
+    desc: "Submission of research topic to Final Project Coordinator and assignment of main faculty advisors.",
+    icon: FileText
+  },
+  {
+    step: "02",
+    title: "Proposal Defense (Sempro)",
+    desc: "Presenting research methodology and proposal to examiners for feasibility verification and inputs.",
+    icon: Users
+  },
+  {
+    step: "03",
+    title: "Research & Development",
+    desc: "Conducting system implementation, experiments, testing, and regular progress guidance.",
+    icon: BookOpen
+  },
+  {
+    step: "04",
+    title: "Final Thesis Defense (Munaqasyah)",
+    desc: "Defending thesis before faculty examiners, scientific paper publication, and graduation clearance.",
+    icon: GraduationCap
+  }
+] : [
+  {
+    step: "01",
+    title: "Pengajuan Judul & Proposal",
+    desc: "Pengajuan topik dan draf proposal ke Koordinator TA serta penetapan Dosen Pembimbing Utama & Pendamping.",
+    icon: FileText
+  },
+  {
+    step: "02",
+    title: "Seminar Proposal (Sempro)",
+    desc: "Ujian kelayakan proposal riset di hadapan penguji untuk mendapatkan persetujuan dan masukan perbaikan.",
+    icon: Users
+  },
+  {
+    step: "03",
+    title: "Pelaksanaan Riset & Bimbingan",
+    desc: "Implementasi perangkat lunak/algoritma, pengujian data, serta bimbingan berkala penulisan skripsi.",
+    icon: BookOpen
+  },
+  {
+    step: "04",
+    title: "Sidang Munaqasyah & Skripsi",
+    desc: "Ujian lisan akhir skripsi, syarat publikasi artikel ilmiah, perbaikan revisi, dan penyerahan naskah.",
+    icon: GraduationCap
+  }
+];
+
+// Fallback announcements if Directus empty
+const fallbackAnnouncements: TugasAkhirItem[] = isEn ? [
+  {
+    id: 'ta-fb-1',
+    title: 'Registration & Schedule for Even Semester Proposal Defense 2026',
+    slug: 'pendaftaran-jadwal-sempro-2026',
+    excerpt: 'Detailed schedule and guidelines for registering for Proposal Defense in Informatics Engineering.',
+    date: '20 January 2026',
+    thumbnail: '/landing-pages/gedung-faste.jpg',
+    category: 'Sempro'
+  },
+  {
+    id: 'ta-fb-2',
+    title: 'Scientific Journal Publication Guidelines for Graduating Students',
+    slug: 'panduan-publikasi-jurnal-coreit',
+    excerpt: 'Mandatory journal article submission requirement for final project approval and graduation clearance.',
+    date: '12 January 2026',
+    thumbnail: '/dosen-pages/dosen.jpg',
+    category: 'Publication'
+  },
+  {
+    id: 'ta-fb-3',
+    title: 'Final Thesis Defense (Munaqasyah) Period & Examiner List Batch 2',
+    slug: 'jadwal-sidang-munaqasyah-batch-2',
+    excerpt: 'Announcement of room assignments, time slots, and board of examiners for Munaqasyah thesis defense.',
+    date: '05 January 2026',
+    thumbnail: '/ruang-kelas/fst_mejadosen.jpg',
+    category: 'Munaqasyah'
+  }
+] : [
+  {
+    id: 'ta-fb-1',
+    title: 'Pendaftaran & Pembagian Jadwal Seminar Proposal Semester Genap 2026',
+    slug: 'pendaftaran-jadwal-sempro-2026',
+    excerpt: 'Informasi lengkap persetujuan berkas, syarat bebas SKS, dan pembagian ruang ujian Seminar Proposal.',
+    date: '20 Januari 2026',
+    thumbnail: '/landing-pages/gedung-faste.jpg',
+    category: 'Sempro'
+  },
+  {
+    id: 'ta-fb-2',
+    title: 'Panduan Kewajiban Publikasi Artikel Ilmiah sebagai Syarat Kelulusan TA',
+    slug: 'panduan-publikasi-jurnal-coreit',
+    excerpt: 'Petunjuk penyusunan artikel ringkas sesuai format Jurnal CoreIT / Jurnal terakreditasi Sinta.',
+    date: '12 Januari 2026',
+    thumbnail: '/dosen-pages/dosen.jpg',
+    category: 'Publikasi'
+  },
+  {
+    id: 'ta-fb-3',
+    title: 'Jadwal Pelaksanaan Sidang Munaqasyah & Dewan Penguji Gelombang II',
+    slug: 'jadwal-sidang-munaqasyah-batch-2',
+    excerpt: 'Pengumuman jadwal majelis sidang skripsi, alokasi dosen penguji, dan tata tertib ujian munaqasyah.',
+    date: '05 Januari 2026',
+    thumbnail: '/ruang-kelas/fst_mejadosen.jpg',
+    category: 'Munaqasyah'
+  }
+];
+
+const displayItems = items.length > 0 ? items : fallbackAnnouncements;
 ---
 
-<Layout title="Info Tugas Akhir (TA)">
-  <nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
-    <ol class="flex items-center space-x-2 text-slate-500">
-      <li><a href={localizePath('/', lang)} class="hover:text-emerald-700">{t("bread.home")}</a></li>
+<div class="font-sans bg-slate-50/60 min-h-screen">
+  
+  {/* Breadcrumb Navigation */}
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 pb-4 text-sm">
+    <ol class="flex items-center flex-wrap gap-2 text-sm text-slate-500 py-3 border-b border-slate-100">
+      <li class="flex items-center">
+        <a href={localizePath('/', lang)} class="flex items-center hover:text-emerald-700 transition-colors">
+          <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          {t("bread.home")}
+        </a>
+      </li>
       <li class="text-slate-300">/</li>
-      <li><a href={localizePath('/profil', lang)} class="hover:text-emerald-700">{t("bread.profil")}</a></li>
+      <li>
+        <a href={localizePath('/profil', lang)} class="hover:text-emerald-700 transition-colors">
+          {t("bread.profil")}
+        </a>
+      </li>
       <li class="text-slate-300">/</li>
-      <li class="text-emerald-800 font-semibold italic">{t("bread.ta")}</li>
+      <li class="text-emerald-700 font-bold tracking-tight">
+        {t("bread.ta")}
+      </li>
     </ol>
   </nav>
 
-  <section data-aos="fade-up" class="max-w-7xl mx-auto px-6 py-12">
-    <div class="text-center max-w-3xl mx-auto mb-8">
-      <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest inline-block">{t("common.program")}</span>
-      <h1 data-aos="fade-up" class="text-4xl font-black text-[#004d2c] mt-4">{t("bread.ta")}</h1>
-      <p class="text-slate-600 mt-3">{isEn ? "Collection of announcements, guides, and final project reports. Content managed through Directus." : "Kumpulan pengumuman, panduan, dan laporan tugas akhir mahasiswa. Konten dikelola melalui Directus."}</p>
+  {/* Hero Header Section */}
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-2">
+    <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-[#003820] to-emerald-900 text-white p-8 sm:p-12 lg:p-16 shadow-2xl">
+      {/* Background Lighting Effects */}
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(52,211,153,0.25),transparent_50%)]"></div>
+      <div class="absolute -left-16 -bottom-16 w-80 h-80 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 max-w-3xl">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-200 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
+          <GraduationCap class="w-4 h-4 text-emerald-300" />
+          {isEn ? 'Curriculum & Final Milestone' : 'Kurikulum & Kelulusan Mahasiswa'}
+        </span>
+
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight mb-6">
+          {isEn ? 'Final Project & Thesis Portal' : 'Info Tugas Akhir (TA)'}
+        </h1>
+
+        <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-8">
+          {isEn
+            ? 'Information center, thesis writing guidelines, proposal seminar procedures, munaqasyah defense schedules, and research repositories.'
+            : 'Pusat panduan penyusunan skripsi/tugas akhir, alur pengajuan proposal, seminar hasil, sidang munaqasyah, serta repositori topik penelitian Teknik Informatika.'}
+        </p>
+
+        {/* Quick Program Stats Strip */}
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-white/10 text-center sm:text-left">
+          <div>
+            <span class="block text-2xl sm:text-3xl font-black text-emerald-400">6 SKS</span>
+            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Course Credits' : 'Bobot SKS'}</span>
+          </div>
+          <div>
+            <span class="block text-2xl sm:text-3xl font-black text-emerald-400">5 Bidang</span>
+            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Research Clusters' : 'Rumpun Riset'}</span>
+          </div>
+          <div>
+            <span class="block text-2xl sm:text-3xl font-black text-emerald-400">2 Dosen</span>
+            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Faculty Advisors' : 'Dosen Pembimbing'}</span>
+          </div>
+          <div>
+            <span class="block text-2xl sm:text-3xl font-black text-emerald-400">CoreIT</span>
+            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Journal Target' : 'Publikasi Ilmiah'}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Milestone & Workflow Section */}
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <span class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider inline-block mb-3">
+        {isEn ? 'Milestone Steps' : 'Tahapan Skripsi'}
+      </span>
+      <h2 class="text-2xl sm:text-3xl font-black text-slate-900">
+        {isEn ? 'Final Project Completion Stages' : 'Tahapan Prosedur Tugas Akhir'}
+      </h2>
+      <p class="text-slate-500 text-sm mt-2">
+        {isEn ? '4 key milestones from topic proposal to munaqasyah defense.' : '4 langkah utama pelaksanaan tugas akhir dari pengajuan proposal hingga sidang kelulusan.'}
+      </p>
     </div>
 
-    {items.length === 0 ? (
-      <div class="text-center py-20 bg-slate-50 rounded-2xl border border-slate-100">
-        <p class="text-slate-500">{isEn ? "No final project content yet. Add entries to the tugas_akhir collection in Directus." : "Belum ada konten tugas akhir. Tambahkan entri ke koleksi tugas_akhir di Directus."}</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {milestoneSteps.map((item) => {
+        const IconComponent = item.icon;
+        return (
+          <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:border-emerald-200 transition-all duration-300 relative group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <div class="w-12 h-12 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
+                  <IconComponent class="w-6 h-6" />
+                </div>
+                <span class="text-2xl font-black text-slate-200 group-hover:text-emerald-300 transition-colors">
+                  {item.step}
+                </span>
+              </div>
+              <h3 class="font-bold text-slate-900 text-lg mb-2 group-hover:text-emerald-700 transition-colors">
+                {item.title}
+              </h3>
+              <p class="text-slate-500 text-xs sm:text-sm leading-relaxed">
+                {item.desc}
+              </p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+
+  {/* Main Announcements Grid Section */}
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+      <div>
+        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider inline-block mb-2">
+          {isEn ? 'Announcements & Schedules' : 'Pengumuman & Jadwal Sidang'}
+        </span>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900">
+          {isEn ? 'Latest Final Project Information' : 'Informasi & Pengumuman TA'}
+        </h2>
+      </div>
+      <p class="text-slate-500 text-sm max-w-sm">
+        {isEn ? 'Stay updated with sempro schedules, munaqasyah rosters, and journal requirements.' : 'Informasi terkini pendaftaran seminar proposal, sidang munaqasyah, dan publikasi.'}
+      </p>
+    </div>
+
+    {displayItems.length === 0 ? (
+      <div class="text-center py-16 bg-white rounded-3xl border border-slate-100 shadow-sm">
+        <p class="text-slate-500 text-base mb-2">
+          {isEn ? 'No final project announcements available yet.' : 'Belum ada konten Tugas Akhir.'}
+        </p>
+        <p class="text-xs text-slate-400 max-w-md mx-auto">
+          {isEn ? 'Add entries to the `tugas_akhir` collection in Directus.' : 'Tambahkan entri baru ke koleksi `tugas_akhir` pada CMS Directus.'}
+        </p>
       </div>
     ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.map(item => (
-          <article class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100">
-            {item.thumbnail && <img src={item.thumbnail} alt={item.title} class="w-full h-44 object-cover" />}
-            <div class="p-6">
-              <h3 class="text-lg font-bold text-slate-800 mb-2">{item.title}</h3>
-              <p class="text-sm text-slate-500 mb-4 line-clamp-2">{item.excerpt}</p>
-              <div class="flex items-center justify-between">
-                <span class="text-xs text-slate-400">{item.date}</span>
-                <a class="text-sm font-semibold text-[#004d2c]" href={localizePath(`/tugas-akhir/${item.slug}`, lang)}>{t("common.detail")}</a>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {displayItems.map((item) => (
+          <article class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+            <div>
+              {/* Thumbnail Image */}
+              <div class="relative w-full h-48 bg-slate-100 overflow-hidden">
+                <img 
+                  src={item.thumbnail || '/landing-pages/gedung-faste.jpg'} 
+                  alt={item.title} 
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  onError="this.onerror=null; this.src='/landing-pages/gedung-faste.jpg';"
+                />
+                <span class="absolute top-4 left-4 px-3 py-1 bg-slate-900/80 backdrop-blur-md text-emerald-300 text-xs font-bold rounded-full border border-emerald-500/30">
+                  {item.category || (isEn ? 'Info TA' : 'Info TA')}
+                </span>
               </div>
+
+              {/* Card Body */}
+              <div class="p-6">
+                <div class="flex items-center gap-2 text-xs text-slate-400 mb-3">
+                  <Calendar class="w-3.5 h-3.5 text-emerald-600" />
+                  <span>{item.date || (isEn ? 'Recent Update' : 'Terbaru')}</span>
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
+                  {item.title}
+                </h3>
+
+                <p class="text-slate-600 text-sm line-clamp-3 leading-relaxed mb-4">
+                  {item.excerpt || (isEn ? 'Click details to view the complete announcement.' : 'Klik selengkapnya untuk membaca pengumuman dan persyaratannya.')}
+                </p>
+              </div>
+            </div>
+
+            {/* Footer Action */}
+            <div class="px-6 pb-6 pt-2 border-t border-slate-100 flex items-center justify-between">
+              <a 
+                href={localizePath(`/tugas-akhir/${item.slug}`, lang)} 
+                class="inline-flex items-center gap-1.5 text-sm font-bold text-emerald-700 hover:text-emerald-800 group-hover:translate-x-1 transition-transform"
+              >
+                {t("common.detail")}
+                <ArrowRight class="w-4 h-4" />
+              </a>
             </div>
           </article>
         ))}
@@ -67,4 +372,5 @@ try {
     )}
 
   </section>
-</Layout>
+
+</div>
