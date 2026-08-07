@@ -38,6 +38,8 @@ try {
       linkPendaftaran: item.link_pendaftaran 
     };
   });
+  // Extract unique categories for filter buttons
+  categories = ['All', ...new Set(agendaKegiatan.map((item: any) => item.kategori))];
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.error("Error dari Astro:", message);
