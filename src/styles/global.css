@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-heading: "Merriweather", ui-serif, Georgia, serif;
+  --font-heading: "Figtree", ui-serif, Georgia, serif;
   --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
 }
 
