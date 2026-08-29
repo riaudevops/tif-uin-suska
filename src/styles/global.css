@@ -4,6 +4,10 @@
 @theme {
   --font-heading: "Figtree", ui-serif, Georgia, serif;
   --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --color-primary: #004d2c;
+  --color-primary-hover: #00361f;
+  --color-secondary: #f6b000;
+  --color-secondary-hover: #d99a00;
 }
 
 /* Enforce font-bold (700) as the maximum weight for Figtree font */
