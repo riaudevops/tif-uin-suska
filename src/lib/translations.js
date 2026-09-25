@@ -23,6 +23,7 @@ export const ui = {
     "nav.himatif": "HIMATIF",
     "nav.sub": "Fakultas Sains dan Teknologi",
     "nav.title": "Teknik Informatika",
+    "nav.language": "Bahasa / Language",
 
     // ─── Sub-menus Profil ─────────────────────────────────────
     "menu.sejarah": "Sejarah",
@@ -57,34 +58,38 @@ export const ui = {
     "search.content": "Cari konten",
     "search.noresult": "Tidak ada hasil. Coba kata kunci lain.",
     "search.tips": "Tips: ketik nama dosen, judul berita, atau nama halaman",
+    "search.loading": "Memuat indeks pencarian...",
+    "search.loadError": "Gagal memuat data pencarian.",
+    "search.unavailable": "Pencarian tidak tersedia saat ini.",
+    "search.resultsFound": "hasil ditemukan",
 
     // ─── Hero / Slider ────────────────────────────────────────
     "hero.badge": "Program Studi Teknik Informatika",
     "hero.title1": "Teknik Informatika UIN Suska Riau",
     "hero.desc1":
-      "Mencetak talenta digital yang unggul, beretika, dan siap menghadapi tantangan teknologi masa depan berlandaskan nilai-nilai keislaman.",
+      "Menghasilkan lulusan dengan kompetensi teknologi informasi yang kuat dan kesadaran etika yang tinggi, berlandaskan nilai-nilai keislaman.",
     "hero.cta.profil": "Profil Prodi",
     "hero.cta.akademik": "Informasi Akademik",
 
     "hero.title2": "Fakultas Sains dan Teknologi",
     "hero.desc2":
-      "Pusat riset dan inovasi teknologi yang berkontribusi langsung bagi masyarakat dan perkembangan keilmuan sains di tingkat nasional maupun global.",
+      "Program studi yang mendukung proses belajar, penelitian, dan pengabdian masyarakat melalui penerapan teknologi informasi dan ilmu terapan.",
     "hero.cta.fakultas": "Profil Fakultas",
 
     "hero.title3": "Belajar Langsung dari Ahlinya",
     "hero.desc3":
-      "Didukung oleh tenaga pengajar profesional dan praktisi berpengalaman yang siap membimbing Anda mencapai potensi akademik dan karir terbaik di dunia IT.",
+      "Belajar bersama dosen dan praktisi yang memberikan bimbingan akademik dan pengembangan kompetensi untuk persiapan karier di bidang teknologi informasi.",
     "hero.cta.dosen": "Profil Dosen",
 
     "hero.title4": "Visi & Misi Kami",
     "hero.desc4":
-      "Menjadi program studi unggulan di Asia Tenggara dalam bidang teknologi informasi yang secara kokoh mengintegrasikan sains dan nilai-nilai keislaman pada tahun 2030.",
-    "hero.cta.visimisi": "Learn More",
+      "Mengembangkan program studi teknologi informasi yang berkualitas dengan mengintegrasikan ilmu, teknologi, dan nilai keislaman dalam pembelajaran, penelitian, dan pengabdian.",
+    "hero.cta.visimisi": "Lihat Detail",
 
     "hero.title5": "Karya dan Prestasi Mahasiswa",
     "hero.desc5":
       "Lihat jejak karya kreatif dan prestasi membanggakan dari mahasiswa kami di berbagai kompetisi teknologi tingkat regional, nasional, dan internasional.",
-    "hero.cta.prestasi": "Learn More",
+    "hero.cta.prestasi": "Lihat Prestasi",
 
     // ─── Stats ────────────────────────────────────────────────
     "stats.dosen": "Dosen",
@@ -96,7 +101,7 @@ export const ui = {
     "about.univ": "Universitas Islam Negeri Sultan Syarif Kasim Riau",
     "about.title": "Pendidikan Teknologi Berlandaskan Nilai Keislaman",
     "about.desc":
-      "Kami mendidik mahasiswa bukan sekadar menjadi ahli teknologi (programmer, engineer, data scientist), tapi juga profesional yang memiliki pilar etika dan akhlak islami yang kuat.",
+      "Kami membekali mahasiswa dengan pemahaman teknologi informasi yang kuat, sikap profesional, serta komitmen pada etika dan nilai keislaman dalam kehidupan akademik dan profesional.",
 
     // ─── Agenda ───────────────────────────────────────────────
     "agenda.title": "TIF Agenda",
@@ -130,8 +135,8 @@ export const ui = {
     // ─── Prodi Info (footer mid section) ─────────────────────
     "prodi.title": "Teknik Informatika",
     "prodi.desc":
-      "Mencetak lulusan IT yang tidak hanya mahir dalam coding, desain, dan rekayasa teknologi, tapi juga tangguh, berintegritas tinggi, serta membawa nilai-nilai luhur keislaman di dunia kerja.",
-    "prodi.learnmore": "Learn More",
+      "Mencetak lulusan yang siap bekerja di bidang teknologi informasi dengan kemampuan teknis, sikap profesional, dan komitmen pada nilai keislaman.",
+    "prodi.learnmore": "Selengkapnya",
 
     // ─── Sistem UIN ───────────────────────────────────────────
     "sistem.uin.title": "Sistem UIN",
@@ -246,9 +251,9 @@ export const ui = {
     "page.prestasi.th.capai": "Pencapaian",
     "page.prestasi.empty": "Belum ada data prestasi yang tercatat saat ini.",
     "page.prestasi.show": "Menampilkan data...",
-    "page.alumni.title1": "Jejaring Global",
+    "page.alumni.title1": "Jejaring Alumni",
     "page.alumni.title2": "Alumni TIF",
-    "page.alumni.desc": "Terkoneksi dengan ribuan alumni yang kini berkarya di BUMN, instansi pemerintahan, startup unicorn, hingga tech giant internasional.",
+    "page.alumni.desc": "Jaringan alumni Teknik Informatika yang aktif di sektor pemerintahan, BUMN, industri teknologi, dan lembaga pendidikan.",
     "page.alumni.tracer": "Tracer Study",
     "page.alumni.join": "Gabung IKATIF",
     "page.agenda.title": "Agenda Kegiatan",
@@ -271,7 +276,7 @@ export const ui = {
     "page.kp.desc": "Pengumuman, panduan, dan informasi kerja praktik. Konten dikelola melalui Directus.",
     "page.kp.empty": "Belum ada konten kerja praktik. Tambahkan entri ke koleksi kerja_praktik di Directus.",
     "page.prestasi.landing.title": "Prestasi Mahasiswa Teknik Informatika",
-    "page.prestasi.landing.desc": "Mewadahi talenta unggul dan menghasilkan prestasi gemilang",
+    "page.prestasi.landing.desc": "Menyediakan ruang bagi mahasiswa untuk berkembang dan menampilkan prestasi akademik maupun non-akademik.",
     "page.newsletter.title": "Suara Anda Berharga",
     "page.newsletter.desc": "Bantu kami berkembang menjadi lebih baik. Sampaikan kritik, saran, atau ide inovatif Anda untuk kemajuan kurikulum kami.",
     "page.newsletter.anon": "Anonim & Rahasia",
@@ -302,6 +307,7 @@ export const ui = {
     "nav.himatif": "HIMATIF",
     "nav.sub": "Faculty of Science and Technology",
     "nav.title": "Informatics Engineering",
+    "nav.language": "Language / Bahasa",
 
     // ─── Sub-menus Profil ─────────────────────────────────────
     "menu.sejarah": "History",
@@ -336,29 +342,33 @@ export const ui = {
     "search.content": "Search content",
     "search.noresult": "No results found. Try a different keyword.",
     "search.tips": "Tips: type a lecturer name, news title, or page name",
+    "search.loading": "Loading search index...",
+    "search.loadError": "Failed to load search data.",
+    "search.unavailable": "Search is currently unavailable.",
+    "search.resultsFound": "results found",
 
     // ─── Hero / Slider ────────────────────────────────────────
     "hero.badge": "Informatics Engineering Program",
     "hero.title1": "Informatics Engineering UIN Suska Riau",
     "hero.desc1":
-      "Shaping exceptional, ethical digital talents ready to tackle the future of technology, firmly grounded in Islamic values.",
+      "Producing graduates with strong technical competence and ethical awareness in information technology, guided by Islamic values.",
     "hero.cta.profil": "Program Profile",
     "hero.cta.akademik": "Academic Info",
 
     "hero.title2": "Faculty of Science and Technology",
     "hero.desc2":
-      "A hub for technological research and innovation that directly contributes to society and global scientific advancement.",
+      "A study program supporting teaching, research, and community service through information technology and applied science.",
     "hero.cta.fakultas": "Faculty Profile",
 
     "hero.title3": "Learn from the Experts",
     "hero.desc3":
-      "Guided by professional educators and experienced practitioners dedicated to helping you reach your highest potential in IT.",
+      "Learn with lecturers and practitioners who support academic guidance, scientific development, and professional readiness in the field of IT.",
     "hero.cta.dosen": "Our Lecturers",
 
     "hero.title4": "Our Vision and Mission",
     "hero.desc4":
-      "Aiming to be a leading IT study program in Southeast Asia that seamlessly integrates modern science with Islamic values by 2030.",
-    "hero.cta.visimisi": "Learn More",
+      "Developing a quality information technology study program that integrates science, technology, and Islamic values through learning, research, and community engagement.",
+    "hero.cta.visimisi": "View Details",
 
     "hero.title5": "Works & Achievements",
     "hero.desc5":
@@ -375,7 +385,7 @@ export const ui = {
     "about.univ": "State Islamic University Sultan Syarif Kasim Riau",
     "about.title": "Technology Education Grounded in Islamic Values",
     "about.desc":
-      "We educate students to be more than just tech experts (programmers, engineers, data scientists). We shape professionals with a strong moral and ethical foundation.",
+      "We prepare students with strong information technology knowledge, professional conduct, and a clear commitment to ethics and Islamic values in academic and professional life.",
 
     // ─── Agenda ───────────────────────────────────────────────
     "agenda.title": "TIF Agenda",
@@ -409,8 +419,8 @@ export const ui = {
     // ─── Prodi Info (footer mid section) ─────────────────────
     "prodi.title": "Informatics Engineering",
     "prodi.desc":
-      "Producing IT graduates who don't just excel in coding and technology, but also possess high integrity and noble character to bring into the professional world.",
-    "prodi.learnmore": "Learn More",
+      "Preparing graduates who are ready for the technology workforce with strong technical skills, professional attitude, and a commitment to Islamic values.",
+    "prodi.learnmore": "More Details",
 
     // ─── Sistem UIN ───────────────────────────────────────────
     "sistem.uin.title": "UIN Systems",
@@ -483,7 +493,7 @@ export const ui = {
     // ─── Common UI ────────────────────────────────────────────
     "common.prev": "Previous",
     "common.next": "Next",
-    "common.detail": "Learn More",
+    "common.detail": "More Details",
     "common.readmore": "Read More",
     "common.viewall": "View All",
     "common.register": "Register Now",
@@ -500,20 +510,20 @@ export const ui = {
     "page.sejarah.title1": "Our",
     "page.sejarah.title2": "Journey in",
     "page.sejarah.title3": "Informatics Engineering",
-    "page.sejarah.quote": "Established in 1999, we continue to evolve in response to rapid technological changes, becoming a premier IT talent incubator at UIN Suska Riau.",
+    "page.sejarah.quote": "Since 1999, the study program has continued to develop through institutional change, curriculum refinement, and the strengthening of academic and research capacity.",
     "page.sejarah.akreditasi": "Excellent Accreditation",
     "page.struktur.title": "Organizational Structure",
     "page.struktur.bidang": "Research Group",
     "page.struktur.dosen": "Lecturers",
     "page.lab.title": "Laboratories",
     "page.lab.badge": "Practical Facilities",
-    "page.lab.desc": "Where theory is put to the test. Our labs feature high-end specs ready to support your software development, networking, and AI experiments.",
+    "page.lab.desc": "Facilities used to support practical learning, software development, computer networking, and research activities in the field of information technology.",
     "page.ruangkelas.title": "Classrooms",
     "page.ruangkelas.badge": "Learning Spaces",
-    "page.ruangkelas.desc": "Clean, modern, and comfortable. Designed to make theoretical lectures, presentations, and group discussions dynamic and engaging.",
+    "page.ruangkelas.desc": "Classrooms are arranged to support lectures, presentations, and group discussions through a comfortable and functional learning environment.",
     "page.kurikulum.title": "Curriculum",
     "page.kurikulum.badge": "Study Blueprint",
-    "page.kurikulum.desc": "Designed with an Outcomes-Based Education (OBE) approach. We ensure what you learn today is highly relevant to tomorrow's IT industry standards.",
+    "page.kurikulum.desc": "The curriculum is designed with an Outcomes-Based Education (OBE) approach so that learning outcomes align with professional competence and current industry needs.",
     "page.prestasi.title": "Achievements",
     "page.prestasi.badge": "Wall of Pride",
     "page.prestasi.desc": "A record of achievements by our Informatics Engineering students across various competitions, from local contests to the international stage.",
@@ -527,7 +537,7 @@ export const ui = {
     "page.prestasi.show": "Showing data...",
     "page.alumni.title1": "Global Network",
     "page.alumni.title2": "TIF Alumni",
-    "page.alumni.desc": "Connected with thousands of alumni currently building careers in SOEs, government agencies, unicorn startups, and global tech giants.",
+    "page.alumni.desc": "A growing network of alumni working in public institutions, private industry, startups, and technology-related sectors.",
     "page.alumni.tracer": "Tracer Study",
     "page.alumni.join": "Join IKATIF",
     "page.agenda.title": "Events & Agenda",
@@ -552,7 +562,7 @@ export const ui = {
     "page.prestasi.landing.title": "Achievements of Informatics Engineering Students",
     "page.prestasi.landing.desc": "Nurturing outstanding talents and producing brilliant achievements",
     "page.newsletter.title": "Your Voice Matters",
-    "page.newsletter.desc": "Help us improve. Share your criticism, suggestions, or innovative ideas for the advancement of our curriculum.",
+    "page.newsletter.desc": "Help us improve. Share your criticism, suggestions, or input for the advancement of our curriculum.",
     "page.newsletter.anon": "Anonymous & Confidential",
     "page.newsletter.topic": "Feedback Topic",
     "page.newsletter.opt1": "Facilities & Infrastructure",
