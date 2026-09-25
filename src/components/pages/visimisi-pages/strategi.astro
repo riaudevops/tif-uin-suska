@@ -1,81 +1,125 @@
 ---
 import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
+import { BookOpenText, Microscope, Users, Network, BriefcaseBusiness, LaptopMinimal } from '@lucide/astro';
+
 const lang = getLocaleFromUrl(Astro);
 const isEn = lang === 'en';
+
+const strategies = isEn
+  ? [
+      {
+        title: 'OBE and MBKM Curriculum',
+        desc: 'Aligning the curriculum with outcome-based learning and student mobility pathways in Data Analytics and Software Development.',
+        icon: BookOpenText,
+        tint: 'emerald'
+      },
+      {
+        title: 'Research and Innovation',
+        desc: 'Increasing the quality of student and lecturer research activities to support application-based and evidence-driven innovation.',
+        icon: Microscope,
+        tint: 'sky'
+      },
+      {
+        title: 'Professional Competence',
+        desc: 'Developing lecturer and student competencies to meet the needs of the digital workforce and industry demands.',
+        icon: BriefcaseBusiness,
+        tint: 'amber'
+      },
+      {
+        title: 'Stakeholder Collaboration',
+        desc: 'Strengthening strategic cooperation with industry, government, and academic partners to keep the program relevant and applied.',
+        icon: Network,
+        tint: 'purple'
+      },
+      {
+        title: 'Community Impact',
+        desc: 'Utilizing technology to provide problem-solving solutions for the wider community while preserving Islamic values.',
+        icon: Users,
+        tint: 'rose'
+      },
+      {
+        title: 'Modern Facilities',
+        desc: 'Providing laboratory and digital infrastructure that supports data-driven research and software engineering practices.',
+        icon: LaptopMinimal,
+        tint: 'indigo'
+      }
+    ]
+  : [
+      {
+        title: 'Kurikulum OBE dan MBKM',
+        desc: 'Menyelaraskan kurikulum dengan pembelajaran berbasis capaian dan jalur mobilitas mahasiswa dalam bidang Data Analytics serta Software Development.',
+        icon: BookOpenText,
+        tint: 'emerald'
+      },
+      {
+        title: 'Riset dan Inovasi',
+        desc: 'Meningkatkan kualitas kegiatan riset mahasiswa dan dosen untuk mendukung inovasi berbasis aplikasi dan bukti ilmiah.',
+        icon: Microscope,
+        tint: 'sky'
+      },
+      {
+        title: 'Kompetensi Profesional',
+        desc: 'Mengembangkan kompetensi dosen dan mahasiswa sesuai kebutuhan dunia kerja digital dan industri masa kini.',
+        icon: BriefcaseBusiness,
+        tint: 'amber'
+      },
+      {
+        title: 'Kolaborasi Stakeholder',
+        desc: 'Memperkuat kerja sama strategis dengan industri, pemerintah, dan mitra akademik agar program tetap relevan dan aplikatif.',
+        icon: Network,
+        tint: 'purple'
+      },
+      {
+        title: 'Dampak Sosial',
+        desc: 'Menggunakan teknologi untuk memberikan solusi atas permasalahan masyarakat sambil menjaga nilai-nilai keislaman.',
+        icon: Users,
+        tint: 'rose'
+      },
+      {
+        title: 'Fasilitas Modern',
+        desc: 'Menyediakan infrastruktur laboratorium dan digital yang mendukung riset berbasis data serta praktik rekayasa perangkat lunak.',
+        icon: LaptopMinimal,
+        tint: 'indigo'
+      }
+    ];
 ---
 
-<section data-aos="fade-up" class="max-w-6xl mx-auto p-6 md:p-12 bg-gray-50 rounded-3xl my-12 border border-gray-200">
-    <div class="text-center mb-12">
-        <h2 data-aos="fade-up" class="text-sm font-bold text-green-600 uppercase tracking-widest mb-2">Strategy & Action Plan</h2>
-        <h1 data-aos="fade-up" class="text-3xl md:text-5xl font-black text-gray-900 mb-4">
-            {isEn ? "Achievement Strategy" : "Strategi Pencapaian"}
-        </h1>
-        <p class="text-xl md:text-2xl font-semibold text-gray-700 max-w-2xl mx-auto leading-tight italic">
-            "Excellent and Competitive Graduates"
-        </p>
-    </div>
+<section data-aos="fade-up" class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+  <div class="mb-10 text-center">
+    <span class="mb-3 inline-flex items-center gap-2 rounded-full bg-secondary/15 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-900">
+      {isEn ? 'Strategy' : 'Strategi'}
+    </span>
+    <h2 class="text-3xl font-black text-gray-900 sm:text-4xl">
+      {isEn ? 'Achievement Strategy' : 'Strategi Pencapaian'}
+    </h2>
+    <p class="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-gray-600">
+      {isEn
+        ? 'The program implements several strategic pillars to strengthen academic quality, professional readiness, and the relevance of learning outcomes.'
+        : 'Program studi menjalankan beberapa pilar strategis untuk memperkuat mutu akademik, kesiapan profesional, dan relevansi capaian pembelajaran.'}
+    </p>
+  </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        
-        <div class="bg-white p-6 rounded-2xl shadow-sm border-b-4 border-green-500 hover:shadow-md transition-all group">
-            <div class="text-green-600 mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-            </div>
-            <h4 class="font-bold text-gray-900 mb-2">{isEn ? "OBE & MBKM Curriculum" : "Kurikulum OBE & MBKM"}</h4>
-            <p class="text-gray-600 text-sm leading-relaxed">{isEn ? 'Focused on ' : 'Fokus pada '}<strong>Data Analytics</strong>{isEn ? ' and ' : ' dan '}<strong>Software Development</strong>{isEn ? ' adaptive to future technology challenges.' : ' yang adaptif terhadap tantangan teknologi masa depan.'}</p>
+  <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+    {strategies.map((item) => {
+      const Icon = item.icon;
+      const tintMap = {
+        emerald: 'bg-emerald-100 text-emerald-700',
+        sky: 'bg-sky-100 text-sky-700',
+        amber: 'bg-amber-100 text-amber-700',
+        purple: 'bg-violet-100 text-violet-700',
+        rose: 'bg-rose-100 text-rose-700',
+        indigo: 'bg-indigo-100 text-indigo-700'
+      };
+
+      return (
+        <div class="group rounded-[26px] border border-gray-200 bg-white p-6 shadow-[0_20px_45px_-30px_rgba(15,23,42,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_20px_55px_-28px_rgba(0,61,42,0.35)]">
+          <div class={`mb-5 flex h-12 w-12 items-center justify-center rounded-2xl ${tintMap[item.tint]}`}>
+            <Icon class="h-5 w-5" />
+          </div>
+          <h3 class="mb-3 text-lg font-bold text-gray-900">{item.title}</h3>
+          <p class="text-sm leading-relaxed text-gray-600">{item.desc}</p>
         </div>
-
-        <div class="bg-white p-6 rounded-2xl shadow-sm border-b-4 border-blue-500 hover:shadow-md transition-all group">
-            <div class="text-blue-600 mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                </svg>
-            </div>
-            <h4 class="font-bold text-gray-900 mb-2">{isEn ? "Student Research" : "Riset Mahasiswa"}</h4>
-            <p class="text-gray-600 text-sm leading-relaxed">{isEn ? "Increasing the intensity and quality of student research in software development and data analysis." : "Meningkatkan intensitas dan kualitas penelitian mahasiswa di ranah pengembangan perangkat lunak dan analisis data."}</p>
-        </div>
-
-        <div class="bg-white p-6 rounded-2xl shadow-sm border-b-4 border-yellow-500 hover:shadow-md transition-all group">
-            <div class="text-yellow-500 mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-            </div>
-            <h4 class="font-bold text-gray-900 mb-2">{isEn ? "Lecturer Qualifications" : "Kualifikasi Dosen"}</h4>
-            <p class="text-gray-600 text-sm leading-relaxed">{isEn ? "Developing educator competencies to support cutting-edge learning and research innovation." : "Pengembangan kompetensi pendidik untuk mendukung pembelajaran dan inovasi penelitian yang mutakhir."}</p>
-        </div>
-
-        <div class="bg-white p-6 rounded-2xl shadow-sm border-b-4 border-purple-500 hover:shadow-md transition-all group">
-            <div class="text-purple-600 mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-            </div>
-            <h4 class="font-bold text-gray-900 mb-2">{isEn ? "Stakeholder Network" : "Jejaring Stakeholder"}</h4>
-            <p class="text-gray-600 text-sm leading-relaxed">{isEn ? "Strengthening collaboration with industry partners and stakeholders for curriculum relevance." : "Memperkuat kolaborasi dengan mitra industri dan pemangku kepentingan untuk relevansi kurikulum."}</p>
-        </div>
-
-        <div class="bg-white p-6 rounded-2xl shadow-sm border-b-4 border-red-500 hover:shadow-md transition-all group">
-            <div class="text-red-600 mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                </svg>
-            </div>
-            <h4 class="font-bold text-gray-900 mb-2">{isEn ? "Educational Cooperation" : "Kerjasama Pendidikan"}</h4>
-            <p class="text-gray-600 text-sm leading-relaxed">{isEn ? "Implementing Merdeka Belajar Kampus Merdeka (MBKM) through national & international strategic partnerships." : "Implementasi Merdeka Belajar Kampus Merdeka (MBKM) melalui kemitraan strategis nasional & internasional."}</p>
-        </div>
-
-        <div class="bg-white p-6 rounded-2xl shadow-sm border-b-4 border-indigo-500 hover:shadow-md transition-all group">
-            <div class="text-indigo-600 mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-            </div>
-            <h4 class="font-bold text-gray-900 mb-2">{isEn ? "Modern Lab Facilities" : "Fasilitas Lab Modern"}</h4>
-            <p class="text-gray-600 text-sm leading-relaxed">{isEn ? "Providing laboratory infrastructure that supports data research and software development." : "Penyediaan infrastruktur laboratorium yang mendukung riset data dan pengembangan perangkat lunak."}</p>
-        </div>
-
-    </div>
+      );
+    })}
+  </div>
 </section>

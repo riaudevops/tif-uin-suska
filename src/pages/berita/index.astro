@@ -1,256 +1,194 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
 
-const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
-const ASSET_URL = `${API_URL}/assets/`;
+const rawBaseUrl = (import.meta.env.BASE_API_URL || "http://localhost:8055").replace(/\/+$/, "");
+const API_BASE_URL = rawBaseUrl.endsWith("/items") ? rawBaseUrl : `${rawBaseUrl}/items`;
+const ASSET_URL = `${rawBaseUrl.replace(/\/items$/, "")}/assets/`;
 
 let posts = [];
 try {
-    const res = await fetch(
-        `${API_URL}/items/berita?fields=id,title,title_alias,images,publish_up,catid,created_by_alias,introtext&sort=-publish_up`,
-        { cache: "no-store" }
-    );
-    if (res.ok) {
-        const json = await res.json();
-        posts = json.data || [];
-    } else {
-        console.error("Gagal mengambil data dari API");
-    }
+  const res = await fetch(
+    `${API_BASE_URL}/berita?fields=id,title,slug,images,date_created,excerpt&sort=-date_created`,
+    { cache: "no-store" }
+  );
+
+  if (res.ok) {
+    const json = await res.json();
+    posts = json.data || [];
+  } else {
+    console.error("Gagal mengambil data berita");
+  }
 } catch (error) {
-    console.error("Terjadi kesalahan saat fetch data:", error);
+  console.error("Terjadi kesalahan saat fetch data berita:", error);
 }
 
-const categories = [
-    isEn ? "All" : "Semua",
-    ...new Set(
-        posts
-            .map((post: any) => post.catid)
-            .filter((catid: any) => catid !== null && catid !== undefined),
-    ),
-];
+const categories = [isEn ? "All" : "Semua"];
 ---
 
 <Layout title={isEn ? "News" : "Berita"}>
-    <nav class="max-w-7xl mx-auto px-6 sm:px-8 mt-32 text-sm">
-        <ol class="flex items-center flex-wrap gap-2 text-sm text-slate-500 py-3 border-b border-slate-100">
-            <li class="flex items-center">
-                <a href={localizePath('/', lang)} class="flex items-center hover:text-[#004d2c] transition-colors gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                    </svg>
-                    {t('nav.home')}
-                </a>
-            </li>
-            <li class="text-slate-300">/</li>
-            <li class="text-[#004d2c] font-bold italic">
-                {isEn ? 'News & Articles' : 'Berita & Informasi'}
-            </li>
-        </ol>
-    </nav>
+  <nav class="mx-auto mt-32 max-w-7xl px-4 text-sm sm:px-6 lg:px-8">
+    <ol class="flex flex-wrap items-center gap-2 border-b border-slate-200 py-3 text-sm text-slate-500">
+      <li class="flex items-center">
+        <a href={localizePath('/', lang)} class="flex items-center gap-1.5 transition-colors duration-200 hover:text-[#0b5c3d]">
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          {t('nav.home')}
+        </a>
+      </li>
+      <li class="text-slate-300">/</li>
+      <li class="font-semibold text-[#0b5c3d]">
+        {isEn ? 'News & Articles' : 'Berita & Informasi'}
+      </li>
+    </ol>
+  </nav>
 
-    <section data-aos="fade-up" class="py-10 bg-slate-50 min-h-screen">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            
-            <!-- Page Header -->
-            <div class="mb-12">
-                <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-slate-200/60">
-                    <div>
-                        <span class="px-4 py-1.5 bg-yellow-100 text-yellow-800 rounded-full text-xs font-bold uppercase tracking-widest inline-block mb-3">
-                            {isEn ? "Official Newsroom" : "Berita & Pengumuman"}
-                        </span>
-                        <h1 data-aos="fade-up" class="text-4xl md:text-5xl font-bold text-[#004d2c] tracking-tight uppercase leading-tight">
-                            {isEn ? 'News & ' : 'Berita '} <span class="text-yellow-500">{isEn ? 'Articles' : 'Informatika'}</span>
-                        </h1>
-                        <p class="text-slate-600 mt-2 max-w-2xl text-sm sm:text-base font-light">
-                            {isEn 
-                                ? 'Latest news, announcements, and information from the Informatics Engineering Study Program of UIN Suska Riau.'
-                                : 'Berita terkini, pengumuman resmi, dan artikel seputar kegiatan perkuliahan serta prestasi dari Program Studi Teknik Informatika.'
-                            }
-                        </p>
-                    </div>
-
-                    <!-- Category Filters -->
-                    <div class="flex flex-wrap gap-2" id="filter-container">
-                        {
-                            categories.map((cat: string) => (
-                                <button
-                                    data-category={cat}
-                                    class={`filter-btn px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-300 border shadow-sm ${
-                                        cat === (isEn ? "All" : "Semua")
-                                            ? "bg-[#004d2c] text-white border-[#004d2c] active-filter shadow-emerald-900/20"
-                                            : "bg-white text-slate-600 border-slate-200 hover:border-yellow-400 hover:text-[#004d2c]"
-                                    }`}
-                                >
-                                    {cat === (isEn ? "All" : "Semua") ? cat : `Kategori ${cat}`}
-                                </button>
-                            ))
-                        }
-                    </div>
-                </div>
-            </div>
-
-            <!-- News Grid -->
-            {
-                posts.length === 0 ? (
-                    <div class="text-center py-20 bg-white rounded-3xl border border-slate-200 shadow-sm">
-                        <p class="text-slate-500 font-medium">
-                            {isEn ? 'No news has been published at this time.' : 'Belum ada berita yang dipublikasikan saat ini.'}
-                        </p>
-                    </div>
-                ) : (
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="news-grid">
-                        {posts.map((post: any) => {
-                            const cleanExcerpt = (post.introtext || "").replace(/<[^>]+>/g, "").trim();
-                            const postUrl = localizePath(`/berita/${post.title_alias || post.id}`, lang);
-                            const formattedDate = post.publish_up
-                                ? new Date(post.publish_up).toLocaleDateString(lang === 'en' ? "en-US" : "id-ID", {
-                                      day: "numeric",
-                                      month: "short",
-                                      year: "numeric",
-                                  })
-                                : (isEn ? "Date N/A" : "Tanggal N/A");
-
-                            return (
-                                <a
-                                    href={postUrl}
-                                    class="news-item group flex flex-col bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-slate-200/80 cursor-pointer"
-                                    data-category={post.catid || "Uncategorized"}
-                                >
-                                    <!-- Image Thumbnail -->
-                                    <div class="relative h-56 bg-slate-900 overflow-hidden">
-                                        <img
-                                            src={
-                                                post.images
-                                                    ? `${ASSET_URL}${post.images.split('|')[0]}`
-                                                    : "/landing-pages/gedung.jpg"
-                                            }
-                                            loading="lazy"
-                                            decoding="async"
-                                            class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
-                                            alt={post.title}
-                                        />
-                                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
-                                        
-                                        <!-- Category Tag on Image -->
-                                        {post.catid && (
-                                            <div class="absolute top-4 left-4">
-                                                <span class="bg-black/40 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
-                                                    Kategori {post.catid}
-                                                </span>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <!-- Content -->
-                                    <div class="p-7 flex flex-col flex-grow bg-white">
-                                        <!-- Date & Author info -->
-                                        <div class="flex items-center gap-3 mb-3 text-slate-400 text-xs font-medium">
-                                            <div class="flex items-center gap-1.5 text-emerald-700 font-bold uppercase tracking-wider text-[11px]">
-                                                <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
-                                                {formattedDate}
-                                            </div>
-                                            {post.created_by_alias && (
-                                                <>
-                                                    <span class="text-slate-300">•</span>
-                                                    <span class="text-slate-500 text-xs truncate max-w-[120px]">
-                                                        {post.created_by_alias}
-                                                    </span>
-                                                </>
-                                            )}
-                                        </div>
-
-                                        <!-- Title -->
-                                        <h2 class="font-bold text-xl text-slate-900 group-hover:text-[#004d2c] transition-colors line-clamp-2 leading-snug mb-3">
-                                            {post.title}
-                                        </h2>
-
-                                        <!-- Excerpt -->
-                                        <p class="text-slate-600 text-sm line-clamp-3 leading-relaxed font-light mb-6">
-                                            {cleanExcerpt ? (cleanExcerpt.length > 110 ? `${cleanExcerpt.slice(0, 110)}...` : cleanExcerpt) : (isEn ? 'No description available.' : 'Tidak ada ringkasan isi berita.')}
-                                        </p>
-
-                                        <!-- Card Footer Link -->
-                                        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
-                                            <span class="text-xs font-bold text-[#004d2c] group-hover:text-amber-600 transition-colors uppercase tracking-wider">
-                                                {isEn ? 'Read Article' : 'Baca Selengkapnya'}
-                                            </span>
-                                            
-                                            <div class="w-9 h-9 rounded-full bg-emerald-50 text-[#004d2c] group-hover:bg-[#004d2c] group-hover:text-yellow-400 flex items-center justify-center transition-all duration-300 shadow-sm group-hover:translate-x-1">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            );
-                        })}
-                    </div>
-                )
-            }
+  <section class="min-h-screen bg-[#f6faf3] py-10 sm:py-14">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-10 overflow-hidden rounded-[30px] border border-[#dfeadf] bg-gradient-to-br from-[#003d2a] via-[#0b5c3d] to-[#d9b65d] p-6 shadow-[0_28px_80px_-32px_rgba(0,61,42,0.8)] sm:p-8 lg:p-10">
+        <div class="max-w-3xl">
+          <span class="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.24em] text-white/90">
+            {isEn ? 'Official Newsroom' : 'Berita & Pengumuman'}
+          </span>
+          <h1 class="mt-5 text-3xl font-black tracking-tight text-white sm:text-4xl lg:text-5xl">
+            {isEn ? 'News & ' : 'Berita '}<span class="text-[#f4d77d]">{isEn ? 'Articles' : 'Informatika'}</span>
+          </h1>
+          <p class="mt-4 max-w-xl text-base leading-relaxed text-emerald-50/90">
+            {isEn
+              ? 'Latest news, announcements, and information from the Informatics Engineering Study Program of UIN Suska Riau.'
+              : 'Berita terkini, pengumuman resmi, dan artikel seputar kegiatan perkuliahan serta prestasi dari Program Studi Teknik Informatika.'}
+          </p>
         </div>
-    </section>
+      </div>
+
+      <div class="mb-8 flex flex-wrap gap-2" id="filter-container">
+        {categories.map((cat) => (
+          <button
+            data-category={cat}
+            class={`filter-btn rounded-full border px-4 py-2 text-[10px] font-bold uppercase tracking-[0.18em] transition-all duration-200 ${
+              cat === (isEn ? 'All' : 'Semua')
+                ? 'border-[#0b5c3d] bg-[#0b5c3d] text-white shadow-[0_12px_30px_-18px_rgba(11,92,61,0.9)]'
+                : 'border-slate-200 bg-white text-slate-600 hover:border-[#cfe4d6] hover:text-[#0b5c3d]'
+            }`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      {posts.length === 0 ? (
+        <div class="rounded-[28px] border border-slate-200 bg-white px-6 py-16 text-center shadow-sm">
+          <p class="text-slate-500">
+            {isEn ? 'No news has been published at this time.' : 'Belum ada berita yang dipublikasikan saat ini.'}
+          </p>
+        </div>
+      ) : (
+        <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3" id="news-grid">
+          {posts.map((post: any) => {
+            const cleanExcerpt = (post.excerpt || '').replace(/<[^>]+>/g, '').trim();
+            const postUrl = localizePath(`/berita/${post.slug || post.id}`, lang);
+            const formattedDate = post.date_created
+              ? new Date(post.date_created).toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric'
+                })
+              : isEn ? 'Date unavailable' : 'Tanggal tidak tersedia';
+
+            return (
+              <a
+                href={postUrl}
+                class="news-item group flex h-full flex-col overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_18px_45px_-35px_rgba(15,23,42,0.45)] transition-all duration-300 hover:-translate-y-1 hover:border-[#cfe4d6] hover:shadow-[0_28px_60px_-35px_rgba(11,92,61,0.35)]"
+                data-category={post.category || (isEn ? 'All' : 'Semua')}
+              >
+                <div class="relative h-56 overflow-hidden bg-slate-100">
+                  <img
+                    src={post.images ? `${ASSET_URL}${post.images}` : '/landing-pages/gedung.jpg'}
+                    alt={post.title}
+                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent"></div>
+                  <span class="absolute left-4 top-4 rounded-full border border-white/25 bg-black/25 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.18em] text-white backdrop-blur-sm">
+                    {isEn ? 'News' : 'Berita'}
+                  </span>
+                </div>
+
+                <div class="flex flex-1 flex-col p-5 sm:p-6">
+                  <div class="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#8a6a1d]">
+                    <span class="inline-block h-2 w-2 rounded-full bg-[#d4a537]"></span>
+                    {formattedDate}
+                  </div>
+
+                  <h2 class="line-clamp-2 text-xl font-black leading-snug text-slate-900 group-hover:text-[#0b5c3d]">
+                    {post.title}
+                  </h2>
+
+                  <p class="mt-3 flex-1 text-sm leading-relaxed text-slate-600">
+                    {cleanExcerpt && cleanExcerpt.length > 120
+                      ? `${cleanExcerpt.slice(0, 120)}...`
+                      : (cleanExcerpt || (isEn ? 'No description available.' : 'Tidak ada ringkasan isi berita.'))}
+                  </p>
+
+                  <div class="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
+                    <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#0b5c3d]">
+                      {isEn ? 'Read article' : 'Baca selengkapnya'}
+                    </span>
+                    <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#edf8f1] text-lg text-[#0b5c3d] transition-all duration-200 group-hover:bg-[#0b5c3d] group-hover:text-[#f4d77d]">
+                      →
+                    </span>
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </section>
 </Layout>
 
 <script is:inline>
-    document.addEventListener("astro:page-load", initFilter);
-    document.addEventListener("DOMContentLoaded", initFilter);
+  document.addEventListener('astro:page-load', initFilter);
+  document.addEventListener('DOMContentLoaded', initFilter);
 
-    function initFilter() {
-        const buttons = document.querySelectorAll(".filter-btn");
-        const items = document.querySelectorAll(".news-item");
-        if (!buttons.length || !items.length) return;
+  function initFilter() {
+    const buttons = document.querySelectorAll('.filter-btn');
+    const items = document.querySelectorAll('.news-item');
+    if (!buttons.length || !items.length) return;
 
-        buttons.forEach((btn) => {
-            btn.replaceWith(btn.cloneNode(true));
+    buttons.forEach((btn) => {
+      btn.replaceWith(btn.cloneNode(true));
+    });
+
+    const newButtons = document.querySelectorAll('.filter-btn');
+    newButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const selected = btn.dataset.category?.trim();
+
+        newButtons.forEach((b) => {
+          b.classList.remove('border-[#0b5c3d]', 'bg-[#0b5c3d]', 'text-white');
+          b.classList.add('border-slate-200', 'bg-white', 'text-slate-600');
         });
-        const newButtons = document.querySelectorAll(".filter-btn");
 
-        newButtons.forEach((btn) => {
-            btn.addEventListener("click", () => {
-                const category = btn.dataset.category?.trim();
+        btn.classList.remove('border-slate-200', 'bg-white', 'text-slate-600');
+        btn.classList.add('border-[#0b5c3d]', 'bg-[#0b5c3d]', 'text-white');
 
-                newButtons.forEach((b) => {
-                    b.classList.remove(
-                        "bg-[#004d2c]",
-                        "text-white",
-                        "border-[#004d2c]",
-                        "active-filter",
-                    );
-                    b.classList.add(
-                        "bg-white",
-                        "text-slate-600",
-                        "border-slate-200",
-                    );
-                });
-
-                btn.classList.add(
-                    "bg-[#004d2c]",
-                    "text-white",
-                    "border-[#004d2c]",
-                    "active-filter",
-                );
-                btn.classList.remove(
-                    "bg-white",
-                    "text-slate-600",
-                    "border-slate-200",
-                );
-
-                items.forEach((item) => {
-                    const itemCat = item.dataset.category?.trim();
-                    if (category === "Semua" || category === "All" || itemCat === category) {
-                        item.style.display = "flex";
-                        item.style.opacity = "0";
-                        setTimeout(() => (item.style.opacity = "1"), 50);
-                    } else {
-                        item.style.display = "none";
-                    }
-                });
-            });
+        items.forEach((item) => {
+          const itemCat = item.dataset.category?.trim();
+          if (selected === 'Semua' || selected === 'All' || itemCat === selected) {
+            item.style.display = 'flex';
+            item.style.opacity = '0';
+            setTimeout(() => (item.style.opacity = '1'), 50);
+          } else {
+            item.style.display = 'none';
+          }
         });
-    }
+      });
+    });
+  }
 </script>

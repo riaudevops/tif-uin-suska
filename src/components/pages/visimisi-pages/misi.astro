@@ -1,37 +1,54 @@
 ---
 import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
+import { ArrowRight, BookOpen, Users } from '@lucide/astro';
+
 const lang = getLocaleFromUrl(Astro);
 const isEn = lang === 'en';
 ---
 
-<section data-aos="fade-up" class="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-xl border border-gray-100 my-10">
-    <div class="relative mb-8">
-        <h1 data-aos="fade-up" class="text-3xl md:text-4xl font-extrabold text-[#004d2c] tracking-tight pl-6 border-l-8 border-yellow-400">
-            Misi Keilmuan <span class="text-[#05673f] block text-2xl mt-1 uppercase tracking-widest">{isEn ? "Informatics Engineering Program" : "Prodi Teknik Informatika"}</span>
-        </h1>
-    </div>
-
-    <p class="text-gray-600 text-lg mb-8 leading-relaxed italic">
-        {isEn ? '"The Scientific Mission of the Informatics Engineering program is formulated as follows:"' : '"Adapun Misi Keilmuan Program Studi Teknik Informatika dirumuskan sebagai berikut:"'}
+<section data-aos="fade-up" class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+  <div class="mb-10 text-center">
+    <span class="mb-3 inline-flex items-center gap-2 rounded-full bg-secondary/15 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-900">
+      <BookOpen class="h-3.5 w-3.5 text-primary" />
+      {isEn ? 'Mission' : 'Misi'}
+    </span>
+    <h2 class="text-3xl font-black text-gray-900 sm:text-4xl">
+      {isEn ? 'Scientific Mission of the Study Program' : 'Misi Keilmuan Program Studi'}
+    </h2>
+    <p class="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-gray-600">
+      {isEn
+        ? 'The program formulates its mission to support academic excellence, societal contribution, and the integration of science and Islamic values.'
+        : 'Program studi merumuskan misi untuk mendukung keunggulan akademik, kontribusi sosial, serta integrasi ilmu pengetahuan dan nilai keislaman.'}
     </p>
+  </div>
 
-    <div class="space-y-4">
-        <div class="flex items-start p-5 bg-green-50 rounded-lg hover:bg-green-100 transition-colors duration-300 group">
-            <span class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-yellow-400 text-white rounded-full font-bold shadow-md group-hover:scale-110 transition-transform">
-                1
-            </span>
-            <p class="ml-4 text-gray-700 leading-relaxed pt-1">
-                {isEn ? 'Producing graduates who possess ' : 'Menghasilkan lulusan yang memiliki '}<span class="font-semibold text-gray-900">{isEn ? "knowledge and competencies" : "pengetahuan dan kompetensi"}</span>{isEn ? ' in the field of ' : ' di bidang '}<span class="text-[#004d2c] font-medium">Data Analytics</span>{isEn ? ' and ' : ' dan '}<span class="text-[#004d2c] font-medium">Software Development</span>{isEn ? ' to enhance graduate competitiveness at national and regional levels.' : ' dalam rangka peningkatan daya saing lulusan di tingkat nasional maupun regional.'}
-            </p>
-        </div>
+  <div class="grid gap-6 lg:grid-cols-2">
+    <div class="group rounded-[28px] border border-gray-200 bg-white p-6 shadow-[0_24px_60px_-35px_rgba(15,23,42,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_24px_55px_-30px_rgba(0,61,42,0.35)] sm:p-7">
+      <div class="mb-5 flex items-center justify-between">
+        <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-lg font-bold text-primary">01</span>
+        <ArrowRight class="h-5 w-5 text-gray-300 transition-colors duration-300 group-hover:text-primary" />
+      </div>
 
-        <div class="flex items-start p-5 bg-green-50 rounded-lg hover:bg-green-100 transition-colors duration-300 group">
-            <span class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-yellow-400 text-white rounded-full font-bold shadow-md group-hover:scale-110 transition-transform">
-                2
-            </span>
-            <p class="ml-4 text-gray-700 leading-relaxed pt-1">
-                {isEn ? 'Producing graduates who contribute to civilized society development by integrating ' : 'Menghasilkan lulusan yang berkontribusi dalam pembangunan masyarakat berkeadaban dengan mengintegrasikan '}<span class="font-semibold text-gray-900">{isEn ? "Informatics and Islamic values" : "Informatika dan nilai-nilai keIslaman"}</span>{isEn ? ' in the field of ' : ' di bidang '}<span class="text-[#004d2c] font-medium">Data Analytics</span>{isEn ? ' and ' : ' dan '}<span class="text-[#004d2c] font-medium">Software Development</span>.
-            </p>
-        </div>
+      <h3 class="mb-3 text-xl font-bold text-gray-900">
+        {isEn ? 'Academic Excellence' : 'Keunggulan Akademik'}
+      </h3>
+      <p class="text-base leading-relaxed text-gray-600">
+        {isEn ? 'Producing graduates with strong knowledge and competence in Data Analytics and Software Development to strengthen competitiveness at national and regional levels.' : 'Menghasilkan lulusan yang memiliki pengetahuan dan kompetensi di bidang Data Analytics dan Software Development untuk meningkatkan daya saing di tingkat nasional maupun regional.'}
+      </p>
     </div>
+
+    <div class="group rounded-[28px] border border-gray-200 bg-white p-6 shadow-[0_24px_60px_-35px_rgba(15,23,42,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_24px_55px_-30px_rgba(0,61,42,0.35)] sm:p-7">
+      <div class="mb-5 flex items-center justify-between">
+        <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary/15 text-lg font-bold text-gray-900">02</span>
+        <Users class="h-5 w-5 text-gray-300 transition-colors duration-300 group-hover:text-primary" />
+      </div>
+
+      <h3 class="mb-3 text-xl font-bold text-gray-900">
+        {isEn ? 'Societal Contribution' : 'Kontribusi Sosial'}
+      </h3>
+      <p class="text-base leading-relaxed text-gray-600">
+        {isEn ? 'Developing graduates who contribute to a civilized society by integrating Informatics and Islamic values in the application of science and technology.' : 'Menghasilkan lulusan yang berkontribusi dalam pembangunan masyarakat berkeadaban dengan mengintegrasikan Informatika dan nilai-nilai keislaman dalam penerapan ilmu dan teknologi.'}
+      </p>
+    </div>
+  </div>
 </section>

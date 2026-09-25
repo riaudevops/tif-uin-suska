@@ -183,194 +183,162 @@ const fallbackAnnouncements: TugasAkhirItem[] = isEn ? [
 const displayItems = items.length > 0 ? items : fallbackAnnouncements;
 ---
 
-<div class="font-sans bg-slate-50/60 min-h-screen">
-  
-  {/* Breadcrumb Navigation */}
-  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 pb-4 text-sm">
-    <ol class="flex items-center flex-wrap gap-2 text-sm text-slate-500 py-3 border-b border-slate-100">
+<div class="min-h-screen bg-[#f5f8f4] text-slate-800">
+  <nav class="mx-auto max-w-7xl px-4 pb-4 pt-28 text-sm sm:px-6 lg:px-8 sm:pt-32" aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-2 border-b border-slate-200 py-3 text-sm text-slate-500">
       <li class="flex items-center">
-        <a href={localizePath('/', lang)} class="flex items-center hover:text-emerald-700 transition-colors">
-          <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <a href={localizePath('/', lang)} class="flex items-center gap-1.5 transition-colors duration-200 hover:text-[#0b5c3d]">
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
           </svg>
-          {t("bread.home")}
+          {t('bread.home')}
         </a>
       </li>
       <li class="text-slate-300">/</li>
       <li>
-        <a href={localizePath('/profil', lang)} class="hover:text-emerald-700 transition-colors">
-          {t("bread.profil")}
+        <a href={localizePath('/profil', lang)} class="transition-colors duration-200 hover:text-[#0b5c3d]">
+          {t('bread.profil')}
         </a>
       </li>
       <li class="text-slate-300">/</li>
-      <li class="text-emerald-700 font-bold tracking-tight">
-        {t("bread.ta")}
+      <li class="font-semibold text-[#0b5c3d]">
+        {t('bread.ta')}
       </li>
     </ol>
   </nav>
 
-  {/* Hero Header Section */}
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-2">
-    <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-[#003820] to-emerald-900 text-white p-8 sm:p-12 lg:p-16 shadow-2xl">
-      {/* Background Lighting Effects */}
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(52,211,153,0.25),transparent_50%)]"></div>
-      <div class="absolute -left-16 -bottom-16 w-80 h-80 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
+  <section class="mx-auto max-w-7xl px-4 pb-8 pt-2 sm:px-6 lg:px-8">
+    <div class="relative overflow-hidden rounded-[30px] bg-gradient-to-br from-[#053d2d] via-[#0b5c3d] to-[#d8b65b] p-6 text-white shadow-[0_30px_80px_-35px_rgba(4,61,45,0.8)] sm:p-8 lg:p-10">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(244,215,125,0.16),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.08),transparent_30%)]"></div>
+      <div class="absolute -bottom-10 -left-10 h-52 w-52 rounded-full bg-white/5 blur-3xl"></div>
 
-      <div class="relative z-10 max-w-3xl">
-        <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-200 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
-          <GraduationCap class="w-4 h-4 text-emerald-300" />
-          {isEn ? 'Curriculum & Final Milestone' : 'Kurikulum & Kelulusan Mahasiswa'}
-        </span>
+      <div class="relative z-10 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+        <div>
+          <span class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-50">
+            <GraduationCap class="h-4 w-4 text-[#f4d77d]" />
+            {isEn ? 'Curriculum & Final Milestone' : 'Kurikulum & Kelulusan Mahasiswa'}
+          </span>
 
-        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight mb-6">
-          {isEn ? 'Final Project & Thesis Portal' : 'Info Tugas Akhir (TA)'}
-        </h1>
+          <h1 class="mt-5 text-3xl font-black tracking-tight text-white sm:text-4xl lg:text-5xl">
+            {isEn ? 'Final Project' : 'Tugas Akhir'} <span class="text-[#f4d77d]">{isEn ? 'Portal' : 'Program Studi'}</span>
+          </h1>
 
-        <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-8">
-          {isEn
-            ? 'Information center, thesis writing guidelines, proposal seminar procedures, munaqasyah defense schedules, and research repositories.'
-            : 'Pusat panduan penyusunan skripsi/tugas akhir, alur pengajuan proposal, seminar hasil, sidang munaqasyah, serta repositori topik penelitian Teknik Informatika.'}
-        </p>
+          <p class="mt-4 max-w-xl text-base leading-relaxed text-emerald-50/90">
+            {isEn
+              ? 'Information on thesis procedures, proposal defense stages, final assignment requirements, and academic schedules for students.'
+              : 'Informasi mengenai prosedur tugas akhir, tahap seminar proposal, persyaratan sidang akhir, dan jadwal akademik mahasiswa.'}
+          </p>
+        </div>
 
-        {/* Quick Program Stats Strip */}
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-white/10 text-center sm:text-left">
-          <div>
-            <span class="block text-2xl sm:text-3xl font-black text-emerald-400">6 SKS</span>
-            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Course Credits' : 'Bobot SKS'}</span>
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-2">
+          <div class="rounded-[22px] border border-white/15 bg-white/8 p-4 backdrop-blur-sm">
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100/80">{isEn ? 'Credits' : 'Bobot'}</p>
+            <p class="mt-3 text-2xl font-black text-white">6 SKS</p>
           </div>
-          <div>
-            <span class="block text-2xl sm:text-3xl font-black text-emerald-400">5 Bidang</span>
-            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Research Clusters' : 'Rumpun Riset'}</span>
+          <div class="rounded-[22px] border border-white/15 bg-white/8 p-4 backdrop-blur-sm">
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100/80">{isEn ? 'Advisors' : 'Pembimbing'}</p>
+            <p class="mt-3 text-2xl font-black text-white">2 Dosen</p>
           </div>
-          <div>
-            <span class="block text-2xl sm:text-3xl font-black text-emerald-400">2 Dosen</span>
-            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Faculty Advisors' : 'Dosen Pembimbing'}</span>
+          <div class="rounded-[22px] border border-white/15 bg-white/8 p-4 backdrop-blur-sm">
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100/80">{isEn ? 'Research' : 'Riset'}</p>
+            <p class="mt-3 text-2xl font-black text-white">5 Bidang</p>
           </div>
-          <div>
-            <span class="block text-2xl sm:text-3xl font-black text-emerald-400">CoreIT</span>
-            <span class="text-xs text-slate-300 font-medium">{isEn ? 'Journal Target' : 'Publikasi Ilmiah'}</span>
+          <div class="rounded-[22px] border border-[#f4d77d]/30 bg-[#f4d77d]/10 p-4 backdrop-blur-sm">
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#fce9a0]">{isEn ? 'Publication' : 'Publikasi'}</p>
+            <p class="mt-3 text-2xl font-black text-white">CoreIT</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  {/* Milestone & Workflow Section */}
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <div class="text-center max-w-2xl mx-auto mb-12">
-      <span class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider inline-block mb-3">
-        {isEn ? 'Milestone Steps' : 'Tahapan Skripsi'}
-      </span>
-      <h2 class="text-2xl sm:text-3xl font-black text-slate-900">
-        {isEn ? 'Final Project Completion Stages' : 'Tahapan Prosedur Tugas Akhir'}
+  <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+    <div class="mb-8 text-center">
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#0b5c3d]">{isEn ? 'Milestone' : 'Tahapan'}</p>
+      <h2 class="mt-2 text-2xl font-black text-slate-900 sm:text-3xl">
+        {isEn ? 'Final Project Completion Stages' : 'Tahapan Proses Tugas Akhir'}
       </h2>
-      <p class="text-slate-500 text-sm mt-2">
-        {isEn ? '4 key milestones from topic proposal to munaqasyah defense.' : '4 langkah utama pelaksanaan tugas akhir dari pengajuan proposal hingga sidang kelulusan.'}
+      <p class="mt-3 text-sm text-slate-600">
+        {isEn ? 'Four key stages from proposal to final defense.' : 'Empat tahap utama dari pengajuan proposal hingga sidang akhir.'}
       </p>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
       {milestoneSteps.map((item) => {
         const IconComponent = item.icon;
+
         return (
-          <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:border-emerald-200 transition-all duration-300 relative group flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between mb-6">
-                <div class="w-12 h-12 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
-                  <IconComponent class="w-6 h-6" />
-                </div>
-                <span class="text-2xl font-black text-slate-200 group-hover:text-emerald-300 transition-colors">
-                  {item.step}
-                </span>
+          <article class="rounded-[26px] border border-slate-200 bg-white p-5 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.25)] transition-all duration-200 hover:-translate-y-1 hover:border-[#dfeadf] hover:shadow-[0_20px_60px_-30px_rgba(11,92,61,0.45)]">
+            <div class="mb-5 flex items-center justify-between">
+              <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#edf5ee] text-[#0b5c3d]">
+                <IconComponent class="h-6 w-6" />
               </div>
-              <h3 class="font-bold text-slate-900 text-lg mb-2 group-hover:text-emerald-700 transition-colors">
-                {item.title}
-              </h3>
-              <p class="text-slate-500 text-xs sm:text-sm leading-relaxed">
-                {item.desc}
-              </p>
+              <span class="text-2xl font-black text-slate-200">{item.step}</span>
             </div>
-          </div>
+
+            <h3 class="text-lg font-black text-slate-900">{item.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-slate-600">{item.desc}</p>
+          </article>
         );
       })}
     </div>
   </section>
 
-  {/* Main Announcements Grid Section */}
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+  <section class="mx-auto max-w-7xl px-4 pb-20 pt-4 sm:px-6 lg:px-8">
+    <div class="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider inline-block mb-2">
-          {isEn ? 'Announcements & Schedules' : 'Pengumuman & Jadwal Sidang'}
-        </span>
-        <h2 class="text-2xl sm:text-3xl font-black text-slate-900">
-          {isEn ? 'Latest Final Project Information' : 'Informasi & Pengumuman TA'}
+        <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#0b5c3d]">{isEn ? 'Announcements' : 'Pengumuman'}</p>
+        <h2 class="mt-2 text-2xl font-black text-slate-900 sm:text-3xl">
+          {isEn ? 'Latest Final Project Information' : 'Informasi Tugas Akhir Terbaru'}
         </h2>
       </div>
-      <p class="text-slate-500 text-sm max-w-sm">
-        {isEn ? 'Stay updated with sempro schedules, munaqasyah rosters, and journal requirements.' : 'Informasi terkini pendaftaran seminar proposal, sidang munaqasyah, dan publikasi.'}
+      <p class="max-w-md text-sm text-slate-600">
+        {isEn ? 'Updated schedules, proposal regulations, and final defense information.' : 'Jadwal terupdate, panduan proposal, dan informasi sidang akhir mahasiswa.'}
       </p>
     </div>
 
     {displayItems.length === 0 ? (
-      <div class="text-center py-16 bg-white rounded-3xl border border-slate-100 shadow-sm">
-        <p class="text-slate-500 text-base mb-2">
-          {isEn ? 'No final project announcements available yet.' : 'Belum ada konten Tugas Akhir.'}
-        </p>
-        <p class="text-xs text-slate-400 max-w-md mx-auto">
-          {isEn ? 'Add entries to the `tugas_akhir` collection in Directus.' : 'Tambahkan entri baru ke koleksi `tugas_akhir` pada CMS Directus.'}
-        </p>
+      <div class="rounded-[28px] border border-slate-200 bg-white py-16 text-center shadow-[0_18px_45px_-30px_rgba(15,23,42,0.25)]">
+        <p class="text-base text-slate-600">{isEn ? 'No final project announcements available yet.' : 'Belum ada konten Tugas Akhir.'}</p>
       </div>
     ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {displayItems.map((item) => (
-          <article class="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
-            <div>
-              {/* Thumbnail Image */}
-              <div class="relative w-full h-48 bg-slate-100 overflow-hidden">
-                <img 
-                  src={item.thumbnail || '/landing-pages/gedung-faste.jpg'} 
-                  alt={item.title} 
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                  onError="this.onerror=null; this.src='/landing-pages/gedung-faste.jpg';"
-                />
-                <span class="absolute top-4 left-4 px-3 py-1 bg-slate-900/80 backdrop-blur-md text-emerald-300 text-xs font-bold rounded-full border border-emerald-500/30">
-                  {item.category || (isEn ? 'Info TA' : 'Info TA')}
-                </span>
-              </div>
-
-              {/* Card Body */}
-              <div class="p-6">
-                <div class="flex items-center gap-2 text-xs text-slate-400 mb-3">
-                  <Calendar class="w-3.5 h-3.5 text-emerald-600" />
-                  <span>{item.date || (isEn ? 'Recent Update' : 'Terbaru')}</span>
-                </div>
-
-                <h3 class="text-lg font-bold text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
-                  {item.title}
-                </h3>
-
-                <p class="text-slate-600 text-sm line-clamp-3 leading-relaxed mb-4">
-                  {item.excerpt || (isEn ? 'Click details to view the complete announcement.' : 'Klik selengkapnya untuk membaca pengumuman dan persyaratannya.')}
-                </p>
-              </div>
+          <article class="group flex min-h-full flex-col overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_18px_45px_-32px_rgba(15,23,42,0.25)] transition-all duration-200 hover:-translate-y-1 hover:border-[#dfeadf] hover:shadow-[0_26px_70px_-36px_rgba(11,92,61,0.45)]">
+            <div class="relative h-52 overflow-hidden bg-slate-100">
+              <img
+                src={item.thumbnail || '/landing-pages/gedung-faste.jpg'}
+                alt={item.title}
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                onError="this.onerror=null; this.src='/landing-pages/gedung-faste.jpg';"
+              />
+              <span class="absolute left-4 top-4 rounded-full border border-emerald-500/30 bg-slate-900/80 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#dff7db]">
+                {item.category || 'TA'}
+              </span>
             </div>
 
-            {/* Footer Action */}
-            <div class="px-6 pb-6 pt-2 border-t border-slate-100 flex items-center justify-between">
-              <a 
-                href={localizePath(`/tugas-akhir/${item.slug}`, lang)} 
-                class="inline-flex items-center gap-1.5 text-sm font-bold text-emerald-700 hover:text-emerald-800 group-hover:translate-x-1 transition-transform"
+            <div class="flex flex-1 flex-col p-5">
+              <div class="mb-3 flex items-center gap-2 text-[11px] font-medium text-slate-500">
+                <Calendar class="h-3.5 w-3.5 text-[#0b5c3d]" />
+                <span>{item.date || (isEn ? 'Recent Update' : 'Terbaru')}</span>
+              </div>
+
+              <h3 class="text-lg font-black leading-snug text-slate-900">{item.title}</h3>
+              <p class="mt-3 flex-1 text-sm leading-relaxed text-slate-600">
+                {item.excerpt || (isEn ? 'View the complete details to read the full announcement.' : 'Baca selengkapnya untuk melihat informasi dan persyaratan lengkap.')}
+              </p>
+
+              <a
+                href={localizePath(`/tugas-akhir/${item.slug}`, lang)}
+                class="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#0b5c3d] transition-colors duration-200 hover:text-[#083f2d]"
               >
-                {t("common.detail")}
-                <ArrowRight class="w-4 h-4" />
+                {t('common.detail')}
+                <ArrowRight class="h-4 w-4" />
               </a>
             </div>
           </article>
         ))}
       </div>
     )}
-
   </section>
-
 </div>
