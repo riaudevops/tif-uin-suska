@@ -6,11 +6,11 @@ const isEn = lang === 'en';
 ---
 
 <section class="relative">
-  <div class="relative overflow-hidden shadow-2xl">
+  <div class="relative overflow-hidden shadow-[0_30px_70px_-40px_rgba(0,61,42,0.7)]">
 
     <!-- BACKGROUND -->
-    <div class="absolute inset-0 bg-gradient-to-br from-green-900 via-emerald-800 to-green-700"></div>
-    <div class="absolute inset-0 bg-[url('/landing-pages/gedung.jpg')] bg-cover bg-center opacity-15"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-[#0a3d2e] via-[#0f5d44] to-[#1b7255]"></div>
+    <div class="absolute inset-0 bg-[url('/landing-pages/gedung.jpg')] bg-cover bg-center opacity-12"></div>
 
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 py-10 sm:py-14 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
 
@@ -56,12 +56,12 @@ const isEn = lang === 'en';
 
         <p class="text-white-400 leading-relaxed mt-2 text-sm opacity-90">
           {isEn 
-            ? "The Informatics Engineering Study Program of UIN Sultan Syarif Kasim Riau integrates information technology sciences with Islamic values. Our focus is to produce graduates who are academically excellent, adaptive to technological developments, ethical, and possessing integrity."
-            : "Program Studi Teknik Informatika UIN Sultan Syarif Kasim Riau mengintegrasikan keilmuan teknologi informasi dengan nilai-nilai keislaman. Fokus kami adalah mencetak lulusan yang unggul secara akademik, adaptif terhadap perkembangan teknologi, serta beretika dan berintegritas."
+            ? "The Informatics Engineering Study Program at UIN Sultan Syarif Kasim Riau combines information technology and Islamic values to prepare graduates with strong academic foundations, professional readiness, and ethical awareness."
+            : "Program Studi Teknik Informatika UIN Sultan Syarif Kasim Riau menggabungkan teknologi informasi dengan nilai keislaman untuk mempersiapkan lulusan yang memiliki fondasi akademik kuat, kesiapan profesional, dan kesadaran etis."
           }
         </p>
-        <button class="mt-6 px-6 py-3 bg-yellow-400 text-green-900 font-semibold rounded-full shadow-lg shadow-yellow-900/30 hover:bg-yellow-500 hover:shadow-xl hover:shadow-yellow-900/40 transition-all duration-300">
-          {isEn ? "Learn More" : "Selengkapnya"}
+        <button class="mt-6 inline-flex items-center justify-center rounded-lg bg-[#f3c75d] px-5 py-2.5 text-sm font-semibold text-[#0d3c2f] shadow-[0_12px_25px_-18px_rgba(243,199,93,0.9)] transition hover:bg-[#e9b94d]">
+          {isEn ? "View Details" : "Selengkapnya"}
         </button>
       </div>
 
@@ -109,7 +109,7 @@ const isEn = lang === 'en';
       </div>
  
  
-      <div data-aos="fade-up" data-aos-delay="100" class="flex flex-col">
+      <div data-aos="fade-up" class="flex flex-col">
         <div class="mb-8">
           <h3 class="text-2xl font-black text-yellow-400 uppercase tracking-tight flex items-center gap-3">
             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
@@ -132,7 +132,7 @@ const isEn = lang === 'en';
           
           <a href="https://dashboard-hima.tif.uin-suska.ac.id/" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
             <h4 class="font-bold text-white mb-2 text-lg">Dashboard HIMATIF</h4>
-            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1"></p>
+            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{isEn ? "HIMATIF student portal and management services." : "Sistem layanan ketiga untuk mahasiswa Teknik Informatika."}</p>
           </a>
  
           <a href="https://play.google.com/store/apps/details?id=uinsuska.tif.dashboard.student&pcampaignid=web_share" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
@@ -146,7 +146,7 @@ const isEn = lang === 'en';
           </a>
  
           <div class="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-gradient-to-r from-yellow-50 to-amber-100 border border-amber-200 shadow-sm">
-            <div class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></div>
+            <div class="w-2.5 h-2.5 rounded-lg bg-amber-500 animate-pulse"></div>
             <span class="text-sm font-semibold text-amber-800 tracking-wide">
               {isEn ? "IntegraTIF App Coming Soon for iOS" : "Coming Soon APK IntegraTIF Versi iOS"}
             </span>
