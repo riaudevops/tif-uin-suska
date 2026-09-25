@@ -1,66 +1,88 @@
 ---
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+import {
+  Home,
+  ChevronRight,
+  GraduationCap,
+  BookOpenText,
+  Users,
+  Sparkles
+} from '@lucide/astro';
+
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
+
+const highlights = [
+  { icon: GraduationCap, label: 'Academic Guidance' },
+  { icon: BookOpenText, label: 'Teaching Excellence' },
+  { icon: Users, label: 'Student Mentoring' }
+];
 ---
 
-<nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
-    <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100">
-        <li class="flex items-center">
-            <a href={localizePath("/", lang)} class="flex items-center hover:text-green-600 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                {t("bread.home")}
-            </a>
-        </li>
-        <li class="text-gray-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-        </li>
-        <li>
-            <a href={localizePath("/profil", lang)} class="hover:text-green-600 transition-colors">
-                {t("bread.profil")}
-            </a>
-        </li>
-        <li class="text-gray-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-        </li>
-        <li class="text-green-700 font-bold tracking-tight">
-            {t("bread.dosen")}
-        </li>
-    </ol>
+<nav class="max-w-7xl mx-auto px-4 pt-32 text-sm sm:px-6 lg:px-8" aria-label="Breadcrumb">
+  <ol class="flex items-center flex-wrap gap-2 border-b border-gray-100 py-3 text-sm text-gray-500">
+    <li class="flex items-center">
+      <a href={localizePath('/', lang)} class="flex items-center gap-1.5 transition-colors duration-200 hover:text-primary">
+        <Home class="h-4 w-4 text-gray-400" />
+        <span>{t('bread.home')}</span>
+      </a>
+    </li>
+    <li class="text-gray-300">
+      <ChevronRight class="h-4 w-4" />
+    </li>
+    <li>
+      <a href={localizePath('/profil', lang)} class="transition-colors duration-200 hover:text-primary">
+        {t('bread.profil')}
+      </a>
+    </li>
+    <li class="text-gray-300">
+      <ChevronRight class="h-4 w-4" />
+    </li>
+    <li class="font-semibold text-primary">
+      {t('bread.dosen')}
+    </li>
+  </ol>
 </nav>
 
-<section data-aos="fade-up" class="bg-gradient-to-b from-gray-50 to-white py-6 overflow-hidden">
-  <div class="container mx-auto px-6">
-    <div class="max-w-4xl mx-auto text-center">
-      
-      <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">
-        {t("page.dosen.badge")}
-      </span>
+<section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+  <div class="relative overflow-hidden rounded-[30px] bg-gradient-to-br from-[#003d2a] via-[#0b5c3d] to-[#f3efe4] p-7 shadow-[0_28px_90px_-35px_rgba(0,61,42,0.85)] sm:p-9 lg:p-12">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(246,176,0,0.18),_transparent_25%),radial-gradient(circle_at_bottom_left,_rgba(255,255,255,0.14),_transparent_35%)]"></div>
 
-      <h1 data-aos="fade-up" class="text-4xl md:text-5xl font-black text-green-900 mb-8 leading-tight">
-        {t("page.dosen.title")}
-      </h1>
-      
-      <p class="text-lg text-gray-600 mb-12 leading-relaxed">
-        {t("page.dosen.desc")}
-      </p>
+    <div class="relative z-10 grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+      <div>
+        <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
+          <Sparkles class="h-3.5 w-3.5 text-secondary" />
+          {t('page.dosen.badge')}
+        </span>
 
-      <div class="relative group">
-        <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-emerald-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-        
-        <img 
-          src="/dosen-pages/dosen.jpg" 
-          alt="Dosen Teknik Informatika" 
-          class="relative mx-auto rounded-2xl shadow-2xl max-h-[500px] w-full object-cover transform transition-all duration-500 group-hover:scale-[1.01]"
-        />
+        <h1 class="mt-5 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+          {t('page.dosen.title')}
+        </h1>
+
+        <p class="mt-5 max-w-xl text-base leading-relaxed text-gray-100 sm:text-lg">
+          {t('page.dosen.desc')}
+        </p>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          {highlights.map(({ icon: Icon, label }) => (
+            <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium text-white/90">
+              <Icon class="h-3.5 w-3.5 text-secondary" />
+              {label}
+            </span>
+          ))}
+        </div>
       </div>
 
+      <div class="relative">
+        <div class="absolute -inset-3 rounded-[28px] bg-secondary/20 blur-2xl"></div>
+        <div class="relative overflow-hidden rounded-[28px] border border-white/10 bg-white/10 p-3 shadow-[0_18px_45px_-26px_rgba(0,0,0,0.55)] backdrop-blur-sm">
+          <img
+            src="/dosen-pages/dosen2.jpg"
+            alt="Dosen Teknik Informatika"
+            class="h-[420px] w-full rounded-[22px] object-cover object-center shadow-[0_20px_40px_-25px_rgba(0,0,0,0.65)] sm:h-[490px]"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </section>

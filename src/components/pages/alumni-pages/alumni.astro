@@ -4,90 +4,81 @@ const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 ---
 
-<nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
-    <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100">
-        <li class="flex items-center">
-            <a href={localizePath("/", lang)} class="flex items-center hover:text-green-600 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                {t("bread.home")}
-            </a>
-        </li>
-        <li class="text-gray-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-        </li>
-        <li class="text-green-700 font-bold tracking-tight">
-            Alumni
-        </li>
-    </ol>
+<nav class="mx-auto mt-32 max-w-7xl px-4 text-sm sm:px-6 lg:px-8">
+  <ol class="flex flex-wrap items-center gap-2 border-b border-slate-200 py-3 text-sm text-slate-500">
+    <li class="flex items-center">
+      <a href={localizePath("/", lang)} class="flex items-center gap-1.5 transition-colors duration-200 hover:text-[#0b5c3d]">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+        {t("bread.home")}
+      </a>
+    </li>
+    <li class="text-slate-300">/</li>
+    <li class="font-semibold text-[#0b5c3d]">Alumni</li>
+  </ol>
 </nav>
 
-<section data-aos="fade-up" class="max-w-7xl mx-auto px-5 md:px-8 mt-6 md:mt-10">
-  <div class="grid lg:grid-cols-5 rounded-3xl overflow-hidden border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-
-    <!-- Kolom teks -->
-    <div class="lg:col-span-3 bg-white px-6 md:px-12 py-14 md:py-20 flex flex-col justify-center">
-      <span class="inline-flex w-fit items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F0B429]/15 mb-6">
-        <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#B5820A]">
+<section class="mx-auto mt-6 max-w-7xl px-4 md:mt-10 md:px-8">
+  <div class="grid overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_22px_70px_-35px_rgba(15,23,42,0.35)] lg:grid-cols-5">
+    <div class="flex flex-col justify-center bg-white px-6 py-14 md:px-12 md:py-20 lg:col-span-3">
+      <span class="mb-6 inline-flex w-fit items-center gap-2 rounded-full bg-[#f1e9d4] px-3.5 py-1.5">
+        <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#8a6a1d]">
           Alumni Network
         </span>
       </span>
 
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#1C1B18] leading-[1.08] tracking-tight mb-6">
+      <h1 class="mb-6 text-4xl font-extrabold leading-[1.08] tracking-tight text-[#1c1b18] md:text-5xl lg:text-6xl">
         {t("page.alumni.title1")}
         <br />
-        <span class="text-[#0B6E4F]">{t("page.alumni.title2")}</span>
+        <span class="text-[#0b5c3d]">{t("page.alumni.title2")}</span>
       </h1>
 
-      <p class="text-slate-500 text-base md:text-lg leading-relaxed mb-10 max-w-lg">
+      <p class="mb-10 max-w-lg text-base leading-relaxed text-slate-600 md:text-lg">
         {t("page.alumni.desc")}
       </p>
 
-      <div class="flex flex-col sm:flex-row gap-3">
+      <div class="flex flex-col gap-3 sm:flex-row">
         <a
           href="#"
-          class="px-7 py-3.5 rounded-xl bg-[#0B6E4F] text-white font-bold text-sm text-center hover:bg-[#095c41] transition-colors shadow-lg shadow-[#0B6E4F]/20"
+          class="rounded-xl bg-[#0b5c3d] px-7 py-3.5 text-center text-sm font-bold text-white shadow-[0_18px_35px_-18px_rgba(11,92,61,0.6)] transition-colors hover:bg-[#084d35]"
         >
           {t("page.alumni.tracer")}
         </a>
         <a
           href="#"
-          class="px-7 py-3.5 rounded-xl bg-[#1D5FAE]/10 text-[#1D5FAE] font-bold text-sm text-center hover:bg-[#1D5FAE]/20 transition-colors"
+          class="rounded-xl bg-[#f3efe6] px-7 py-3.5 text-center text-sm font-bold text-[#8a6a1d] transition-colors hover:bg-[#efe7d3]"
         >
           {t("page.alumni.join")}
         </a>
       </div>
     </div>
 
-    <!-- Kolom ilustrasi jaringan -->
-    <div class="lg:col-span-2 relative bg-[#0B6E4F] min-h-[260px] lg:min-h-0 overflow-hidden">
-      <svg viewBox="0 0 320 400" class="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <line x1="60" y1="90" x2="150" y2="60" stroke="#F0B429" stroke-width="1.5" opacity="0.6"></line>
-        <line x1="150" y1="60" x2="250" y2="110" stroke="#F0B429" stroke-width="1.5" opacity="0.6"></line>
-        <line x1="150" y1="60" x2="130" y2="180" stroke="#ffffff" stroke-width="1.5" opacity="0.35"></line>
-        <line x1="250" y1="110" x2="230" y2="230" stroke="#ffffff" stroke-width="1.5" opacity="0.35"></line>
-        <line x1="130" y1="180" x2="230" y2="230" stroke="#1D5FAE" stroke-width="1.5" opacity="0.7"></line>
+    <div class="relative min-h-[260px] overflow-hidden bg-gradient-to-br from-[#003d2a] via-[#0b5c3d] to-[#d7b562] lg:col-span-2">
+      <svg viewBox="0 0 320 400" class="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <line x1="60" y1="90" x2="150" y2="60" stroke="#f7d67a" stroke-width="1.5" opacity="0.8"></line>
+        <line x1="150" y1="60" x2="250" y2="110" stroke="#f7d67a" stroke-width="1.5" opacity="0.8"></line>
+        <line x1="150" y1="60" x2="130" y2="180" stroke="#ffffff" stroke-width="1.5" opacity="0.4"></line>
+        <line x1="250" y1="110" x2="230" y2="230" stroke="#ffffff" stroke-width="1.5" opacity="0.4"></line>
+        <line x1="130" y1="180" x2="230" y2="230" stroke="#dfe9d5" stroke-width="1.5" opacity="0.8"></line>
         <line x1="130" y1="180" x2="70" y2="280" stroke="#ffffff" stroke-width="1.5" opacity="0.35"></line>
-        <line x1="230" y1="230" x2="270" y2="320" stroke="#F0B429" stroke-width="1.5" opacity="0.6"></line>
-        <line x1="70" y1="280" x2="180" y2="340" stroke="#1D5FAE" stroke-width="1.5" opacity="0.7"></line>
+        <line x1="230" y1="230" x2="270" y2="320" stroke="#f7d67a" stroke-width="1.5" opacity="0.8"></line>
+        <line x1="70" y1="280" x2="180" y2="340" stroke="#dfe9d5" stroke-width="1.5" opacity="0.8"></line>
         <line x1="180" y1="340" x2="270" y2="320" stroke="#ffffff" stroke-width="1.5" opacity="0.35"></line>
 
-        <circle cx="60" cy="90" r="6" fill="#F0B429"></circle>
+        <circle cx="60" cy="90" r="6" fill="#f7d67a"></circle>
         <circle cx="150" cy="60" r="9" fill="#ffffff"></circle>
-        <circle cx="250" cy="110" r="6" fill="#1D5FAE"></circle>
-        <circle cx="130" cy="180" r="11" fill="#F0B429"></circle>
+        <circle cx="250" cy="110" r="6" fill="#dfe9d5"></circle>
+        <circle cx="130" cy="180" r="11" fill="#f7d67a"></circle>
         <circle cx="230" cy="230" r="7" fill="#ffffff"></circle>
-        <circle cx="70" cy="280" r="6" fill="#1D5FAE"></circle>
+        <circle cx="70" cy="280" r="6" fill="#dfe9d5"></circle>
         <circle cx="270" cy="320" r="8" fill="#ffffff"></circle>
-        <circle cx="180" cy="340" r="6" fill="#F0B429"></circle>
+        <circle cx="180" cy="340" r="6" fill="#f7d67a"></circle>
       </svg>
 
-      <div class="absolute bottom-6 left-6 right-6 lg:right-auto bg-white/95 backdrop-blur-sm rounded-2xl px-5 py-4 shadow-lg">
-        <div class="text-2xl font-extrabold text-[#0B6E4F]">2,500+</div>
-        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Alumni Terhubung</div>
+      <div class="absolute bottom-6 left-6 right-6 rounded-[22px] border border-white/20 bg-white/95 p-5 shadow-[0_18px_45px_-25px_rgba(15,23,42,0.5)] backdrop-blur-sm lg:right-auto">
+        <div class="text-2xl font-extrabold text-[#0b5c3d]">2,500+</div>
+        <div class="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500">Alumni Terhubung</div>
       </div>
     </div>
   </div>
