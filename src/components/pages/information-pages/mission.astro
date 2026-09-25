@@ -4,33 +4,40 @@ const lang = getLocaleFromUrl(Astro);
 const isEn = lang === 'en';
 ---
 
-<section data-aos="fade-up" class="py-6 relative overflow-hidden max-w-7xl mx-auto px-6">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24">
-    <div class="group bg-white p-10 rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-fade-up delay-1">
-        <div class="w-14 h-14 bg-emerald-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-emerald-200 group-hover:rotate-6 transition-transform">
-            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-        </div>
-        <h3 class="text-xs font-bold text-amber-500 uppercase tracking-widest mb-2">Pilar 01</h3>
-        <h4 class="text-2xl font-bold text-slate-900 mb-4">{isEn ? "Efficiency" : "Efisiensi"}</h4>
-        <p class="text-slate-500 leading-relaxed">{isEn ? "Optimizing digital infrastructure to support fast and stable research computing processes." : "Optimalisasi infrastruktur digital untuk mendukung proses komputasi riset yang cepat dan stabil."}</p>
+<section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+  <div class="mb-6 text-center">
+    <p class="text-[10px] font-bold uppercase tracking-[0.28em] text-[#0b5c3d]">Pilar utama</p>
+    <h2 class="mt-3 text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
+      {isEn ? "Core Information Principles" : "Prinsip Utama Teknologi Informasi"}
+    </h2>
+  </div>
+
+  <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
+    <div class="group rounded-[28px] border border-[#dfeadf] bg-white p-7 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-[#a4c6b0] hover:shadow-[0_20px_55px_-30px_rgba(11,92,61,0.35)]">
+      <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#eaf5ec] text-[#0b5c3d]">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <h3 class="mt-6 text-xs font-bold uppercase tracking-[0.28em] text-[#b98c2d]">Pilar 01</h3>
+      <h4 class="mt-3 text-2xl font-bold text-slate-900">{isEn ? "Efficiency" : "Efisiensi"}</h4>
+      <p class="mt-3 text-base leading-relaxed text-slate-600">{isEn ? "Optimizing digital infrastructure to support fast and stable research computing processes." : "Optimalisasi infrastruktur digital untuk mendukung proses komputasi riset yang cepat dan stabil."}</p>
     </div>
 
-    <div class="group bg-slate-900 p-10 rounded-3xl border border-slate-800 shadow-xl hover:shadow-emerald-900/20 hover:-translate-y-2 transition-all duration-500 animate-fade-up delay-2">
-        <div class="w-14 h-14 bg-amber-400 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-amber-900/20 group-hover:-rotate-6 transition-transform">
-            <svg class="w-7 h-7 text-emerald-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-        </div>
-        <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-2">Pilar 02</h3>
-        <h4 class="text-2xl font-bold text-white mb-4">{isEn ? "Security" : "Keamanan"}</h4>
-        <p class="text-slate-400 leading-relaxed">{isEn ? "Implementing international-standard encryption protocols and sensitive data access management." : "Implementasi protokol enkripsi dan manajemen akses data sensitif berstandar internasional."}</p>
+    <div class="group rounded-[28px] border border-[#dfeadf] bg-[#f2f8f1] p-7 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-[#a4c6b0] hover:shadow-[0_20px_55px_-30px_rgba(11,92,61,0.35)]">
+      <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#eaf5ec] text-[#0b5c3d]">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+      </div>
+      <h3 class="mt-6 text-xs font-bold uppercase tracking-[0.28em] text-[#b98c2d]">Pilar 02</h3>
+      <h4 class="mt-3 text-2xl font-bold text-slate-900">{isEn ? "Security" : "Keamanan"}</h4>
+      <p class="mt-3 text-base leading-relaxed text-slate-600">{isEn ? "Implementing international-standard encryption protocols and sensitive data access management." : "Implementasi protokol enkripsi dan manajemen akses data sensitif berstandar internasional."}</p>
     </div>
 
-    <div class="group bg-white p-10 rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 animate-fade-up delay-3">
-        <div class="w-14 h-14 bg-emerald-950 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-slate-300 group-hover:rotate-6 transition-transform">
-            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-        </div>
-        <h3 class="text-xs font-bold text-amber-500 uppercase tracking-widest mb-2">Pilar 03</h3>
-        <h4 class="text-2xl font-bold text-slate-900 mb-4">{isEn ? "Accessibility" : "Aksesibilitas"}</h4>
-        <p class="text-slate-500 leading-relaxed">{isEn ? "Providing an inclusive digital collaboration platform for the entire academic community." : "Menyediakan platform kolaborasi digital yang inklusif bagi seluruh civitas akademika."}</p>
+    <div class="group rounded-[28px] border border-[#dfeadf] bg-white p-7 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-[#a4c6b0] hover:shadow-[0_20px_55px_-30px_rgba(11,92,61,0.35)]">
+      <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#f0ead9] text-[#a1781d]">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+      </div>
+      <h3 class="mt-6 text-xs font-bold uppercase tracking-[0.28em] text-[#b98c2d]">Pilar 03</h3>
+      <h4 class="mt-3 text-2xl font-bold text-slate-900">{isEn ? "Accessibility" : "Aksesibilitas"}</h4>
+      <p class="mt-3 text-base leading-relaxed text-slate-600">{isEn ? "Providing an inclusive digital collaboration platform for the entire academic community." : "Menyediakan platform kolaborasi digital yang inklusif bagi seluruh civitas akademika."}</p>
     </div>
-    </div>
+  </div>
 </section>
