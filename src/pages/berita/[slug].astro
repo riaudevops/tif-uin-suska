@@ -17,8 +17,18 @@ const isEn = lang === 'en';
 export const prerender = false;
 
 const { slug } = Astro.params;
-const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
-const ASSET_URL = `${API_URL}/assets/`;
+const rawBaseUrl = (import.meta.env.BASE_API_URL || "http://localhost:8055").replace(/\/+$/, "");
+const API_BASE_URL = rawBaseUrl.endsWith("/items") ? rawBaseUrl : `${rawBaseUrl}/items`;
+const ASSET_URL = `${rawBaseUrl.replace(/\/items$/, "")}/assets/`;
+
+const API_TOKEN = import.meta.env.DIRECTUS_TOKEN;
+const fetchOptions = {
+  cache: "no-store",
+  headers: {
+    "Content-Type": "application/json",
+    ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {})
+  }
+};
 
 let article = null;
 let related = [];
@@ -27,11 +37,12 @@ let parsedBody = "";
 try {
   const isId = /^\d+$/.test(slug || '');
   const filterParam = isId ? `filter[id][_eq]=${slug}` : `filter[slug][_eq]=${slug}`;
-  const queryFields = "fields=id,title,slug,excerpt,body,date_created,images,user_created";
+  // Menghapus tanda koma (,) berlebih di akhir fields
+  const queryFields = "fields=id,user_created,title,slug,date,modified,status,images,excerpt,body,featured_image";
 
   const [res, relatedRes] = await Promise.all([
-    fetch(`${API_URL}/items/berita?${filterParam}&${queryFields}`),
-    fetch(`${API_URL}/items/berita?${filterParam.replace('[_eq]', '[_neq]')}&limit=3&${queryFields}`)
+    fetch(`${API_BASE_URL}/berita?${filterParam}&${queryFields}`, fetchOptions),
+    fetch(`${API_BASE_URL}/berita?${filterParam.replace('[_eq]', '[_neq]')}&limit=3&${queryFields}`, fetchOptions)
   ]);
 
   if (!res.ok || !relatedRes.ok) {
@@ -55,8 +66,8 @@ if (!article) {
   return Astro.redirect("/404");
 }
 
-const formattedDate = article.date_created
-  ? new Date(article.date_created).toLocaleDateString(lang === 'en' ? "en-US" : "id-ID", {
+const formattedDate = article.date
+  ? new Date(article.date).toLocaleDateString(lang === 'en' ? "en-US" : "id-ID", {
       day: "numeric",
       month: "long",
       year: "numeric"
