@@ -1,5 +1,5 @@
 ---
-import { getLocaleFromUrl, useTranslations } from "../../../lib/translations";
+import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 
@@ -14,10 +14,10 @@ try {
     console.error("ERROR DIRECTUS:", JSON.stringify(errorDetails, null, 2));
     throw new Error(`Gagal (Status: ${response.status})`);
   }
-  
+
   const dataDirectus = await response.json();
   prestasiData = dataDirectus.data.map((item: any) => {
-    let year = '-';
+    let year = "-";
     if (item.waktu_penyelenggaraan) {
       if (!isNaN(item.waktu_penyelenggaraan)) {
         year = String(item.waktu_penyelenggaraan);
@@ -27,14 +27,14 @@ try {
       }
     }
 
-    const hasilPrestasi = item.prestasi && item.prestasi.trim() !== '' ? item.prestasi : '-';
+    const hasilPrestasi = item.prestasi && item.prestasi.trim() !== "" ? item.prestasi : "-";
 
     return {
-      kegiatan: item.nama_kegiatan || 'Tanpa Nama',
-      nama: item.mahasiswa || 'Anonim',
+      kegiatan: item.nama_kegiatan || "Tanpa Nama",
+      nama: item.mahasiswa || "Anonim",
       tahun: year,
-      tingkat: item.tingkat || 'Lokal',
-      prestasi: hasilPrestasi
+      tingkat: item.tingkat || "Lokal",
+      prestasi: hasilPrestasi,
     };
   });
 } catch (error) {
@@ -43,109 +43,141 @@ try {
 }
 
 const getPrestasiColor = (prestasi: string) => {
-  const p = (prestasi || '').toLowerCase();
-  
-  if (p.includes('juara 1') || p.includes('pertama') || p.includes('emas')) {
-    return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-  }
-  if (p.includes('juara 2') || p.includes('kedua') || p.includes('perak')) {
-    return 'bg-slate-100 text-slate-700 border-slate-300';
-  }
-  if (p.includes('juara 3') || p.includes('ketiga') || p.includes('perunggu')) {
-    return 'bg-orange-100 text-orange-700 border-orange-200';
-  }
-  return 'bg-blue-50 text-blue-600 border-blue-100';
-};
----
- 
-<section class="py-20 bg-slate-50 min-h-screen">
-    <div class="container mx-auto px-6">
-      
-      <div class="mb-12 text-center max-w-3xl mx-auto">
-        <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">
-            {t("page.prestasi.badge")}
-        </span>
-        <h1 class="text-3xl md:text-4xl font-black text-slate-800 mb-4 tracking-tight uppercase">
-          {t("page.prestasi.title")} <span class="text-[#004d2c]">Mahasiswa</span>
-        </h1>
-        <p class="text-slate-600 leading-relaxed">
-          {t("page.prestasi.desc")}
-        </p>
-      </div>
+  const p = (prestasi || "").toLowerCase();
 
-      <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/60 overflow-hidden border border-slate-100">
-              <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                  <thead>
-                    <tr class="bg-[#004d2c] text-white">
-                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider text-center w-16">{t("page.prestasi.th.no")}</th>
-                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">{t("page.prestasi.th.nama")}</th>
-                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">{t("page.prestasi.th.mhs")}</th>
-                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider text-center">{t("page.prestasi.th.tahun")}</th>
-                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">{t("page.prestasi.th.tingkat")}</th>
-                      <th class="py-5 px-6 font-bold uppercase text-[11px] tracking-wider">{t("page.prestasi.th.capai")}</th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-slate-100" id="prestasi-tbody">
-                    {prestasiData.length === 0 ? (
-                      <tr>
-                        <td colspan="6" class="py-10 text-center text-slate-400 font-medium text-sm">
-                          {t("page.prestasi.empty")}
-                        </td>
-                      </tr>
-                    ) : (
-                      prestasiData.map((item: any, index: number) => (
-                        <tr class={`prestasi-row hover:bg-green-50/50 transition-colors group ${index >= 15 ? 'hidden' : ''}`}>
-                          <td class="py-5 px-6 text-center text-slate-400 font-medium text-sm">{index + 1}</td>
-                          <td class="py-5 px-6">
-                            <p class="text-slate-800 font-bold text-sm leading-snug group-hover:text-[#004d2c] transition-colors">{item.kegiatan}</p>
-                          </td>
-                          <td class="py-5 px-6">
-                            <div class="flex items-center gap-3">
-                              <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500 border border-slate-200 uppercase">
-                                {item.nama.charAt(0)}
-                              </div>
-                              <span class="text-slate-600 text-sm font-medium">{item.nama}</span>
-                            </div>
-                          </td>
-                          <td class="py-5 px-6 text-center">
-                            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-medium uppercase">{item.tahun}</span>
-                          </td>
-                          <td class="py-5 px-6">
-                            <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[10px] font-bold uppercase tracking-wide">
-                              {item.tingkat}
-                            </span>
-                          </td>
-                          <td class="py-5 px-6">
-                            <span class={`px-4 py-1.5 rounded-full text-xs font-bold border ${getPrestasiColor(item.prestasi)}`}>
-                              {item.prestasi}
-                            </span>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-        
-        <div class="bg-slate-50/50 p-6 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p id="pagination-info" class="text-xs text-slate-400 font-medium font-mono uppercase tracking-tighter" data-text-show={t("page.prestasi.show")}>
-            {t("page.prestasi.show")}
-          </p>
-          <div class="flex gap-2">
-            <button id="btn-prev" class="px-4 py-2 text-xs font-bold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-[#004d2c] disabled:opacity-50 disabled:cursor-not-allowed transition-all">
-              &larr; {t("common.prev")}
-            </button>
-            <span id="page-number" class="px-4 py-2 text-xs font-bold text-[#004d2c] bg-green-50 border border-green-200 rounded-lg">
-              1
-            </span>
-            <button id="btn-next" class="px-4 py-2 text-xs font-bold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-[#004d2c] disabled:opacity-50 disabled:cursor-not-allowed transition-all">
-              {t("common.next")} &rarr;
-            </button>
-          </div>
+  if (p.includes("juara 1") || p.includes("pertama") || p.includes("emas")) {
+    return "bg-yellow-100 text-yellow-700 border-yellow-200";
+  }
+  if (p.includes("juara 2") || p.includes("kedua") || p.includes("perak")) {
+    return "bg-slate-100 text-slate-700 border-slate-300";
+  }
+  if (p.includes("juara 3") || p.includes("ketiga") || p.includes("perunggu")) {
+    return "bg-orange-100 text-orange-700 border-orange-200";
+  }
+  return "bg-[#edf4f7] text-[#1c4b66] border-[#dfeaf0]";
+};
+
+const totalRecords = prestasiData.length;
+const latestYear = prestasiData.length
+  ? Math.max(...prestasiData.map((item) => Number(item.tahun) || 0)).toString()
+  : "-";
+const topLevel = prestasiData.length
+  ? [...new Set(prestasiData.map((item) => item.tingkat))].slice(0, 2).join(" / ")
+  : "-";
+---
+
+<section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 md:py-12">
+  <div class="mb-6 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+    <div class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.25)] sm:p-7">
+      <p class="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-500">Daftar pencapaian</p>
+      <h2 class="mt-3 text-2xl font-black tracking-tight text-[#004d2c] sm:text-3xl">
+        {t("page.prestasi.title")}
+      </h2>
+      <p class="mt-3 max-w-xl text-sm leading-relaxed text-slate-600">
+        Rekapitulasi pencapaian mahasiswa dalam berbagai aktivitas akademik dan kompetisi yang telah didokumentasikan.
+      </p>
     </div>
+
+    <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+      <div class="rounded-[24px] border border-slate-200 bg-[#f8faf3] p-4 shadow-[0_16px_35px_-28px_rgba(15,23,42,0.25)]">
+        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">Total</p>
+        <p class="mt-3 text-2xl font-black text-[#003d2a]">{totalRecords}</p>
+      </div>
+      <div class="rounded-[24px] border border-slate-200 bg-[#f8faf3] p-4 shadow-[0_16px_35px_-28px_rgba(15,23,42,0.25)]">
+        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">Tahun</p>
+        <p class="mt-3 text-2xl font-black text-[#003d2a]">{latestYear}</p>
+      </div>
+      <div class="rounded-[24px] border border-slate-200 bg-[#f8faf3] p-4 shadow-[0_16px_35px_-28px_rgba(15,23,42,0.25)]">
+        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">Tingkat</p>
+        <p class="mt-3 text-xl font-black text-[#003d2a]">{topLevel}</p>
+      </div>
     </div>
+  </div>
+
+  <div class="overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_20px_60px_-35px_rgba(15,23,42,0.25)]">
+    <div class="flex flex-col gap-3 border-b border-slate-200 bg-[#f6faf2] px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <div class="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[#0b5c3d]">
+        <span class="inline-block h-2.5 w-2.5 rounded-full bg-[#0b5c3d]"></span>
+        {t("page.prestasi.title")}
+      </div>
+      <div class="inline-flex w-fit items-center rounded-full bg-[#edf4e8] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
+        {totalRecords} data
+      </div>
     </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full min-w-[860px] border-collapse text-left">
+        <thead>
+          <tr class="bg-[#003d2a] text-white">
+            <th class="w-16 px-5 py-4 text-center text-[10px] font-bold uppercase tracking-[0.2em]">{t("page.prestasi.th.no")}</th>
+            <th class="px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{t("page.prestasi.th.nama")}</th>
+            <th class="px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{t("page.prestasi.th.mhs")}</th>
+            <th class="px-5 py-4 text-center text-[10px] font-bold uppercase tracking-[0.2em]">{t("page.prestasi.th.tahun")}</th>
+            <th class="px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{t("page.prestasi.th.tingkat")}</th>
+            <th class="px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{t("page.prestasi.th.capai")}</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100" id="prestasi-tbody">
+          {prestasiData.length === 0 ? (
+            <tr>
+              <td colspan="6" class="py-12 text-center text-sm font-medium text-slate-400">
+                {t("page.prestasi.empty")}
+              </td>
+            </tr>
+          ) : (
+            prestasiData.map((item: any, index: number) => (
+              <tr class={`prestasi-row transition-colors hover:bg-[#f5f9f1] ${index >= 15 ? "hidden" : ""}`}>
+                <td class="px-5 py-5 text-center text-sm font-semibold text-slate-400">{index + 1}</td>
+                <td class="px-5 py-5">
+                  <p class="text-sm font-bold leading-snug text-slate-800">{item.kegiatan}</p>
+                </td>
+                <td class="px-5 py-5">
+                  <div class="flex items-center gap-3">
+                    <div class="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-slate-100 text-[10px] font-bold uppercase text-slate-500">
+                      {item.nama.charAt(0)}
+                    </div>
+                    <span class="text-sm font-medium text-slate-600">{item.nama}</span>
+                  </div>
+                </td>
+                <td class="px-5 py-5 text-center">
+                  <span class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
+                    {item.tahun}
+                  </span>
+                </td>
+                <td class="px-5 py-5">
+                  <span class="inline-flex rounded-full bg-[#edf4e8] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#0b5c3d]">
+                    {item.tingkat}
+                  </span>
+                </td>
+                <td class="px-5 py-5">
+                  <span class={`inline-flex rounded-full border px-3.5 py-1.5 text-[11px] font-bold ${getPrestasiColor(item.prestasi)}`}>
+                    {item.prestasi}
+                  </span>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flex flex-col gap-4 border-t border-slate-100 bg-slate-50/70 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <p id="pagination-info" class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400" data-text-show={t("page.prestasi.show")}>
+        {t("page.prestasi.show")}
+      </p>
+      <div class="flex items-center gap-2">
+        <button id="btn-prev" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600 transition-all hover:bg-slate-50 hover:text-[#0b5c3d] disabled:cursor-not-allowed disabled:opacity-50">
+          &larr; {t("common.prev")}
+        </button>
+        <span id="page-number" class="inline-flex min-w-[72px] justify-center rounded-lg border border-[#dfe9d5] bg-[#edf4e8] px-3 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#0b5c3d]">
+          1
+        </span>
+        <button id="btn-next" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600 transition-all hover:bg-slate-50 hover:text-[#0b5c3d] disabled:cursor-not-allowed disabled:opacity-50">
+          {t("common.next")} &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <script>
@@ -158,7 +190,7 @@ const getPrestasiColor = (prestasi: string) => {
 
     const rowsPerPage = 15;
     let currentPage = 1;
-    const totalPages = Math.ceil(rows.length / rowsPerPage);
+    const totalPages = Math.max(1, Math.ceil(rows.length / rowsPerPage));
 
     function updateTable() {
       const start = (currentPage - 1) * rowsPerPage;
@@ -174,14 +206,14 @@ const getPrestasiColor = (prestasi: string) => {
 
       const currentEnd = Math.min(end, rows.length);
       const currentStart = rows.length === 0 ? 0 : start + 1;
-      
+
       if (pageInfo) {
         const textShow = pageInfo.getAttribute('data-text-show') || "Menampilkan";
         pageInfo.textContent = `${textShow} ${currentStart} - ${currentEnd} dari total ${rows.length} Records`;
       }
-      
+
       if (pageNumber) {
-        pageNumber.textContent = `${currentPage} / ${totalPages || 1}`;
+        pageNumber.textContent = `${currentPage} / ${totalPages}`;
       }
 
       if (btnPrev) btnPrev.disabled = currentPage === 1;
@@ -191,7 +223,7 @@ const getPrestasiColor = (prestasi: string) => {
     if (btnPrev) {
       btnPrev.addEventListener('click', () => {
         if (currentPage > 1) {
-          currentPage--;
+          currentPage -= 1;
           updateTable();
         }
       });
@@ -200,7 +232,7 @@ const getPrestasiColor = (prestasi: string) => {
     if (btnNext) {
       btnNext.addEventListener('click', () => {
         if (currentPage < totalPages) {
-          currentPage++;
+          currentPage += 1;
           updateTable();
         }
       });

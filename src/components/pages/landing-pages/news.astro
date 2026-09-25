@@ -3,12 +3,16 @@ import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/tr
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 
-const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
+const rawBaseUrl = (import.meta.env.BASE_API_URL || "http://localhost:8055").replace(/\/+$/, "");
+const API_BASE_URL = rawBaseUrl.endsWith("/items") ? rawBaseUrl : `${rawBaseUrl}/items`;
+const ASSET_URL = `${rawBaseUrl.replace(/\/items$/, "")}/assets/`;
+
 let posts = [];
 
 try {
   const res = await fetch(
-    `${API_URL}/items/berita?filter[status][_eq]=published&fields=id,title,title_alias,images,publish_up,introtext&sort=-publish_up&limit=3`
+    `${API_BASE_URL}/berita?fields=id,title,slug,images,date_created,excerpt&sort=-date_created&limit=3`,
+    { cache: "no-store" }
   );
 
   if (!res.ok) {
@@ -21,12 +25,10 @@ try {
   const message = error instanceof Error ? error.message : String(error);
   console.warn("Gagal mengambil berita beranda:", message);
 }
-
-const ASSET_URL = `${API_URL}/assets/`;
 ---
 
 <section class="relative py-16 sm:py-24 px-4 sm:px-6 overflow-hidden bg-[#022c22]">
-  <div class="absolute top-0 left-1/4 w-96 h-96 bg-green-500/10 rounded-full blur-[120px]"></div>
+  <div class="absolute top-0 left-1/4 w-96 h-96 bg-black-800 rounded-lg blur-[120px]"></div>
   <div class="absolute inset-0 bg-[url('/landing-pages/gedung.jpg')] bg-cover bg-center opacity-15"></div> 
   <div class="relative z-10 max-w-7xl mx-auto">
     <div data-aos="fade-right" class="mb-8 sm:mb-12 border-l-4 border-yellow-400 pl-4 sm:pl-6">
@@ -59,7 +61,7 @@ const ASSET_URL = `${API_URL}/assets/`;
 
           <div class="p-6 flex flex-col flex-grow">
             <div class="flex items-center gap-2 mb-3">
-              <span class="w-2 h-2 bg-yellow-400 rounded-full"></span>
+              <span class="w-2 h-2 bg-yellow-400 rounded-lg"></span>
               <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider">
                 {post.publish_up ? new Date(post.publish_up).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "Tanggal tidak tersedia"}
               </span>
@@ -76,7 +78,7 @@ const ASSET_URL = `${API_URL}/assets/`;
             <div class="mt-auto">
               <a
                 href={localizePath(`/berita/${post.title_alias || post.id}`, lang)}
-                class="inline-flex items-center font-bold rounded-full text-sm text-emerald-800 hover:text-yellow-600 transition-colors group/link"
+                class="inline-flex items-center font-bold rounded-lg text-sm text-emerald-800 hover:text-yellow-600 transition-colors group/link"
               >
                 {t("common.readmore")}
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -91,7 +93,7 @@ const ASSET_URL = `${API_URL}/assets/`;
     )}
 
     <div class="mt-16 text-center">
-      <a href={localizePath("/berita", lang)} class="px-8 py-3 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-[#0B2C24] transition-all">
+      <a href={localizePath("/berita", lang)} class="px-8 py-3 bg-transparent border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-[#0B2C24] transition-all">
         {t("news.viewall")}
       </a>
     </div>
