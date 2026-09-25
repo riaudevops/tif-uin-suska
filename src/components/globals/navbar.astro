@@ -85,7 +85,7 @@ const t = useTranslations(lang);
             >
                 <a
                     href={localizePath("/", lang)}
-                    class="px-3 py-1 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50"
+                    class="px-3 py-1 hover:text-[#004d2c] transition rounded-lg hover:bg-slate-50"
                     >{t("nav.home")}</a
                 >
 
@@ -93,7 +93,7 @@ const t = useTranslations(lang);
                     <button
                         aria-expanded="false"
                         type="button"
-                        class="flex items-center gap-1 px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50"
+                        class="flex items-center gap-1 px-3 py-2 hover:text-[#004d2c] transition rounded-lg hover:bg-slate-50"
                     >
                         {t("nav.profil")} <svg
                             class="w-3 h-3 opacity-50 transition-transform duration-300 group-hover:rotate-180"
@@ -106,41 +106,41 @@ const t = useTranslations(lang);
                     </button>
 
                     <div
-                        class="absolute left-0 top-[100%] pt-2 w-72 opacity-0 invisible translate-y-4 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 z-50"
+                        class="absolute left-0 top-[calc(100%-2px)] pt-1 w-72 opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 z-50"
                     >
                         <div class="bg-white shadow-2xl rounded-xl p-2 border border-gray-100">
                         <a
-                            href={localizePath("/profil-pages/sejarah", lang)}
+                            href={localizePath("/profil/sejarah", lang)}
                             class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium"
                             >{t("menu.sejarah")}</a
                         >
                         <a
-                            href={localizePath("/visimisi-pages/visimisi", lang)}
+                            href={localizePath("/visi-misi/visimisi", lang)}
                             class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium"
                             >{t("menu.visimisi")}</a
                         >
                         <a
-                            href={localizePath("/rencana-pages/rencana", lang)}
+                            href={localizePath("/rencana/rencana", lang)}
                             class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium"
                             >{t("menu.rencana")}</a
                         >
                         <a
-                            href={localizePath("/panduan-pages/panduan", lang)}
+                            href={localizePath("/panduan/panduan", lang)}
                             class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium"
                             >{t("menu.panduan")}</a
                         >
                         <a
-                            href={localizePath("/struktur-pages/struktur", lang)}
+                            href={localizePath("/struktur/struktur", lang)}
                             class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium"
                             >{t("menu.struktur")}</a
                         >
                         <a
-                            href={localizePath("/dosen-pages/dosen", lang)}
+                            href={localizePath("/dosen/dosen", lang)}
                             class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium"
                             >{t("menu.dosen")}</a
                         >
                         <a
-                            href={localizePath("/laboratorium-pages/laboratorium", lang)}
+                            href={localizePath("/laboratorium/laboratorium", lang)}
                             class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium"
                             >{t("menu.laboratorium")}</a
                         >
@@ -150,7 +150,7 @@ const t = useTranslations(lang);
                             >{t("menu.ruangkelas")}</a
                         >
                         <a
-                            href={localizePath("/prestasi-pages/prestasi", lang)}
+                            href={localizePath("/prestasi/prestasi", lang)}
                             class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium"
                             >{t("menu.prestasi")}</a
                         >
@@ -174,7 +174,7 @@ const t = useTranslations(lang);
                         >
                     </button>
                     <div
-                        class="absolute left-0 top-[100%] pt-2 w-72 opacity-0 invisible translate-y-4 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 z-50"
+                        class="absolute left-0 top-[calc(100%-2px)] pt-1 w-72 opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 z-50"
                     >
                         <div class="bg-white shadow-2xl rounded-xl p-2 border border-gray-100">
                         <a
@@ -188,7 +188,7 @@ const t = useTranslations(lang);
                             >{t("menu.administrasi")}</a
                         >
                         <a
-                            href={localizePath("/kurikulum-pages/kurikulum", lang)}
+                            href={localizePath("/kurikulum/kurikulum", lang)}
                             class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium"
                             >{t("menu.kurikulum")}</a
                         >
@@ -213,7 +213,7 @@ const t = useTranslations(lang);
                             >{t("menu.kp")}</a
                         >
                         <a
-                            href={localizePath("/labssquad-pages/labssquad", lang)}
+                            href={localizePath("/labssquad/labssquad", lang)}
                             class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium"
                             >{t("menu.labssquad")}</a
                         >
@@ -237,7 +237,7 @@ const t = useTranslations(lang);
                         >
                     </button>
                     <div
-                        class="absolute left-0 top-[100%] pt-2 w-72 opacity-0 invisible translate-y-4 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 z-50"
+                        class="absolute left-0 top-[calc(100%-2px)] pt-1 w-72 opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 z-50"
                     >
                         <div class="bg-white shadow-2xl rounded-xl p-2 border border-gray-100">
                         <a
@@ -246,17 +246,17 @@ const t = useTranslations(lang);
                             >{t("menu.jurnal")}</a
                         >
                         <a
-                            href={localizePath("/aiorc-pages/aiorc", lang)}
+                            href={localizePath("/aiorc/aiorc", lang)}
                             class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium"
                             >{t("menu.aiorc")}</a
                         >
                         <a
-                            href={localizePath("/software-pages/software", lang)}
+                            href={localizePath("/software/software", lang)}
                             class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium"
                             >{t("menu.se")}</a
                         >
                         <a
-                            href={localizePath("/information-pages/information", lang)}
+                            href={localizePath("/information/information", lang)}
                             class="block py-2.5 px-4 hover:bg-green-50 hover:text-[#004d2c] rounded-lg transition text-sm normal-case font-medium"
                             >{t("menu.it")}</a
                         >
@@ -270,12 +270,12 @@ const t = useTranslations(lang);
                     >{t("nav.berita")}</a
                 >
                 <a
-                    href={localizePath("/agenda-pages/agenda", lang)}
+                    href={localizePath("/agenda/agenda", lang)}
                     class="px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50"
                     >{t("nav.agenda")}</a
                 >
                 <a
-                    href={localizePath("/alumni-pages/alumni", lang)}
+                    href={localizePath("/alumni/alumni", lang)}
                     class="px-3 py-2 hover:text-[#004d2c] transition rounded-md hover:bg-slate-50"
                     >{t("nav.alumni")}</a
                 >
@@ -284,7 +284,7 @@ const t = useTranslations(lang);
                 <a
                     href="https://hima.tif.uin-suska.ac.id/"
                     target="_blank"
-                    class="px-5 py-2 bg-[#004d2c] text-white rounded-full hover:bg-yellow-600 transition shadow-md shadow-green-100 flex items-center gap-2"
+                    class="px-3 py-2 bg-[#004d2c] text-white rounded-lg hover:bg-yellow-600 transition shadow-md shadow-green-100 flex items-center gap-2"
                 >
                     {t("nav.himatif")}
                     <svg
@@ -327,10 +327,7 @@ const t = useTranslations(lang);
         </div>
     </div>
 
-    <div
-        class="w-full h-[3px] bg-gradient-to-r from-green-800 via-green-600 to-yellow-500"
-    >
-    </div>
+    <div class="w-full h-[2px] bg-[#0d3c2f] opacity-90"></div>
 
     <div id="mobile-menu"
         class="lg:hidden absolute top-full left-0 right-0 bg-white shadow-xl hidden border-t border-gray-100">
@@ -353,15 +350,15 @@ const t = useTranslations(lang);
                 </button>
                 
                 <div id="menu-profil-mobile" class="hidden flex-col pb-2 pt-1 space-y-1" data-menu="profil-mobile">
-                    <a href={localizePath("/profil-pages/sejarah", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.sejarah")}</a>
-                    <a href={localizePath("/visimisi-pages/visimisi", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.visimisi")}</a>
-                    <a href={localizePath("/rencana-pages/rencana", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.rencana")}</a>
-                    <a href={localizePath("/panduan-pages/panduan", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.panduan")}</a>
-                    <a href={localizePath("/struktur-pages/struktur", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.struktur")}</a>
-                    <a href={localizePath("/dosen-pages/dosen", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.dosen")}</a>
-                    <a href={localizePath("/laboratorium-pages/laboratorium", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.laboratorium")}</a>
+                    <a href={localizePath("/profil/sejarah", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.sejarah")}</a>
+                    <a href={localizePath("/visi-misi/visimisi", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.visimisi")}</a>
+                    <a href={localizePath("/rencana/rencana", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.rencana")}</a>
+                    <a href={localizePath("/panduan/panduan", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.panduan")}</a>
+                    <a href={localizePath("/struktur/struktur", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.struktur")}</a>
+                    <a href={localizePath("/dosen/dosen", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.dosen")}</a>
+                    <a href={localizePath("/laboratorium/laboratorium", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.laboratorium")}</a>
                     <a href={localizePath("/ruangkelas/ruangkelas", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.ruangkelas")}</a>
-                    <a href={localizePath("/prestasi-pages/prestasi", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.prestasi")}</a>
+                    <a href={localizePath("/prestasi/prestasi", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.prestasi")}</a>
                 </div>
             </div>
 
@@ -381,12 +378,12 @@ const t = useTranslations(lang);
                 <div id="menu-akademik-mobile" class="hidden flex-col pb-2 pt-1 space-y-1" data-menu="akademik-mobile">
                     <a href="https://pmb.uin-suska.ac.id/" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.penerimaan")}</a>
                     <a href="https://linktr.ee/administrasi_prodi_tif" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.administrasi")}</a>
-                    <a href={localizePath("/kurikulum-pages/kurikulum", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.kurikulum")}</a>
+                    <a href={localizePath("/kurikulum/kurikulum", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.kurikulum")}</a>
                     <a href="https://pmt.uin-suska.ac.id/wp-content/uploads/2025/08/Kalender-Akademik-UIN-Suska-Riau-Tahun-2025-2026.pdf" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.kalender")}</a>
                     <a href={localizePath("/beasiswa/beasiswa", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.beasiswa")}</a>
                     <a href={localizePath("/tugas-akhir/tugas-akhir", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.ta")}</a>
                     <a href={localizePath("/kerja-praktik/kerja-praktik", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.kp")}</a>
-                    <a href={localizePath("/labssquad-pages/labssquad", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.labssquad")}</a>
+                    <a href={localizePath("/labssquad/labssquad", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.labssquad")}</a>
                 </div>
             </div>
 
@@ -405,24 +402,24 @@ const t = useTranslations(lang);
                 
                 <div id="menu-penelitian-mobile" class="hidden flex-col pb-2 pt-1 space-y-1" data-menu="penelitian-mobile">
                     <a href="https://ejournal.uin-suska.ac.id/index.php/coreit" class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.jurnal")}</a>
-                    <a href={localizePath("/aiorc-pages/aiorc", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.aiorc")}</a>
-                    <a href={localizePath("/software-pages/software", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.se")}</a>
-                    <a href={localizePath("/information-pages/information", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.it")}</a>
+                    <a href={localizePath("/aiorc/aiorc", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.aiorc")}</a>
+                    <a href={localizePath("/software/software", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.se")}</a>
+                    <a href={localizePath("/information/information", lang)} class="block py-2.5 pl-10 pr-4 text-sm text-slate-500 hover:text-[#004d2c] hover:bg-green-50 rounded-lg transition-colors">{t("menu.it")}</a>
                 </div>
             </div>
 
             <a href={localizePath("/berita", lang)} class="py-3 px-4 text-sm font-medium text-slate-800 hover:text-[#004d2c] hover:bg-slate-50 rounded-lg transition-colors">{t("nav.berita")}</a>
-            <a href={localizePath("/agenda-pages/agenda", lang)} class="py-3 px-4 text-sm font-medium text-slate-800 hover:text-[#004d2c] hover:bg-slate-50 rounded-lg transition-colors">{t("nav.agenda")}</a>
-            <a href={localizePath("/alumni-pages/alumni", lang)} class="py-3 px-4 text-sm font-medium text-slate-800 hover:text-[#004d2c] hover:bg-slate-50 rounded-lg transition-colors">{t("nav.alumni")}</a>
+            <a href={localizePath("/agenda/agenda", lang)} class="py-3 px-4 text-sm font-medium text-slate-800 hover:text-[#004d2c] hover:bg-slate-50 rounded-lg transition-colors">{t("nav.agenda")}</a>
+            <a href={localizePath("/alumni/alumni", lang)} class="py-3 px-4 text-sm font-medium text-slate-800 hover:text-[#004d2c] hover:bg-slate-50 rounded-lg transition-colors">{t("nav.alumni")}</a>
             
             <div class="mt-4 px-2 pb-4 flex flex-col gap-3">
-                <a href="https://hima.tif.uin-suska.ac.id/" target="_blank" class="block w-full py-3 px-4 bg-[#004d2c] text-white text-sm text-center font-bold rounded-xl hover:bg-yellow-600 transition-colors shadow-md">
+                <a href="https://hima.tif.uin-suska.ac.id/" target="_blank" class="block w-full py-3 px-4 bg-[#004d2c] text-white text-sm text-center font-bold rounded-lg hover:bg-yellow-600 transition-colors shadow-md">
                     {t("nav.himatif")}
                 </a>
 
                 <!-- Mobile Language switcher -->
                 <div class="flex items-center justify-center gap-4 py-2 border border-slate-200 rounded-xl bg-slate-50 font-bold text-sm">
-                    <span class="text-slate-500 uppercase tracking-wider text-xs">Bahasa / Language:</span>
+                    <span class="text-slate-500 uppercase tracking-wider text-xs">{t("nav.language")}:</span>
                     <a href={localizePath(Astro.url.pathname, 'id')} class={`px-3 py-1 rounded-lg transition duration-200 ${lang === 'id' ? 'bg-yellow-500 text-[#004d2c] font-black' : 'text-slate-600 hover:text-slate-900'}`}>ID</a>
                     <span class="text-slate-300">|</span>
                     <a href={localizePath(Astro.url.pathname, 'en')} class={`px-3 py-1 rounded-lg transition duration-200 ${lang === 'en' ? 'bg-yellow-500 text-[#004d2c] font-black' : 'text-slate-600 hover:text-slate-900'}`}>EN</a>

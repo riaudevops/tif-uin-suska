@@ -64,50 +64,70 @@ const getKategoriClass = (kat: string) => {
 };
 ---
 
-<nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
-  <ol class="flex items-center space-x-2 text-slate-500">
+<nav class="mx-auto mt-32 max-w-7xl px-4 text-sm sm:px-6 lg:px-8">
+  <ol class="flex items-center gap-2 text-slate-500">
     <li class="flex items-center">
-      <a href={localizePath("/", lang)} class="hover:text-emerald-700 transition flex items-center gap-1">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      <a href={localizePath("/", lang)} class="flex items-center gap-1 transition-colors duration-200 hover:text-[#0b5c3d]">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
         {t("bread.home")}
       </a>
     </li>
     <li class="text-slate-300">/</li>
-    <li class="text-emerald-800 font-semibold italic">
-        {t("bread.agenda")}
+    <li class="font-semibold text-[#0b5c3d]">
+      {t("bread.agenda")}
     </li>
   </ol>
 </nav>
 
-<!-- Improved Hero / Header -->
-<section data-aos="fade-up" class="bg-gradient-to-b from-white to-slate-50 py-12">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="text-center mb-10">
-      <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest inline-block">
-        {t("page.agenda.badge")}
-      </span>
-      <h1 data-aos="fade-up" class="text-4xl md:text-5xl font-black text-[#004d2c] mt-4 tracking-tight">
-        {t("page.agenda.title")}
-      </h1>
-      <p class="text-slate-600 mt-3 max-w-2xl mx-auto">
-        {t("page.agenda.desc")}
-      </p>
-    </div>
-
-    <div class="mb-12 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-      <div class="flex items-center gap-4 md:col-span-2">
-        <div class="h-12 w-12 rounded-full bg-[#004d2c] flex items-center justify-center text-white text-xl">📅</div>
+<section class="py-12">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mb-8 overflow-hidden rounded-[30px] border border-[#dfeadf] bg-gradient-to-br from-[#f4faf4] via-white to-[#f7f0df] p-6 shadow-[0_26px_80px_-32px_rgba(0,61,42,0.5)] sm:p-8 lg:p-10">
+      <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
         <div>
-          <h3 class="text-lg font-bold text-[#004d2c]">{t("page.agenda.calendar")}</h3>
-          <p class="text-sm text-slate-500">{t("page.agenda.calendar.desc")}</p>
+          <span class="inline-flex items-center rounded-full border border-[#dfeadf] bg-[#edf7ee] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.24em] text-[#0b5c3d]">
+            {t("page.agenda.badge")}
+          </span>
+          <h1 class="mt-5 text-3xl font-black tracking-tight text-[#003d2a] sm:text-4xl lg:text-5xl">
+            {t("page.agenda.title")}
+          </h1>
+          <p class="mt-4 max-w-xl text-base leading-relaxed text-slate-600">
+            {t("page.agenda.desc")}
+          </p>
+        </div>
+
+        <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+          <div class="rounded-[24px] border border-slate-200 bg-white p-4 shadow-[0_16px_35px_-28px_rgba(15,23,42,0.25)]">
+            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">Agenda</p>
+            <p class="mt-3 text-2xl font-black text-[#003d2a]">{agendaKegiatan.length}</p>
+          </div>
+          <div class="rounded-[24px] border border-slate-200 bg-white p-4 shadow-[0_16px_35px_-28px_rgba(15,23,42,0.25)]">
+            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">Kategori</p>
+            <p class="mt-3 text-2xl font-black text-[#003d2a]">{categories.length - 1}</p>
+          </div>
+          <div class="rounded-[24px] border border-slate-200 bg-[#fffaf0] p-4 shadow-[0_16px_35px_-28px_rgba(15,23,42,0.25)]">
+            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8a6a1d]">Aktivitas</p>
+            <p class="mt-3 text-2xl font-black text-[#8a6a1d]">{t("page.agenda.calendar")}</p>
+          </div>
         </div>
       </div>
+    </div>
 
-      <div class="flex justify-start md:justify-end">
-        <div class="flex gap-2 flex-wrap">
+    <div class="mb-8 rounded-[28px] border border-slate-200 bg-white p-4 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.25)] sm:p-5">
+      <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div class="flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#edf5ee] text-[#0b5c3d]">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-[#003d2a]">{t("page.agenda.calendar")}</h3>
+            <p class="text-sm text-slate-500">{t("page.agenda.calendar.desc")}</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
           {categories.map((kat: string, idx: number) => (
-            <button 
-              class={`filter-btn px-4 py-2 border rounded-lg text-sm font-semibold transition-colors ${idx === 0 ? 'bg-[#004d2c] text-white border-[#004d2c]' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}
+            <button
+              class={`filter-btn rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] transition-all ${idx === 0 ? 'border-[#003d2a] bg-[#003d2a] text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-[#bfd8c6] hover:text-[#0b5c3d]'}`}
               data-filter={kat === 'All' ? 'All' : kat}
             >
               {kat === 'All' ? t("page.agenda.filter.all") : kat}
@@ -117,54 +137,54 @@ const getKategoriClass = (kat: string) => {
       </div>
     </div>
 
-    {/* --- List Agenda dari Directus --- */}
     {agendaKegiatan.length === 0 ? (
-      <div class="text-center py-20 bg-slate-50 rounded-3xl border border-slate-100">
+      <div class="rounded-[28px] border border-slate-200 bg-slate-50 py-20 text-center">
         <p class="text-slate-500 font-medium">{t("page.agenda.empty")}</p>
       </div>
     ) : (
-      <div class="grid gap-8 lg:grid-cols-2">
+      <div class="grid gap-6 lg:grid-cols-2">
         {agendaKegiatan.map((item: any, index: number) => (
-          <div 
-            class="agenda-card group cursor-pointer bg-white rounded-3xl p-1 shadow-sm hover:shadow-xl transition-all duration-500 border border-slate-100 flex flex-col md:flex-row overflow-hidden"
+          <div
+            class="agenda-card group cursor-pointer overflow-hidden rounded-[30px] border border-slate-200 bg-white p-1 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-[#bfd8c6] hover:shadow-[0_28px_65px_-32px_rgba(11,92,61,0.3)]"
             data-index={index}
             data-kategori={item.kategori}
           >
-            {/* Bagian Tanggal */}
-            <div class="bg-[#004d2c] text-white p-6 md:w-32 flex flex-col items-center justify-center text-center group-hover:bg-yellow-600 transition-colors duration-500">
-              <span class="text-3xl font-black leading-none">{item.tanggal}</span>
-              <span class="text-sm font-bold uppercase tracking-widest mt-1">{item.bulan}</span>
-              <span class="text-xs opacity-70 mt-1">{item.tahun}</span>
-            </div>
-
-            {/* Bagian Konten Kanan */}
-            <div class="p-8 flex-1 relative">
-              <div class="flex justify-between items-start mb-4">
-                <span class={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${getKategoriClass(item.kategori)}`}>
-                  {item.kategori}
-                </span>
-                {item.status === 'Penting' && (
-                  <span class="flex h-2 w-2" title="Penting">
-                    <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-red-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                  </span>
-                )}
+            <div class="flex flex-col md:flex-row">
+              <div class="flex min-h-[150px] w-full items-center justify-center bg-gradient-to-br from-[#003d2a] via-[#0b5c3d] to-[#8a6a1d] p-6 text-white md:w-36 md:min-w-[144px]">
+                <div class="text-center">
+                  <div class="text-3xl font-black leading-none">{item.tanggal}</div>
+                  <div class="mt-2 text-sm font-bold uppercase tracking-[0.2em]">{item.bulan}</div>
+                  <div class="mt-1 text-[10px] uppercase tracking-[0.18em] text-emerald-100">{item.tahun}</div>
+                </div>
               </div>
 
-              <h3 class="text-xl font-bold text-slate-800 mb-3 group-hover:text-[#004d2c] transition-colors">
-                {item.judul}
-              </h3>
-              
-              <p class="text-slate-500 text-sm mb-6 line-clamp-2">
-                {item.deskripsi}
-              </p>
-
-              <div class="flex flex-wrap gap-4 pt-4 border-t border-slate-50">
-                <div class="flex items-center gap-2 text-slate-400 text-xs font-medium">
-                  ⏱ {item.waktu}
+              <div class="flex-1 p-6 sm:p-7">
+                <div class="mb-4 flex items-center justify-between gap-3">
+                  <span class={`inline-flex rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] ${getKategoriClass(item.kategori)}`}>
+                    {item.kategori}
+                  </span>
+                  {item.status === 'Penting' && (
+                    <span class="inline-flex h-2.5 w-2.5 rounded-full bg-red-500 shadow-[0_0_0_6px_rgba(239,68,68,0.12)]" title="Penting"></span>
+                  )}
                 </div>
-                <div class="flex items-center gap-2 text-slate-400 text-xs font-medium">
-                  📍 {item.lokasi}
+
+                <h3 class="text-xl font-black leading-snug text-slate-900 group-hover:text-[#004d2c]">
+                  {item.judul}
+                </h3>
+
+                <p class="mt-3 text-sm leading-relaxed text-slate-600 line-clamp-2">
+                  {item.deskripsi}
+                </p>
+
+                <div class="mt-5 flex flex-wrap gap-4 border-t border-slate-100 pt-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
+                  <span class="inline-flex items-center gap-2">
+                    <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    {item.waktu}
+                  </span>
+                  <span class="inline-flex items-center gap-2">
+                    <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    {item.lokasi}
+                  </span>
                 </div>
               </div>
             </div>
@@ -173,15 +193,13 @@ const getKategoriClass = (kat: string) => {
       </div>
     )}
 
-    <div class="mt-20 bg-[#004d2c] rounded-[2rem] p-10 text-center text-white relative overflow-hidden shadow-2xl shadow-green-900/20">
-      <div class="relative z-10">
-        <h2 data-aos="fade-up" class="text-2xl font-bold mb-4">{t("page.agenda.collab.title")}</h2>
-        <p class="text-green-100/80 mb-8 max-w-xl mx-auto text-sm">{t("page.agenda.collab.desc")}</p>
-        <a href="mailto:tif@uin-suska.ac.id" class="inline-block px-8 py-3 bg-yellow-500 hover:bg-yellow-400 text-[#004d2c] font-black rounded-full transition-all transform hover:scale-105 uppercase text-xs tracking-widest"> {t("common.contact")} </a>
-      </div>
-      <div class="absolute -right-20 -top-20 w-64 h-64 bg-green-700/30 rounded-full"></div>
+    <div class="mt-16 overflow-hidden rounded-[30px] bg-gradient-to-r from-[#003d2a] via-[#0b5c3d] to-[#0d6f4a] p-8 text-center text-white shadow-[0_28px_80px_-28px_rgba(0,61,42,0.75)] sm:p-10">
+      <h2 class="text-2xl font-black tracking-tight sm:text-3xl">{t("page.agenda.collab.title")}</h2>
+      <p class="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-emerald-100">{t("page.agenda.collab.desc")}</p>
+      <a href="mailto:tif@uin-suska.ac.id" class="mt-6 inline-flex items-center justify-center rounded-full bg-[#f5d77a] px-7 py-3 text-xs font-black uppercase tracking-[0.18em] text-[#003d2a] transition-transform hover:scale-[1.02]">
+        {t("common.contact")}
+      </a>
     </div>
-
   </div>
 </section>
 
