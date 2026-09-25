@@ -7,12 +7,22 @@ const rawBaseUrl = (import.meta.env.BASE_API_URL || "http://localhost:8055").rep
 const API_BASE_URL = rawBaseUrl.endsWith("/items") ? rawBaseUrl : `${rawBaseUrl}/items`;
 const ASSET_URL = `${rawBaseUrl.replace(/\/items$/, "")}/assets/`;
 
+// Ambil token dari environment variables
+const API_TOKEN = import.meta.env.DIRECTUS_TOKEN;
+
 let posts = [];
 
 try {
+  // Menyesuaikan query fields dengan variabel yang ada di database dan HTML
   const res = await fetch(
-    `${API_BASE_URL}/berita?fields=id,title,slug,images,date_created,excerpt&sort=-date_created&limit=3`,
-    { cache: "no-store" }
+    `${API_BASE_URL}/berita?fields=id,title,slug,featured_image,date,excerpt&sort=-date&limit=3`,
+    { 
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+        ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {})
+      }
+    }
   );
 
   if (!res.ok) {
@@ -51,7 +61,7 @@ try {
           
           <div class="overflow-hidden h-52">
             <img 
-              src={post.images ? `${ASSET_URL}${post.images.split('|')[0]}` : "/default-thumbnail.jpg"}
+              src={post.featured_image && post.featured_image !== "default" ? `${ASSET_URL}${post.featured_image}` : "/default-thumbnail.jpg"}
               alt={post.title} 
               loading="lazy"
               decoding="async"
@@ -63,7 +73,7 @@ try {
             <div class="flex items-center gap-2 mb-3">
               <span class="w-2 h-2 bg-yellow-400 rounded-lg"></span>
               <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider">
-                {post.publish_up ? new Date(post.publish_up).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "Tanggal tidak tersedia"}
+                {post.date ? new Date(post.date).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "Tanggal tidak tersedia"}
               </span>
             </div>
 
@@ -72,12 +82,12 @@ try {
             </h3>
 
             <p class="text-gray-600 text-sm mb-6 line-clamp-3">
-              {(post.introtext || "").replace(/<[^>]+>/g, "").slice(0, 100)}...
+              {(post.excerpt || "").replace(/<[^>]+>/g, "").slice(0, 100)}...
             </p>
 
             <div class="mt-auto">
               <a
-                href={localizePath(`/berita/${post.title_alias || post.id}`, lang)}
+                href={localizePath(`/berita/${post.slug || post.id}`, lang)}
                 class="inline-flex items-center font-bold rounded-lg text-sm text-emerald-800 hover:text-yellow-600 transition-colors group/link"
               >
                 {t("common.readmore")}
