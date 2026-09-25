@@ -1,7 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import HomeSlider from "../components/pages/landing-pages/slider.astro";
-import Agenda from "../components/pages/landing-pages/agenda.astro";
+// import Agenda from "../components/pages/landing-pages/agenda.astro";
 import About from "../components/pages/landing-pages/about.astro";
 import News from "../components/pages/landing-pages/news.astro";
 import Center from "../components/pages/landing-pages/center.astro";
@@ -15,7 +15,7 @@ const lang = getLocaleFromUrl(Astro);
 <Layout title={lang === 'en' ? "Home" : "Beranda"}> 
     <HomeSlider />
     <Center />
-    <Agenda />
+    <!-- <Agenda /> -->
     <Fasilitas />
     <About />
     <Kurikulum />

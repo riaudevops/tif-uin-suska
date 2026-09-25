@@ -35,11 +35,12 @@ const isEn = lang === 'en';
         <script>
             import AOS from 'aos';
             AOS.init({
-                duration: 700,
+                duration: 500,
                 easing: 'ease-out-cubic',
                 once: true,
-                offset: 50,
+                offset: 24,
                 delay: 0,
+                mirror: false,
             });
 
             // Re-init AOS on view transitions

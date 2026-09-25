@@ -152,14 +152,14 @@ const keahlianList = dosen?.bidang_keahlian
       
       {/* Cover / Header Banner */}
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-        <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-emerald-950 via-emerald-900 to-slate-900 h-56 sm:h-72 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
-          <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.25),transparent_60%)]"></div>
+        <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#003d2a] via-[#0a5d3d] to-[#7ca25c] h-56 sm:h-72 p-6 sm:p-8 flex flex-col justify-between shadow-[0_28px_80px_-30px_rgba(0,61,42,0.8)]">
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(245,201,86,0.18),_transparent_30%),radial-gradient(circle_at_bottom_left,_rgba(255,255,255,0.04),_transparent_35%)]"></div>
           <div class="absolute inset-0 bg-[url('/landing-pages/gedung-faste.jpg')] bg-cover bg-center opacity-10 mix-blend-overlay"></div>
           
           <div class="relative z-10">
             <a 
               href={localizePath("/dosen-pages/dosen", lang)}
-              class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white text-xs sm:text-sm font-semibold rounded-xl transition-all"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 text-white text-xs sm:text-sm font-semibold rounded-xl transition-all"
             >
               <ArrowLeft class="w-4 h-4" />
               {isEn ? 'Back to Lecturers' : 'Kembali ke Daftar Dosen'}
@@ -167,8 +167,8 @@ const keahlianList = dosen?.bidang_keahlian
           </div>
 
           <div class="relative z-10 flex items-center justify-between text-white/80 text-xs sm:text-sm">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 rounded-full text-emerald-200 font-bold uppercase tracking-wider">
-              <Sparkles class="w-3.5 h-3.5" />
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#f1d880]/15 backdrop-blur-md border border-[#f1d880]/30 rounded-full text-[#f7e7b0] font-bold uppercase tracking-wider">
+              <Sparkles class="w-3.5 h-3.5 text-[#f1d880]" />
               {isEn ? 'Informatics Academic Faculty' : 'Tenaga Pendidik Teknik Informatika'}
             </span>
             <span class="hidden sm:inline-block text-white/60">
@@ -199,8 +199,8 @@ const keahlianList = dosen?.bidang_keahlian
 
             <div class="flex-1 w-full text-center md:text-left flex flex-col justify-between">
               <div>
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-800 rounded-full text-xs font-bold mb-3 border border-emerald-100">
-                  <UserCheck class="w-3.5 h-3.5 text-emerald-600" />
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-[#f4f0dd] text-[#4f5f2d] rounded-full text-xs font-bold mb-3 border border-[#e8dca0]">
+                  <UserCheck class="w-3.5 h-3.5 text-[#b58d18]" />
                   {dosen.fakultas || (isEn ? 'Faculty of Science and Technology' : 'Fakultas Sains dan Teknologi')}
                 </div>
 
@@ -208,8 +208,8 @@ const keahlianList = dosen?.bidang_keahlian
                   {dosen.nama}
                 </h1>
 
-                <p class="text-emerald-700 font-bold text-base sm:text-lg mt-1 flex items-center justify-center md:justify-start gap-2">
-                  <Award class="w-5 h-5 text-emerald-600 inline-block" />
+                <p class="text-[#3f5f3d] font-bold text-base sm:text-lg mt-1 flex items-center justify-center md:justify-start gap-2">
+                  <Award class="w-5 h-5 text-[#b58d18] inline-block" />
                   {dosen.jabatan || (isEn ? 'Teaching Lecturer' : 'Dosen Pengajar')}
                 </p>
               </div>
@@ -219,7 +219,7 @@ const keahlianList = dosen?.bidang_keahlian
                 {dosen.email && (
                   <a 
                     href={`mailto:${dosen.email}`}
-                    class="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md hover:shadow-emerald-600/30 transition-all duration-300"
+                    class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#0b5c3d] hover:bg-[#0a4d35] text-white font-bold text-xs sm:text-sm rounded-xl shadow-md hover:shadow-[#0a4d35]/25 transition-all duration-300"
                   >
                     <Mail class="w-4 h-4" />
                     {isEn ? 'Send Email' : 'Kirim Email'}
@@ -231,9 +231,9 @@ const keahlianList = dosen?.bidang_keahlian
                     href={dosen.google_scholar} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold text-xs sm:text-sm rounded-xl transition-colors"
+                    class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#edf4e8] hover:bg-[#e2f0d9] text-[#274d39] border border-[#cfe2c6] font-bold text-xs sm:text-sm rounded-xl transition-colors"
                   >
-                    <BookOpen class="w-4 h-4 text-blue-600" />
+                    <BookOpen class="w-4 h-4 text-[#0b5c3d]" />
                     Google Scholar
                     <ExternalLink class="w-3.5 h-3.5 opacity-70" />
                   </a>
@@ -244,9 +244,9 @@ const keahlianList = dosen?.bidang_keahlian
                     href={dosen.sinta} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 px-4 py-2.5 bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 font-bold text-xs sm:text-sm rounded-xl transition-colors"
+                    class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#f4f0dd] hover:bg-[#efe4b5] text-[#5a4c18] border border-[#e8dca0] font-bold text-xs sm:text-sm rounded-xl transition-colors"
                   >
-                    <BookmarkCheck class="w-4 h-4 text-teal-600" />
+                    <BookmarkCheck class="w-4 h-4 text-[#5a4c18]" />
                     Sinta Profile
                     <ExternalLink class="w-3.5 h-3.5 opacity-70" />
                   </a>
@@ -259,182 +259,172 @@ const keahlianList = dosen?.bidang_keahlian
         </div>
 
         {/* Detailed Grid Section */}
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-          
-          {/* Left Column: Academic & Contact Info */}
-          <div class="lg:col-span-1 space-y-8">
-            
-            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-              <h3 class="font-black text-slate-900 text-lg sm:text-xl mb-6 flex items-center gap-3 border-b border-slate-100 pb-4">
-                <div class="w-10 h-10 bg-emerald-50 text-emerald-700 rounded-xl flex items-center justify-center">
-                  <CreditCard class="w-5 h-5" />
-                </div>
+        <div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[340px_minmax(0,1fr)]">
+          <div class="space-y-8">
+            <div class="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 class="mb-5 flex items-center gap-3 border-b border-slate-100 pb-4 text-lg font-black text-slate-900 sm:text-xl">
+                <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#edf4e8] text-[#0b5c3d]">
+                  <CreditCard class="h-5 w-5" />
+                </span>
                 {isEn ? 'Academic Information' : 'Informasi Akademik'}
               </h3>
 
-              <div class="space-y-5">
+              <div class="space-y-4">
                 <div>
-                  <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">NIP</span>
-                  <p class="text-slate-800 font-bold text-base font-mono bg-slate-50 px-3 py-2 rounded-xl border border-slate-100">
+                  <span class="mb-1 block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">NIP</span>
+                  <p class="rounded-2xl border border-slate-100 bg-slate-50 px-3 py-2 font-mono text-sm font-bold text-slate-800">
                     {dosen.nip || '-'}
                   </p>
                 </div>
 
                 {dosen.nidn && (
                   <div>
-                    <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">NIDN</span>
-                    <p class="text-slate-800 font-bold text-base font-mono bg-slate-50 px-3 py-2 rounded-xl border border-slate-100">
+                    <span class="mb-1 block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">NIDN</span>
+                    <p class="rounded-2xl border border-slate-100 bg-slate-50 px-3 py-2 font-mono text-sm font-bold text-slate-800">
                       {dosen.nidn}
                     </p>
                   </div>
                 )}
 
                 <div>
-                  <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Email Resmi</span>
-                  <a 
-                    href={dosen.email ? `mailto:${dosen.email}` : '#'} 
-                    class="text-emerald-700 hover:underline font-semibold text-sm break-all flex items-center gap-1.5"
+                  <span class="mb-1 block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Email Resmi</span>
+                  <a
+                    href={dosen.email ? `mailto:${dosen.email}` : '#'}
+                    class="flex items-center gap-2 break-all text-sm font-semibold text-[#0b5c3d] hover:underline"
                   >
-                    <Mail class="w-4 h-4 flex-shrink-0 text-emerald-600" />
+                    <Mail class="h-4 w-4 shrink-0" />
                     {dosen.email || '-'}
                   </a>
                 </div>
 
                 <div>
-                  <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Program Studi</span>
-                  <p class="text-slate-800 font-semibold text-sm flex items-center gap-1.5">
-                    <School class="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                  <span class="mb-1 block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Program Studi</span>
+                  <p class="flex items-center gap-2 text-sm font-semibold text-slate-700">
+                    <School class="h-4 w-4 shrink-0 text-[#0b5c3d]" />
                     Teknik Informatika (S1)
                   </p>
                 </div>
 
                 <div>
-                  <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Fakultas / Instansi</span>
-                  <p class="text-slate-800 font-semibold text-sm flex items-center gap-1.5">
-                    <Building2 class="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                  <span class="mb-1 block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Fakultas / Instansi</span>
+                  <p class="flex items-center gap-2 text-sm font-semibold text-slate-700">
+                    <Building2 class="h-4 w-4 shrink-0 text-[#0b5c3d]" />
                     {dosen.fakultas || 'Fakultas Sains dan Teknologi'}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-              <h3 class="font-black text-slate-900 text-lg sm:text-xl mb-6 flex items-center gap-3 border-b border-slate-100 pb-4">
-                <div class="w-10 h-10 bg-blue-50 text-blue-700 rounded-xl flex items-center justify-center">
-                  <BookOpen class="w-5 h-5" />
-                </div>
+            <div class="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 class="mb-5 flex items-center gap-3 border-b border-slate-100 pb-4 text-lg font-black text-slate-900 sm:text-xl">
+                <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#edf4e8] text-[#0b5c3d]">
+                  <BookOpen class="h-5 w-5" />
+                </span>
                 {isEn ? 'Publications & Portals' : 'Publikasi & Portal Riset'}
               </h3>
 
               <div class="space-y-3">
-                <a 
-                  href={dosen.google_scholar || '#'} 
-                  target={dosen.google_scholar ? "_blank" : "_self"} 
+                <a
+                  href={dosen.google_scholar || '#'}
+                  target={dosen.google_scholar ? "_blank" : "_self"}
                   rel="noopener noreferrer"
-                  class={`flex items-center justify-between p-4 rounded-2xl transition-all border ${
-                    dosen.google_scholar 
-                      ? 'bg-blue-50/50 hover:bg-blue-50 border-blue-100 text-blue-900 font-bold hover:shadow-sm' 
-                      : 'bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed'
+                  class={`flex items-center justify-between rounded-2xl border p-4 transition-all ${
+                    dosen.google_scholar
+                      ? 'border-[#d3e5c8] bg-[#edf4e8] text-[#1f4b3a] hover:bg-[#e2f0d9]'
+                      : 'cursor-not-allowed border-slate-100 bg-slate-50 text-slate-400'
                   }`}
                 >
                   <div class="flex items-center gap-3">
                     <span class="text-xl">🎓</span>
                     <div>
-                      <p class="text-sm leading-tight">Google Scholar</p>
+                      <p class="text-sm font-bold">Google Scholar</p>
                       <p class="text-xs font-normal text-slate-500">
-                        {dosen.google_scholar ? (isEn ? 'View Citations & Articles' : 'Lihat Sitasi & Artikel') : (isEn ? 'Not linked' : 'Belum ditautkan')}
+                        {dosen.google_scholar ? (isEn ? 'View articles & citations' : 'Lihat sitasi & artikel') : (isEn ? 'Not linked' : 'Belum ditautkan')}
                       </p>
                     </div>
                   </div>
-                  {dosen.google_scholar && <ExternalLink class="w-4 h-4 text-blue-600" />}
+                  {dosen.google_scholar && <ExternalLink class="h-4 w-4 text-[#0b5c3d]" />}
                 </a>
 
-                <a 
-                  href={dosen.sinta || '#'} 
-                  target={dosen.sinta ? "_blank" : "_self"} 
+                <a
+                  href={dosen.sinta || '#'}
+                  target={dosen.sinta ? "_blank" : "_self"}
                   rel="noopener noreferrer"
-                  class={`flex items-center justify-between p-4 rounded-2xl transition-all border ${
-                    dosen.sinta 
-                      ? 'bg-emerald-50/50 hover:bg-emerald-50 border-emerald-100 text-emerald-900 font-bold hover:shadow-sm' 
-                      : 'bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed'
+                  class={`flex items-center justify-between rounded-2xl border p-4 transition-all ${
+                    dosen.sinta
+                      ? 'border-[#e8dca0] bg-[#f4f0dd] text-[#4d4218] hover:bg-[#efe4b5]'
+                      : 'cursor-not-allowed border-slate-100 bg-slate-50 text-slate-400'
                   }`}
                 >
                   <div class="flex items-center gap-3">
                     <span class="text-xl">🪪</span>
                     <div>
-                      <p class="text-sm leading-tight">Sinta Kemdikbud</p>
+                      <p class="text-sm font-bold">Sinta Kemdikbud</p>
                       <p class="text-xs font-normal text-slate-500">
-                        {dosen.sinta ? (isEn ? 'View Sinta Score & Metrics' : 'Lihat Skor & Portofolio Sinta') : (isEn ? 'Not linked' : 'Belum ditautkan')}
+                        {dosen.sinta ? (isEn ? 'View Sinta metrics' : 'Lihat skor & portofolio') : (isEn ? 'Not linked' : 'Belum ditautkan')}
                       </p>
                     </div>
                   </div>
-                  {dosen.sinta && <ExternalLink class="w-4 h-4 text-emerald-600" />}
+                  {dosen.sinta && <ExternalLink class="h-4 w-4 text-[#5a4c18]" />}
                 </a>
               </div>
             </div>
-
           </div>
 
-          {/* Right Column: Educational History & Research Interests */}
-          <div class="lg:col-span-2 space-y-8">
-            
-            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-              <h3 class="font-black text-slate-900 text-xl mb-6 flex items-center gap-3 border-b border-slate-100 pb-4">
-                <div class="w-10 h-10 bg-emerald-50 text-emerald-700 rounded-xl flex items-center justify-center">
-                  <GraduationCap class="w-5 h-5" />
-                </div>
+          <div class="space-y-8">
+            <div class="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 class="mb-5 flex items-center gap-3 border-b border-slate-100 pb-4 text-xl font-black text-slate-900">
+                <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#edf4e8] text-[#0b5c3d]">
+                  <GraduationCap class="h-5 w-5" />
+                </span>
                 {isEn ? 'Educational Background' : 'Riwayat Pendidikan'}
               </h3>
 
               {pendidikanList.length > 0 ? (
-                <div class="relative pl-6 sm:pl-8 space-y-6 before:absolute before:left-2 sm:before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-emerald-200">
+                <div class="relative space-y-4 pl-6 before:absolute before:left-2 before:top-1 before:bottom-1 before:w-0.5 before:bg-[#dfe8d2]">
                   {pendidikanList.map((item, idx) => (
-                    <div class="relative group">
-                      <div class="absolute -left-6 sm:-left-8 top-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-600 border-4 border-white shadow-md group-hover:scale-125 transition-transform"></div>
-                      <div class="bg-slate-50 hover:bg-emerald-50/50 p-4 rounded-2xl border border-slate-100 transition-colors">
-                        <span class="inline-block px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-md mb-1">
-                          Jenjang Pendidikan #{idx + 1}
+                    <div class="relative">
+                      <span class="absolute -left-[26px] top-1.5 h-4 w-4 rounded-full border-4 border-white bg-[#0b5c3d] shadow-sm"></span>
+                      <div class="rounded-2xl border border-slate-100 bg-slate-50 p-4 transition-colors hover:bg-[#edf4e8]">
+                        <span class="mb-2 inline-block rounded-md bg-[#edf4e8] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#0b5c3d]">
+                          {isEn ? 'Education' : 'Pendidikan'} #{idx + 1}
                         </span>
-                        <p class="text-slate-800 font-bold text-base sm:text-lg">
-                          {item}
-                        </p>
+                        <p class="text-base font-bold text-slate-800">{item}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div class="p-6 bg-slate-50 rounded-2xl text-center text-slate-500 text-sm">
+                <div class="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-500">
                   {isEn ? 'Educational background data is not specified.' : 'Informasi riwayat pendidikan belum tersedia.'}
                 </div>
               )}
             </div>
 
-            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-              <h3 class="font-black text-slate-900 text-xl mb-6 flex items-center gap-3 border-b border-slate-100 pb-4">
-                <div class="w-10 h-10 bg-amber-50 text-amber-700 rounded-xl flex items-center justify-center">
-                  <FileText class="w-5 h-5" />
-                </div>
+            <div class="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 class="mb-5 flex items-center gap-3 border-b border-slate-100 pb-4 text-xl font-black text-slate-900">
+                <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f4f0dd] text-[#5a4c18]">
+                  <FileText class="h-5 w-5" />
+                </span>
                 {isEn ? 'Research Interests & Expertise' : 'Bidang Keahlian & Riset'}
               </h3>
 
               {keahlianList.length > 0 ? (
                 <div class="flex flex-wrap gap-2.5">
                   {keahlianList.map((item: string) => (
-                    <span class="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-emerald-100 hover:text-emerald-900 text-slate-700 text-sm font-semibold rounded-xl transition-all">
-                      <Sparkles class="w-3.5 h-3.5 text-emerald-600" />
+                    <span class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-sm font-semibold text-slate-700 transition-colors hover:border-[#d3e5c8] hover:bg-[#edf4e8] hover:text-[#0b5c3d]">
+                      <Sparkles class="h-3.5 w-3.5 text-[#b58d18]" />
                       {item}
                     </span>
                   ))}
                 </div>
               ) : (
-                <div class="p-4 bg-slate-50 rounded-2xl text-slate-400 text-sm italic">
+                <div class="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm italic text-slate-400">
                   {isEn ? 'No expertise tags provided.' : 'Belum ada bidang keahlian yang ditambahkan.'}
                 </div>
               )}
             </div>
-
           </div>
-
         </div>
 
         {/* Other Lecturers Section */}
@@ -452,7 +442,7 @@ const keahlianList = dosen?.bidang_keahlian
 
               <a 
                 href={localizePath("/dosen-pages/dosen", lang)}
-                class="inline-flex items-center gap-2 text-emerald-700 hover:text-emerald-800 font-bold text-sm hover:underline"
+                class="inline-flex items-center gap-2 text-[#0b5c3d] hover:text-[#0a4d35] font-bold text-sm hover:underline"
               >
                 {isEn ? 'View All Lecturers' : 'Lihat Semua Dosen'} &rarr;
               </a>
@@ -462,7 +452,7 @@ const keahlianList = dosen?.bidang_keahlian
               {otherDosen.map((item: any) => (
                 <a 
                   href={localizePath(`/dosen/${item.slug || item.id}`, lang)}
-                  class="group bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-xl hover:border-emerald-200 transition-all duration-300 flex flex-col justify-between"
+                  class="group bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-xl hover:border-[#d3e5c8] transition-all duration-300 flex flex-col justify-between"
                 >
                   <div>
                     <div class="w-full aspect-[3/4] rounded-xl overflow-hidden bg-slate-100 mb-4 relative">
@@ -483,7 +473,7 @@ const keahlianList = dosen?.bidang_keahlian
                     </p>
                   </div>
 
-                  <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-emerald-700 font-bold">
+                  <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-[#0b5c3d] font-bold">
                     <span>{isEn ? 'View Profile' : 'Lihat Detail'}</span>
                     <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
                   </div>
