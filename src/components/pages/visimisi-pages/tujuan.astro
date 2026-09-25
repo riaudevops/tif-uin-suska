@@ -1,57 +1,89 @@
 ---
 import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
+import { Target, BriefcaseBusiness, Users, Sparkles } from '@lucide/astro';
+
 const lang = getLocaleFromUrl(Astro);
 const isEn = lang === 'en';
+
+const goals = isEn
+  ? [
+      {
+        num: '01',
+        title: 'National Academic Excellence',
+        desc: 'Strengthening graduates who are able to develop science and technology in Data Analytics and Software Development with quality and competitiveness at the national level.',
+        icon: Target
+      },
+      {
+        num: '02',
+        title: 'Professional Readiness',
+        desc: 'Preparing graduates to work in professional, adaptive, productive, and collaborative environments that support multidisciplinary development.',
+        icon: BriefcaseBusiness
+      },
+      {
+        num: '03',
+        title: 'Social Contribution and Values',
+        desc: 'Applying information technology to solve community problems while upholding the integration of science and Islamic values.',
+        icon: Users
+      }
+    ]
+  : [
+      {
+        num: '01',
+        title: 'Keunggulan Akademik Nasional',
+        desc: 'Menghasilkan lulusan yang mampu mengembangkan ilmu pengetahuan dan teknologi di bidang Data Analytics dan Software Development secara berkualitas dan berdaya saing nasional.',
+        icon: Target
+      },
+      {
+        num: '02',
+        title: 'Kesiapan Profesional',
+        desc: 'Mempersiapkan lulusan untuk bekerja dalam lingkungan profesional yang adaptif, produktif, dan kolaboratif serta mendukung pengembangan lintas disiplin.',
+        icon: BriefcaseBusiness
+      },
+      {
+        num: '03',
+        title: 'Kontribusi Sosial dan Nilai',
+        desc: 'Menerapkan teknologi informasi untuk menyelesaikan permasalahan masyarakat sambil menjaga integrasi ilmu dan nilai-nilai keislaman.',
+        icon: Users
+      }
+    ];
 ---
 
-<section data-aos="fade-up" class="relative bg-gradient-to-br from-[#004d2c] via-green-800 to-green-700">
-  <div class="max-w-7xl mx-auto px-6 py-20">
-    <div class="mb-12 border-l-8 border-yellow-400 pl-6">
-        <h1 data-aos="fade-up" class="text-4xl font-bold text-white tracking-tight">
-            {isEn ? "Study Program Goals" : "Tujuan Program Studi"}
-        </h1>
-        <p class="text-lg text-yellow-200 mt-2 font-medium">
-            {isEn ? "Faculty of Science and Technology UIN Suska Riau" : "Fakultas Sains dan Teknologi UIN Suska Riau"}
-        </p>
-    </div>
+<section data-aos="fade-up" class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+  <div class="mb-10 text-center">
+    <span class="mb-3 inline-flex items-center gap-2 rounded-full bg-secondary/15 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-900">
+      <Sparkles class="h-3.5 w-3.5 text-primary" />
+      {isEn ? 'Goals' : 'Tujuan'}
+    </span>
+    <h2 class="text-3xl font-black text-gray-900 sm:text-4xl">
+      {isEn ? 'Study Program Goals' : 'Tujuan Program Studi'}
+    </h2>
+    <p class="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-gray-600">
+      {isEn
+        ? 'These goals describe the expected direction of the study program in producing graduates who are academically capable, professionally ready, and socially beneficial.'
+        : 'Tujuan ini menggambarkan arah yang diharapkan dari program studi dalam menghasilkan lulusan yang berkemampuan akademik, siap kerja, dan bermanfaat bagi masyarakat.'}
+    </p>
+  </div>
 
-    <div class="space-y-6">
-        
-        <div class="group flex flex-col md:flex-row items-center bg-white rounded-2xl overflow-hidden hover:border-yellow-400 transition-all duration-300 shadow-sm hover:shadow-xl">
-            <div class="w-full md:w-16 bg-[#004d2c] flex items-center justify-center py-4 md:py-0 self-stretch">
-                <span class="text-white text-2xl font-bold">01</span>
+  <div class="space-y-5">
+    {goals.map((goal) => {
+      const Icon = goal.icon;
+      return (
+        <div class="group flex flex-col overflow-hidden rounded-[28px] border border-gray-200 bg-white shadow-[0_24px_60px_-35px_rgba(15,23,42,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_24px_60px_-30px_rgba(0,61,42,0.35)] md:flex-row">
+          <div class="flex w-full items-center justify-center bg-gradient-to-br from-[#003d2a] to-[#0a5d3d] px-6 py-5 md:w-24 md:self-stretch">
+            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-white">
+              <Icon class="h-5 w-5" />
             </div>
-            <div class="p-6 flex-1">
-                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#004d2c] transition-colors">{isEn ? "National Science & Technology Excellence" : "Keunggulan IPTEK Nasional"}</h3>
-                <p class="text-gray-600 leading-relaxed">
-                    {isEn ? "Producing graduates capable of developing science and technology in the field of" : "Menghasilkan lulusan yang mampu mengembangkan ilmu pengetahuan dan teknologi di bidang"} <span class="text-[#05673f] font-semibold">Data Analytics</span> {isEn ? "and" : "dan"} <span class="text-[#05673f] font-semibold">Software Development</span>{isEn ? " that are excellent and competitive at the national level." : " yang unggul serta kompetitif di tingkat nasional."}
-                </p>
-            </div>
-        </div>
+          </div>
 
-        <div class="group flex flex-col md:flex-row items-center bg-white rounded-2xl overflow-hidden hover:border-yellow-400 transition-all duration-300 shadow-sm hover:shadow-xl">
-            <div class="w-full md:w-16 bg-[#004d2c] flex items-center justify-center py-4 md:py-0 self-stretch">
-                <span class="text-white text-2xl font-bold">02</span>
+          <div class="flex-1 p-6 sm:p-7">
+            <div class="mb-2 flex items-center gap-3">
+              <span class="font-mono text-2xl font-black text-primary">{goal.num}</span>
+              <h3 class="text-xl font-bold text-gray-900">{goal.title}</h3>
             </div>
-            <div class="p-6 flex-1">
-                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#004d2c] transition-colors">{isEn ? "Professional Career & Transdisciplinary" : "Karir Profesional & Transdisiplin"}</h3>
-                <p class="text-gray-600 leading-relaxed">
-                    {isEn ? 'Producing professionals who are ' : 'Mencetak profesional yang '}<span class="bg-green-100 px-1 rounded text-green-800">{isEn ? "adaptive, productive, and innovative" : "adaptif, produktif, dan inovatif"}</span>{isEn ? ', with high collaboration capabilities in transdisciplinary science development.' : ', serta memiliki kemampuan kolaborasi tinggi dalam pengembangan ilmu lintas disiplin (transdisiplin).'}
-                </p>
-            </div>
+            <p class="text-base leading-relaxed text-gray-600">{goal.desc}</p>
+          </div>
         </div>
-
-        <div class="group flex flex-col md:flex-row items-center bg-white rounded-2xl overflow-hidden hover:border-yellow-400 transition-all duration-300 shadow-sm hover:shadow-xl">
-            <div class="w-full md:w-16 bg-[#004d2c] flex items-center justify-center py-4 md:py-0 self-stretch">
-                <span class="text-white text-2xl font-bold">03</span>
-            </div>
-            <div class="p-6 flex-1">
-                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#004d2c] transition-colors">{isEn ? "Community Solutions & Islamic Values" : "Solusi Masyarakat & Nilai Keislaman"}</h3>
-                <p class="text-gray-600 leading-relaxed">
-                    {isEn ? 'Providing real solutions to community problems through the application of ' : 'Memberikan solusi nyata bagi permasalahan masyarakat melalui penerapan '}<span class="font-semibold italic text-gray-800">{isEn ? "Information Technology" : "Teknologi Informasi"}</span>{isEn ? ' in line with the integration of ' : ' yang selaras dengan integrasi '}<span class="text-[#05673f] font-semibold">{isEn ? "Islamic values" : "nilai-nilai Islam"}</span>.
-                </p>
-            </div>
-        </div>
-        </div>
-    </div>
+      );
+    })}
+  </div>
 </section>
