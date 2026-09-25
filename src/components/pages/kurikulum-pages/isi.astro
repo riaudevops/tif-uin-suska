@@ -17,7 +17,6 @@ try {
 
 const kurikulumList = rawKurikulum;
 
-// Helper: ubah "Semester I" / "Semester IV" dll jadi angka (1, 4, ...)
 function parseRomanSemester(semesterStr: string): number {
   if (!semesterStr) return 1;
   const roman = semesterStr.replace(/Semester\s*/i, "").trim().toUpperCase();
@@ -31,7 +30,6 @@ function parseRomanSemester(semesterStr: string): number {
   return total || 1;
 }
 
-// Group by curriculum version and semester
 const curriculumVersions: { [version: string]: { [semester: number]: any[] } } = {};
 
 kurikulumList.forEach((item: any) => {
@@ -47,33 +45,30 @@ kurikulumList.forEach((item: any) => {
     nama_mk: item.nama_matakuliah || "",
     singkatan: item.singkatan || "",
     sks: Number(item.sks) || 0,
-    prasyarat: item.prasyarat || ""
+    prasyarat: item.prasyarat || "",
   });
 });
 
-// Sort semesters within each version
 Object.keys(curriculumVersions).forEach((v) => {
   const semesters = curriculumVersions[v];
   const sortedSemesters: { [semester: number]: any[] } = {};
-  Object.keys(semesters).sort((a, b) => Number(a) - Number(b)).forEach((semKey) => {
-    const sem = Number(semKey);
-    sortedSemesters[sem] = semesters[sem];
-  });
+  Object.keys(semesters)
+    .sort((a, b) => Number(a) - Number(b))
+    .forEach((semKey) => {
+      const sem = Number(semKey);
+      sortedSemesters[sem] = semesters[sem];
+    });
   curriculumVersions[v] = sortedSemesters;
 });
 
-// Identify active curriculum (highest numeric or default latest)
 const versions = Object.keys(curriculumVersions).sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
 const activeVersion = versions[0] || "2025";
 const activeCurriculum = curriculumVersions[activeVersion] || {};
+const accordionVersions = versions.filter((v) => v !== activeVersion);
 
-// Remaining versions for accordions
-const accordionVersions = versions.filter(v => v !== activeVersion);
-
-// Helper function to convert Arabic to Roman numerals
 function romanize(num: number): string {
   const lookup: { [key: string]: number } = { M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1 };
-  let roman = '';
+  let roman = "";
   let i;
   for (i in lookup) {
     while (num >= lookup[i]) {
@@ -83,65 +78,66 @@ function romanize(num: number): string {
   }
   return roman;
 }
+
+const semesterCount = Object.keys(activeCurriculum).length;
+const totalSks = Object.values(activeCurriculum).reduce((sum: number, courses: any[]) => sum + courses.reduce((courseSum: number, course: any) => courseSum + Number(course.sks || 0), 0), 0);
 ---
 
-<div class="max-w-6xl mx-auto px-6 py-6 font-sans">
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12">
   {versions.length === 0 && (
-  <div class="text-center py-20 text-slate-500">
-    Belum ada data kurikulum yang tersedia.
-  </div>
-)}
-  <!-- Active Curriculum Section -->
+    <div class="rounded-[30px] border border-dashed border-slate-200 bg-slate-50 px-6 py-20 text-center text-slate-500">
+      Belum ada data kurikulum yang tersedia.
+    </div>
+  )}
+  
   <div class="mb-12">
-    <div class="flex items-center gap-4 mb-8">
-      <h2 class="text-2xl font-black text-[#004d2c] tracking-tight uppercase font-heading">
+    <div class="mb-6 flex items-center justify-between gap-4">
+      <h2 class="text-2xl font-black tracking-tight text-[#004d2c] sm:text-3xl">
         Kurikulum {activeVersion}
       </h2>
-      <div class="h-[2px] bg-gradient-to-r from-green-700/20 to-transparent flex-1"></div>
+      <div class="h-px flex-1 bg-gradient-to-r from-[#004d2c]/20 to-transparent"></div>
     </div>
 
-    <div class="space-y-12">
+    <div class="space-y-10">
       {Object.entries(activeCurriculum).map(([semester, courses]: [string, any]) => {
         const totalSKS = courses.reduce((sum: number, c: any) => sum + c.sks, 0);
 
         return (
           <section class="relative">
-            <!-- Semester Header Row matching screenshots -->
-            <div class="flex justify-between items-center bg-slate-50 border border-slate-200/80 px-6 py-3.5 rounded-xl mb-4 font-bold text-slate-800 shadow-sm">
-              <span class="text-base font-black tracking-tight font-heading text-slate-900">
+            <div class="mb-4 flex items-center justify-between rounded-[22px] border border-slate-200 bg-slate-50 px-5 py-3.5 shadow-[0_12px_30px_-25px_rgba(15,23,42,0.35)]">
+              <span class="text-base font-black tracking-tight text-slate-800">
                 Semester {romanize(Number(semester))}
               </span>
-              <span class="text-sm font-black text-[#004d2c] font-sans pr-14 md:pr-16">
+              <span class="text-sm font-black text-[#004d2c]">
                 {totalSKS} SKS
               </span>
             </div>
 
-            <!-- Desktop View: Grid Table -->
-            <div class="hidden md:block overflow-hidden rounded-2xl border border-slate-200/70 shadow-sm bg-white">
-              <table class="w-full text-left border-collapse text-sm">
+            <div class="hidden overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_20px_60px_-35px_rgba(15,23,42,0.25)] md:block">
+              <table class="w-full border-collapse text-left">
                 <thead>
                   <tr class="bg-[#004d2c] text-white">
-                    <th class="py-4 px-6 font-bold uppercase text-[11px] tracking-wider text-center w-16">No</th>
-                    <th class="py-4 px-6 font-bold uppercase text-[11px] tracking-wider w-24">MK</th>
-                    <th class="py-4 px-6 font-bold uppercase text-[11px] tracking-wider w-36">Resmi</th>
-                    <th class="py-4 px-6 font-bold uppercase text-[11px] tracking-wider">Nama Mata Kuliah</th>
-                    <th class="py-4 px-6 font-bold uppercase text-[11px] tracking-wider w-28 text-center">Singkatan</th>
-                    <th class="py-4 px-6 font-bold uppercase text-[11px] tracking-wider w-20 text-center">SKS</th>
-                    <th class="py-4 px-6 font-bold uppercase text-[11px] tracking-wider w-64">Prasyarat</th>
+                    <th class="w-16 px-5 py-4 text-center text-[10px] font-bold uppercase tracking-[0.2em]">No</th>
+                    <th class="w-24 px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">MK</th>
+                    <th class="w-36 px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">Resmi</th>
+                    <th class="px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">Nama Mata Kuliah</th>
+                    <th class="w-28 px-5 py-4 text-center text-[10px] font-bold uppercase tracking-[0.2em]">Singkatan</th>
+                    <th class="w-20 px-5 py-4 text-center text-[10px] font-bold uppercase tracking-[0.2em]">SKS</th>
+                    <th class="w-64 px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">Prasyarat</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                   {courses.map((c: any, index: number) => (
-                    <tr class="hover:bg-green-50/20 transition-colors duration-200">
-                      <td class="py-4 px-6 text-center text-slate-400 font-medium">{c.kode_mk || c.kode_resmi || c.nama_mk ? index + 1 : ""}</td>
-                      <td class="py-4 px-6 font-mono text-slate-500 font-semibold">{c.kode_mk || "-"}</td>
-                      <td class="py-4 px-6 font-mono text-slate-500 font-semibold">{c.kode_resmi || "-"}</td>
-                      <td class="py-4 px-6 font-bold text-slate-800 leading-snug">{c.nama_mk || "-"}</td>
-                      <td class="py-4 px-6 text-center font-bold text-slate-500">{c.singkatan || "-"}</td>
-                      <td class="py-4 px-6 text-center font-bold text-[#004d2c]">{c.sks}</td>
-                      <td class="py-4 px-6 text-slate-600 font-medium text-xs">
+                    <tr class="transition-colors duration-200 hover:bg-[#f5f9f1]">
+                      <td class="px-5 py-4 text-center text-sm font-semibold text-slate-400">{index + 1}</td>
+                      <td class="px-5 py-4 font-mono text-sm font-semibold text-slate-500">{c.kode_mk || "-"}</td>
+                      <td class="px-5 py-4 font-mono text-sm font-semibold text-slate-500">{c.kode_resmi || "-"}</td>
+                      <td class="px-5 py-4 text-sm font-bold leading-snug text-slate-800">{c.nama_mk || "-"}</td>
+                      <td class="px-5 py-4 text-center text-sm font-bold text-slate-500">{c.singkatan || "-"}</td>
+                      <td class="px-5 py-4 text-center text-sm font-black text-[#004d2c]">{c.sks}</td>
+                      <td class="px-5 py-4 text-xs text-slate-600">
                         {c.prasyarat ? (
-                          <span class={`px-2.5 py-1 rounded-full text-[10px] font-bold ${c.prasyarat.toLowerCase() === 'paket wajib' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-amber-50 text-amber-700 border border-amber-100'}`}>
+                          <span class={`inline-flex rounded-full border px-2.5 py-1 text-[10px] font-bold ${c.prasyarat.toLowerCase() === "paket wajib" ? "border-emerald-100 bg-emerald-50 text-emerald-700" : "border-amber-100 bg-amber-50 text-amber-700"}`}>
                             {c.prasyarat}
                           </span>
                         ) : (
@@ -154,33 +150,30 @@ function romanize(num: number): string {
               </table>
             </div>
 
-            <!-- Mobile View: Cards List -->
-            <div class="md:hidden space-y-3">
-              {courses.map((c: any, index: number) => (
-                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-3 flex flex-col justify-between">
-                  <div class="flex justify-between items-start">
-                    <span class="text-[10px] font-bold px-2 py-0.5 bg-slate-100 text-slate-500 rounded-full font-mono">
+            <div class="space-y-3 md:hidden">
+              {courses.map((c: any) => (
+                <div class="rounded-[22px] border border-slate-200 bg-white p-4 shadow-[0_12px_28px_-25px_rgba(15,23,42,0.35)]">
+                  <div class="flex items-center justify-between gap-3">
+                    <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-500">
                       {c.kode_mk || "PILIHAN"}
                     </span>
-                    <span class="text-xs font-mono font-bold text-slate-400">
+                    <span class="text-[10px] font-mono font-bold text-slate-400">
                       {c.kode_resmi || "-"}
                     </span>
                   </div>
-                  <div>
-                    <h4 class="font-bold text-slate-800 text-sm leading-snug">
-                      {c.nama_mk}
-                    </h4>
-                    {c.singkatan && (
-                      <p class="text-xs text-slate-400 font-bold mt-0.5">Singkatan: {c.singkatan}</p>
-                    )}
-                  </div>
-                  <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                  <h4 class="mt-3 text-sm font-bold leading-snug text-slate-800">
+                    {c.nama_mk}
+                  </h4>
+                  {c.singkatan && (
+                    <p class="mt-1 text-[11px] font-bold text-slate-400">Singkatan: {c.singkatan}</p>
+                  )}
+                  <div class="mt-3 flex items-center justify-between border-t border-slate-100 pt-3 text-xs">
                     <div>
                       <span class="text-slate-400">SKS:</span>
-                      <strong class="text-[#004d2c] font-black ml-1 text-sm">{c.sks} SKS</strong>
+                      <strong class="ml-1 font-black text-[#004d2c]">{c.sks} SKS</strong>
                     </div>
                     {c.prasyarat && (
-                      <span class={`px-2.5 py-0.5 rounded-full text-[9px] font-bold ${c.prasyarat.toLowerCase() === 'paket wajib' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-amber-50 text-amber-700 border border-amber-100'}`}>
+                      <span class={`inline-flex rounded-full border px-2 py-0.5 text-[9px] font-bold ${c.prasyarat.toLowerCase() === "paket wajib" ? "border-emerald-100 bg-emerald-50 text-emerald-700" : "border-amber-100 bg-amber-50 text-amber-700"}`}>
                         {c.prasyarat}
                       </span>
                     )}
@@ -194,25 +187,23 @@ function romanize(num: number): string {
     </div>
   </div>
 
-  <!-- Accordion Sections for Older Curriculums -->
   {accordionVersions.length > 0 && (
-    <div class="mt-20 space-y-4">
+    <div class="mt-16 space-y-4">
       {accordionVersions.map((v) => {
         const semesterData = curriculumVersions[v] || {};
         return (
-          <div class="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
-            <!-- Accordion Header -->
+          <div class="overflow-hidden rounded-[26px] border border-slate-200 bg-white shadow-[0_20px_55px_-35px_rgba(15,23,42,0.2)]">
             <button
-              class="w-full flex items-center justify-between px-8 py-5 text-left bg-slate-50 hover:bg-slate-100/50 transition-colors duration-300 cursor-pointer font-bold text-slate-800 border-b border-slate-200/50"
+              class="flex w-full items-center justify-between gap-4 bg-slate-50 px-5 py-4 text-left transition-colors hover:bg-slate-100/60 sm:px-6"
               data-accordion-trigger={v}
               aria-expanded="false"
             >
-              <span class="text-base md:text-lg font-black tracking-tight font-heading text-[#004d2c] uppercase">
+              <span class="text-base font-black tracking-tight text-[#004d2c] sm:text-lg">
                 Kurikulum {v}
               </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-slate-400 transition-transform duration-300 transform"
+                class="h-5 w-5 text-slate-400 transition-transform duration-300"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -222,47 +213,45 @@ function romanize(num: number): string {
               </svg>
             </button>
 
-            <!-- Accordion Content -->
-            <div class="hidden px-8 py-8 space-y-12 bg-white" data-accordion-content={v}>
+            <div class="hidden space-y-10 bg-white px-4 py-6 sm:px-6" data-accordion-content={v}>
               {Object.entries(semesterData).map(([semester, courses]: [string, any]) => {
                 const totalSKS = courses.reduce((sum: number, c: any) => sum + c.sks, 0);
                 return (
-                  <section class="relative font-sans">
-                    <div class="flex justify-between items-center bg-slate-50 border border-slate-200/80 px-6 py-3 rounded-xl mb-4 font-bold text-slate-700 shadow-sm">
-                      <span class="text-sm font-bold font-heading text-slate-800">
+                  <section class="relative">
+                    <div class="mb-4 flex items-center justify-between rounded-[18px] border border-slate-200 bg-slate-50 px-4 py-3">
+                      <span class="text-sm font-black text-slate-800">
                         Semester {romanize(Number(semester))}
                       </span>
-                      <span class="text-xs font-bold text-[#004d2c] font-sans pr-14 md:pr-16">
+                      <span class="text-xs font-black text-[#004d2c]">
                         {totalSKS} SKS
                       </span>
                     </div>
 
-                    <!-- Desktop Accordion Table -->
-                    <div class="hidden md:block overflow-hidden rounded-xl border border-slate-200/70 shadow-sm bg-white">
-                      <table class="w-full text-left border-collapse text-xs">
+                    <div class="hidden overflow-hidden rounded-[20px] border border-slate-200 bg-white md:block">
+                      <table class="w-full border-collapse text-left text-xs">
                         <thead>
-                          <tr class="bg-slate-100 text-slate-700 border-b border-slate-200">
-                            <th class="py-3 px-5 font-bold uppercase text-[10px] tracking-wider text-center w-14">No</th>
-                            <th class="py-3 px-5 font-bold uppercase text-[10px] tracking-wider w-20">MK</th>
-                            <th class="py-3 px-5 font-bold uppercase text-[10px] tracking-wider w-32">Resmi</th>
-                            <th class="py-3 px-5 font-bold uppercase text-[10px] tracking-wider">Nama Mata Kuliah</th>
-                            <th class="py-3 px-5 font-bold uppercase text-[10px] tracking-wider w-24 text-center">Singkatan</th>
-                            <th class="py-3 px-5 font-bold uppercase text-[10px] tracking-wider w-16 text-center">SKS</th>
-                            <th class="py-3 px-5 font-bold uppercase text-[10px] tracking-wider w-56">Prasyarat</th>
+                          <tr class="bg-slate-100 text-slate-700">
+                            <th class="w-14 px-4 py-3 text-center text-[9px] font-bold uppercase tracking-[0.18em]">No</th>
+                            <th class="w-20 px-4 py-3 text-[9px] font-bold uppercase tracking-[0.18em]">MK</th>
+                            <th class="w-32 px-4 py-3 text-[9px] font-bold uppercase tracking-[0.18em]">Resmi</th>
+                            <th class="px-4 py-3 text-[9px] font-bold uppercase tracking-[0.18em]">Nama Mata Kuliah</th>
+                            <th class="w-24 px-4 py-3 text-center text-[9px] font-bold uppercase tracking-[0.18em]">Singkatan</th>
+                            <th class="w-16 px-4 py-3 text-center text-[9px] font-bold uppercase tracking-[0.18em]">SKS</th>
+                            <th class="w-56 px-4 py-3 text-[9px] font-bold uppercase tracking-[0.18em]">Prasyarat</th>
                           </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
                           {courses.map((c: any, index: number) => (
-                            <tr class="hover:bg-slate-50 transition-colors duration-150">
-                              <td class="py-3 px-5 text-center text-slate-400">{index + 1}</td>
-                              <td class="py-3 px-5 font-mono text-slate-500">{c.kode_mk || "-"}</td>
-                              <td class="py-3 px-5 font-mono text-slate-500">{c.kode_resmi || "-"}</td>
-                              <td class="py-3 px-5 font-bold text-slate-700">{c.nama_mk || "-"}</td>
-                              <td class="py-3 px-5 text-center font-bold text-slate-400">{c.singkatan || "-"}</td>
-                              <td class="py-3 px-5 text-center font-bold text-[#004d2c]">{c.sks}</td>
-                              <td class="py-3 px-5 text-slate-500 text-[10px]">
+                            <tr class="transition-colors hover:bg-slate-50">
+                              <td class="px-4 py-3 text-center text-slate-400">{index + 1}</td>
+                              <td class="px-4 py-3 font-mono text-slate-500">{c.kode_mk || "-"}</td>
+                              <td class="px-4 py-3 font-mono text-slate-500">{c.kode_resmi || "-"}</td>
+                              <td class="px-4 py-3 font-bold text-slate-700">{c.nama_mk || "-"}</td>
+                              <td class="px-4 py-3 text-center font-bold text-slate-500">{c.singkatan || "-"}</td>
+                              <td class="px-4 py-3 text-center font-black text-[#004d2c]">{c.sks}</td>
+                              <td class="px-4 py-3 text-[10px] text-slate-500">
                                 {c.prasyarat ? (
-                                  <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded border border-slate-200">
+                                  <span class="inline-flex rounded border border-slate-200 bg-slate-100 px-2 py-0.5 text-[9px] font-bold text-slate-600">
                                     {c.prasyarat}
                                   </span>
                                 ) : (
@@ -275,28 +264,27 @@ function romanize(num: number): string {
                       </table>
                     </div>
 
-                    <!-- Mobile Accordion Card -->
-                    <div class="md:hidden space-y-3">
-                      {courses.map((c: any, index: number) => (
-                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2.5">
-                          <div class="flex justify-between items-center">
-                            <span class="text-[9px] font-bold px-1.5 py-0.5 bg-slate-100 text-slate-500 rounded font-mono">
+                    <div class="space-y-3 md:hidden">
+                      {courses.map((c: any) => (
+                        <div class="rounded-[18px] border border-slate-200 bg-white p-4">
+                          <div class="flex items-center justify-between gap-3">
+                            <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-500">
                               {c.kode_mk || "PILIHAN"}
                             </span>
-                            <span class="text-[10px] font-mono text-slate-400">
+                            <span class="text-[10px] font-mono font-bold text-slate-400">
                               {c.kode_resmi || "-"}
                             </span>
                           </div>
-                          <h4 class="font-bold text-slate-700 text-xs leading-snug">
+                          <h4 class="mt-3 text-xs font-bold leading-snug text-slate-700">
                             {c.nama_mk}
                           </h4>
-                          <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-[11px]">
+                          <div class="mt-3 flex items-center justify-between border-t border-slate-100 pt-3 text-[10px]">
                             <div>
                               <span class="text-slate-400">SKS:</span>
-                              <strong class="text-[#004d2c] font-black ml-1">{c.sks} SKS</strong>
+                              <strong class="ml-1 font-black text-[#004d2c]">{c.sks} SKS</strong>
                             </div>
                             {c.prasyarat && (
-                              <span class="px-1.5 py-0.5 bg-slate-50 text-slate-500 rounded text-[9px] font-semibold border border-slate-100">
+                              <span class="inline-flex rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[9px] font-semibold text-slate-600">
                                 {c.prasyarat}
                               </span>
                             )}
@@ -313,13 +301,12 @@ function romanize(num: number): string {
       })}
     </div>
   )}
-</div>
+</section>
 
 <script is:inline>
   function initAccordions() {
     const triggers = document.querySelectorAll('[data-accordion-trigger]');
-    triggers.forEach(trigger => {
-      // Re-bind to ensure no duplicate event listeners (important for SPAs / page-loads)
+    triggers.forEach((trigger) => {
       const newTrigger = trigger.cloneNode(true);
       trigger.parentNode.replaceChild(newTrigger, trigger);
 
@@ -332,11 +319,11 @@ function romanize(num: number): string {
         newTrigger.setAttribute('aria-expanded', !isExpanded ? 'true' : 'false');
 
         if (!isExpanded) {
-          content.classList.remove('hidden');
-          icon.classList.add('rotate-180');
+          content?.classList.remove('hidden');
+          icon?.classList.add('rotate-180');
         } else {
-          content.classList.add('hidden');
-          icon.classList.remove('rotate-180');
+          content?.classList.add('hidden');
+          icon?.classList.remove('rotate-180');
         }
       });
     });
