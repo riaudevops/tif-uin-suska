@@ -1,0 +1,19 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getLocaleFromUrl, useTranslations } from "@/lib/translations.js";
+import Sejarah from "../../components/pages/profil-pages/sejarah.astro";
+import Informasi from "../../components/pages/profil-pages/informasi.astro";
+import Tujuan from "../../components/pages/profil-pages/tujuan.astro";
+import Prospek from "../../components/pages/profil-pages/prospek.astro";
+
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const isEn = lang === "en";
+---
+
+<Layout title={isEn ? "History & Profile - Informatics Engineering" : "Sejarah & Profil - Teknik Informatika"}>
+  <Sejarah />
+  <Informasi />
+  <Tujuan />
+  <Prospek />
+</Layout>
