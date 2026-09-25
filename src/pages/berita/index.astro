@@ -10,18 +10,28 @@ const rawBaseUrl = (import.meta.env.BASE_API_URL || "http://localhost:8055").rep
 const API_BASE_URL = rawBaseUrl.endsWith("/items") ? rawBaseUrl : `${rawBaseUrl}/items`;
 const ASSET_URL = `${rawBaseUrl.replace(/\/items$/, "")}/assets/`;
 
+// Mengambil token dari file .env
+const API_TOKEN = import.meta.env.DIRECTUS_TOKEN; 
+
 let posts = [];
 try {
   const res = await fetch(
-    `${API_BASE_URL}/berita?fields=id,title,slug,images,date_created,excerpt&sort=-date_created`,
-    { cache: "no-store" }
+    `${API_BASE_URL}/berita?fields=id,user_created,title,slug,date,modified,status,images,excerpt,body,featured_image&sort=-date`,
+    { 
+      cache: "no-store",
+      // Menambahkan headers secara kondisional agar tidak error jika token kosong
+      headers: {
+        "Content-Type": "application/json",
+        ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {})
+      }
+    }
   );
 
   if (res.ok) {
     const json = await res.json();
     posts = json.data || [];
   } else {
-    console.error("Gagal mengambil data berita");
+    console.error(`Gagal mengambil data berita. Status: ${res.status} ${res.statusText}`);
   }
 } catch (error) {
   console.error("Terjadi kesalahan saat fetch data berita:", error);
