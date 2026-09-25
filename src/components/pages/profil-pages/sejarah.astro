@@ -1,113 +1,252 @@
 ---
-import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
+import { getLocaleFromUrl, useTranslations, localizePath } from "@/lib/translations.js";
+import {
+  Home,
+  ChevronRight,
+  Award,
+  Calendar,
+  Sparkles,
+  GraduationCap,
+  Building2,
+  CheckCircle2,
+  Milestone,
+  History,
+  TrendingUp
+} from "@lucide/astro";
+
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
+const isEn = lang === "en";
+
+const milestones = isEn
+  ? [
+      {
+        year: "1999",
+        title: "Study Program Establishment",
+        desc: "Founded under the Faculty of Science and Technology, established based on the Directorate General of Islamic Community Guidance Decree No. 4469/D/T/2004 dated May 14, 1999.",
+        badge: "Inception",
+        icon: Building2
+      },
+      {
+        year: "2004",
+        title: "Higher Education Operational License",
+        desc: "Strengthened national academic legality with the operational permit decree from Directorate General of Higher Education (Dirjen Dikti Depdiknas) No. 4469/D/T/2004 dated November 12, 2004.",
+        badge: "Legal Standing",
+        icon: CheckCircle2
+      },
+      {
+        year: "2006",
+        title: "Institutional Integration into UIN",
+        desc: "Institutional integration and alignment following the transformation of IAIN into State Islamic University (UIN) Sultan Syarif Kasim Riau via Decree No. DJ.II/26/2006.",
+        badge: "Integration",
+        icon: Milestone
+      },
+      {
+        year: "2020",
+        title: "OBE Curriculum and AI Research Development",
+        desc: "Curriculum reform was carried out through the implementation of Outcomes-Based Education (OBE) and the strengthening of research capacity in the field of AI and optimization.",
+        badge: "Innovation",
+        icon: TrendingUp
+      },
+      {
+        year: "2025",
+        title: "LAM-INFOKOM 'Unggul' Accreditation",
+        desc: "The study program achieved the highest national accreditation tier, 'Unggul', through Decree No. 086/SK/LAM-INFOKOM/2025.",
+        badge: "Excellence",
+        icon: Award
+      }
+    ]
+  : [
+      {
+        year: "1999",
+        title: "Inisiasi & Pendirian Program Studi",
+        desc: "Program studi didirikan di bawah naungan Fakultas Sains dan Teknologi UIN Suska Riau berdasarkan Surat Keputusan Dirjen Binbaga Islam No. 4469/D/T/2004 tertanggal 14 Mei 1999.",
+        badge: "Awal Berdiri",
+        icon: Building2
+      },
+      {
+        year: "2004",
+        title: "Izin Operasional Dirjen Dikti",
+        desc: "Status penyelenggaraan program studi diperkuat dengan Surat Keputusan Dirjen Dikti Depdiknas No. 4469/D/T/2004 tertanggal 12 November 2004.",
+        badge: "Legalitas Resmi",
+        icon: CheckCircle2
+      },
+      {
+        year: "2006",
+        title: "Integrasi Kelembagaan UIN Suska Riau",
+        desc: "Kelembagaan program studi mengikuti proses integrasi universitas sebagai Universitas Islam Negeri Sultan Syarif Kasim Riau melalui SK Dirjen Binbaga Islam No. DJ.II/26/2006.",
+        badge: "Transformasi",
+        icon: Milestone
+      },
+      {
+        year: "2020",
+        title: "Kurikulum OBE dan Pengembangan Riset AI",
+        desc: "Kurikulum diperbarui melalui pendekatan Outcomes-Based Education (OBE) serta penguatan kapasitas riset dalam bidang AI dan optimasi.",
+        badge: "Inovasi",
+        icon: TrendingUp
+      },
+      {
+        year: "2025",
+        title: "Akreditasi Unggul LAM-INFOKOM",
+        desc: "Program studi meraih predikat akreditasi tertinggi, 'Unggul', berdasarkan SK No. 086/SK/LAM-INFOKOM/2025.",
+        badge: "Pencapaian Mutu",
+        icon: Award
+      }
+    ];
 ---
 
-<nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
-    <ol class="flex items-center space-x-2 text-slate-500">
-        <li class="flex items-center">
-            <a
-                href={localizePath("/", lang)}
-                class="hover:text-emerald-700 transition flex items-center gap-1"
-            >
-                <svg
-                    class="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    ><path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                    ></path></svg
-                >
-                {t("bread.home")}
-            </a>
-        </li>
-        <li class="text-slate-300">/</li>
-        <li>
-            <a href={localizePath("/profil", lang)} class="hover:text-emerald-700 transition">
-                {t("bread.profil")}
-            </a>
-        </li>
-        <li class="text-slate-300">/</li>
-        <li class="text-emerald-800 font-semibold italic">{lang === 'en' ? "History" : "Sejarah"}</li>
-    </ol>
+<!-- Breadcrumb Navigation -->
+<nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 pb-4 text-sm" aria-label="Breadcrumb">
+  <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100">
+    <li class="flex items-center">
+      <a
+        href={localizePath("/", lang)}
+        class="flex items-center gap-1.5 hover:text-primary transition-colors duration-200"
+      >
+        <Home class="w-4 h-4 text-gray-400" />
+        <span>{t("bread.home")}</span>
+      </a>
+    </li>
+    <li class="text-gray-300">
+      <ChevronRight class="w-4 h-4" />
+    </li>
+    <li>
+      <span class="text-gray-500">
+        {t("bread.profil")}
+      </span>
+    </li>
+    <li class="text-gray-300">
+      <ChevronRight class="w-4 h-4" />
+    </li>
+    <li class="text-primary font-semibold">
+      {isEn ? "History & Journey" : "Sejarah & Perjalanan"}
+    </li>
+  </ol>
 </nav>
 
-<section data-aos="fade-up" class="relative py-12">
-  <div class="max-w-7xl mx-auto px-6 lg:px-8">
-    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#043826] via-[#014d2c] to-[#023b2d] min-h-[440px] flex items-center shadow-2xl shadow-emerald-900/30">
+<!-- Hero Section -->
+<section data-aos="fade-up" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+  <div class="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-[#003d2a] via-[#0a5d3d] to-[#7ca25c] p-8 sm:p-10 lg:p-14 shadow-[0_28px_80px_-30px_rgba(0,61,42,0.8)]">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(245,201,86,0.12),_transparent_30%),radial-gradient(circle_at_bottom_left,_rgba(255,255,255,0.04),_transparent_35%)]"></div>
+    <div class="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-secondary/10 blur-3xl"></div>
+    <div class="absolute -left-16 bottom-0 h-48 w-48 rounded-full bg-white/5 blur-3xl"></div>
 
-      <div class="absolute inset-0 bg-[url('/landing-pages/gedung-faste.jpg')] bg-cover bg-center opacity-10 mix-blend-overlay"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-[#043826]/80 via-[#014d2c]/85 to-transparent"></div>
+    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+      <div class="lg:col-span-7 space-y-6 text-left">
+        <div>
+          <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
+            <History class="w-3.5 h-3.5 text-secondary" />
+            {isEn ? "Since 1999 • 25+ Years of Growth" : "Sejak 1999 • 25+ Tahun Perkembangan"}
+          </span>
 
-      <div class="absolute -right-24 -top-24 w-72 h-72 bg-yellow-400/6 rounded-full blur-[70px] pointer-events-none"></div>
-
-      <div class="relative z-10 w-full p-8 md:p-12 lg:p-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-
-        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-
-          <div>
-            <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest inline-block">{t("page.sejarah.badge")}</span>
-
-            <h1 data-aos="fade-up" class="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.05] tracking-tight mt-4">
-              {t("page.sejarah.title1")} <span class="text-yellow-300">{t("page.sejarah.title2")}</span>
-              <br />
-              <span class="text-yellow-100/90">{t("page.sejarah.title3")}</span>
-            </h1>
-          </div>
-
-          <div class="relative bg-white/5 backdrop-blur-md border border-white/10 p-6 md:p-8 rounded-2xl md:rounded-r-3xl md:border-l-4 md:border-l-yellow-400 transition-colors duration-300">
-            <p class="text-lg md:text-xl text-slate-200 leading-relaxed font-light italic">
-              "{t("page.sejarah.quote")}"
-            </p>
-
-            <div class="mt-6 flex flex-col sm:flex-row items-center lg:items-start lg:justify-start gap-4">
-              <div class="flex items-center gap-2 px-4 py-2.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
-                <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                <span class="text-white text-sm font-bold tracking-wide">{t("page.sejarah.akreditasi")}</span>
-              </div>
-              <span class="text-xs text-slate-300 font-mono py-2">SK No. 086/SK/LAM-INFOKOM/2025</span>
-            </div>
-          </div>
-
+          <h1 class="mt-4 text-3xl sm:text-4xl md:text-5xl font-black leading-tight tracking-tight text-white">
+            {isEn ? "History and Development of" : "Sejarah dan Perkembangan"}
+            <span class="mt-2 block text-secondary">
+              {isEn ? "Informatics Engineering" : "Teknik Informatika UIN Suska"}
+            </span>
+          </h1>
         </div>
 
-        <div class="hidden lg:flex lg:col-span-5 items-center justify-center relative">
-          <div class="relative w-64 h-64 flex items-center justify-center">
-            <div class="absolute inset-0 border-2 border-dashed border-emerald-500/30 rounded-full"></div>
+        <div class="rounded-r-2xl border-l-4 border-secondary bg-[#dcecd1]/10 p-5 sm:p-6 backdrop-blur-sm">
+          <p class="text-base sm:text-lg leading-relaxed text-gray-100 italic">
+            "{isEn
+              ? 'Since its founding in 1999, the study program has developed through changes in institutional structure, curriculum refinement, and strengthening of academic and research capacity.'
+              : 'Sejak berdirinya pada 1999, program studi ini berkembang melalui perubahan struktur kelembagaan, pembaruan kurikulum, serta penguatan kapasitas akademik dan riset.'}"
+          </p>
 
-            <div class="absolute inset-4 border border-yellow-400/20 bg-[#022c22]/50 backdrop-blur-sm rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(250,204,21,0.08)]">
-              <div class="text-center relative z-10">
-                <span class="block text-6xl font-black text-white drop-shadow-sm">1999</span>
-                <span class="block text-emerald-300 text-xs font-bold tracking-[0.4em] uppercase mt-2">Established</span>
-              </div>
+          <div class="mt-5 flex flex-wrap items-center gap-3 text-xs sm:text-sm">
+            <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 font-medium text-white ring-1 ring-white/10">
+              <Award class="w-4 h-4 text-secondary" />
+              <span>{isEn ? "Accreditation: 'Unggul'" : "Akreditasi Unggul"}</span>
             </div>
+            <span class="font-mono text-[11px] text-gray-200">SK No. 086/SK/LAM-INFOKOM/2025</span>
           </div>
         </div>
+      </div>
 
+      <div class="lg:col-span-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+        <div class="rounded-2xl border border-white/10 bg-[#dfeec5]/10 p-6 text-center backdrop-blur-md">
+          <span class="block text-4xl font-black text-secondary sm:text-5xl">1999</span>
+          <span class="mt-2 block text-[11px] font-semibold uppercase tracking-[0.22em] text-gray-200">
+            {isEn ? "Founding Year" : "Tahun Didirikan"}
+          </span>
+        </div>
+
+        <div class="rounded-2xl border border-white/10 bg-[#e4efd9]/10 p-6 text-center backdrop-blur-md">
+          <span class="block text-4xl font-black text-white sm:text-5xl">3.000+</span>
+          <span class="mt-2 block text-[11px] font-semibold uppercase tracking-[0.22em] text-gray-200">
+            {isEn ? "Alumni Across Industry" : "Alumni Berkarir"}
+          </span>
+        </div>
+
+        <div class="rounded-2xl border border-secondary/30 bg-secondary/10 p-6 text-center sm:col-span-2 lg:col-span-1">
+          <div class="flex items-center justify-center gap-2 text-secondary">
+            <GraduationCap class="w-5 h-5" />
+            <span class="text-sm font-bold uppercase tracking-[0.2em]">{isEn ? "Excellence" : "Unggul"}</span>
+          </div>
+          <p class="mt-3 text-sm text-gray-100">
+            {isEn ? "Committed to academic quality and relevance to industry needs." : "Berkomitmen pada mutu akademik dan relevansi terhadap kebutuhan industri."}
+          </p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<style>
-    @keyframes pulse-slow {
-        0%,
-        100% {
-            transform: scale(1);
-            opacity: 0.8;
-        }
-        50% {
-            transform: scale(1.05);
-            opacity: 1;
-        }
-    }
+<!-- Milestone Timeline Section -->
+<section data-aos="fade-up" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+  <div class="mx-auto mb-12 max-w-3xl text-center">
+    <span class="mb-3 inline-flex items-center gap-2 rounded-full bg-secondary/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-900">
+      <Sparkles class="w-3.5 h-3.5 text-primary" />
+      {isEn ? "Chronological Milestones" : "Linimasa Transformasi"}
+    </span>
+    <h2 class="text-2xl font-black text-gray-900 sm:text-3xl">
+      {isEn ? "Key Milestones in Our Journey" : "Tonggak Sejarah & Jejak Langkah Prodi"}
+    </h2>
+    <p class="mt-3 text-base leading-relaxed text-gray-600">
+      {isEn
+        ? "The growth of the program is reflected in its institutional milestones, curriculum development, and continued commitment to academic quality."
+        : "Perkembangan program studi terlihat dari perjalanan kelembagaan, pembaruan kurikulum, dan komitmen berkelanjutan terhadap mutu akademik."}
+    </p>
+  </div>
 
-    .animate-pulse-slow {
-        animation: pulse-slow 4s infinite ease-in-out;
-    }
-</style>
+  <div class="relative max-w-5xl mx-auto">
+    <div class="absolute left-5 top-0 bottom-0 w-px bg-gradient-to-b from-primary/20 via-primary/80 to-primary/20 lg:left-1/2 lg:-translate-x-1/2"></div>
+
+    <div class="space-y-7 lg:space-y-10">
+      {milestones.map((item, index) => {
+        const IconComponent = item.icon;
+        const isEven = index % 2 === 0;
+
+        return (
+          <div class={`relative pl-10 lg:pl-0 ${isEven ? "lg:flex lg:justify-end" : ""}`}>
+            <div class="absolute left-0 top-7 flex h-9 w-9 items-center justify-center rounded-full border-4 border-white bg-primary text-xs font-bold text-white shadow-lg lg:left-1/2 lg:-translate-x-1/2">
+              {index + 1}
+            </div>
+
+            <div class={`lg:w-[calc(50%-2rem)] ${isEven ? "lg:pr-8" : "lg:pl-8"}`}>
+              <article class="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg sm:p-6">
+                <div class="mb-4 flex items-center justify-between gap-3">
+                  <span class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">
+                    <IconComponent class="w-3.5 h-3.5" />
+                    {item.badge}
+                  </span>
+                  <span class="text-2xl font-black text-primary transition-colors duration-200 group-hover:text-secondary">
+                    {item.year}
+                  </span>
+                </div>
+
+                <h3 class="mb-2 text-lg font-bold text-gray-800 sm:text-xl">
+                  {item.title}
+                </h3>
+                <p class="text-base leading-relaxed text-gray-600">
+                  {item.desc}
+                </p>
+              </article>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>

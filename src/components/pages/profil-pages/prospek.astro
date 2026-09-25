@@ -5,43 +5,45 @@ const t = useTranslations(lang);
 const isEn = lang === 'en';
 ---
 
-<section data-aos="fade-up" class="relative mt-4 py-4 lg:py-16">
-    <div class="max-w-7xl mx-auto px-8">
-        <div
-            class="relative overflow-hidden rounded-3xl shadow-2xl bg-gradient-to-br from-emerald-900 to-green-950 min-h-[250px] flex items-center justify-center p-8 md:p-12 lg:p-16"
-        >
-            <div
-                class="absolute inset-0 bg-[url('/landing-pages/gedung-faste.jpg')] bg-cover bg-center opacity-20"
-            >
-            </div>
-            <div
-                class="absolute inset-0 bg-gradient-to-br from-emerald-900/80 via-green-800/60 to-transparent z-10"
-            >
-            </div>
-
-            <div class="relative z-20 text-white text-center w-full">
-                <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">
+<section data-aos="fade-up" class="relative mt-4 py-6 lg:py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative overflow-hidden rounded-[30px] bg-gradient-to-br from-[#003d2a] via-[#0e5d3d] to-[#0e7b4d] shadow-[0_25px_80px_-28px_rgba(0,61,42,0.8)] p-7 md:p-10 lg:p-14">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,214,102,0.25),_transparent_26%),radial-gradient(circle_at_bottom_left,_rgba(255,255,255,0.10),_transparent_30%)]"></div>
+            <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-secondary/15 blur-3xl"></div>
+           
+            <div class="relative z-10 text-white">
+                <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.25em] text-white/90 backdrop-blur-sm">
+                    <span class="h-2 w-2 rounded-full bg-secondary"></span>
                     {isEn ? 'Future Career Opportunities' : 'Peluang Karir Masa Depan'}
-                </span>
-                <h1 data-aos="fade-up"
-                    class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mt-4"
-                >
-                    {isEn ? 'Job' : 'Prospek'} <span class="text-yellow-400">{isEn ? 'Prospects' : 'Pekerjaan'}</span>
+                </div>
+
+                <h1 data-aos="fade-up" class="text-4xl md:text-5xl lg:text-6xl font-black leading-[0.95] tracking-tight">
+                    {isEn ? 'Career' : 'Prospek'} <span class="text-secondary">{isEn ? 'Paths' : 'Karier'}</span>
                     <br />
-                    {isEn ? 'Informatics Engineering Graduates' : 'Lulusan Teknik Informatika'}
+                    {isEn ? 'for Informatics Graduates' : 'Lulusan Teknik Informatika'}
                 </h1>
+
+                <div class="mt-8 flex flex-wrap gap-3 text-sm text-gray-100">
+                    <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 backdrop-blur-sm">{isEn ? 'Software' : 'Perangkat Lunak'}</span>
+                    <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 backdrop-blur-sm">{isEn ? 'Data & AI' : 'Data & AI'}</span>
+                    <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 backdrop-blur-sm">{isEn ? 'Systems & Infrastructure' : 'Sistem & Infrastruktur'}</span>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<section class="max-w-7xl mx-auto px-8">
-    <div class="text-center mb-12">
-        <h2 data-aos="fade-up" class="text-3xl md:text-4xl font-bold text-emerald-900 mb-4">
-            {isEn ? 'Various Career Opportunities Await' : 'Beragam Kesempatan Karir Menanti'}
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 lg:pb-20">
+    <div class="mb-10 text-center">
+        <span class="mb-3 inline-flex items-center gap-2 rounded-full bg-secondary/15 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-900">
+            <span class="h-2 w-2 rounded-full bg-primary"></span>
+            {isEn ? 'Career Pathways' : 'Jalur Karier'}
+        </span>
+        <h2 data-aos="fade-up" class="text-3xl md:text-4xl font-black text-emerald-900 mb-4">
+            {isEn ? 'Career Opportunities in the Digital Era' : 'Peluang Karier di Era Digital'}
         </h2>
-        <p class="text-slate-600 text-lg max-w-2xl mx-auto">
-            {isEn ? 'Graduates of the Informatics Engineering Study Program are equipped with adaptive competencies with broad global career coverage, from cutting-edge software engineering to network architecture and governance across various modern technology sectors.' : 'Lulusan Program Studi Teknik Informatika dibekali kompetensi adaptif dengan cakupan karier global yang luas mulai dari rekayasa perangkat lunak mutakhir hingga arsitektur dan tata kelola jaringan di berbagai sektor teknologi modern.'}
+        <p class="text-slate-600 text-lg max-w-3xl mx-auto leading-relaxed">
+            {isEn ? 'Graduates of the Informatics Engineering Study Program are prepared to work in software development, systems, data, infrastructure, and digital services across public and private institutions.' : 'Lulusan Program Studi Teknik Informatika dipersiapkan untuk bekerja di bidang pengembangan perangkat lunak, sistem, data, infrastruktur, serta layanan digital di lembaga pemerintah, perusahaan, dan industri teknologi.'}
         </p>
     </div>
 
@@ -51,11 +53,11 @@ const isEn = lang === 'en';
     >
         <!-- Item -->
         <div
-            class="group bg-white rounded-2xl border border-slate-200 p-6 shadow-md hover:border-yellow-400/80 hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+            class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_10px_35px_-20px_rgba(15,23,42,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-secondary/60 hover:shadow-[0_18px_40px_-18px_rgba(0,77,44,0.35)]"
         >
             <div class="flex items-center gap-4">
                 <div
-                    class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 group-hover:bg-emerald-700 group-hover:text-white transition-all duration-300"
+                    class="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 transition-all duration-300 group-hover:bg-emerald-700 group-hover:text-white"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -75,17 +77,17 @@ const isEn = lang === 'en';
                     IT Programmer
                 </span>
             </div>
-            <p class="text-sm text-slate-500 mt-3">
+            <p class="mt-4 text-sm leading-relaxed text-slate-500">
                 {isEn ? 'Developing, testing, and maintaining program code.' : 'Mengembangkan, menguji, dan memelihara kode program.'}
             </p>
         </div>
 
         <div
-            class="group bg-white rounded-2xl border border-slate-200 p-6 shadow-md hover:border-yellow-400/80 hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+            class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_10px_35px_-20px_rgba(15,23,42,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-secondary/60 hover:shadow-[0_18px_40px_-18px_rgba(0,77,44,0.35)]"
         >
             <div class="flex items-center gap-4">
                 <div
-                    class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 group-hover:bg-emerald-700 group-hover:text-white transition-all duration-300"
+                    class="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 transition-all duration-300 group-hover:bg-emerald-700 group-hover:text-white"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -105,17 +107,17 @@ const isEn = lang === 'en';
                     IT Executive
                 </span>
             </div>
-            <p class="text-sm text-slate-500 mt-3">
+            <p class="mt-4 text-sm leading-relaxed text-slate-500">
                 {isEn ? 'Managing technology projects and IT teams.' : 'Mengelola proyek teknologi dan tim IT.'}
             </p>
         </div>
 
         <div
-            class="group bg-white rounded-2xl border border-slate-200 p-6 shadow-md hover:border-yellow-400/80 hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+            class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_10px_35px_-20px_rgba(15,23,42,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-secondary/60 hover:shadow-[0_18px_40px_-18px_rgba(0,77,44,0.35)]"
         >
             <div class="flex items-center gap-4">
                 <div
-                    class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 group-hover:bg-emerald-700 group-hover:text-white transition-all duration-300"
+                    class="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 transition-all duration-300 group-hover:bg-emerald-700 group-hover:text-white"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -134,17 +136,17 @@ const isEn = lang === 'en';
                     IT Administrator
                 </span>
             </div>
-            <p class="text-sm text-slate-500 mt-3">
+            <p class="mt-4 text-sm leading-relaxed text-slate-500">
                 {isEn ? 'Managing systems and technology infrastructure.' : 'Mengelola sistem dan infrastruktur teknologi.'}
             </p>
         </div>
 
         <div
-            class="group bg-white rounded-2xl border border-slate-200 p-6 shadow-md hover:border-yellow-400/80 hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300"
+            class="group rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_10px_35px_-20px_rgba(15,23,42,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-secondary/60 hover:shadow-[0_18px_40px_-18px_rgba(0,77,44,0.35)]"
         >
             <div class="flex items-center gap-4">
                 <div
-                    class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 group-hover:bg-emerald-700 group-hover:text-white transition-all duration-300"
+                    class="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 transition-all duration-300 group-hover:bg-emerald-700 group-hover:text-white"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -163,7 +165,7 @@ const isEn = lang === 'en';
                     IT Manager
                 </span>
             </div>
-            <p class="text-sm text-slate-500 mt-3">
+            <p class="mt-4 text-sm leading-relaxed text-slate-500">
                 {isEn ? 'Leading IT teams and overseeing technology operations.' : 'Memimpin tim IT dan mengawasi operasi teknologi.'}
             </p>
         </div>
@@ -693,7 +695,7 @@ const isEn = lang === 'en';
         class="bg-emerald-50 border-l-4 border-emerald-500 p-8 rounded-r-2xl text-base text-emerald-900 leading-relaxed mt-16 shadow-lg"
     >
         <p class="font-medium">
-            {isEn ? 'Graduates also have career opportunities in various other strategic positions in the government sector, national or multinational corporations, and technology startups.' : 'Lulusan juga memiliki peluang berkarier di berbagai posisi strategis lainnya pada sektor pemerintahan, korporasi nasional maupun multinasional, serta startup teknologi.'}
+            {isEn ? 'Graduates can also contribute in government institutions, private organizations, and technology-based startups that require analytical thinking, technical skills, and digital problem-solving ability.' : 'Lulusan juga berpotensi berkontribusi di lembaga pemerintahan, organisasi swasta, maupun startup berbasis teknologi yang membutuhkan kemampuan analitis, teknis, dan pemecahan masalah digital.'}
         </p>
     </div>
 </section>

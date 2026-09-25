@@ -1,168 +1,188 @@
 ---
-import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
+import { getLocaleFromUrl, useTranslations } from "@/lib/translations.js";
+import {
+  Building2,
+  GraduationCap,
+  Award,
+  FileCheck,
+  FileText,
+  CheckCircle2,
+  Calendar,
+  ShieldCheck,
+  Hash
+} from "@lucide/astro";
+
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
-const isEn = lang === 'en';
+const isEn = lang === "en";
+
+const legalityList = isEn
+  ? [
+      {
+        no: "SK No. 4469/D/T/2004",
+        date: "14 May 1999",
+        title: "Establishment Decree",
+        issuer: "Directorate General of Islamic Guidance (Dirjen Binbaga Islam)",
+        status: "Founding Document"
+      },
+      {
+        no: "SK No. 4469/D/T/2004",
+        date: "12 November 2004",
+        title: "Higher Education Operational Permit",
+        issuer: "Directorate General of Higher Education (Dirjen Dikti Depdiknas)",
+        status: "Operational License"
+      },
+      {
+        no: "SK No. DJ.II/26/2006",
+        date: "2006",
+        title: "Institutional Adjustment Decree",
+        issuer: "Directorate General of Islamic Guidance (Dirjen Binbaga Islam)",
+        status: "Institutional Legality"
+      },
+      {
+        no: "SK No. 086/SK/LAM-INFOKOM/2025",
+        date: "2025–2030",
+        title: "Accreditation Ranking: 'Unggul' (Excellent)",
+        issuer: "LAM-INFOKOM (Independent Accreditation Agency)",
+        status: "Highest National Rating"
+      }
+    ]
+  : [
+      {
+        no: "SK No. 4469/D/T/2004",
+        date: "14 Mei 1999",
+        title: "Surat Keputusan Izin Pendirian",
+        issuer: "Dirjen Binbaga Islam Departemen Agama RI",
+        status: "SK Pendirian"
+      },
+      {
+        no: "SK No. 4469/D/T/2004",
+        date: "12 November 2004",
+        title: "Izin Penyelenggaraan Program Studi",
+        issuer: "Dirjen Dikti Departemen Pendidikan Nasional RI",
+        status: "SK Izin Dikti"
+      },
+      {
+        no: "SK No. DJ.II/26/2006",
+        date: "2006",
+        title: "Penetapan Integrasi Kelembagaan",
+        issuer: "Dirjen Binbaga Islam Departemen Agama RI",
+        status: "SK Kelembagaan"
+      },
+      {
+        no: "SK No. 086/SK/LAM-INFOKOM/2025",
+        date: "2025–2030",
+        title: "Peringkat Akreditasi Unggul",
+        issuer: "LAM-INFOKOM (Lembaga Akreditasi Mandiri)",
+        status: "Akreditasi Unggul"
+      }
+    ];
 ---
 
-<section data-aos="fade-up" class="max-w-7xl mx-auto px-8 py-16 lg:py-24">
-    <div
-        class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100"
-    >
-        <div
-            class="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-slate-100"
-        >
-            <!-- Identitas Prodi (Left Column) -->
-            <div
-                class="bg-emerald-800 p-8 md:p-10 flex flex-col justify-between text-white"
-            >
-                <div>
-                    <div
-                        class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full mb-6"
-                    >
-                        <svg
-                            class="w-4 h-4 text-yellow-400"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                        >
-                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"
-                            ></path><path
-                                fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.01a1 1 0 102 0V5zm0 4a1 1 0 10-2 0v4a1 1 0 102 0V9zm-1 9a1 1 0 100-2 1 1 0 000 2z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span
-                            class="text-[10px] font-bold uppercase tracking-wider"
-                            >{isEn ? 'Study Program Identity' : 'Identitas Prodi'}</span
-                        >
-                    </div>
-                    <h2 data-aos="fade-up" class="text-3xl font-bold leading-tight mb-4">
-                        {isEn ? 'General' : 'Informasi'} <br />{isEn ? 'Basic Information' : 'Dasar Umum'}
-                    </h2>
-                    <p
-                        class="text-emerald-100/70 text-sm leading-relaxed font-light"
-                    >
-                        {isEn ? 'Official establishment data and administrative identity of the Informatics Engineering Study Program at UIN Suska Riau.' : 'Data resmi pendirian dan identitas administratif Program Studi Teknik Informatika UIN Suska Riau.'}
-                    </p>
-                </div>
+<section data-aos="fade-up" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+  <div class="overflow-hidden rounded-[28px] border border-gray-200 bg-white shadow-[0_24px_80px_-40px_rgba(15,23,42,0.35)]">
+    <div class="grid grid-cols-1 lg:grid-cols-12">
+      <div class="lg:col-span-4 bg-gradient-to-br from-[#0b352c] via-[#0f4f3d] to-[#1a684d] p-8 sm:p-10 text-white">
+        <div class="space-y-6">
+          <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
+            <ShieldCheck class="w-3.5 h-3.5 text-secondary" />
+            {isEn ? "Program Identity" : "Identitas Prodi"}
+          </span>
 
-                <div class="mt-12 pt-8 border-t border-white/10">
-                    <span
-                        class="text-xs block uppercase tracking-widest text-emerald-300 mb-2"
-                        >{isEn ? 'Established In' : 'Didirikan Pada'}</span
-                    >
-                    <span class="text-3xl font-black text-yellow-400"
-                        >September 1999</span
-                    >
-                </div>
-            </div>
-
-            <!-- Detail Informasi (Middle Column) -->
-            <div class="p-8 md:p-10 lg:col-span-2">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
-                    <div class="space-y-8">
-                        <div>
-                            <span
-                                class="text-xs font-bold text-emerald-700 uppercase tracking-widest block mb-2"
-                                >{isEn ? 'Faculty' : 'Fakultas'}</span
-                            >
-                            <p
-                                class="text-slate-800 font-semibold text-lg border-l-4 border-yellow-400 pl-4"
-                            >
-                                {isEn ? 'Science and Technology' : 'Sains dan Teknologi'}
-                            </p>
-                        </div>
-                        <div>
-                            <span
-                                class="text-xs font-bold text-emerald-700 uppercase tracking-widest block mb-2"
-                                >{isEn ? 'Higher Education' : 'Perguruan Tinggi'}</span
-                            >
-                            <p
-                                class="text-slate-800 font-medium leading-snug border-l-4 border-yellow-400 pl-4"
-                            >
-                                UIN Sultan Syarif Kasim Riau
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="space-y-6">
-                        <span
-                            class="text-xs font-bold text-slate-500 uppercase tracking-widest block"
-                            >{isEn ? 'Legality History' : 'Riwayat Legalitas'}</span
-                        >
-
-                        <div
-                            class="relative pl-6 pb-2 border-l border-slate-200"
-                        >
-                            <div
-                                class="absolute -left-[6px] top-1 w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-white"
-                            >
-                            </div>
-                            <p class="text-sm font-bold text-slate-800">
-                                4469/D/T/2004 <span
-                                    class="font-normal text-slate-500 ml-1"
-                                    >(14 Mei 1999)</span
-                                >
-                            </p>
-                            <p class="text-xs text-slate-600 mt-1">
-                                {isEn ? 'Establishment Decree - Dirjen Binbaga Islam' : 'SK Pendirian - Dirjen Binbaga Islam'}
-                            </p>
-                        </div>
-
-                        <div
-                            class="relative pl-6 pb-2 border-l border-slate-200"
-                        >
-                            <div
-                                class="absolute -left-[6px] top-1 w-3 h-3 rounded-full bg-yellow-400 ring-2 ring-white"
-                            >
-                            </div>
-                            <p class="text-sm font-bold text-slate-800">
-                                4469/D/T/2004 <span
-                                    class="font-normal text-slate-500 ml-1"
-                                    >(12 Nov 2004)</span
-                                >
-                            </p>
-                            <p class="text-xs text-slate-600 mt-1">
-                                {isEn ? 'Follow-up Decree - Dirjen Dikti Depdiknas' : 'SK Lanjutan - Dirjen Dikti Depdiknas'}
-                            </p>
-                        </div>
-
-                        <div class="relative pl-6 border-l border-slate-200">
-                            <div
-                                class="absolute -left-[6px] top-1 w-3 h-3 rounded-full bg-yellow-400 ring-2 ring-white"
-                            >
-                            </div>
-                            <p class="text-sm font-bold text-slate-800">
-                                DJ.II/26/2006 <span
-                                    class="font-normal text-slate-500 ml-1"
-                                    >(12 Nov 2004)</span
-                                >
-                            </p>
-                            <p class="text-xs text-slate-600 mt-1">
-                                {isEn ? 'Follow-up Decree - Dirjen Binbaga Islam' : 'SK Lanjutan - Dirjen Binbaga Islam'}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          <div>
+            <h2 class="text-2xl font-black leading-tight text-white sm:text-3xl">
+              {isEn ? "Program Overview" : "Profil dan Legalitas Prodi"}
+            </h2>
+            <p class="mt-4 text-sm leading-relaxed text-gray-200">
+              {isEn
+                ? "Program Studi Teknik Informatika at UIN Sultan Syarif Kasim Riau is organized as a higher-education program with formal legal status, clear academic structure, and national accreditation recognition."
+                : "Program Studi Teknik Informatika UIN Sultan Syarif Kasim Riau diselenggarakan sebagai program pendidikan tinggi dengan status legalitas yang jelas, struktur akademik yang terarah, dan pengakuan akreditasi nasional."}
+            </p>
+          </div>
         </div>
+
+        <div class="mt-8 space-y-3 border-t border-white/12 pt-6">
+          <div class="flex items-center justify-between gap-3 rounded-xl bg-white/8 px-3 py-2.5 text-xs backdrop-blur-sm">
+            <span class="text-gray-200">{isEn ? "Study Program Code" : "Kode Prodi"}</span>
+            <span class="font-bold text-secondary font-mono">55201</span>
+          </div>
+          <div class="flex items-center justify-between gap-3 rounded-xl bg-white/8 px-3 py-2.5 text-xs backdrop-blur-sm">
+            <span class="text-gray-200">{isEn ? "Degree" : "Gelar"}</span>
+            <span class="font-bold text-white">S.T.</span>
+          </div>
+          <div class="flex items-center justify-between gap-3 rounded-xl bg-white/8 px-3 py-2.5 text-xs backdrop-blur-sm">
+            <span class="text-gray-200">{isEn ? "Level" : "Jenjang"}</span>
+            <span class="font-bold text-white">S1</span>
+          </div>
+          <div class="flex items-center justify-between gap-3 rounded-xl bg-white/8 px-3 py-2.5 text-xs backdrop-blur-sm">
+            <span class="text-gray-200">{isEn ? "Established" : "Didirikan"}</span>
+            <span class="font-bold text-secondary">1999</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-8 bg-slate-50/70 p-8 sm:p-10">
+        <div class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+            <div class="mb-2 flex items-center gap-3">
+              <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <Building2 class="h-4 w-4" />
+              </div>
+              <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-500">
+                {isEn ? "Faculty" : "Fakultas"}
+              </span>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900">
+              {isEn ? "Science and Technology" : "Sains dan Teknologi"}
+            </h3>
+          </div>
+
+          <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+            <div class="mb-2 flex items-center gap-3">
+              <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <GraduationCap class="h-4 w-4" />
+              </div>
+              <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-500">
+                {isEn ? "University" : "Perguruan Tinggi"}
+              </span>
+            </div>
+            <h3 class="text-lg font-bold text-gray-900">
+              UIN Sultan Syarif Kasim Riau
+            </h3>
+          </div>
+        </div>
+
+        <div>
+          <div class="mb-5 flex items-center gap-2">
+            <FileCheck class="h-5 w-5 text-primary" />
+            <h3 class="text-lg font-bold text-gray-900">
+              {isEn ? "Legal Documents & Accreditation" : "Dokumen Legalitas & Akreditasi"}
+            </h3>
+          </div>
+
+          <div class="space-y-3">
+            {legalityList.map((item) => (
+              <div class="flex flex-col justify-between gap-3 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all duration-200 hover:border-primary/40 hover:shadow-md sm:flex-row sm:items-center sm:p-5">
+                <div class="space-y-1.5">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-sm font-bold text-gray-900">{item.no}</span>
+                    <span class="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">{item.status}</span>
+                  </div>
+                  <h4 class="text-sm font-semibold text-gray-800">{item.title}</h4>
+                  <p class="text-xs text-gray-500">{item.issuer}</p>
+                </div>
+
+                <div class="flex-shrink-0">
+                  <span class="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-2.5 py-1 text-[11px] font-medium text-gray-600">
+                    <Calendar class="h-3 w-3 text-gray-400" />
+                    {item.date}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
-
-<style>
-    @keyframes pulse-slow {
-        0%,
-        100% {
-            transform: scale(1);
-            opacity: 0.8;
-        }
-        50% {
-            transform: scale(1.05);
-            opacity: 1;
-        }
-    }
-
-    .animate-pulse-slow {
-        animation: pulse-slow 4s infinite ease-in-out;
-    }
-</style>
