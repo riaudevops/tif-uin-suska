@@ -49,7 +49,7 @@ ENV HOST=0.0.0.0
 COPY package.json bun.lock ./
 
 # Install HANYA production dependencies
-RUN bun install --frozen-lockfile --production
+RUN bun install --production
 
 # Copy hasil build dari builder
 COPY --from=builder /app/dist ./dist
