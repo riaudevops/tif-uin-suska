@@ -17,7 +17,7 @@ ENV HOST=$HOST
 COPY package.json bun.lock ./
 
 # Install dependencies
-RUN bun install --frozen-lockfile
+RUN bun install 
 
 # Copy semua source code
 COPY . .
