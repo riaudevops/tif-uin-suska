@@ -17,7 +17,7 @@ ENV HOST=$HOST
 COPY package.json bun.lock ./
 
 # Install dependencies
-RUN bun install 
+RUN bun install --frozen-lockfile
 
 # Copy semua source code
 COPY . .
@@ -49,7 +49,7 @@ ENV HOST=0.0.0.0
 COPY package.json bun.lock ./
 
 # Install HANYA production dependencies
-RUN bun install --production
+RUN bun install --frozen-lockfile --production
 
 # Copy hasil build dari builder
 COPY --from=builder /app/dist ./dist
