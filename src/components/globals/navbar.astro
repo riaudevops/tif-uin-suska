@@ -479,6 +479,13 @@ const t = useTranslations(lang);
             mobileMenu?.classList.toggle("hidden");
         });
 
+        mobileMenu?.querySelectorAll("a").forEach((link) => {
+            link.addEventListener("click", () => {
+                closeAll();
+                mobileMenu?.classList.add("hidden");
+            });
+        });
+
         window.addEventListener("scroll", () => {
             if (topBar) {
                 topBar.classList.toggle("hidden", window.scrollY > 50);

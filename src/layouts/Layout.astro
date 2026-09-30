@@ -53,6 +53,21 @@ const isEn = lang === 'en';
             document.addEventListener('astro:page-load', () => {
                 AOS.refreshHard();
             });
+
+            // Mobile touchstart prefetch for zero-delay tap navigation
+            document.addEventListener('touchstart', (e) => {
+                const target = e.target as HTMLElement | null;
+                const anchor = target?.closest('a');
+                if (anchor && anchor.href && anchor.origin === location.origin && !anchor.hash) {
+                    const existing = document.querySelector(`link[rel="prefetch"][href="${anchor.href}"]`);
+                    if (!existing) {
+                        const link = document.createElement('link');
+                        link.rel = 'prefetch';
+                        link.href = anchor.href;
+                        document.head.appendChild(link);
+                    }
+                }
+            }, { passive: true });
         </script>
     </body>
 </html>
