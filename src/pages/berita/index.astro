@@ -1,6 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+import { fetchWithCache } from '@/lib/cachedFetch.js';
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -15,24 +16,18 @@ const API_TOKEN = import.meta.env.DIRECTUS_TOKEN;
 
 let posts = [];
 try {
-  const res = await fetch(
+  const json = await fetchWithCache(
     `${API_BASE_URL}/berita?fields=id,user_created,title,slug,date,modified,status,images,excerpt,body,featured_image&sort=-date`,
     { 
-      cache: "no-store",
-      // Menambahkan headers secara kondisional agar tidak error jika token kosong
       headers: {
         "Content-Type": "application/json",
         ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {})
       }
-    }
+    },
+    60000
   );
 
-  if (res.ok) {
-    const json = await res.json();
-    posts = json.data || [];
-  } else {
-    console.error(`Gagal mengambil data berita. Status: ${res.status} ${res.statusText}`);
-  }
+  posts = json.data || [];
 } catch (error) {
   console.error("Terjadi kesalahan saat fetch data berita:", error);
 }
