@@ -8,6 +8,11 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
 	output: "server",
 
+	prefetch: {
+		prefetchAll: true,
+		defaultStrategy: "hover",
+	},
+
 	adapter: node({
 		mode: "standalone",
 	}),
