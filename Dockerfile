@@ -14,7 +14,7 @@ ENV BASE_API_URL=$BASE_API_URL
 ENV HOST=$HOST
 
 # Copy dependency files
-COPY package.json ./
+COPY package.json bun.lock ./
 
 # Install dependencies
 RUN bun install --frozen-lockfile
@@ -46,7 +46,7 @@ ENV HOST=0.0.0.0
 # -------------------------------
 
 # Copy dependency files saja ke runner
-COPY package.json ./
+COPY package.json bun.lock ./
 
 # Install HANYA production dependencies
 RUN bun install --frozen-lockfile --production
