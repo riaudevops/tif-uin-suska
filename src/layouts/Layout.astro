@@ -22,30 +22,36 @@ const isEn = lang === 'en';
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" />
         <link rel="icon" type="image/svg+xml" href="/logo/uin.png" />
         <title>{title ? `${title} - ${isEn ? 'Informatics Engineering' : 'Teknik Informatika'} UIN Suska Riau` : `${isEn ? 'Informatics Engineering' : 'Teknik Informatika'} UIN Suska Riau`}</title>
         <ClientRouter />
     </head>
     <body class="bg-white">
         <Navbar />
-        <main class="animate-fade-in-up">
+        <main>
             <slot />
         </main>
         <Footer />
         <script>
             import AOS from 'aos';
-            AOS.init({
-                duration: 500,
-                easing: 'ease-out-cubic',
-                once: true,
-                offset: 24,
-                delay: 0,
-                mirror: false,
-            });
 
-            // Re-init AOS on view transitions
+            function initAos() {
+                AOS.init({
+                    duration: 300,
+                    easing: 'ease-out-cubic',
+                    once: true,
+                    offset: 16,
+                    delay: 0,
+                    mirror: false,
+                });
+            }
+
+            initAos();
+
+            // Re-bind and refresh AOS when page changes via ClientRouter
             document.addEventListener('astro:page-load', () => {
-                AOS.refresh();
+                AOS.refreshHard();
             });
         </script>
     </body>

@@ -1,5 +1,6 @@
 ---
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
+import { fetchWithCache } from "../../../lib/cachedFetch";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 
@@ -14,22 +15,17 @@ let posts = [];
 
 try {
   // Menyesuaikan query fields dengan variabel yang ada di database dan HTML
-  const res = await fetch(
+  const json = await fetchWithCache(
     `${API_BASE_URL}/berita?fields=id,title,slug,featured_image,date,excerpt&sort=-date&limit=3`,
     { 
-      cache: "no-store",
       headers: {
         "Content-Type": "application/json",
         ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {})
       }
-    }
+    },
+    60000
   );
 
-  if (!res.ok) {
-    throw new Error(`Gagal mengambil berita (status: ${res.status})`);
-  }
-
-  const json = await res.json();
   posts = json.data || [];
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
@@ -57,7 +53,7 @@ try {
     ) : (
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
       {posts.map((post: any, i: number) => (
-        <div data-aos="fade-up" data-aos-delay={i * 100} class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-300 group">
+        <div data-aos="fade-up" data-aos-delay={i * 40} class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-300 group">
           
           <div class="overflow-hidden h-52">
             <img 

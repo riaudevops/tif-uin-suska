@@ -1,5 +1,6 @@
 ---
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+import { fetchWithCache } from '@/lib/cachedFetch.js';
 import { ArrowUpRight, BriefcaseBusiness, Building2, GraduationCap, Mail, UserRound } from '@lucide/astro';
 
 const lang = getLocaleFromUrl(Astro);
@@ -12,10 +13,8 @@ const ASSET_URL = `${API_URL}/assets/`;
 let dosenData = [];
 
 try {
-  const response = await fetch(`${API_URL}/items/dosen_tif?sort=id`);
-  if (!response.ok) throw new Error(`Gagal mengambil data dosen (Status: ${response.status})`);
-  const dataDirectus = await response.json();
-  dosenData = dataDirectus.data;
+  const dataDirectus = await fetchWithCache(`${API_URL}/items/dosen_tif?sort=id`, {}, 60000);
+  dosenData = dataDirectus.data || [];
   const getJabatanRank = (jabatan?: string): number => {
     if (!jabatan) return 99;
     const j = jabatan.toLowerCase();

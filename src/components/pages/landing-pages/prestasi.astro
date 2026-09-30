@@ -1,5 +1,6 @@
 ---
 import { getLocaleFromUrl, useTranslations } from "../../../lib/translations";
+import { fetchWithCache } from "../../../lib/cachedFetch";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 
@@ -8,15 +9,14 @@ const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
 let prestasiData: any[] = [];
 
 try {
-  const res = await fetch(`${API_URL}/items/prestasi?sort=-tahun&limit=6`);
-  if (res.ok) {
-    const json = await res.json();
-    prestasiData = json.data || [];
-  }
+  const json = await fetchWithCache(`${API_URL}/items/prestasi?sort=-tahun&limit=6`, {}, 60000);
+  prestasiData = json.data || [];
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.warn("Gagal mengambil prestasi landing:", message);
 }
+---
+
 <div class="min-h-screen py-12 sm:py-16 px-4 sm:px-6 bg-[#004d2c]">
 
   {/* HEADER */}
@@ -33,7 +33,7 @@ try {
     {prestasiData.map((item: any, index: number) => (
       <div
         data-aos="fade-up"
-        data-aos-delay={index * 100}
+        data-aos-delay={index * 40}
         class="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-105 transition-transform duration-300 relative"
       >
 

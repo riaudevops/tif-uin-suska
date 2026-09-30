@@ -1,276 +1,152 @@
 ---
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
+import { fetchWithCache } from "../../../lib/cachedFetch";
+// Import CSS bawaan Swiper langsung di frontmatter
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
+
+const rawBaseUrl = (import.meta.env.BASE_API_URL || "http://localhost:8055").replace(/\/+$/, "");
+const API_BASE_URL = rawBaseUrl.endsWith("/items") ? rawBaseUrl : `${rawBaseUrl}/items`;
+const ASSET_URL = `${rawBaseUrl.replace(/\/items$/, "")}/assets/`;
+
+const API_TOKEN = import.meta.env.DIRECTUS_TOKEN;
+
+const normalizeLink = (value) => {
+  if (!value) return '#';
+  if (value.startsWith('/')) return localizePath(value, lang);
+  if (/^https?:\/\//i.test(value)) return value;
+  if (/^[a-z0-9.-]+\.[a-z]{2,}/i.test(value)) return `https://${value}`;
+  return `/${value.replace(/^\//, '')}`;
+};
+
+let slides = [];
+
+try {
+  const json = await fetchWithCache(
+    `${API_BASE_URL}/hero_slider?fields=id,title,subtitle,image,button_link,button_text,status,sort&filter[status][_in]=published,Published&sort=sort`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {})
+      }
+    },
+    60000
+  );
+  slides = json.data || [];
+} catch (error) {
+  console.warn("Gagal mengambil hero slider:", error);
+}
 ---
 
-<section class="relative aspect-[16/9] min-h-[460px] w-full overflow-hidden bg-[#edf4ee] lg:min-h-[540px] xl:min-h-[610px]">
-  <div id="slides" class="flex h-full w-full transition-transform duration-700 ease-in-out">
-
-    <div class="relative min-w-full overflow-hidden">
-      <img src="/landing-pages/gedung-faste.jpg" alt="" class="absolute inset-0 h-full w-full object-cover" />
-      <div class="absolute inset-0 bg-[linear-gradient(110deg,rgba(7,20,15,0.7),rgba(13,61,47,0.58),rgba(13,61,47,0.22))]"></div>
-
-      <div class="relative z-10 flex h-full items-center">
-        <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="max-w-3xl">
-            <span class="inline-flex items-center rounded-lg border border-[#f5d78e] bg-[#f8f3df] px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.24em] text-[#0b5c3d] sm:px-4 sm:text-[10px]">
-              {t("hero.badge")}
-            </span>
-
-            <h1 class="mt-4 text-[2.2rem] font-black leading-[0.96] tracking-[-0.06em] text-white sm:text-[2.7rem] lg:text-[4rem] xl:text-[4.9rem]">
-              {lang === 'en' ? 'Welcome to' : 'Selamat Datang di'}
-              <span class="mt-2 block text-yellow-300">
-                {lang === 'en' ? 'Informatics Engineering UIN Suska Riau' : 'Teknik Informatika UIN Suska Riau'}
-              </span>
-            </h1>
-
-            <p class="mt-4 max-w-xl text-sm leading-relaxed text-emerald-50/90 sm:text-base lg:text-lg">
-              {t("hero.desc1")}
-            </p>
-
-            <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-              <a href={localizePath("/profil/sejarah", lang)} class="inline-flex items-center justify-center rounded-lg bg-[#f3c75d] px-5 py-2.5 text-xs font-bold text-[#0d3c2f] transition hover:bg-[#e9b94d] sm:px-6 sm:py-3 sm:text-sm">
-                {t("hero.cta.profil")}
-              </a>
-              <a href={localizePath("/kurikulum/kurikulum", lang)} class="inline-flex items-center justify-center rounded-lg border border-white/40 bg-white/8 px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-white/14 sm:px-6 sm:py-3 sm:text-sm">
-                {t("hero.cta.akademik")}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+<section class="relative w-full overflow-hidden bg-[#022c22]" style="aspect-ratio: 1920 / 1080; max-height: 1080px;">
+  {slides.length === 0 ? (
+    <div class="flex h-full items-center justify-center text-gray-400">
+      <p>Slider belum tersedia.</p>
     </div>
+  ) : (
+    <div class="swiper hero-swiper h-full w-full">
+      <div class="swiper-wrapper h-full">
+        {slides.map((slide: any, slideIndex: number) => {
+          const template = Number(slide.template ?? 1) || 1;
+          const buttonUrl = normalizeLink(slide.button_link);
 
-    <div class="relative min-w-full overflow-hidden">
-      <img src="/landing-pages/gedung.jpg" alt="" class="absolute inset-0 h-full w-full object-cover" />
-      <div class="absolute inset-0 bg-[linear-gradient(110deg,rgba(7,20,15,0.7),rgba(13,61,47,0.58),rgba(13,61,47,0.24))]"></div>
+          return (
+            <div class="swiper-slide relative h-full w-full">
+              <img
+                src={`${ASSET_URL}${slide.image}`}
+                alt={slide.title}
+                loading={slideIndex === 0 ? "eager" : "lazy"}
+                fetchpriority={slideIndex === 0 ? "high" : "auto"}
+                class="absolute inset-0 z-0 h-full w-full object-cover"
+              />
 
-      <div class="relative z-10 flex h-full items-center">
-        <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="max-w-2xl">
-            <span class="inline-flex items-center rounded-lg border border-[#f5d78e] bg-[#f8f3df] px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.24em] text-[#0b5c3d] sm:px-4 sm:text-[10px]">
-              {t("hero.badge")}
-            </span>
+              <div class={`absolute inset-0 z-10 ${template === 2 ? 'bg-gradient-to-r from-slate-950/80 via-slate-900/55 to-slate-900/25' : template === 3 ? 'bg-gradient-to-t from-slate-950/80 via-slate-900/35 to-transparent' : template === 4 ? 'bg-gradient-to-br from-emerald-950/80 via-slate-900/40 to-yellow-900/30' : 'bg-black/50'}`} />
 
-            <h1 class="mt-4 text-[2.2rem] font-black leading-[0.96] tracking-[-0.06em] text-white sm:text-[2.7rem] lg:text-[3.8rem] xl:text-[4.5rem]">
-              {lang === 'en' ? 'Welcome to' : 'Selamat Datang di'}
-              <span class="mt-2 block text-yellow-300">
-                {lang === 'en' ? 'Faculty of Science and Technology UIN Suska Riau' : 'Fakultas Sains dan Teknologi UIN Suska Riau'}
-              </span>
-            </h1>
+              <div class={`relative z-20 flex h-full ${template === 2 ? 'items-center justify-start pl-6 md:pl-16 lg:pl-24' : template === 3 ? 'items-end justify-start pb-10 pl-6 md:pl-16 lg:pl-24' : template === 4 ? 'items-center justify-center p-6' : 'items-center justify-center'}`}>
+                <div class={`${template === 2 ? 'max-w-xl' : template === 4 ? 'max-w-3xl text-center' : 'max-w-5xl text-center'} ${template === 3 ? 'max-w-2xl' : ''}`}>
+                  {template === 4 && (
+                    <span class="mb-4 inline-flex rounded-full border border-white/30 bg-white/10 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.24em] text-emerald-100 backdrop-blur-sm">
+                      Program Studi
+                    </span>
+                  )}
 
-            <div class="mt-4 h-1 w-20 rounded-lg bg-yellow-300"></div>
+                  <h1 class={`font-bold text-white drop-shadow-md ${template === 2 ? 'text-3xl md:text-5xl' : template === 3 ? 'text-3xl md:text-5xl' : template === 4 ? 'text-3xl md:text-6xl' : 'text-4xl md:text-6xl'} `}>
+                    {slide.title}
+                  </h1>
 
-            <p class="mt-4 max-w-lg text-sm leading-relaxed text-emerald-50/90 sm:text-base lg:text-lg">
-              {t("hero.desc2")}
-            </p>
+                  {slide.subtitle && (
+                    <p class={`mt-4 text-base md:text-xl text-gray-200 drop-shadow ${template === 2 ? 'max-w-lg' : template === 4 ? 'mx-auto max-w-2xl' : 'mx-auto max-w-3xl'}`}>
+                      {slide.subtitle}
+                    </p>
+                  )}
 
-            <div class="mt-6 flex flex-wrap gap-3">
-              <a href="https://fst.uin-suska.ac.id/" target="_blank" class="inline-flex items-center justify-center rounded-lg bg-[#f3c75d] px-5 py-2.5 text-xs font-bold text-[#0d3c2f] transition hover:bg-[#e9b94d] sm:px-6 sm:py-3 sm:text-sm">
-                {t("hero.cta.fakultas")}
-              </a>
+                  {slide.button_link && (
+                    <a
+                      href={buttonUrl}
+                      class={`mt-8 inline-flex items-center justify-center rounded-lg px-7 py-3 font-bold transition-all duration-300 ${template === 2 ? 'bg-yellow-400 text-emerald-900 hover:bg-yellow-300' : template === 4 ? 'bg-white text-emerald-900 hover:bg-emerald-50' : 'bg-yellow-400 text-emerald-900 hover:bg-yellow-300 hover:scale-105'}`}
+                    >
+                      {slide.button_text || 'Selengkapnya'}
+                    </a>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
+
+     <div class="swiper-pagination"></div>
     </div>
-
-    <div class="relative min-w-full overflow-hidden">
-      <img src="/dosen-pages/dosen2.jpg" alt="" class="absolute inset-0 h-full w-full object-cover" />
-      <div class="absolute inset-0 bg-[linear-gradient(110deg,rgba(2,16,13,0.82),rgba(8,80,58,0.7),rgba(8,80,58,0.24))]"></div>
-
-      <div class="relative z-10 flex h-full items-center">
-        <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="max-w-3xl">
-            <span class="inline-flex items-center rounded-lg border border-[#f5d78e] bg-[#f8f3df] px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.24em] text-[#0b5c3d] sm:px-4 sm:text-[10px]">
-              {t("hero.badge")}
-            </span>
-
-            <h1 class="mt-4 text-[2.2rem] font-black leading-[0.96] tracking-[-0.06em] text-white sm:text-[2.7rem] lg:text-[3.8rem] xl:text-[4.5rem]">
-              {lang === 'en' ? 'Our Qualified' : 'Dosen dan Staf Pengajar'}
-              <span class="mt-2 block text-yellow-300">
-                {lang === 'en' ? 'Lecturers and Teaching Staff' : 'Berkualitas'}
-              </span>
-            </h1>
-
-            <p class="mt-4 max-w-xl text-sm leading-relaxed text-emerald-50/90 sm:text-base lg:text-lg">
-              {t("hero.desc3")}
-            </p>
-
-            <div class="mt-6 flex flex-wrap gap-3">
-              <a href={localizePath("/dosen/dosen", lang)} class="inline-flex items-center justify-center rounded-lg bg-[#f3c75d] px-5 py-2.5 text-xs font-bold text-[#0d3c2f] transition hover:bg-[#e9b94d] sm:px-6 sm:py-3 sm:text-sm">
-                {t("hero.cta.dosen")}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="relative min-w-full overflow-hidden">
-      <img src="/landing-pages/gedung-faste.jpg" alt="" class="absolute inset-0 h-full w-full object-cover" />
-      <div class="absolute inset-0 bg-[linear-gradient(110deg,rgba(6,20,15,0.72),rgba(13,61,47,0.6),rgba(13,61,47,0.38))]"></div>
-
-      <div class="relative z-10 flex h-full items-center">
-        <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="mx-auto max-w-4xl text-center">
-            <span class="inline-flex items-center rounded-lg border border-[#f5d78e] bg-[#f8f3df] px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.24em] text-[#0b5c3d] sm:px-4 sm:text-[10px]">
-              {t("hero.badge")}
-            </span>
-
-            <h1 class="mt-4 text-[2.2rem] font-black leading-[0.96] tracking-[-0.06em] text-white sm:text-[2.7rem] lg:text-[3.8rem] xl:text-[4.5rem]">
-              {lang === 'en' ? 'Vision, Mission, and Goals' : 'Visi, Misi, dan Tujuan'}
-              <span class="mt-2 block text-yellow-300">
-                {lang === 'en' ? 'of the Informatics Engineering Program' : 'Prodi Teknik Informatika UIN Suska Riau'}
-              </span>
-            </h1>
-
-            <p class="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-emerald-50/90 sm:text-base lg:text-lg">
-              {t("hero.desc4")}
-            </p>
-
-            <div class="mt-6 flex justify-center">
-              <a href={localizePath("/visi-misi/visimisi", lang)} class="inline-flex items-center justify-center rounded-lg border border-white/50 bg-white/8 px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-white/14 sm:px-6 sm:py-3 sm:text-sm">
-                {t("hero.cta.visimisi")}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="relative min-w-full overflow-hidden">
-      <img src="/landing-pages/gedung-faste.jpg" alt="" class="absolute inset-0 h-full w-full object-cover" />
-      <div class="absolute inset-0 bg-[linear-gradient(110deg,rgba(6,20,15,0.72),rgba(13,61,47,0.65),rgba(13,61,47,0.45))]"></div>
-
-      <div class="relative z-10 flex h-full items-center">
-        <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="ml-auto max-w-xl text-left sm:text-left lg:text-left">
-            <div class="mb-4 flex items-center gap-3">
-              <span class="inline-flex items-center rounded-lg border border-[#f5d78e] bg-[#f8f3df] px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.24em] text-[#0b5c3d] sm:px-4 sm:text-[10px]">
-                {t("hero.badge")}
-              </span>
-              <span class="text-3xl font-black text-yellow-300/75">★</span>
-            </div>
-
-            <h1 class="text-[2.1rem] font-black leading-[0.96] tracking-[-0.06em] text-white sm:text-[2.7rem] lg:text-[3.8rem] xl:text-[4.3rem]">
-              {lang === 'en' ? 'Achievements of' : 'Prestasi Mahasiswa'}
-              <span class="mt-2 block text-yellow-300">
-                {lang === 'en' ? 'Informatics Engineering Students' : 'Teknik Informatika'}
-              </span>
-            </h1>
-
-            <p class="mt-4 max-w-lg text-sm leading-relaxed text-emerald-50/90 sm:text-base lg:text-lg">
-              {t("hero.desc5")}
-            </p>
-
-            <div class="mt-6 flex">
-              <a href={localizePath("/prestasi/prestasi", lang)} class="inline-flex items-center justify-center rounded-lg border border-white/50 bg-white/8 px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-white/14 sm:px-6 sm:py-3 sm:text-sm">
-                {t("hero.cta.prestasi")}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <button id="prev" class="absolute left-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-lg border border-white/25 bg-white/10 text-white transition hover:bg-white/20 sm:left-6" aria-label="Previous Slide">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
-    </svg>
-  </button>
-
-  <button id="next" class="absolute right-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-lg border border-white/25 bg-white/10 text-white transition hover:bg-white/20 sm:right-6" aria-label="Next Slide">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
-    </svg>
-  </button>
-
-  <div id="indicators" class="absolute bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2.5"></div>
+  )}
 </section>
 
-<script is:inline>
-function initSlider() {
-  const slider = document.getElementById('slides');
-  if (!slider) return;
+<!-- Script inisialisasi Swiper di sisi Klien -->
+<script>
+  import Swiper from 'swiper';
+  import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
-  const slides = slider.children;
-  const total = slides.length;
-  const prevBtn = document.getElementById('prev');
-  const nextBtn = document.getElementById('next');
-  const indicators = document.getElementById('indicators');
-  if (!prevBtn || !nextBtn || !indicators) return;
+  function initSwiper() {
+    const swiperEl = document.querySelector('.hero-swiper');
+    if (!swiperEl || swiperEl.classList.contains('swiper-initialized')) return;
 
-  indicators.innerHTML = '';
+    const hasMultipleSlides = swiperEl.querySelectorAll('.swiper-slide').length > 1;
 
-  let index = 0;
-  let interval;
-
-  if (window.homeSliderInterval) {
-    clearInterval(window.homeSliderInterval);
-  }
-
-  for (let i = 0; i < total; i++) {
-    const dot = document.createElement('button');
-    dot.type = 'button';
-    dot.className = 'h-2.5 w-2.5 rounded-lg bg-white/40 transition-all duration-300 hover:bg-white';
-    dot.dataset.index = String(i);
-    dot.addEventListener('click', () => {
-      index = i;
-      update();
-      restartAutoSlide();
+    new Swiper('.hero-swiper', {
+      modules: [Navigation, Pagination, Autoplay],
+      loop: hasMultipleSlides,
+      autoplay: hasMultipleSlides ? {
+        delay: 5000,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
     });
-    indicators.appendChild(dot);
+
+    swiperEl.classList.add('swiper-initialized');
   }
 
-  const dots = indicators.children;
-
-  function update() {
-    slider.style.transform = `translateX(-${index * 100}%)`;
-
-    [...dots].forEach((dot, i) => {
-      dot.classList.toggle('bg-white', i === index);
-      dot.classList.toggle('w-7', i === index);
-      dot.classList.toggle('bg-white/40', i !== index);
-      dot.classList.toggle('w-2.5', i !== index);
-      dot.classList.toggle('opacity-100', i === index);
-      dot.classList.toggle('opacity-70', i !== index);
-    });
-  }
-
-  prevBtn.addEventListener('click', () => {
-    index = (index - 1 + total) % total;
-    update();
-    restartAutoSlide();
-  });
-
-  nextBtn.addEventListener('click', () => {
-    index = (index + 1) % total;
-    update();
-    restartAutoSlide();
-  });
-
-  function startAutoSlide() {
-    interval = setInterval(() => {
-      index = (index + 1) % total;
-      update();
-    }, 7000);
-    window.homeSliderInterval = interval;
-  }
-
-  function restartAutoSlide() {
-    clearInterval(interval);
-    startAutoSlide();
-  }
-
-  update();
-  startAutoSlide();
-}
-
-document.addEventListener('DOMContentLoaded', initSlider);
-document.addEventListener('astro:page-load', initSlider);
+  document.addEventListener('DOMContentLoaded', initSwiper);
+  document.addEventListener('astro:page-load', initSwiper);
 </script>
+
+<style>
+  /* Menyesuaikan warna titik pagination Swiper agar lebih nyambung dengan tema */
+  :global(.swiper-pagination-bullet) {
+    background-color: #cbd5e1; /* abu-abu terang */
+    opacity: 0.6;
+  }
+  :global(.swiper-pagination-bullet-active) {
+    background-color: #facc15; /* warna kuning sesuai tema tombol Anda */
+    opacity: 1;
+  }
+</style>
