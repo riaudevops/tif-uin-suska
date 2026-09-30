@@ -1,7 +1,7 @@
 # ----------------------
 # STEP 1: Build Astro app
 # ----------------------
-FROM oven/bun:1.4.2-alpine AS builder
+FROM oven/bun:1.3.14-alpine AS builder
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ ENV HOST=$HOST
 COPY package.json bun.lock ./
 
 # Install dependencies
-RUN bun install
+RUN bun install --frozen-lockfile
 
 # Copy semua source code
 COPY . .
@@ -29,7 +29,7 @@ RUN bun run build
 # ----------------------
 # STEP 2: Run with Bun
 # ----------------------
-FROM oven/bun:1.4.2-alpine AS runner
+FROM oven/bun:1.3.14-alpine AS runner
 
 WORKDIR /app
 
@@ -49,7 +49,7 @@ ENV HOST=0.0.0.0
 COPY package.json bun.lock ./
 
 # Install HANYA production dependencies
-RUN bun install
+RUN bun install --frozen-lockfile --production
 
 # Copy hasil build dari builder
 COPY --from=builder /app/dist ./dist
