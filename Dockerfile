@@ -1,7 +1,7 @@
 # ----------------------
 # STEP 1: Build Astro app
 # ----------------------
-FROM oven/bun:1.4.0 AS builder
+FROM oven/bun:1.3.14-alpine AS builder
 
 WORKDIR /app
 
@@ -16,8 +16,8 @@ ENV HOST=$HOST
 # Copy dependency files
 COPY package.json bun.lock ./
 
-# Install dependencies (Tanpa frozen-lockfile)
-RUN bun install
+# Install dependencies
+RUN bun install --frozen-lockfile
 
 # Copy semua source code
 COPY . .
@@ -29,7 +29,7 @@ RUN bun run build
 # ----------------------
 # STEP 2: Run with Bun
 # ----------------------
-FROM oven/bun:1.4.0 AS runner
+FROM oven/bun:1.3.14-alpine AS runner
 
 WORKDIR /app
 
@@ -39,15 +39,17 @@ ARG BASE_API_URL
 # 4. Jadikan Environment Variables untuk runtime SSR
 ENV BASE_API_URL=$BASE_API_URL
 
+# --- TAMBAHKAN DUA BARIS INI ---
 # Paksa Astro jalan di port 3000 dan terima trafik dari semua interface
 ENV PORT=3000
 ENV HOST=0.0.0.0
+# -------------------------------
 
 # Copy dependency files saja ke runner
 COPY package.json bun.lock ./
 
-# Install dependensi (Tanpa flag --production dan --frozen-lockfile)
-RUN bun install
+# Install HANYA production dependencies
+RUN bun install --frozen-lockfile --production
 
 # Copy hasil build dari builder
 COPY --from=builder /app/dist ./dist
