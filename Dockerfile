@@ -1,7 +1,7 @@
 # ----------------------
 # STEP 1: Build Astro app
 # ----------------------
-FROM oven/bun:1.3.14-alpine AS builder
+FROM oven/bun:1.4.0-alpine AS builder
 
 WORKDIR /app
 
@@ -29,7 +29,7 @@ RUN bun run build
 # ----------------------
 # STEP 2: Run with Bun
 # ----------------------
-FROM oven/bun:1.3.14-alpine AS runner
+FROM oven/bun:1.4.0 AS runner
 
 WORKDIR /app
 
