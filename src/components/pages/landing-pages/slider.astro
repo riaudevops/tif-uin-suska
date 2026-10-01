@@ -9,7 +9,7 @@ import 'swiper/css/pagination';
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 
-const rawBaseUrl = (import.meta.env.BASE_API_URL || "http://localhost:8055").replace(/\/+$/, "");
+const rawBaseUrl = (import.meta.env.BASE_API_URL || "http://cms-tif-uin-suska:8055").replace(/\/+$/, "");
 const API_BASE_URL = rawBaseUrl.endsWith("/items") ? rawBaseUrl : `${rawBaseUrl}/items`;
 const ASSET_URL = `${rawBaseUrl.replace(/\/items$/, "")}/assets/`;
 

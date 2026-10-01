@@ -4,7 +4,7 @@ import { fetchWithCache } from "../../../lib/cachedFetch";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 
-const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
+const API_URL = import.meta.env.BASE_API_URL || "http://cms-tif-uin-suska:8055";
 
 let prestasiData: any[] = [];
 
