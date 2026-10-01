@@ -18,7 +18,7 @@ const isEn = lang === 'en';
 export const prerender = false;
 
 const { slug } = Astro.params;
-const rawBaseUrl = (import.meta.env.BASE_API_URL || "http://cms-tif-uin-suska:8055/items").replace(/\/+$/, "");
+const rawBaseUrl = (import.meta.env.BASE_API_URL || "http://cms-tif-uin-suska:8055").replace(/\/+$/, "");
 const API_BASE_URL = rawBaseUrl.endsWith("/items") ? rawBaseUrl : `${rawBaseUrl}/items`;
 const ASSET_URL = `${rawBaseUrl.replace(/\/items$/, "")}/assets/`;
 
@@ -29,6 +29,7 @@ const fetchOptions = {
     ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {})
   }
 };
+
 
 let article = null;
 let related = [];
