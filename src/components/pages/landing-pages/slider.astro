@@ -24,7 +24,7 @@ let slides = [];
 
 try {
   const json = await fetchWithCache(
-    `${API_BASE_URL}/hero_slider?fields=id,title,subtitle,image,button_link,button_text,status,sort&filter[status][_in]=published,Published&sort=sort`,
+    `${API_BASE_URL}/hero_slider?fields=id,title,subtittle,image,button_link,button_text,status,sort&filter[status][_in]=published,Published&sort=sort`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -50,6 +50,7 @@ try {
         {slides.map((slide: any, slideIndex: number) => {
           const template = Number(slide.template ?? 1) || 1;
           const buttonUrl = normalizeLink(slide.button_link);
+          const subtitleText = slide.subtittle || slide.subtitle;
 
           return (
             <div class="swiper-slide relative h-full w-full min-h-[440px] sm:min-h-[500px]">
@@ -75,9 +76,9 @@ try {
                     {slide.title}
                   </h1>
 
-                  {slide.subtitle && (
+                  {subtitleText && (
                     <p class={`mt-2 sm:mt-4 text-xs sm:text-base md:text-xl text-gray-200 drop-shadow line-clamp-3 sm:line-clamp-none ${template === 2 ? 'max-w-lg' : template === 4 ? 'mx-auto max-w-2xl' : 'mx-auto max-w-3xl'}`}>
-                      {slide.subtitle}
+                      {subtitleText}
                     </p>
                   )}
 
