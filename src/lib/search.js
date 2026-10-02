@@ -1,3 +1,5 @@
+import { API_URL } from "./cms.js";
+
 const STATIC_PAGES = [
     {
         title: "Beranda",
@@ -11,7 +13,7 @@ const STATIC_PAGES = [
     {
         title: "Sejarah",
         title_en: "History",
-        url: "/profil-pages/sejarah",
+        url: "/profil/sejarah",
         category: "Profil",
         category_en: "Profile",
         keywords: "sejarah prodi teknik informatika",
@@ -20,7 +22,7 @@ const STATIC_PAGES = [
     {
         title: "Visi, Misi, Tujuan, dan Strategi",
         title_en: "Vision, Mission, Goals, and Strategy",
-        url: "/visimisi-pages/visimisi",
+        url: "/visimisi/visimisi",
         category: "Profil",
         category_en: "Profile",
         keywords: "visi misi tujuan strategi",
@@ -29,7 +31,7 @@ const STATIC_PAGES = [
     {
         title: "Rencana Strategi",
         title_en: "Strategic Plan",
-        url: "/rencana-pages/rencana",
+        url: "/rencana/rencana",
         category: "Profil",
         category_en: "Profile",
         keywords: "rencana strategi perencanaan",
@@ -38,7 +40,7 @@ const STATIC_PAGES = [
     {
         title: "Panduan Pengelolaan Pendidikan",
         title_en: "Educational Management Guidelines",
-        url: "/panduan-pages/panduan",
+        url: "/panduan/panduan",
         category: "Profil",
         category_en: "Profile",
         keywords: "panduan pengelolaan pendidikan",
@@ -47,7 +49,7 @@ const STATIC_PAGES = [
     {
         title: "Struktur Organisasi",
         title_en: "Organizational Structure",
-        url: "/struktur-pages/struktur",
+        url: "/struktur/struktur",
         category: "Profil",
         category_en: "Profile",
         keywords: "struktur organisasi pimpinan",
@@ -56,7 +58,7 @@ const STATIC_PAGES = [
     {
         title: "Dosen",
         title_en: "Lecturers",
-        url: "/dosen-pages/dosen",
+        url: "/dosen/dosen",
         category: "Profil",
         category_en: "Profile",
         keywords: "dosen pengajar tenaga pendidik",
@@ -65,7 +67,7 @@ const STATIC_PAGES = [
     {
         title: "Laboratorium",
         title_en: "Laboratories",
-        url: "/laboratorium-pages/laboratorium",
+        url: "/laboratorium/laboratorium",
         category: "Profil",
         category_en: "Profile",
         keywords: "laboratorium lab fasilitas",
@@ -83,7 +85,7 @@ const STATIC_PAGES = [
     {
         title: "Prestasi",
         title_en: "Achievements",
-        url: "/prestasi-pages/prestasi",
+        url: "/prestasi/prestasi",
         category: "Profil",
         category_en: "Profile",
         keywords: "prestasi penghargaan",
@@ -92,7 +94,7 @@ const STATIC_PAGES = [
     {
         title: "Kurikulum",
         title_en: "Curriculum",
-        url: "/kurikulum-pages/kurikulum",
+        url: "/kurikulum/kurikulum",
         category: "Akademik",
         category_en: "Academic",
         keywords: "kurikulum mata kuliah",
@@ -128,7 +130,7 @@ const STATIC_PAGES = [
     {
         title: "Labs Squad",
         title_en: "Labs Squad",
-        url: "/labssquad-pages/labssquad",
+        url: "/labssquad/labssquad",
         category: "Akademik",
         category_en: "Academic",
         keywords: "labs squad",
@@ -137,7 +139,7 @@ const STATIC_PAGES = [
     {
         title: "Software Engineering",
         title_en: "Software Engineering",
-        url: "/software-pages/software",
+        url: "/software/software",
         category: "Penelitian",
         category_en: "Research",
         keywords: "software engineering riset",
@@ -146,7 +148,7 @@ const STATIC_PAGES = [
     {
         title: "Information Technology",
         title_en: "Information Technology",
-        url: "/information-pages/information",
+        url: "/information/information",
         category: "Penelitian",
         category_en: "Research",
         keywords: "information technology riset",
@@ -155,7 +157,7 @@ const STATIC_PAGES = [
     {
         title: "AIORC",
         title_en: "AIORC",
-        url: "/aiorc-pages/aiorc",
+        url: "/aiorc/aiorc",
         category: "Penelitian",
         category_en: "Research",
         keywords: "aiorc penelitian kecerdasan buatan optimasi",
@@ -173,7 +175,7 @@ const STATIC_PAGES = [
     {
         title: "Agenda",
         title_en: "Agenda",
-        url: "/agenda-pages/agenda",
+        url: "/agenda/agenda",
         category: "Agenda",
         category_en: "Agenda",
         keywords: "agenda kegiatan acara",
@@ -182,7 +184,7 @@ const STATIC_PAGES = [
     {
         title: "Alumni",
         title_en: "Alumni",
-        url: "/alumni-pages/alumni",
+        url: "/alumni/alumni",
         category: "Alumni",
         category_en: "Alumni",
         keywords: "alumni lulusan",
@@ -237,7 +239,6 @@ export function filterSearchItems(items, query, limit = 12) {
 }
 
 export async function buildSearchIndex(lang = "id") {
-    const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
     const isEn = lang === "en";
 
     // Localize static pages based on language
@@ -250,7 +251,7 @@ export async function buildSearchIndex(lang = "id") {
 
     const fetches = await Promise.allSettled([
         fetch(
-            `${API_URL}/items/article?fields=title,slug,category.name&sort=-publish&limit=100`,
+            `${API_URL}/items/berita?fields=title,slug,excerpt&sort=-date&limit=100`,
             { cache: "no-store" },
         ),
         fetch(`${API_URL}/items/dosen_tif?fields=id,nama,slug,jabatan,email,nip`, { cache: "no-store" }),
@@ -268,12 +269,12 @@ export async function buildSearchIndex(lang = "id") {
         const json = await articlesRes.value.json();
         for (const post of json.data || []) {
             if (!post?.title || !post?.slug) continue;
-            const categoryName = post.category?.name || (isEn ? "News" : "Berita");
+            const categoryName = isEn ? "News" : "Berita";
             items.push({
                 title: post.title,
                 url: isEn ? `/en/berita/${post.slug}` : `/berita/${post.slug}`,
                 category: isEn ? "News" : "Berita",
-                keywords: `${post.title} ${categoryName} ${isEn ? "news article" : "berita artikel"}`,
+                keywords: `${post.title} ${post.excerpt || ""} ${categoryName} ${isEn ? "news article" : "berita artikel"}`,
             });
         }
     }
@@ -299,7 +300,7 @@ export async function buildSearchIndex(lang = "id") {
                 agenda.kategori?.nama_kategori || agenda.kategori?.nama || "";
             items.push({
                 title: agenda.title,
-                url: isEn ? "/en/agenda-pages/agenda" : "/agenda-pages/agenda",
+                url: isEn ? "/en/agenda/agenda" : "/agenda/agenda",
                 category: isEn ? "Agenda" : "Agenda",
                 keywords: `${agenda.title} ${agenda.deskripsi || ""} ${agenda.lokasi || ""} ${kategori} ${isEn ? "agenda events" : "agenda kegiatan"}`,
             });
