@@ -13,7 +13,7 @@ let posts = [];
 try {
   // Menyesuaikan query fields dengan variabel yang ada di database dan HTML
   const json = await fetchWithCache(
-    `${API_BASE_URL}/berita?fields=id,title,slug,featured_image,date,excerpt&sort=-date&limit=3`,
+    `${API_BASE_URL}/berita?fields=id,title,slug,featured_image,date,date_created,excerpt&sort=-date&limit=3`,
     { 
       headers: {
         "Content-Type": "application/json",
@@ -27,6 +27,17 @@ try {
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.warn("Gagal mengambil berita beranda:", message);
+}
+
+function formatDate(dateStr: string | null | undefined): string {
+  if (!dateStr) return "Tanggal tidak tersedia";
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return "Tanggal tidak tersedia";
+    return d.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+  } catch {
+    return "Tanggal tidak tersedia";
+  }
 }
 ---
 
@@ -66,7 +77,7 @@ try {
             <div class="flex items-center gap-2 mb-3">
               <span class="w-2 h-2 bg-yellow-400 rounded-lg"></span>
               <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider">
-                {post.date ? new Date(post.date).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "Tanggal tidak tersedia"}
+                {formatDate(post.date || post.date_created)}
               </span>
             </div>
 

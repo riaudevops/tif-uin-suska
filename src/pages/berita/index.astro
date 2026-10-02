@@ -2,34 +2,87 @@
 import Layout from "@/layouts/Layout.astro";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 import { fetchWithCache } from '@/lib/cachedFetch.js';
-import { API_BASE_URL, ASSET_URL, getAssetUrl } from '@/lib/cms.js';
+import { API_BASE_URL, getAssetUrl } from '@/lib/cms.js';
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
 
-// Mengambil token dari file .env
-const API_TOKEN = import.meta.env.DIRECTUS_TOKEN; 
+const PAGE_SIZE = 9;
+const rawPage = Number(Astro.url.searchParams.get('page') || '1');
+const currentPage = Number.isFinite(rawPage) && rawPage > 0 ? Math.floor(rawPage) : 1;
+const searchQuery = (Astro.url.searchParams.get('q') || '').trim();
 
-let posts = [];
+const API_TOKEN = import.meta.env.DIRECTUS_TOKEN;
+
+function buildBeritaUrl(page: number, q = searchQuery) {
+  const base = localizePath('/berita', lang);
+  const params = new URLSearchParams();
+  if (page > 1) params.set('page', String(page));
+  if (q) params.set('q', q);
+  const qs = params.toString();
+  return qs ? `${base}?${qs}` : base;
+}
+
+function stripHtml(value = '') {
+  return String(value).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+let posts: any[] = [];
+let totalItems = 0;
+let fetchError = false;
+
 try {
+  const params = new URLSearchParams({
+    fields: 'id,title,slug,date,modified,status,images,excerpt,featured_image',
+    sort: '-date',
+    limit: String(PAGE_SIZE),
+    page: String(currentPage),
+    meta: 'filter_count',
+  });
+
+  if (searchQuery) {
+    params.set('filter[_or][0][title][_icontains]', searchQuery);
+    params.set('filter[_or][1][excerpt][_icontains]', searchQuery);
+    params.set('filter[_or][2][body][_icontains]', searchQuery);
+  }
+
   const json = await fetchWithCache(
-    `${API_BASE_URL}/berita?fields=id,user_created,title,slug,date,modified,status,images,excerpt,body,featured_image&sort=-date`,
-    { 
+    `${API_BASE_URL}/berita?${params.toString()}`,
+    {
       headers: {
-        "Content-Type": "application/json",
-        ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {})
-      }
+        'Content-Type': 'application/json',
+        ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {}),
+      },
     },
-    60000
+    searchQuery ? 15000 : 60000
   );
 
   posts = json.data || [];
+  totalItems = Number(json.meta?.filter_count ?? posts.length) || 0;
 } catch (error) {
-  console.error("Terjadi kesalahan saat fetch data berita:", error);
+  fetchError = true;
+  console.error('Terjadi kesalahan saat fetch data berita:', error);
 }
 
-const categories = [isEn ? "All" : "Semua"];
+const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+
+if (!fetchError && totalItems > 0 && currentPage > totalPages) {
+  return Astro.redirect(buildBeritaUrl(totalPages));
+}
+
+const safePage = Math.min(currentPage, totalPages);
+const hasPrev = safePage > 1;
+const hasNext = safePage < totalPages;
+
+const pageNumbers = (() => {
+  const pages: number[] = [];
+  const windowSize = 2;
+  const start = Math.max(1, safePage - windowSize);
+  const end = Math.min(totalPages, safePage + windowSize);
+  for (let i = start; i <= end; i += 1) pages.push(i);
+  return pages;
+})();
 ---
 
 <Layout title={isEn ? "News" : "Berita"}>
@@ -68,133 +121,251 @@ const categories = [isEn ? "All" : "Semua"];
         </div>
       </div>
 
-      <div class="mb-8 flex flex-wrap gap-2" id="filter-container">
-        {categories.map((cat) => (
-          <button
-            data-category={cat}
-            class={`filter-btn rounded-full border px-4 py-2 text-[10px] font-bold uppercase tracking-[0.18em] transition-all duration-200 ${
-              cat === (isEn ? 'All' : 'Semua')
-                ? 'border-[#0b5c3d] bg-[#0b5c3d] text-white shadow-[0_12px_30px_-18px_rgba(11,92,61,0.9)]'
-                : 'border-slate-200 bg-white text-slate-600 hover:border-[#cfe4d6] hover:text-[#0b5c3d]'
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
+      <div class="mb-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="rounded-full border border-[#0b5c3d] bg-[#0b5c3d] px-4 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-white shadow-[0_12px_30px_-18px_rgba(11,92,61,0.9)]">
+            {isEn ? 'All' : 'Semua'}
+          </span>
+          <span id="news-result-count" class="text-sm text-slate-500">
+            {fetchError
+              ? (isEn ? 'Unable to load news right now.' : 'Gagal memuat berita saat ini.')
+              : (isEn
+                ? `${totalItems} article${totalItems === 1 ? '' : 's'}${searchQuery ? ` for “${searchQuery}”` : ''}`
+                : `${totalItems} berita${searchQuery ? ` untuk “${searchQuery}”` : ''}`)}
+          </span>
+        </div>
+
+        <form
+          id="news-search-form"
+          method="get"
+          action={localizePath('/berita', lang)}
+          class="relative w-full sm:max-w-xs lg:max-w-sm"
+          role="search"
+          transition:persist="news-search-form"
+        >
+          <label for="news-search" class="sr-only">
+            {isEn ? 'Search news by title or content' : 'Cari berita berdasarkan judul atau isi'}
+          </label>
+          <svg class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z" />
+          </svg>
+          <input
+            id="news-search"
+            name="q"
+            type="search"
+            value={searchQuery}
+            autocomplete="off"
+            placeholder={isEn ? 'Search title or content...' : 'Cari judul atau isi berita...'}
+            class="w-full rounded-full border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-700 shadow-sm outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-[#0b5c3d] focus:ring-2 focus:ring-[#0b5c3d]/15"
+            data-base-path={localizePath('/berita', lang)}
+          />
+        </form>
       </div>
 
-      {posts.length === 0 ? (
-        <div class="rounded-[28px] border border-slate-200 bg-white px-6 py-16 text-center shadow-sm">
-          <p class="text-slate-500">
-            {isEn ? 'No news has been published at this time.' : 'Belum ada berita yang dipublikasikan saat ini.'}
-          </p>
-        </div>
-      ) : (
-        <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3" id="news-grid">
-          {posts.map((post: any) => {
-            const cleanExcerpt = (post.excerpt || '').replace(/<[^>]+>/g, '').trim();
-            const postUrl = localizePath(`/berita/${post.slug || post.id}`, lang);
-            const formattedDate = (() => {
-              const raw = post.date;
-              if (!raw) return isEn ? 'Date unavailable' : 'Tanggal tidak tersedia';
-              try {
-                const d = new Date(raw);
-                if (isNaN(d.getTime())) return isEn ? 'Date unavailable' : 'Tanggal tidak tersedia';
-                return d.toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', {
-                  day: 'numeric', month: 'long', year: 'numeric'
-                });
-              } catch { return isEn ? 'Date unavailable' : 'Tanggal tidak tersedia'; }
-            })();
-
-            return (
-              <a
-                href={postUrl}
-                class="news-item group flex h-full flex-col overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_18px_45px_-35px_rgba(15,23,42,0.45)] transition-all duration-300 hover:-translate-y-1 hover:border-[#cfe4d6] hover:shadow-[0_28px_60px_-35px_rgba(11,92,61,0.35)]"
-                data-category={post.category || (isEn ? 'All' : 'Semua')}
-              >
-                <div class="relative h-56 overflow-hidden bg-slate-100">
-                  <img
-                    src={getAssetUrl(post.images || post.featured_image, '/landing-pages/gedung.jpg')}
-                    alt={post.title}
-                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  />
-                  <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent"></div>
-                  <span class="absolute left-4 top-4 rounded-full border border-white/25 bg-black/25 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.18em] text-white backdrop-blur-sm">
-                    {isEn ? 'News' : 'Berita'}
-                  </span>
-                </div>
-
-                <div class="flex flex-1 flex-col p-5 sm:p-6">
-                  <div class="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#8a6a1d]">
-                    <span class="inline-block h-2 w-2 rounded-full bg-[#d4a537]"></span>
-                    {formattedDate}
-                  </div>
-
-                  <h2 class="line-clamp-2 text-xl font-black leading-snug text-slate-900 group-hover:text-[#0b5c3d]">
-                    {post.title}
-                  </h2>
-
-                  <p class="mt-3 flex-1 text-sm leading-relaxed text-slate-600">
-                    {cleanExcerpt && cleanExcerpt.length > 120
-                      ? `${cleanExcerpt.slice(0, 120)}...`
-                      : (cleanExcerpt || (isEn ? 'No description available.' : 'Tidak ada ringkasan isi berita.'))}
-                  </p>
-
-                  <div class="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
-                    <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#0b5c3d]">
-                      {isEn ? 'Read article' : 'Baca selengkapnya'}
-                    </span>
-                    <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#edf8f1] text-lg text-[#0b5c3d] transition-all duration-200 group-hover:bg-[#0b5c3d] group-hover:text-[#f4d77d]">
-                      →
-                    </span>
-                  </div>
-                </div>
+      <div id="news-results">
+        {posts.length === 0 ? (
+          <div class="rounded-[28px] border border-slate-200 bg-white px-6 py-16 text-center shadow-sm">
+            <p class="text-slate-500">
+              {searchQuery
+                ? (isEn ? 'No news matched your search.' : 'Tidak ada berita yang cocok dengan pencarian.')
+                : (isEn ? 'No news has been published at this time.' : 'Belum ada berita yang dipublikasikan saat ini.')}
+            </p>
+            {searchQuery && (
+              <a href={buildBeritaUrl(1, '')} class="mt-4 inline-flex text-sm font-semibold text-[#0b5c3d] hover:underline">
+                {isEn ? 'Clear search' : 'Hapus pencarian'}
               </a>
-            );
-          })}
-        </div>
-      )}
+            )}
+          </div>
+        ) : (
+          <>
+            <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {posts.map((post: any) => {
+                const cleanExcerpt = stripHtml(post.excerpt || '');
+                const postUrl = localizePath(`/berita/${post.slug || post.id}`, lang);
+                const formattedDate = (() => {
+                  const raw = post.date;
+                  if (!raw) return isEn ? 'Date unavailable' : 'Tanggal tidak tersedia';
+                  try {
+                    const d = new Date(raw);
+                    if (isNaN(d.getTime())) return isEn ? 'Date unavailable' : 'Tanggal tidak tersedia';
+                    return d.toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', {
+                      day: 'numeric', month: 'long', year: 'numeric'
+                    });
+                  } catch { return isEn ? 'Date unavailable' : 'Tanggal tidak tersedia'; }
+                })();
+
+                return (
+                  <a
+                    href={postUrl}
+                    class="group flex h-full flex-col overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_18px_45px_-35px_rgba(15,23,42,0.45)] transition-all duration-300 hover:-translate-y-1 hover:border-[#cfe4d6] hover:shadow-[0_28px_60px_-35px_rgba(11,92,61,0.35)]"
+                  >
+                    <div class="relative h-56 overflow-hidden bg-slate-100">
+                      <img
+                        src={getAssetUrl(post.images || post.featured_image, '/landing-pages/gedung.jpg')}
+                        alt={post.title}
+                        loading="lazy"
+                        decoding="async"
+                        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      />
+                      <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent"></div>
+                      <span class="absolute left-4 top-4 rounded-full border border-white/25 bg-black/25 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.18em] text-white backdrop-blur-sm">
+                        {isEn ? 'News' : 'Berita'}
+                      </span>
+                    </div>
+
+                    <div class="flex flex-1 flex-col p-5 sm:p-6">
+                      <div class="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#8a6a1d]">
+                        <span class="inline-block h-2 w-2 rounded-full bg-[#d4a537]"></span>
+                        {formattedDate}
+                      </div>
+
+                      <h2 class="line-clamp-2 text-xl font-black leading-snug text-slate-900 group-hover:text-[#0b5c3d]">
+                        {post.title}
+                      </h2>
+
+                      <p class="mt-3 flex-1 text-sm leading-relaxed text-slate-600">
+                        {cleanExcerpt && cleanExcerpt.length > 120
+                          ? `${cleanExcerpt.slice(0, 120)}...`
+                          : (cleanExcerpt || (isEn ? 'No description available.' : 'Tidak ada ringkasan isi berita.'))}
+                      </p>
+
+                      <div class="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
+                        <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#0b5c3d]">
+                          {isEn ? 'Read article' : 'Baca selengkapnya'}
+                        </span>
+                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#edf8f1] text-lg text-[#0b5c3d] transition-all duration-200 group-hover:bg-[#0b5c3d] group-hover:text-[#f4d77d]">
+                          →
+                        </span>
+                      </div>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+
+            {totalPages > 1 && (
+              <nav class="mt-10 flex flex-col items-center justify-between gap-4 border-t border-slate-200 pt-8 sm:flex-row" aria-label={isEn ? 'News pagination' : 'Navigasi halaman berita'}>
+                <p class="text-sm text-slate-500">
+                  {isEn
+                    ? `Page ${safePage} of ${totalPages}`
+                    : `Halaman ${safePage} dari ${totalPages}`}
+                </p>
+
+                <div class="flex flex-wrap items-center justify-center gap-2">
+                  <a
+                    href={hasPrev ? buildBeritaUrl(safePage - 1) : undefined}
+                    aria-disabled={!hasPrev}
+                    class={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
+                      hasPrev
+                        ? 'border-slate-200 bg-white text-slate-700 hover:border-[#cfe4d6] hover:text-[#0b5c3d]'
+                        : 'pointer-events-none border-slate-100 bg-slate-50 text-slate-300'
+                    }`}
+                  >
+                    {isEn ? 'Previous' : 'Sebelumnya'}
+                  </a>
+
+                  {pageNumbers[0] > 1 && (
+                    <>
+                      <a href={buildBeritaUrl(1)} class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:border-[#cfe4d6] hover:text-[#0b5c3d]">1</a>
+                      {pageNumbers[0] > 2 && <span class="px-1 text-slate-400">…</span>}
+                    </>
+                  )}
+
+                  {pageNumbers.map((page) => (
+                    <a
+                      href={buildBeritaUrl(page)}
+                      aria-current={page === safePage ? 'page' : undefined}
+                      class={`inline-flex h-10 w-10 items-center justify-center rounded-full border text-sm font-semibold transition-colors ${
+                        page === safePage
+                          ? 'border-[#0b5c3d] bg-[#0b5c3d] text-white'
+                          : 'border-slate-200 bg-white text-slate-700 hover:border-[#cfe4d6] hover:text-[#0b5c3d]'
+                      }`}
+                    >
+                      {page}
+                    </a>
+                  ))}
+
+                  {pageNumbers[pageNumbers.length - 1] < totalPages && (
+                    <>
+                      {pageNumbers[pageNumbers.length - 1] < totalPages - 1 && <span class="px-1 text-slate-400">…</span>}
+                      <a href={buildBeritaUrl(totalPages)} class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:border-[#cfe4d6] hover:text-[#0b5c3d]">{totalPages}</a>
+                    </>
+                  )}
+
+                  <a
+                    href={hasNext ? buildBeritaUrl(safePage + 1) : undefined}
+                    aria-disabled={!hasNext}
+                    class={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
+                      hasNext
+                        ? 'border-slate-200 bg-white text-slate-700 hover:border-[#cfe4d6] hover:text-[#0b5c3d]'
+                        : 'pointer-events-none border-slate-100 bg-slate-50 text-slate-300'
+                    }`}
+                  >
+                    {isEn ? 'Next' : 'Berikutnya'}
+                  </a>
+                </div>
+              </nav>
+            )}
+          </>
+        )}
+      </div>
     </div>
   </section>
 </Layout>
 
-<script is:inline>
-  document.addEventListener('astro:page-load', initFilter);
-  document.addEventListener('DOMContentLoaded', initFilter);
+<script>
+  import { navigate } from 'astro:transitions/client';
 
-  function initFilter() {
-    const buttons = document.querySelectorAll('.filter-btn');
-    const items = document.querySelectorAll('.news-item');
-    if (!buttons.length || !items.length) return;
+  let debounceTimer: ReturnType<typeof setTimeout> | undefined;
+  let lastQuery = '';
 
-    buttons.forEach((btn) => {
-      btn.replaceWith(btn.cloneNode(true));
+  function buildSearchUrl(basePath: string, query: string) {
+    const q = query.trim();
+    if (!q) return basePath;
+    return `${basePath}?q=${encodeURIComponent(q)}`;
+  }
+
+  function syncInputFromUrl(input: HTMLInputElement) {
+    if (document.activeElement === input) return;
+    const urlQ = new URLSearchParams(window.location.search).get('q') || '';
+    if (input.value !== urlQ) input.value = urlQ;
+    lastQuery = urlQ.trim();
+  }
+
+  function initLiveSearch() {
+    const form = document.getElementById('news-search-form') as HTMLFormElement | null;
+    const input = document.getElementById('news-search') as HTMLInputElement | null;
+    if (!form || !input) return;
+
+    syncInputFromUrl(input);
+
+    if (input.dataset.liveBound === 'true') return;
+    input.dataset.liveBound = 'true';
+
+    const basePath = input.dataset.basePath || form.getAttribute('action') || '/berita';
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      window.clearTimeout(debounceTimer);
+      const query = input.value.trim();
+      lastQuery = query;
+      const nextUrl = buildSearchUrl(basePath, query);
+      const currentUrl = `${window.location.pathname}${window.location.search}`;
+      if (nextUrl !== currentUrl) navigate(nextUrl);
     });
 
-    const newButtons = document.querySelectorAll('.filter-btn');
-    newButtons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const selected = btn.dataset.category?.trim();
-
-        newButtons.forEach((b) => {
-          b.classList.remove('border-[#0b5c3d]', 'bg-[#0b5c3d]', 'text-white');
-          b.classList.add('border-slate-200', 'bg-white', 'text-slate-600');
-        });
-
-        btn.classList.remove('border-slate-200', 'bg-white', 'text-slate-600');
-        btn.classList.add('border-[#0b5c3d]', 'bg-[#0b5c3d]', 'text-white');
-
-        items.forEach((item) => {
-          const itemCat = item.dataset.category?.trim();
-          if (selected === 'Semua' || selected === 'All' || itemCat === selected) {
-            item.style.display = 'flex';
-            item.style.opacity = '0';
-            setTimeout(() => (item.style.opacity = '1'), 50);
-          } else {
-            item.style.display = 'none';
-          }
-        });
-      });
+    input.addEventListener('input', () => {
+      const query = input.value.trim();
+      window.clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        if (query === lastQuery) return;
+        lastQuery = query;
+        const nextUrl = buildSearchUrl(basePath, query);
+        const currentUrl = `${window.location.pathname}${window.location.search}`;
+        if (nextUrl !== currentUrl) navigate(nextUrl);
+      }, 350);
     });
   }
+
+  document.addEventListener('astro:page-load', initLiveSearch);
 </script>
