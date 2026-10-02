@@ -39,56 +39,85 @@ try {
 }
 ---
 
-<section class="relative w-full overflow-hidden bg-[#022c22] min-h-[460px] sm:min-h-[520px] md:min-h-[580px] lg:h-[calc(100vh-80px)] lg:max-h-[760px] flex flex-col justify-center pt-16 sm:pt-20 lg:pt-0">
+<section class="relative w-full overflow-hidden bg-[#022c22] min-h-[500px] sm:min-h-[540px] md:min-h-[580px] lg:h-[calc(100vh-80px)] lg:max-h-[760px] flex flex-col justify-center pt-20 sm:pt-24 lg:pt-0">
   {slides.length === 0 ? (
-    <div class="flex h-full min-h-[400px] items-center justify-center text-gray-400">
+    <div class="flex h-full min-h-[420px] items-center justify-center text-gray-400 px-4 text-center">
       <p>Slider belum tersedia.</p>
     </div>
   ) : (
-    <div class="swiper hero-swiper h-full w-full flex-grow">
+    <div class="swiper hero-swiper h-full w-full flex-grow relative select-none">
       <div class="swiper-wrapper h-full">
         {slides.map((slide: any, slideIndex: number) => {
           const template = Number(slide.template ?? 1) || 1;
           const buttonUrl = normalizeLink(slide.button_link);
           const subtitleText = slide.subtittle || slide.subtitle;
+          const imageUrl = getAssetUrl(slide.image);
 
           return (
-            <div class="swiper-slide relative h-full w-full min-h-[440px] sm:min-h-[500px]">
-              <img
-                src={getAssetUrl(slide.image)}
-                alt={slide.title}
-                loading={slideIndex === 0 ? "eager" : "lazy"}
-                fetchpriority={slideIndex === 0 ? "high" : "auto"}
-                class="absolute inset-0 z-0 h-full w-full object-cover"
-              />
+            <div class="swiper-slide relative h-full w-full min-h-[440px] sm:min-h-[500px] flex items-center">
+              {/* Background Image / Fallback Gradient */}
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt={slide.title}
+                  loading={slideIndex === 0 ? "eager" : "lazy"}
+                  fetchpriority={slideIndex === 0 ? "high" : "auto"}
+                  class="absolute inset-0 z-0 h-full w-full object-cover object-center"
+                />
+              ) : (
+                <div class="absolute inset-0 z-0 h-full w-full bg-gradient-to-br from-[#003820] via-[#022c22] to-[#011a14] opacity-95">
+                  <div class="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:24px_24px] opacity-15"></div>
+                </div>
+              )}
 
-              <div class={`absolute inset-0 z-10 ${template === 2 ? 'bg-gradient-to-r from-slate-950/85 via-slate-900/60 to-slate-900/30' : template === 3 ? 'bg-gradient-to-t from-slate-950/85 via-slate-900/45 to-transparent' : template === 4 ? 'bg-gradient-to-br from-emerald-950/85 via-slate-900/50 to-yellow-900/40' : 'bg-black/55'}`} />
+              {/* Contrast Overlays for Mobile readability */}
+              <div class={`absolute inset-0 z-10 ${
+                template === 2 
+                  ? 'bg-gradient-to-r from-slate-950/95 via-slate-900/75 to-slate-900/40' 
+                  : template === 3 
+                  ? 'bg-gradient-to-t from-slate-950/95 via-slate-900/60 to-slate-900/30' 
+                  : template === 4 
+                  ? 'bg-gradient-to-br from-emerald-950/90 via-slate-900/60 to-yellow-900/40' 
+                  : 'bg-black/60 sm:bg-black/55'
+              }`} />
 
-              <div class={`relative z-20 flex h-full items-center ${template === 2 ? 'justify-start px-6 sm:pl-12 md:pl-16 lg:pl-24' : template === 3 ? 'items-end justify-start pb-10 sm:pb-14 px-6 sm:pl-12 md:pl-16 lg:pl-24' : template === 4 ? 'justify-center px-4 sm:px-8 py-8' : 'justify-center px-4 sm:px-8 py-8'}`}>
-                <div class={`${template === 2 ? 'max-w-xl' : template === 4 ? 'max-w-3xl text-center' : 'max-w-5xl text-center'} ${template === 3 ? 'max-w-2xl text-left' : ''}`}>
+              {/* Slide Content */}
+              <div class="relative z-20 w-full container mx-auto px-5 sm:px-8 md:px-12 py-10 sm:py-14 flex items-center justify-center">
+                <div class={`w-full ${
+                  template === 2 
+                    ? 'max-w-2xl text-left' 
+                    : template === 3 
+                    ? 'max-w-2xl text-left' 
+                    : 'max-w-4xl text-center'
+                }`}>
                   {template === 4 && (
-                    <span class="mb-2 sm:mb-4 inline-flex rounded-full border border-white/30 bg-white/10 px-3 sm:px-4 py-1 sm:py-2 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.24em] text-emerald-100 backdrop-blur-sm">
+                    <span class="mb-2 sm:mb-4 inline-flex rounded-full border border-emerald-400/40 bg-emerald-500/10 px-3 sm:px-4 py-1 sm:py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-emerald-200 backdrop-blur-sm">
                       Program Studi
                     </span>
                   )}
 
-                  <h1 class={`font-black text-white drop-shadow-md leading-tight tracking-tight ${template === 2 ? 'text-2xl sm:text-4xl md:text-5xl' : template === 3 ? 'text-2xl sm:text-4xl md:text-5xl' : template === 4 ? 'text-2xl sm:text-4xl md:text-5xl lg:text-6xl' : 'text-2xl sm:text-4xl md:text-5xl lg:text-6xl'}`}>
+                  <h1 class="font-extrabold text-white drop-shadow-md text-2xl sm:text-3xl md:text-5xl lg:text-6xl leading-tight tracking-tight">
                     {slide.title}
                   </h1>
 
                   {subtitleText && (
-                    <p class={`mt-2 sm:mt-4 text-xs sm:text-base md:text-xl text-gray-200 drop-shadow line-clamp-3 sm:line-clamp-none ${template === 2 ? 'max-w-lg' : template === 4 ? 'mx-auto max-w-2xl' : 'mx-auto max-w-3xl'}`}>
+                    <p class="mt-2.5 sm:mt-4 text-sm sm:text-base md:text-xl text-gray-200/90 drop-shadow line-clamp-3 sm:line-clamp-none max-w-2xl mx-auto leading-relaxed">
                       {subtitleText}
                     </p>
                   )}
 
                   {slide.button_link && (
-                    <a
-                      href={buttonUrl}
-                      class={`mt-4 sm:mt-8 inline-flex items-center justify-center rounded-lg px-5 py-2.5 sm:px-7 sm:py-3 text-xs sm:text-base font-bold transition-all duration-300 ${template === 2 ? 'bg-yellow-400 text-emerald-900 hover:bg-yellow-300' : template === 4 ? 'bg-white text-emerald-900 hover:bg-emerald-50' : 'bg-yellow-400 text-emerald-900 hover:bg-yellow-300 hover:scale-105'}`}
-                    >
-                      {slide.button_text || 'Selengkapnya'}
-                    </a>
+                    <div class="mt-5 sm:mt-8 flex flex-wrap items-center gap-3 justify-center">
+                      <a
+                        href={buttonUrl}
+                        class="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-xs sm:text-sm md:text-base font-bold transition-all duration-200 bg-yellow-400 text-emerald-950 hover:bg-yellow-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-yellow-500/20"
+                      >
+                        <span>{slide.button_text || 'Lihat Detail'}</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                      </a>
+                    </div>
                   )}
                 </div>
               </div>
@@ -97,7 +126,8 @@ try {
         })}
       </div>
 
-     <div class="swiper-pagination"></div>
+      <!-- Pagination bullets with touch padding -->
+      <div class="swiper-pagination !bottom-4 sm:!bottom-6"></div>
     </div>
   )}
 </section>
@@ -107,30 +137,38 @@ try {
   import Swiper from 'swiper';
   import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
+  let heroSwiperInstance: any = null;
+
   function initSwiper() {
-    const swiperEl = document.querySelector('.hero-swiper');
-    if (!swiperEl || swiperEl.classList.contains('swiper-initialized')) return;
+    const swiperEl = document.querySelector('.hero-swiper') as HTMLElement | null;
+    if (!swiperEl) return;
 
-    const hasMultipleSlides = swiperEl.querySelectorAll('.swiper-slide').length > 1;
+    if (heroSwiperInstance) {
+      heroSwiperInstance.destroy(true, true);
+      heroSwiperInstance = null;
+    }
 
-    new Swiper('.hero-swiper', {
+    const slidesCount = swiperEl.querySelectorAll('.swiper-slide').length;
+    const hasMultipleSlides = slidesCount > 1;
+
+    heroSwiperInstance = new Swiper('.hero-swiper', {
       modules: [Navigation, Pagination, Autoplay],
       loop: hasMultipleSlides,
+      speed: 600,
+      grabCursor: true,
+      touchRatio: 1,
+      resistanceRatio: 0.85,
       autoplay: hasMultipleSlides ? {
-        delay: 5000,
+        delay: 5500,
         disableOnInteraction: false,
+        pauseOnMouseEnter: true,
       } : false,
       pagination: {
         el: '.swiper-pagination',
         clickable: true,
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
+        dynamicBullets: hasMultipleSlides && slidesCount > 5,
       },
     });
-
-    swiperEl.classList.add('swiper-initialized');
   }
 
   document.addEventListener('DOMContentLoaded', initSwiper);
@@ -138,13 +176,23 @@ try {
 </script>
 
 <style>
-  /* Menyesuaikan warna titik pagination Swiper agar lebih nyambung dengan tema */
   :global(.swiper-pagination-bullet) {
-    background-color: #cbd5e1; /* abu-abu terang */
-    opacity: 0.6;
+    background-color: #ffffff;
+    opacity: 0.45;
+    width: 8px;
+    height: 8px;
+    transition: all 0.3s ease;
+  }
+  @media (min-width: 640px) {
+    :global(.swiper-pagination-bullet) {
+      width: 10px;
+      height: 10px;
+    }
   }
   :global(.swiper-pagination-bullet-active) {
-    background-color: #facc15; /* warna kuning sesuai tema tombol Anda */
+    background-color: #facc15;
     opacity: 1;
+    width: 24px;
+    border-radius: 9999px;
   }
 </style>
