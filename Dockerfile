@@ -7,10 +7,12 @@ WORKDIR /app
 
 # 1. Tangkap build-args dari GitHub Actions
 ARG BASE_API_URL
+ARG PUBLIC_BASE_ASSETS_URL
 ARG HOST
 
 # 2. Jadikan Environment Variables agar terbaca saat proses `bun run build`
 ENV BASE_API_URL=$BASE_API_URL
+ENV PUBLIC_BASE_ASSETS_URL=$PUBLIC_BASE_ASSETS_URL
 ENV HOST=$HOST
 
 # Copy dependency files
@@ -35,9 +37,11 @@ WORKDIR /app
 
 # 3. Tangkap lagi build-args untuk stage runner
 ARG BASE_API_URL
+ARG PUBLIC_BASE_ASSETS_URL
 
 # 4. Jadikan Environment Variables untuk runtime SSR
 ENV BASE_API_URL=$BASE_API_URL
+ENV PUBLIC_BASE_ASSETS_URL=$PUBLIC_BASE_ASSETS_URL
 
 # --- TAMBAHKAN DUA BARIS INI ---
 # Paksa Astro jalan di port 3000 dan terima trafik dari semua interface
