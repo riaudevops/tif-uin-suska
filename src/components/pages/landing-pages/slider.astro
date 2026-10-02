@@ -2,7 +2,6 @@
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
 import { fetchWithCache } from "../../../lib/cachedFetch";
 import { API_BASE_URL, ASSET_URL, getAssetUrl } from "../../../lib/cms";
-// Import CSS bawaan Swiper langsung di frontmatter
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -39,13 +38,33 @@ try {
 }
 ---
 
-<section class="relative w-full overflow-hidden bg-[#022c22] h-[520px] xs:h-[560px] sm:h-[600px] md:h-[640px] lg:h-[calc(100vh-76px)] lg:min-h-[580px] lg:max-h-[780px] 2xl:max-h-[860px] flex flex-col justify-center pt-16 sm:pt-20 lg:pt-0">
+<!--
+  STRUKTUR:
+  <section> → tinggi eksplisit di setiap breakpoint (position: relative)
+    └── .hero-swiper  → absolute inset-0, fill penuh section
+          └── .swiper-wrapper (h-full)
+                └── .swiper-slide (h-full, flex-col, justify-end)
+                      ├── <img> background (absolute inset-0)
+                      ├── overlay gradient (absolute inset-0)
+                      └── konten teks (relative z-20, di bawah via pb-*)
+-->
+<section
+  id="hero-slider"
+  class="
+    relative w-full overflow-hidden bg-[#022c22]
+    h-[600px]
+    sm:h-[680px]
+    md:h-[760px]
+    lg:h-screen lg:min-h-[700px] lg:max-h-[940px]
+    2xl:max-h-[1020px]
+  "
+>
   {slides.length === 0 ? (
-    <div class="flex h-full min-h-[420px] items-center justify-center text-gray-400 px-4 text-center">
+    <div class="flex h-full items-center justify-center text-gray-400 px-4 text-center">
       <p>Slider belum tersedia.</p>
     </div>
   ) : (
-    <div class="swiper hero-swiper h-full w-full flex-grow relative select-none group/swiper">
+    <div class="swiper hero-swiper absolute inset-0 select-none group/swiper">
       <div class="swiper-wrapper h-full">
         {slides.map((slide: any, slideIndex: number) => {
           const template = Number(slide.template ?? 1) || 1;
@@ -54,8 +73,9 @@ try {
           const imageUrl = getAssetUrl(slide.image);
 
           return (
-            <div class="swiper-slide relative h-full w-full flex items-center justify-center">
-              {/* Background Image / Fallback Dark Emerald Gradient */}
+            <div class="swiper-slide relative h-full w-full">
+
+              {/* ── Background ── */}
               {imageUrl ? (
                 <img
                   src={imageUrl}
@@ -65,66 +85,91 @@ try {
                   class="absolute inset-0 z-0 h-full w-full object-cover object-center"
                 />
               ) : (
-                <div class="absolute inset-0 z-0 h-full w-full bg-gradient-to-br from-[#003820] via-[#022c22] to-[#011a14] opacity-95">
+                <div class="absolute inset-0 z-0 bg-gradient-to-br from-[#003820] via-[#022c22] to-[#011a14]">
                   <div class="absolute inset-0 bg-[radial-gradient(#10b981_1.5px,transparent_1.5px)] [background-size:28px_28px] opacity-20"></div>
                 </div>
               )}
 
-              {/* Contrast Overlays across screen sizes */}
-              <div class={`absolute inset-0 z-10 ${
-                template === 2 
-                  ? 'bg-gradient-to-t sm:bg-gradient-to-r from-slate-950/95 via-slate-950/80 sm:via-slate-900/70 to-slate-900/30' 
-                  : template === 3 
-                  ? 'bg-gradient-to-t from-slate-950/95 via-slate-950/70 to-slate-900/20' 
-                  : template === 4 
-                  ? 'bg-gradient-to-br from-emerald-950/90 via-slate-950/70 to-yellow-950/30' 
-                  : 'bg-black/60 sm:bg-black/50'
-              }`} />
+              {/* ── Overlay Gradient ── */}
+              {/* Overlay lebih gelap di tengah/atas agar teks selalu terbaca */}
+              <div class="absolute inset-0 z-10 bg-gradient-to-b from-black/70 via-black/50 to-black/75" />
 
-              {/* Slide Content with Responsive Container */}
-              <div class={`relative z-20 w-full max-w-7xl mx-auto px-4 xs:px-6 sm:px-10 md:px-14 lg:px-20 py-8 sm:py-12 md:py-16 flex items-center ${
-                template === 2 ? 'justify-center sm:justify-start' : template === 3 ? 'items-end justify-center sm:justify-start pb-14 sm:pb-20' : 'justify-center'
-              }`}>
-                <div class={`w-full ${
-                  template === 2 
-                    ? 'max-w-xl md:max-w-2xl text-center sm:text-left' 
-                    : template === 3 
-                    ? 'max-w-xl md:max-w-2xl text-center sm:text-left' 
-                    : 'max-w-3xl lg:max-w-4xl text-center'
-                }`}>
+              {/* ── Inner wrapper untuk centering ── */}
+              {/* Menggunakan absolute inset-0 agar tidak dipengaruhi Swiper display:block override */}
+              <div class={`
+                absolute inset-0 z-20
+                flex flex-col items-center justify-center
+                px-5 sm:px-10 md:px-14 lg:px-20
+                pb-10 sm:pb-16 md:pb-20 lg:pb-24
+                ${template === 2 || template === 3 ? 'sm:items-start' : ''}
+              `}>
+                <div class={`
+                  w-full flex flex-col gap-4 sm:gap-5
+                  max-w-3xl
+                  text-center items-center
+                  ${template === 2 || template === 3
+                    ? 'sm:text-left sm:items-start md:max-w-2xl'
+                    : 'lg:max-w-4xl'
+                  }
+                `}>
+
+                  {/* Badge (template 4) */}
                   {template === 4 && (
-                    <span class="mb-2.5 sm:mb-4 inline-flex items-center rounded-full border border-emerald-400/40 bg-emerald-500/15 px-3 sm:px-4 py-1 sm:py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-emerald-200 backdrop-blur-sm shadow-sm">
-                      Program Studi
-                    </span>
+                    <div>
+                      <span class="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/40 bg-emerald-500/20 px-3.5 py-1 text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em] text-emerald-200 backdrop-blur-md shadow-sm">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Program Studi
+                      </span>
+                    </div>
                   )}
 
-                  <h1 class="font-black text-white drop-shadow-md text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl leading-[1.18] sm:leading-[1.15] tracking-tight">
+                  {/* Judul */}
+                  <h1 class="
+                    font-black text-white
+                    [text-shadow:0_2px_16px_rgba(0,0,0,0.9),0_1px_4px_rgba(0,0,0,0.8)]
+                    text-[1.75rem] leading-[1.2]
+                    sm:text-4xl sm:leading-[1.15]
+                    md:text-5xl
+                    lg:text-6xl
+                    xl:text-[64px]
+                    2xl:text-7xl
+                    tracking-tight [text-wrap:balance]
+                  ">
                     {slide.title}
                   </h1>
 
+                  {/* Subtitle */}
                   {subtitleText && (
-                    <p class={`mt-2.5 sm:mt-4 md:mt-5 text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl text-slate-200/90 drop-shadow line-clamp-3 sm:line-clamp-none max-w-2xl leading-relaxed ${
-                      template === 2 || template === 3 ? 'sm:mx-0' : 'mx-auto'
-                    }`}>
+                    <p class="
+                      font-normal leading-relaxed
+                      [text-shadow:0_1px_8px_rgba(0,0,0,0.9)]
+                      text-white/95
+                      text-sm
+                      sm:text-base
+                      md:text-lg
+                      lg:text-xl
+                      xl:text-2xl
+                      max-w-2xl [text-wrap:pretty]
+                    ">
                       {subtitleText}
                     </p>
                   )}
 
+                  {/* Tombol CTA */}
                   {slide.button_link && (
-                    <div class={`mt-5 sm:mt-8 flex flex-wrap items-center gap-3.5 ${
-                      template === 2 || template === 3 ? 'justify-center sm:justify-start' : 'justify-center'
-                    }`}>
+                    <div class="mt-2 sm:mt-3 flex flex-wrap items-center gap-3">
                       <a
                         href={buttonUrl}
-                        class="inline-flex items-center justify-center gap-2 rounded-xl px-5 sm:px-7 py-2.5 sm:py-3.5 text-xs sm:text-sm md:text-base font-bold transition-all duration-300 bg-yellow-400 text-emerald-950 hover:bg-yellow-300 hover:scale-[1.03] active:scale-[0.98] shadow-lg shadow-yellow-500/25 ring-2 ring-yellow-400/20"
+                        class="inline-flex items-center justify-center gap-2.5 rounded-xl px-6 sm:px-8 py-2.5 sm:py-3.5 text-sm sm:text-base font-bold transition-all duration-300 bg-yellow-400 text-emerald-950 hover:bg-yellow-300 hover:scale-[1.03] active:scale-[0.98] shadow-xl shadow-yellow-500/25 ring-2 ring-yellow-400/30 group/btn"
                       >
                         <span>{slide.button_text || 'Lihat Detail'}</span>
-                        <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
                       </a>
                     </div>
                   )}
+
                 </div>
               </div>
             </div>
@@ -132,7 +177,7 @@ try {
         })}
       </div>
 
-      <!-- Navigation Arrows for Tablet & Desktop -->
+      <!-- Navigasi Panah (Tablet & Desktop) -->
       <button
         type="button"
         aria-label="Previous slide"
@@ -153,13 +198,13 @@ try {
         </svg>
       </button>
 
-      <!-- Pagination bullets with touch padding -->
-      <div class="swiper-pagination !bottom-4 sm:!bottom-6 md:!bottom-8"></div>
+      <!-- Pagination Bullets -->
+      <div class="swiper-pagination !bottom-5 sm:!bottom-7 md:!bottom-9"></div>
     </div>
   )}
 </section>
 
-<!-- Script inisialisasi Swiper di sisi Klien -->
+<!-- Script inisialisasi Swiper -->
 <script>
   import Swiper from 'swiper';
   import { Navigation, Pagination, Autoplay } from 'swiper/modules';
@@ -181,7 +226,7 @@ try {
     heroSwiperInstance = new Swiper('.hero-swiper', {
       modules: [Navigation, Pagination, Autoplay],
       loop: hasMultipleSlides,
-      speed: 650,
+      speed: 700,
       grabCursor: true,
       touchRatio: 1,
       resistanceRatio: 0.85,
@@ -207,6 +252,13 @@ try {
 </script>
 
 <style>
+  /* Pastikan swiper dan wrapper fill penuh */
+  .hero-swiper,
+  :global(.hero-swiper .swiper-wrapper),
+  :global(.hero-swiper .swiper-slide) {
+    height: 100% !important;
+  }
+
   :global(.swiper-pagination-bullet) {
     background-color: #ffffff;
     opacity: 0.45;

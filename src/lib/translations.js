@@ -298,9 +298,9 @@ export const ui = {
 
     // ─── Navbar main ──────────────────────────────────────────
     "nav.home": "Home",
-    "nav.profil": "Profile",
-    "nav.akademik": "Academic",
-    "nav.penelitian": "Research",
+    "nav.profil": "PROFILE",
+    "nav.akademik": "ACADEMIC",
+    "nav.penelitian": "RESEARCH",
     "nav.berita": "News",
     "nav.agenda": "Agenda",
     "nav.alumni": "Alumni",
