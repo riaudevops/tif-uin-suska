@@ -1,10 +1,9 @@
 ---
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+import { API_URL } from '@/lib/cms.js';
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
-
-const API_URL = import.meta.env.BASE_API_URL || 'http://cms-tif-uin-suska:8055';
 
 let aiorcInfo = null;
 

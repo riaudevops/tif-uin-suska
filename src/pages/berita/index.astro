@@ -2,14 +2,11 @@
 import Layout from "@/layouts/Layout.astro";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 import { fetchWithCache } from '@/lib/cachedFetch.js';
+import { API_BASE_URL, ASSET_URL, getAssetUrl } from '@/lib/cms.js';
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
-
-const rawBaseUrl = (import.meta.env.BASE_API_URL || "http://cms-tif-uin-suska:8055").replace(/\/+$/, "");
-const API_BASE_URL = rawBaseUrl.endsWith("/items") ? rawBaseUrl : `${rawBaseUrl}/items`;
-const ASSET_URL = `${rawBaseUrl.replace(/\/items$/, "")}/assets/`;
 
 // Mengambil token dari file .env
 const API_TOKEN = import.meta.env.DIRECTUS_TOKEN; 
@@ -113,7 +110,7 @@ const categories = [isEn ? "All" : "Semua"];
               >
                 <div class="relative h-56 overflow-hidden bg-slate-100">
                   <img
-                    src={post.images ? `${ASSET_URL}${post.images}` : '/landing-pages/gedung.jpg'}
+                    src={getAssetUrl(post.images || post.featured_image, '/landing-pages/gedung.jpg')}
                     alt={post.title}
                     class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   />

@@ -15,10 +15,10 @@ import {
   Building2
 } from '@lucide/astro';
 
+import { API_URL, getAssetUrl } from "../../../lib/cms";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
-const API_URL = import.meta.env.BASE_API_URL || 'http://localhost:8055';
 
 interface BeasiswaItem {
   id: string;
@@ -50,7 +50,7 @@ try {
             year: 'numeric'
           }) 
         : '',
-      thumbnail: d.thumbnail ? `${API_URL}/assets/${d.thumbnail}` : '',
+      thumbnail: getAssetUrl(d.thumbnail),
       category: d.category || (isEn ? 'Scholarship Program' : 'Program Beasiswa'),
       deadline: d.deadline || ''
     }));

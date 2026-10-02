@@ -1,10 +1,9 @@
 ---
 import { getLocaleFromUrl, useTranslations } from "../../../lib/translations";
 import { fetchWithCache } from "../../../lib/cachedFetch";
+import { API_URL, getAssetUrl } from "../../../lib/cms";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
-
-const API_URL = import.meta.env.BASE_API_URL || "http://cms-tif-uin-suska:8055";
 
 let prestasiData: any[] = [];
 
@@ -40,7 +39,7 @@ try {
         {/* IMAGE */}
         <div class="relative">
           <img
-            src={item.gambar}
+            src={getAssetUrl(item.gambar)}
             alt={item.title}
             class="w-full h-64 object-cover"
           />

@@ -1,10 +1,10 @@
 ---
 import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
+import { API_URL, getAssetUrl } from '@/lib/cms.js';
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
 
-const API_URL = import.meta.env.BASE_API_URL || 'http://cms-tif-uin-suska:8055';
 const COLLECTION = 'aiorc_fields';
 
 let researcherData: any[] = [];
@@ -104,7 +104,7 @@ try {
                       <div class="flex items-center gap-4">
                         {item.photo ? (
                           <img
-                            src={`${API_URL}/assets/${item.photo}`}
+                            src={getAssetUrl(item.photo)}
                             alt={item.name}
                             class="h-10 w-10 shrink-0 rounded-xl border border-[#dfeee1] object-cover"
                           />

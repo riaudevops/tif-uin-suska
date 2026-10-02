@@ -17,13 +17,13 @@ import {
 
 export const prerender = false;
 
+import { API_URL, ASSET_URL, getAssetUrl } from '@/lib/cms.js';
+
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
 
 const { slug } = Astro.params;
-const API_URL = import.meta.env.BASE_API_URL || "http://localhost:8055";
-const ASSET_URL = `${API_URL}/assets/`;
 
 let article: any = null;
 let related: any[] = [];
@@ -161,7 +161,7 @@ const formattedDate = article.published_at
     {article.thumbnail && (
       <div class="rounded-3xl overflow-hidden shadow-xl mb-10 max-h-[460px] bg-slate-100">
         <img 
-          src={article.thumbnail.startsWith('http') ? article.thumbnail : `${ASSET_URL}${article.thumbnail}`} 
+          src={getAssetUrl(article.thumbnail)} 
           alt={article.title}
           class="w-full h-full object-cover"
         />

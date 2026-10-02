@@ -1,6 +1,7 @@
 ---
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
 import { fetchWithCache } from "../../../lib/cachedFetch";
+import { API_BASE_URL, ASSET_URL, getAssetUrl } from "../../../lib/cms";
 // Import CSS bawaan Swiper langsung di frontmatter
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -8,10 +9,6 @@ import 'swiper/css/pagination';
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
-
-const rawBaseUrl = (import.meta.env.BASE_API_URL || "http://cms-tif-uin-suska:8055").replace(/\/+$/, "");
-const API_BASE_URL = rawBaseUrl.endsWith("/items") ? rawBaseUrl : `${rawBaseUrl}/items`;
-const ASSET_URL = `${rawBaseUrl.replace(/\/items$/, "")}/assets/`;
 
 const API_TOKEN = import.meta.env.DIRECTUS_TOKEN;
 
@@ -57,7 +54,7 @@ try {
           return (
             <div class="swiper-slide relative h-full w-full min-h-[440px] sm:min-h-[500px]">
               <img
-                src={`${ASSET_URL}${slide.image}`}
+                src={getAssetUrl(slide.image)}
                 alt={slide.title}
                 loading={slideIndex === 0 ? "eager" : "lazy"}
                 fetchpriority={slideIndex === 0 ? "high" : "auto"}

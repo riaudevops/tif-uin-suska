@@ -1,12 +1,9 @@
 ---
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
 import { fetchWithCache } from "../../../lib/cachedFetch";
+import { API_BASE_URL, ASSET_URL, getAssetUrl } from "../../../lib/cms";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
-
-const rawBaseUrl = (import.meta.env.BASE_API_URL || "http://cms-tif-uin-suska:8055").replace(/\/+$/, "");
-const API_BASE_URL = rawBaseUrl.endsWith("/items") ? rawBaseUrl : `${rawBaseUrl}/items`;
-const ASSET_URL = `${rawBaseUrl.replace(/\/items$/, "")}/assets/`;
 
 // Ambil token dari environment variables
 const API_TOKEN = import.meta.env.DIRECTUS_TOKEN;
@@ -57,7 +54,7 @@ try {
           
           <div class="overflow-hidden h-52">
             <img 
-              src={post.featured_image && post.featured_image !== "default" ? `${ASSET_URL}${post.featured_image}` : "/default-thumbnail.jpg"}
+              src={getAssetUrl(post.featured_image || post.images, "/default-thumbnail.jpg")}
               alt={post.title} 
               loading="lazy"
               decoding="async"

@@ -16,10 +16,10 @@ import {
   School
 } from '@lucide/astro';
 
+import { API_URL, getAssetUrl } from "../../../lib/cms";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
-const API_URL = import.meta.env.BASE_API_URL || 'http://cms-tif-uin-suska:8055';
 
 interface TugasAkhirItem {
   id: string;
@@ -57,7 +57,7 @@ try {
             year: 'numeric',
           })
         : '',
-      thumbnail: d.thumbnail ? `${API_URL}/assets/${d.thumbnail}` : '',
+      thumbnail: getAssetUrl(d.thumbnail),
       category: d.category || (isEn ? 'Thesis Info' : 'Informasi TA')
     }));
   } else {
