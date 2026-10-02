@@ -16,7 +16,7 @@ export async function fetchWithCache(url, options = {}, ttlMs = 30000) {
 
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3500);
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
 
     const res = await fetch(url, {
       ...options,

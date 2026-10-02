@@ -94,13 +94,17 @@ const categories = [isEn ? "All" : "Semua"];
           {posts.map((post: any) => {
             const cleanExcerpt = (post.excerpt || '').replace(/<[^>]+>/g, '').trim();
             const postUrl = localizePath(`/berita/${post.slug || post.id}`, lang);
-            const formattedDate = post.date_created
-              ? new Date(post.date_created).toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', {
-                  day: 'numeric',
-                  month: 'short',
-                  year: 'numeric'
-                })
-              : isEn ? 'Date unavailable' : 'Tanggal tidak tersedia';
+            const formattedDate = (() => {
+              const raw = post.date;
+              if (!raw) return isEn ? 'Date unavailable' : 'Tanggal tidak tersedia';
+              try {
+                const d = new Date(raw);
+                if (isNaN(d.getTime())) return isEn ? 'Date unavailable' : 'Tanggal tidak tersedia';
+                return d.toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', {
+                  day: 'numeric', month: 'long', year: 'numeric'
+                });
+              } catch { return isEn ? 'Date unavailable' : 'Tanggal tidak tersedia'; }
+            })();
 
             return (
               <a
