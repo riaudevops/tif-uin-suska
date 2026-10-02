@@ -122,10 +122,10 @@ const isEn = lang === 'en';
         <p class="text-sm text-gray-500 font-sans mb-6 font-medium">{isEn ? 'Or visit the following popular pages:' : 'Atau kunjungi halaman populer berikut:'}</p>
         <div class="flex flex-wrap justify-center gap-3">
           {[
-            { href: localizePath('/profil-pages', lang), label: isEn ? 'Study Program Profile' : 'Profil Prodi' },
-            { href: localizePath('/kurikulum-pages', lang), label: isEn ? 'Curriculum' : 'Kurikulum' },
-            { href: localizePath('/dosen-pages', lang), label: isEn ? 'Lecturers' : 'Dosen' },
-            { href: localizePath('/laboratorium-pages', lang), label: isEn ? 'Laboratory' : 'Laboratorium' },
+            { href: localizePath('/profil', lang), label: isEn ? 'Study Program Profile' : 'Profil Prodi' },
+            { href: localizePath('/kurikulum', lang), label: isEn ? 'Curriculum' : 'Kurikulum' },
+            { href: localizePath('/dosen', lang), label: isEn ? 'Lecturers' : 'Dosen' },
+            { href: localizePath('/laboratorium', lang), label: isEn ? 'Laboratory' : 'Laboratorium' },
             { href: localizePath('/berita', lang), label: isEn ? 'News' : 'Berita' },
           ].map((link) => (
             <a
