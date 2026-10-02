@@ -39,13 +39,13 @@ try {
 }
 ---
 
-<section class="relative w-full overflow-hidden bg-[#022c22] min-h-[500px] sm:min-h-[540px] md:min-h-[580px] lg:h-[calc(100vh-80px)] lg:max-h-[760px] flex flex-col justify-center pt-20 sm:pt-24 lg:pt-0">
+<section class="relative w-full overflow-hidden bg-[#022c22] h-[520px] xs:h-[560px] sm:h-[600px] md:h-[640px] lg:h-[calc(100vh-76px)] lg:min-h-[580px] lg:max-h-[780px] 2xl:max-h-[860px] flex flex-col justify-center pt-16 sm:pt-20 lg:pt-0">
   {slides.length === 0 ? (
     <div class="flex h-full min-h-[420px] items-center justify-center text-gray-400 px-4 text-center">
       <p>Slider belum tersedia.</p>
     </div>
   ) : (
-    <div class="swiper hero-swiper h-full w-full flex-grow relative select-none">
+    <div class="swiper hero-swiper h-full w-full flex-grow relative select-none group/swiper">
       <div class="swiper-wrapper h-full">
         {slides.map((slide: any, slideIndex: number) => {
           const template = Number(slide.template ?? 1) || 1;
@@ -54,8 +54,8 @@ try {
           const imageUrl = getAssetUrl(slide.image);
 
           return (
-            <div class="swiper-slide relative h-full w-full min-h-[440px] sm:min-h-[500px] flex items-center">
-              {/* Background Image / Fallback Gradient */}
+            <div class="swiper-slide relative h-full w-full flex items-center justify-center">
+              {/* Background Image / Fallback Dark Emerald Gradient */}
               {imageUrl ? (
                 <img
                   src={imageUrl}
@@ -66,54 +66,60 @@ try {
                 />
               ) : (
                 <div class="absolute inset-0 z-0 h-full w-full bg-gradient-to-br from-[#003820] via-[#022c22] to-[#011a14] opacity-95">
-                  <div class="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:24px_24px] opacity-15"></div>
+                  <div class="absolute inset-0 bg-[radial-gradient(#10b981_1.5px,transparent_1.5px)] [background-size:28px_28px] opacity-20"></div>
                 </div>
               )}
 
-              {/* Contrast Overlays for Mobile readability */}
+              {/* Contrast Overlays across screen sizes */}
               <div class={`absolute inset-0 z-10 ${
                 template === 2 
-                  ? 'bg-gradient-to-r from-slate-950/95 via-slate-900/75 to-slate-900/40' 
+                  ? 'bg-gradient-to-t sm:bg-gradient-to-r from-slate-950/95 via-slate-950/80 sm:via-slate-900/70 to-slate-900/30' 
                   : template === 3 
-                  ? 'bg-gradient-to-t from-slate-950/95 via-slate-900/60 to-slate-900/30' 
+                  ? 'bg-gradient-to-t from-slate-950/95 via-slate-950/70 to-slate-900/20' 
                   : template === 4 
-                  ? 'bg-gradient-to-br from-emerald-950/90 via-slate-900/60 to-yellow-900/40' 
-                  : 'bg-black/60 sm:bg-black/55'
+                  ? 'bg-gradient-to-br from-emerald-950/90 via-slate-950/70 to-yellow-950/30' 
+                  : 'bg-black/60 sm:bg-black/50'
               }`} />
 
-              {/* Slide Content */}
-              <div class="relative z-20 w-full container mx-auto px-5 sm:px-8 md:px-12 py-10 sm:py-14 flex items-center justify-center">
+              {/* Slide Content with Responsive Container */}
+              <div class={`relative z-20 w-full max-w-7xl mx-auto px-4 xs:px-6 sm:px-10 md:px-14 lg:px-20 py-8 sm:py-12 md:py-16 flex items-center ${
+                template === 2 ? 'justify-center sm:justify-start' : template === 3 ? 'items-end justify-center sm:justify-start pb-14 sm:pb-20' : 'justify-center'
+              }`}>
                 <div class={`w-full ${
                   template === 2 
-                    ? 'max-w-2xl text-left' 
+                    ? 'max-w-xl md:max-w-2xl text-center sm:text-left' 
                     : template === 3 
-                    ? 'max-w-2xl text-left' 
-                    : 'max-w-4xl text-center'
+                    ? 'max-w-xl md:max-w-2xl text-center sm:text-left' 
+                    : 'max-w-3xl lg:max-w-4xl text-center'
                 }`}>
                   {template === 4 && (
-                    <span class="mb-2 sm:mb-4 inline-flex rounded-full border border-emerald-400/40 bg-emerald-500/10 px-3 sm:px-4 py-1 sm:py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-emerald-200 backdrop-blur-sm">
+                    <span class="mb-2.5 sm:mb-4 inline-flex items-center rounded-full border border-emerald-400/40 bg-emerald-500/15 px-3 sm:px-4 py-1 sm:py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-emerald-200 backdrop-blur-sm shadow-sm">
                       Program Studi
                     </span>
                   )}
 
-                  <h1 class="font-extrabold text-white drop-shadow-md text-2xl sm:text-3xl md:text-5xl lg:text-6xl leading-tight tracking-tight">
+                  <h1 class="font-black text-white drop-shadow-md text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl leading-[1.18] sm:leading-[1.15] tracking-tight">
                     {slide.title}
                   </h1>
 
                   {subtitleText && (
-                    <p class="mt-2.5 sm:mt-4 text-sm sm:text-base md:text-xl text-gray-200/90 drop-shadow line-clamp-3 sm:line-clamp-none max-w-2xl mx-auto leading-relaxed">
+                    <p class={`mt-2.5 sm:mt-4 md:mt-5 text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl text-slate-200/90 drop-shadow line-clamp-3 sm:line-clamp-none max-w-2xl leading-relaxed ${
+                      template === 2 || template === 3 ? 'sm:mx-0' : 'mx-auto'
+                    }`}>
                       {subtitleText}
                     </p>
                   )}
 
                   {slide.button_link && (
-                    <div class="mt-5 sm:mt-8 flex flex-wrap items-center gap-3 justify-center">
+                    <div class={`mt-5 sm:mt-8 flex flex-wrap items-center gap-3.5 ${
+                      template === 2 || template === 3 ? 'justify-center sm:justify-start' : 'justify-center'
+                    }`}>
                       <a
                         href={buttonUrl}
-                        class="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-xs sm:text-sm md:text-base font-bold transition-all duration-200 bg-yellow-400 text-emerald-950 hover:bg-yellow-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-yellow-500/20"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl px-5 sm:px-7 py-2.5 sm:py-3.5 text-xs sm:text-sm md:text-base font-bold transition-all duration-300 bg-yellow-400 text-emerald-950 hover:bg-yellow-300 hover:scale-[1.03] active:scale-[0.98] shadow-lg shadow-yellow-500/25 ring-2 ring-yellow-400/20"
                       >
                         <span>{slide.button_text || 'Lihat Detail'}</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
                       </a>
@@ -126,8 +132,29 @@ try {
         })}
       </div>
 
+      <!-- Navigation Arrows for Tablet & Desktop -->
+      <button
+        type="button"
+        aria-label="Previous slide"
+        class="swiper-hero-prev hidden md:flex absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 lg:w-12 lg:h-12 items-center justify-center rounded-full bg-black/30 hover:bg-[#004d2c] text-white border border-white/20 backdrop-blur-md transition-all duration-200 opacity-0 group-hover/swiper:opacity-100 hover:scale-105 active:scale-95 focus:opacity-100"
+      >
+        <svg class="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        aria-label="Next slide"
+        class="swiper-hero-next hidden md:flex absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 lg:w-12 lg:h-12 items-center justify-center rounded-full bg-black/30 hover:bg-[#004d2c] text-white border border-white/20 backdrop-blur-md transition-all duration-200 opacity-0 group-hover/swiper:opacity-100 hover:scale-105 active:scale-95 focus:opacity-100"
+      >
+        <svg class="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
       <!-- Pagination bullets with touch padding -->
-      <div class="swiper-pagination !bottom-4 sm:!bottom-6"></div>
+      <div class="swiper-pagination !bottom-4 sm:!bottom-6 md:!bottom-8"></div>
     </div>
   )}
 </section>
@@ -154,7 +181,7 @@ try {
     heroSwiperInstance = new Swiper('.hero-swiper', {
       modules: [Navigation, Pagination, Autoplay],
       loop: hasMultipleSlides,
-      speed: 600,
+      speed: 650,
       grabCursor: true,
       touchRatio: 1,
       resistanceRatio: 0.85,
@@ -166,7 +193,11 @@ try {
       pagination: {
         el: '.swiper-pagination',
         clickable: true,
-        dynamicBullets: hasMultipleSlides && slidesCount > 5,
+        dynamicBullets: hasMultipleSlides && slidesCount > 6,
+      },
+      navigation: {
+        prevEl: '.swiper-hero-prev',
+        nextEl: '.swiper-hero-next',
       },
     });
   }
@@ -181,7 +212,7 @@ try {
     opacity: 0.45;
     width: 8px;
     height: 8px;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   @media (min-width: 640px) {
     :global(.swiper-pagination-bullet) {
@@ -192,7 +223,7 @@ try {
   :global(.swiper-pagination-bullet-active) {
     background-color: #facc15;
     opacity: 1;
-    width: 24px;
+    width: 26px;
     border-radius: 9999px;
   }
 </style>
