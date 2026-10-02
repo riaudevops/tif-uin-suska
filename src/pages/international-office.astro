@@ -1,50 +1,289 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { getLocaleFromUrl, useTranslations, localizePath } from '../lib/translations';
+import {
+  Globe2,
+  Users,
+  BookOpen,
+  FlaskConical,
+  Plane,
+  Handshake,
+  Mail,
+  ArrowRight,
+} from '@lucide/astro';
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
+
+const focusAreas = isEn
+  ? [
+      {
+        title: 'Student & Lecturer Exchange',
+        desc: 'Facilitating outbound and inbound academic mobility for students and lecturers with partner institutions abroad.',
+        icon: Plane,
+        badge: 'Mobility',
+      },
+      {
+        title: 'Cross-Border Research',
+        desc: 'Initiating and supporting joint research projects that expand international academic networks.',
+        icon: FlaskConical,
+        badge: 'Research',
+      },
+      {
+        title: 'Academic Collaboration',
+        desc: 'Coordinating MoU follow-ups, guest lectures, workshops, and curriculum-related international activities.',
+        icon: BookOpen,
+        badge: 'Academic',
+      },
+      {
+        title: 'Partnership Development',
+        desc: 'Building sustained cooperation with universities and research institutions beyond national borders.',
+        icon: Handshake,
+        badge: 'Network',
+      },
+    ]
+  : [
+      {
+        title: 'Pertukaran Mahasiswa & Dosen',
+        desc: 'Memfasilitasi mobilitas akademik outbound dan inbound bagi mahasiswa serta dosen bersama mitra luar negeri.',
+        icon: Plane,
+        badge: 'Mobilitas',
+      },
+      {
+        title: 'Riset Lintas Negara',
+        desc: 'Menginisiasi dan mendukung proyek riset bersama untuk memperluas jaringan akademik internasional.',
+        icon: FlaskConical,
+        badge: 'Riset',
+      },
+      {
+        title: 'Kolaborasi Akademik',
+        desc: 'Mengorkestrasi tindak lanjut MoU, kuliah tamu, workshop, dan kegiatan internasional terkait kurikulum.',
+        icon: BookOpen,
+        badge: 'Akademik',
+      },
+      {
+        title: 'Pengembangan Kemitraan',
+        desc: 'Membangun kerja sama berkelanjutan dengan perguruan tinggi dan lembaga riset di luar negeri.',
+        icon: Handshake,
+        badge: 'Jaringan',
+      },
+    ];
+
+const services = isEn
+  ? [
+      {
+        step: '01',
+        title: 'Information & Consultation',
+        desc: 'Guidance on exchange opportunities, eligibility, and preparation for international programs.',
+      },
+      {
+        step: '02',
+        title: 'Program Coordination',
+        desc: 'Administrative support for nominations, correspondence, and activity documentation.',
+      },
+      {
+        step: '03',
+        title: 'Partner Engagement',
+        desc: 'Communication with overseas partners for visits, joint activities, and follow-up collaboration.',
+      },
+      {
+        step: '04',
+        title: 'Reporting & Continuity',
+        desc: 'Recording outcomes so successful programs can be continued and improved over time.',
+      },
+    ]
+  : [
+      {
+        step: '01',
+        title: 'Informasi & Konsultasi',
+        desc: 'Panduan peluang pertukaran, persyaratan, dan persiapan mengikuti program internasional.',
+      },
+      {
+        step: '02',
+        title: 'Koordinasi Program',
+        desc: 'Dukungan administrasi nominasi, korespondensi, dan dokumentasi kegiatan.',
+      },
+      {
+        step: '03',
+        title: 'Engagement Mitra',
+        desc: 'Komunikasi dengan mitra luar negeri untuk kunjungan, kegiatan bersama, dan tindak lanjut kerja sama.',
+      },
+      {
+        step: '04',
+        title: 'Pelaporan & Keberlanjutan',
+        desc: 'Pencatatan hasil kegiatan agar program yang berjalan baik dapat dilanjutkan dan diperbaiki.',
+      },
+    ];
 ---
 
 <Layout title="International Office">
-  
-  <section data-aos="fade-up" class="max-w-7xl mx-auto px-6 py-20">
-    <nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
-      <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100">
+  <div class="min-h-screen bg-slate-50/60 font-sans">
+    <nav class="mx-auto max-w-7xl px-4 pt-28 pb-4 text-sm sm:px-6 sm:pt-32 lg:px-8" aria-label="Breadcrumb">
+      <ol class="flex flex-wrap items-center gap-2 border-b border-slate-100 py-3 text-sm text-slate-500">
         <li class="flex items-center">
-          <a href={localizePath("/", lang)} class="flex items-center hover:text-green-600 transition-colors">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <a href={localizePath('/', lang)} class="flex items-center transition-colors hover:text-emerald-700">
+            <svg class="mr-1.5 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
-            {t("bread.home")}
+            {t('bread.home')}
           </a>
         </li>
-        <li class="text-gray-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </li>
-        <li class="text-green-700 font-bold tracking-tight">
-          International Office
-        </li>
+        <li class="text-slate-300">/</li>
+        <li class="font-bold tracking-tight text-emerald-700">International Office</li>
       </ol>
     </nav>
 
-    <div class="bg-white rounded-3xl p-8 shadow-lg border border-gray-100 mt-6">
-      <h1 data-aos="fade-up" class="text-3xl font-black text-[#004d2c]">International Office</h1>
-      <p class="text-slate-600 mt-4">
-        {isEn 
-          ? "The International Office supports international collaborations, student and lecturer exchanges, and initiates cross-border research projects to expand international networks and experiences for the Informatics Engineering academic community."
-          : "International Office mendukung kerja sama internasional, pertukaran mahasiswa dan dosen, serta inisiasi proyek riset lintas-negara untuk memperluas jaringan dan pengalaman internasional bagi civitas akademika Teknik Informatika."
-        }
-      </p>
+    <section class="mx-auto max-w-7xl px-4 py-6 sm:px-6 md:py-8 lg:px-8">
+      <div class="relative overflow-hidden rounded-[30px] bg-gradient-to-br from-[#003d2a] via-[#0a5d3d] to-[#7ca25c] p-8 shadow-[0_28px_80px_-30px_rgba(0,61,42,0.8)] sm:p-10 lg:p-14">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(245,201,86,0.18),_transparent_30%),radial-gradient(circle_at_bottom_left,_rgba(255,255,255,0.05),_transparent_35%)]"></div>
+        <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-secondary/10 blur-3xl"></div>
+        <div class="absolute -left-12 bottom-0 h-48 w-48 rounded-full bg-white/5 blur-3xl"></div>
 
-      <div class="mt-6">
-        <a href="#" class="inline-flex items-center px-4 py-2 bg-yellow-400 text-[#004d2c] font-bold rounded-lg hover:bg-yellow-300 transition">
-          {isEn ? 'Contact & Programs' : 'Kontak & Program'}
-        </a>
+        <div class="relative z-10 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+          <div>
+            <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
+              <Globe2 class="h-4 w-4 text-[#f7de8a]" />
+              {isEn ? 'Global Engagement' : 'Engagement Global'}
+            </span>
+            <h1 class="mt-5 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl md:text-5xl">
+              International Office
+            </h1>
+          </div>
+          <div class="rounded-[24px] border border-white/10 bg-[#dcecd1]/10 p-5 backdrop-blur-sm">
+            <p class="text-base leading-relaxed text-gray-100 sm:text-lg">
+              {isEn
+                ? 'Supporting international collaboration, academic exchange, and cross-border research for the Informatics Engineering academic community.'
+                : 'Mendukung kerja sama internasional, pertukaran akademik, dan riset lintas negara bagi civitas akademika Teknik Informatika.'}
+            </p>
+          </div>
+        </div>
+
+        <div class="relative z-10 mt-8 grid gap-4 sm:grid-cols-3">
+          <div class="rounded-[22px] border border-white/10 bg-[#dcecd1]/10 p-4 backdrop-blur-sm">
+            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">
+              {isEn ? 'Focus' : 'Fokus'}
+            </p>
+            <p class="mt-2 text-xl font-black text-white">
+              {isEn ? 'Exchange & Research' : 'Pertukaran & Riset'}
+            </p>
+          </div>
+          <div class="rounded-[22px] border border-white/10 bg-[#dcecd1]/10 p-4 backdrop-blur-sm">
+            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">
+              {isEn ? 'Audience' : 'Sasaran'}
+            </p>
+            <p class="mt-2 text-xl font-black text-white">
+              {isEn ? 'Students & Lecturers' : 'Mahasiswa & Dosen'}
+            </p>
+          </div>
+          <div class="rounded-[22px] border border-white/10 bg-[#dcecd1]/10 p-4 backdrop-blur-sm">
+            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">
+              {isEn ? 'Scope' : 'Cakupan'}
+            </p>
+            <p class="mt-2 text-xl font-black text-white">
+              {isEn ? 'Academic Networks' : 'Jaringan Akademik'}
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 md:py-14 lg:px-8">
+      <div class="mx-auto mb-8 max-w-2xl text-center">
+        <span class="mb-3 inline-flex rounded-full bg-[#edf4e8] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
+          {isEn ? 'Core Mandates' : 'Mandat Utama'}
+        </span>
+        <h2 class="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
+          {isEn ? 'Areas of international support' : 'Area dukungan internasional'}
+        </h2>
+        <p class="mt-2 text-sm text-slate-500">
+          {isEn
+            ? 'Services that help expand international exposure for the study program.'
+            : 'Layanan yang memperluas paparan internasional bagi program studi.'}
+        </p>
+      </div>
+
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {focusAreas.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div class="flex flex-col justify-between rounded-[26px] border border-slate-200 bg-white p-6 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_55px_-30px_rgba(0,61,42,0.35)]">
+              <div>
+                <div class="mb-6 flex items-center justify-between">
+                  <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#edf4e8] text-[#0b5c3d]">
+                    <Icon class="h-6 w-6" />
+                  </div>
+                  <span class="rounded-lg bg-[#f4f0dd] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#5a4c18]">
+                    {item.badge}
+                  </span>
+                </div>
+                <h3 class="mb-2 text-lg font-bold text-slate-900">{item.title}</h3>
+                <p class="text-sm leading-relaxed text-slate-500">{item.desc}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+      <div class="rounded-[30px] border border-slate-200 bg-[#f8faf3] p-6 shadow-[0_18px_45px_-35px_rgba(15,23,42,0.25)] sm:p-8 lg:p-10">
+        <div class="mx-auto mb-10 max-w-2xl text-center">
+          <span class="mb-3 inline-flex rounded-full bg-white px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
+            {isEn ? 'How We Work' : 'Cara Kerja'}
+          </span>
+          <h2 class="text-2xl font-black tracking-tight text-[#004d2c] sm:text-3xl">
+            {isEn ? 'Service flow for international programs' : 'Alur layanan program internasional'}
+          </h2>
+        </div>
+
+        <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {services.map((item) => (
+            <div class="rounded-[24px] border border-[#dfe7d7] bg-white p-5">
+              <p class="font-mono text-2xl font-black text-primary">{item.step}</p>
+              <h3 class="mt-3 text-base font-bold text-slate-900">{item.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-slate-500">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      <div class="overflow-hidden rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.3)] sm:p-8 lg:p-10">
+        <div class="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <div class="mb-3 inline-flex items-center gap-2 rounded-full bg-[#edf4e8] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
+              <Users class="h-3.5 w-3.5" />
+              {isEn ? 'Contact' : 'Kontak'}
+            </div>
+            <h2 class="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
+              {isEn ? 'Need information on programs or partners?' : 'Butuh informasi program atau mitra?'}
+            </h2>
+            <p class="mt-3 max-w-2xl text-sm leading-relaxed text-slate-500 sm:text-base">
+              {isEn
+                ? 'Reach the study program secretariat for consultation on international activities, academic exchange, and collaboration follow-up.'
+                : 'Hubungi sekretariat program studi untuk konsultasi kegiatan internasional, pertukaran akademik, dan tindak lanjut kerja sama.'}
+            </p>
+          </div>
+          <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
+            <a
+              href="mailto:informatika@uin-suska.ac.id"
+              class="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary/90"
+            >
+              <Mail class="h-4 w-4" />
+              {isEn ? 'Email Secretariat' : 'Email Sekretariat'}
+            </a>
+            <a
+              href={localizePath('/mitra', lang)}
+              class="inline-flex items-center justify-center gap-2 rounded-md border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+            >
+              {isEn ? 'View Partners' : 'Lihat Mitra'}
+              <ArrowRight class="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </Layout>
