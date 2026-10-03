@@ -1,5 +1,6 @@
 ---
 import { getLocaleFromUrl } from "../../../lib/translations";
+import { ArrowRight } from "@lucide/astro";
 
 const lang = getLocaleFromUrl(Astro);
 const isEn = lang === 'en';
@@ -85,23 +86,35 @@ const isEn = lang === 'en';
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
           
-          <a href="https://sireg.uin-suska.ac.id/" class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-emerald-900/40 hover:border-emerald-400/50 transition duration-300 flex flex-col">
-            <h4 class="font-bold text-white mb-2 text-lg">SIREG</h4>
+          <a href="https://sireg.uin-suska.ac.id/" target="_blank" rel="noopener noreferrer" class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-emerald-900/40 hover:border-emerald-400/50 transition duration-300 flex flex-col">
+            <div class="mb-2 flex items-start justify-between gap-3">
+              <h4 class="font-bold text-white text-lg">SIREG</h4>
+              <ArrowRight class="h-5 w-5 shrink-0 text-emerald-300/60 transition duration-300 group-hover:translate-x-1 group-hover:text-emerald-300" />
+            </div>
             <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{isEn ? "Integrated academic service system for students." : "Sistem layanan akademik terpadu untuk mahasiswa."}</p>
           </a>
           
-          <a href="https://elearning.uin-suska.ac.id/" class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-emerald-900/40 hover:border-emerald-400/50 transition duration-300 flex flex-col">
-            <h4 class="font-bold text-white mb-2 text-lg">E-Learning</h4>
+          <a href="https://elearning.uin-suska.ac.id/" target="_blank" rel="noopener noreferrer" class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-emerald-900/40 hover:border-emerald-400/50 transition duration-300 flex flex-col">
+            <div class="mb-2 flex items-start justify-between gap-3">
+              <h4 class="font-bold text-white text-lg">E-Learning</h4>
+              <ArrowRight class="h-5 w-5 shrink-0 text-emerald-300/60 transition duration-300 group-hover:translate-x-1 group-hover:text-emerald-300" />
+            </div>
             <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{isEn ? "Virtual classroom platform for online assignments and materials." : "Platform kelas virtual untuk tugas dan materi daring."}</p>
           </a>
           
-          <a href="https://iraisenew.uin-suska.ac.id/" class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-emerald-900/40 hover:border-emerald-400/50 transition duration-300 flex flex-col">
-            <h4 class="font-bold text-white mb-2 text-lg">IRaise</h4>
+          <a href="https://iraisenew.uin-suska.ac.id/" target="_blank" rel="noopener noreferrer" class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-emerald-900/40 hover:border-emerald-400/50 transition duration-300 flex flex-col">
+            <div class="mb-2 flex items-start justify-between gap-3">
+              <h4 class="font-bold text-white text-lg">IRaise</h4>
+              <ArrowRight class="h-5 w-5 shrink-0 text-emerald-300/60 transition duration-300 group-hover:translate-x-1 group-hover:text-emerald-300" />
+            </div>
             <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{isEn ? "Information system for lecturers to manage academic data." : "Sistem informasi untuk dosen dalam mengelola data akademik."}</p>
           </a>
  
-          <a href="https://kkn.uin-suska.ac.id/" class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-emerald-900/40 hover:border-emerald-400/50 transition duration-300 flex flex-col">
-            <h4 class="font-bold text-white mb-2 text-lg">KKN</h4>
+          <a href="https://kkn.uin-suska.ac.id/" target="_blank" rel="noopener noreferrer" class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-emerald-900/40 hover:border-emerald-400/50 transition duration-300 flex flex-col">
+            <div class="mb-2 flex items-start justify-between gap-3">
+              <h4 class="font-bold text-white text-lg">KKN</h4>
+              <ArrowRight class="h-5 w-5 shrink-0 text-emerald-300/60 transition duration-300 group-hover:translate-x-1 group-hover:text-emerald-300" />
+            </div>
             <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{isEn ? "Community service program for students." : "Program kerja nyata untuk mahasiswa baru."}</p>
           </a>
  
@@ -120,28 +133,43 @@ const isEn = lang === 'en';
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
           
-          <a href="https://dashboard.tif.uin-suska.ac.id/" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
-            <h4 class="font-bold text-white mb-2 text-lg">Dashboard TIF</h4>
+          <a href="https://dashboard.tif.uin-suska.ac.id/" target="_blank" rel="noopener noreferrer" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
+            <div class="mb-2 flex items-start justify-between gap-3">
+              <h4 class="font-bold text-white text-lg">Dashboard TIF</h4>
+              <ArrowRight class="h-5 w-5 shrink-0 text-yellow-400/60 transition duration-300 group-hover:translate-x-1 group-hover:text-yellow-400" />
+            </div>
             <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{isEn ? "Application for murajaah deposits and academic activities management." : "Aplikasi setoran murajaah dan pengelolaan kegiatan akademik."}</p>
           </a>
           
-          <a href="https://hima.tif.uin-suska.ac.id/" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
-            <h4 class="font-bold text-white mb-2 text-lg">HIMATIF</h4>
+          <a href="https://hima.tif.uin-suska.ac.id/" target="_blank" rel="noopener noreferrer" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
+            <div class="mb-2 flex items-start justify-between gap-3">
+              <h4 class="font-bold text-white text-lg">HIMATIF</h4>
+              <ArrowRight class="h-5 w-5 shrink-0 text-yellow-400/60 transition duration-300 group-hover:translate-x-1 group-hover:text-yellow-400" />
+            </div>
             <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{isEn ? "HIMATIF student portal and management services." : "Sistem layanan ketiga untuk mahasiswa Teknik Informatika."}</p>
           </a>
           
-          <a href="https://dashboard-hima.tif.uin-suska.ac.id/" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
-            <h4 class="font-bold text-white mb-2 text-lg">Dashboard HIMATIF</h4>
+          <a href="https://dashboard-hima.tif.uin-suska.ac.id/" target="_blank" rel="noopener noreferrer" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
+            <div class="mb-2 flex items-start justify-between gap-3">
+              <h4 class="font-bold text-white text-lg">Dashboard HIMATIF</h4>
+              <ArrowRight class="h-5 w-5 shrink-0 text-yellow-400/60 transition duration-300 group-hover:translate-x-1 group-hover:text-yellow-400" />
+            </div>
             <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{isEn ? "HIMATIF student portal and management services." : "Sistem layanan ketiga untuk mahasiswa Teknik Informatika."}</p>
           </a>
  
-          <a href="https://play.google.com/store/apps/details?id=uinsuska.tif.dashboard.student&pcampaignid=web_share" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
-            <h4 class="font-bold text-white mb-2 text-lg">{isEn ? "IntegraTIF Student" : "IntegraTIF Mahasiswa"}</h4>
+          <a href="https://play.google.com/store/apps/details?id=uinsuska.tif.dashboard.student&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
+            <div class="mb-2 flex items-start justify-between gap-3">
+              <h4 class="font-bold text-white text-lg">{isEn ? "IntegraTIF Student" : "IntegraTIF Mahasiswa"}</h4>
+              <ArrowRight class="h-5 w-5 shrink-0 text-yellow-400/60 transition duration-300 group-hover:translate-x-1 group-hover:text-yellow-400" />
+            </div>
             <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{isEn ? "Application for murajaah deposits and academic activities management." : "Aplikasi setoran murajaah dan pengelolaan kegiatan akademik."}</p>
           </a>
           
-          <a href="https://play.google.com/store/apps/details?id=uinsuska.tif.dashboard.staff&pcampaignid=web_share" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
-            <h4 class="font-bold text-white mb-2 text-lg">{isEn ? "IntegraTIF Lecturer" : "IntegraTIF Dosen"}</h4>
+          <a href="https://play.google.com/store/apps/details?id=uinsuska.tif.dashboard.staff&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
+            <div class="mb-2 flex items-start justify-between gap-3">
+              <h4 class="font-bold text-white text-lg">{isEn ? "IntegraTIF Lecturer" : "IntegraTIF Dosen"}</h4>
+              <ArrowRight class="h-5 w-5 shrink-0 text-yellow-400/60 transition duration-300 group-hover:translate-x-1 group-hover:text-yellow-400" />
+            </div>
             <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{isEn ? "Application for murajaah deposits and academic activities management." : "Aplikasi setoran murajaah dan pengelolaan kegiatan akademik."}</p>
           </a>
  
