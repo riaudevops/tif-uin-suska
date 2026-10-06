@@ -29,12 +29,12 @@ const STATIC_PAGES = [
         keywords_en: "vision mission goals strategy",
     },
     {
-        title: "Rencana Strategi",
+        title: "Rencana Strategis",
         title_en: "Strategic Plan",
         url: "/rencana/rencana",
         category: "Profil",
         category_en: "Profile",
-        keywords: "rencana strategi perencanaan",
+        keywords: "rencana strategis perencanaan",
         keywords_en: "strategic plan planning",
     },
     {

@@ -28,7 +28,7 @@ export const ui = {
     // ─── Sub-menus Profil ─────────────────────────────────────
     "menu.sejarah": "Sejarah",
     "menu.visimisi": "Visi, Misi, Tujuan, dan Strategi",
-    "menu.rencana": "Rencana Strategi",
+    "menu.rencana": "Rencana Strategis",
     "menu.panduan": "Panduan Pengelolaan Pendidikan",
     "menu.struktur": "Struktur Organisasi",
     "menu.dosen": "Dosen",
@@ -120,7 +120,7 @@ export const ui = {
     "facility.lab.tag1": "Praktikum",
     "facility.lab.tag2": "Proyek",
     "facility.lab.tag3": "Riset",
-    "facility.kelas.title": "Ruang Kelas Representatif",
+    "facility.kelas.title": "Ruang Kelas Lengkap",
     "facility.kelas.desc":
       "Mendukung pembelajaran berbasis presentasi, diskusi kelompok, dan studi kasus melalui fasilitas multimedia yang menunjang interaksi akademik.",
     "facility.kelas.tag1": "Diskusi",
@@ -185,8 +185,8 @@ export const ui = {
     "footer.lokasi": "Lokasi Kampus",
     "footer.layanan.admin": "Layanan Administrasi",
     "footer.qr.desc": "Scan QR untuk akses cepat layanan administrasi akademik",
-    "footer.privacy": "Privacy Policy",
-    "footer.terms": "Terms of Service",
+    "footer.privacy": "Kebijakan Privasi",
+    "footer.terms": "Syarat Layanan",
 
     // ─── Breadcrumbs ─────────────────────────────────────────
     "bread.home": "Beranda",
@@ -226,7 +226,7 @@ export const ui = {
     "page.sejarah.title1": "Sejarah",
     "page.sejarah.title2": "Perjalanan",
     "page.sejarah.title3": "Teknik Informatika",
-    "page.sejarah.quote": "Sejak 1999, kami terus berevolusi merespon cepatnya perubahan teknologi dan menjadi prodi pencetak ahli IT terfavorit di UIN Suska Riau.",
+    "page.sejarah.quote": "Sejak 1999, program studi terus berkembang melalui perubahan kelembagaan, penyempurnaan kurikulum, serta penguatan kapasitas akademik dan riset.",
     "page.sejarah.akreditasi": "Akreditasi Unggul",
     "page.struktur.title": "Struktur Organisasi",
     "page.struktur.bidang": "Kelompok Keahlian",
@@ -276,7 +276,7 @@ export const ui = {
     "page.kp.desc": "Pengumuman, panduan, dan informasi kerja praktik. Konten dikelola melalui Directus.",
     "page.kp.empty": "Belum ada konten kerja praktik. Tambahkan entri ke koleksi kerja_praktik di Directus.",
     "page.prestasi.landing.title": "Prestasi Mahasiswa Teknik Informatika",
-    "page.prestasi.landing.desc": "Menyediakan ruang bagi mahasiswa untuk berkembang dan menampilkan prestasi akademik maupun non-akademik.",
+    "page.prestasi.landing.desc": "Mendorong bakat unggul mahasiswa dan menghasilkan prestasi membanggakan di bidang akademik maupun non-akademik.",
     "page.newsletter.title": "Suara Anda Berharga",
     "page.newsletter.desc": "Bantu kami berkembang menjadi lebih baik. Sampaikan kritik, saran, atau ide inovatif Anda untuk kemajuan kurikulum kami.",
     "page.newsletter.anon": "Anonim & Rahasia",
@@ -298,9 +298,9 @@ export const ui = {
 
     // ─── Navbar main ──────────────────────────────────────────
     "nav.home": "Home",
-    "nav.profil": "PROFILE",
-    "nav.akademik": "ACADEMIC",
-    "nav.penelitian": "RESEARCH",
+    "nav.profil": "Profile",
+    "nav.akademik": "Academic",
+    "nav.penelitian": "Research",
     "nav.berita": "News",
     "nav.agenda": "Agenda",
     "nav.alumni": "Alumni",
@@ -372,7 +372,7 @@ export const ui = {
 
     "hero.title5": "Works & Achievements",
     "hero.desc5":
-      "Explore the proud achievements of our students across various national and international technology competitions.",
+      "Explore the creative works and proud achievements of our students across regional, national, and international technology competitions.",
     "hero.cta.prestasi": "View Achievements",
 
     // ─── Stats ────────────────────────────────────────────────
@@ -392,7 +392,7 @@ export const ui = {
     "agenda.desc":
       "Latest information on academic activities, seminars, and knowledge development in the Informatics Engineering program.",
     "agenda.empty": "No upcoming agenda yet.",
-    "agenda.viewall": "View All Agenda",
+    "agenda.viewall": "View All Events",
 
     // ─── Facilities ───────────────────────────────────────────
     "facility.title": "Study Program Facilities",
@@ -404,7 +404,7 @@ export const ui = {
     "facility.lab.tag1": "Practicum",
     "facility.lab.tag2": "Projects",
     "facility.lab.tag3": "Research",
-    "facility.kelas.title": "Representative Classrooms",
+    "facility.kelas.title": "Well-equipped Classrooms",
     "facility.kelas.desc":
       "Supports presentation-based learning, group discussions, and case studies through multimedia facilities that facilitate academic interaction.",
     "facility.kelas.tag1": "Discussion",
@@ -435,8 +435,8 @@ export const ui = {
     "sistem.tif.desc": "Internal applications crafted by our students.",
     "sistem.dashboard.desc": "Internal academic monitoring portal.",
     "sistem.himatif.desc": "Information hub for Student Association activities.",
-    "sistem.integratif.mhs.desc": "Student academic service platform.",
-    "sistem.integratif.dosen.desc": "Academic management tool for lecturers.",
+    "sistem.integratif.mhs.desc": "Student academic services and murajaah deposit platform.",
+    "sistem.integratif.dosen.desc": "Academic data management assistant for Informatics lecturers.",
     "sistem.comingsoon": "Coming Soon: IntegraTIF iOS Version",
 
     // ─── Curriculum ───────────────────────────────────────────
@@ -535,7 +535,7 @@ export const ui = {
     "page.prestasi.th.capai": "Achievement",
     "page.prestasi.empty": "No achievement data recorded yet.",
     "page.prestasi.show": "Showing data...",
-    "page.alumni.title1": "Global Network",
+    "page.alumni.title1": "Alumni Network",
     "page.alumni.title2": "TIF Alumni",
     "page.alumni.desc": "A growing network of alumni working in public institutions, private industry, startups, and technology-related sectors.",
     "page.alumni.tracer": "Tracer Study",
@@ -560,7 +560,7 @@ export const ui = {
     "page.kp.desc": "Announcements, guides, and internship information. Content managed through Directus.",
     "page.kp.empty": "No internship content yet. Add entries to the kerja_praktik collection in Directus.",
     "page.prestasi.landing.title": "Achievements of Informatics Engineering Students",
-    "page.prestasi.landing.desc": "Nurturing outstanding talents and producing brilliant achievements",
+    "page.prestasi.landing.desc": "Nurturing outstanding student talent and celebrating academic and non-academic achievements.",
     "page.newsletter.title": "Your Voice Matters",
     "page.newsletter.desc": "Help us improve. Share your criticism, suggestions, or input for the advancement of our curriculum.",
     "page.newsletter.anon": "Anonymous & Confidential",
