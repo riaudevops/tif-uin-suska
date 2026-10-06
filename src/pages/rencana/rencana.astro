@@ -1,8 +1,12 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Rencana from "../../components/pages/rencana-pages/rencana.astro";
+import { getLocaleFromUrl } from "@/lib/translations.js";
+
+const lang = getLocaleFromUrl(Astro);
+const isEn = lang === "en";
 ---
 
-<Layout title="Rencana Strategi">
+<Layout title={isEn ? "Strategic Plan" : "Rencana Strategis"}>
   <Rencana />
 </Layout>

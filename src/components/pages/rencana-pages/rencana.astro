@@ -1,86 +1,229 @@
 ---
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+import {
+  Home,
+  ChevronRight,
+  Target,
+  Download,
+  FileText,
+  Compass,
+  BarChart3,
+  Users,
+  Lightbulb,
+  ShieldCheck,
+  ArrowRight,
+} from '@lucide/astro';
+
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
+
+const pillars = isEn
+  ? [
+      {
+        title: 'Academic Direction',
+        desc: 'Aligns curriculum, learning outcomes, and graduate competencies with the scientific vision of the study program.',
+        icon: Compass,
+      },
+      {
+        title: 'Quality Development',
+        desc: 'Guides continuous improvement in teaching, research, community service, and institutional governance.',
+        icon: BarChart3,
+      },
+      {
+        title: 'Stakeholder Collaboration',
+        desc: 'Strengthens partnerships with industry, alumni, and academic partners to support graduate readiness.',
+        icon: Users,
+      },
+      {
+        title: 'Adaptive Capacity',
+        desc: 'Prepares students and the study program to respond to technological change and professional demands.',
+        icon: Lightbulb,
+      },
+    ]
+  : [
+      {
+        title: 'Arah Akademik',
+        desc: 'Menyelaraskan kurikulum, capaian pembelajaran, dan kompetensi lulusan dengan visi keilmuan program studi.',
+        icon: Compass,
+      },
+      {
+        title: 'Pengembangan Mutu',
+        desc: 'Menjadi acuan peningkatan berkelanjutan pada pembelajaran, riset, pengabdian, dan tata kelola institusi.',
+        icon: BarChart3,
+      },
+      {
+        title: 'Kolaborasi Pemangku Kepentingan',
+        desc: 'Memperkuat kemitraan dengan industri, alumni, dan mitra akademik untuk mendukung kesiapan lulusan.',
+        icon: Users,
+      },
+      {
+        title: 'Kapasitas Adaptif',
+        desc: 'Mempersiapkan mahasiswa dan program studi menghadapi perubahan teknologi serta tuntutan dunia kerja.',
+        icon: Lightbulb,
+      },
+    ];
+
+const highlights = isEn
+  ? [
+      { label: 'Document', value: 'RENSTRA' },
+      { label: 'Focus', value: 'Strategic Planning' },
+      { label: 'Scope', value: 'Study Program' },
+      { label: 'Status', value: 'Official Guideline' },
+    ]
+  : [
+      { label: 'Dokumen', value: 'RENSTRA' },
+      { label: 'Fokus', value: 'Perencanaan Strategis' },
+      { label: 'Cakupan', value: 'Program Studi' },
+      { label: 'Status', value: 'Pedoman Resmi' },
+    ];
 ---
 
-<nav class="max-w-7xl mx-auto px-8 mt-32 text-sm">
-    <ol class="flex items-center flex-wrap gap-2 text-sm text-gray-500 py-3 border-b border-gray-100">
-        <li class="flex items-center">
-            <a href={localizePath('/', lang)} class="flex items-center hover:text-green-600 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                {t('nav.home')}
-            </a>
-        </li>
-        <li class="text-gray-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-        </li>
-        <li>
-            <a href={localizePath('/profil', lang)} class="hover:text-green-600 transition-colors">
-                {t('nav.profil')}
-            </a>
-        </li>
-        <li class="text-gray-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-        </li>
-        <li class="text-green-700 font-bold tracking-tight">
-            {isEn ? 'Strategic Plan' : 'Rencana Strategi'}
-        </li>
-    </ol>
+<nav class="mx-auto max-w-7xl px-4 pt-28 pb-4 text-sm sm:px-6 sm:pt-32 lg:px-8" aria-label="Breadcrumb">
+  <ol class="flex flex-wrap items-center gap-2 border-b border-slate-100 py-3 text-sm text-slate-500">
+    <li class="flex items-center">
+      <a href={localizePath('/', lang)} class="flex items-center gap-1.5 transition-colors hover:text-[#0b5c3d]">
+        <Home class="h-4 w-4 text-slate-400" />
+        {t('nav.home')}
+      </a>
+    </li>
+    <li class="text-slate-300">
+      <ChevronRight class="h-4 w-4" />
+    </li>
+    <li>
+      <a href={localizePath('/profil/sejarah', lang)} class="transition-colors hover:text-[#0b5c3d]">
+        {t('nav.profil')}
+      </a>
+    </li>
+    <li class="text-slate-300">
+      <ChevronRight class="h-4 w-4" />
+    </li>
+    <li class="font-semibold text-[#0b5c3d]">
+      {isEn ? 'Strategic Plan' : 'Rencana Strategis'}
+    </li>
+  </ol>
 </nav>
 
-<section data-aos="fade-up" class="max-w-5xl mx-auto px-6 py-6">
-    <div class="bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden shadow-2xl border border-gray-100">
-        <div class="relative group h-[400px] overflow-hidden">
-            <img src="/landing-pages/gedung-faste.jpg" alt="Gedung Faste UIN Suska" class="w-full h-full object-cover transition duration-700 group-hover:scale-105"/>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-            <div class="absolute bottom-8 left-8">
-                <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">
-                    {isEn ? 'Official Document' : 'Dokumen Resmi'}
-                </span>
-            </div>
+<section class="relative overflow-hidden bg-[#f6faf3] px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+  <div class="mx-auto max-w-7xl">
+    <div class="relative mb-10 overflow-hidden rounded-[30px] bg-gradient-to-br from-[#003d2a] via-[#0b5c3d] to-[#7ca25c] p-8 shadow-[0_28px_80px_-32px_rgba(0,61,42,0.8)] sm:p-10 lg:p-12">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(245,201,86,0.18),_transparent_30%),radial-gradient(circle_at_bottom_left,_rgba(255,255,255,0.06),_transparent_35%)]"></div>
+      <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#f4d77d]/10 blur-3xl"></div>
+      <div class="absolute -left-12 bottom-0 h-48 w-48 rounded-full bg-white/5 blur-3xl"></div>
+
+      <div class="relative z-10 grid gap-8 lg:grid-cols-[1.25fr_0.75fr] lg:items-center">
+        <div>
+          <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
+            <Target class="h-3.5 w-3.5 text-[#f7de8a]" />
+            {isEn ? 'Official Document' : 'Dokumen Resmi'}
+          </span>
+          <h1 class="mt-5 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+            {isEn ? 'Strategic' : 'Rencana'} <span class="text-[#f4d77d]">{isEn ? 'Plan' : 'Strategis'}</span>
+            <span class="mt-2 block text-xl font-bold text-emerald-100/90 sm:text-2xl">(RENSTRA)</span>
+          </h1>
+          <p class="mt-4 max-w-xl text-base leading-relaxed text-emerald-50/90">
+            {isEn
+              ? 'A strategic guideline for achieving the scientific vision of the Informatics Engineering Study Program amid rapid technological change.'
+              : 'Pedoman strategis untuk mencapai visi keilmuan Program Studi Teknik Informatika di tengah perubahan teknologi yang cepat.'}
+          </p>
         </div>
 
-        <div class="p-8 md:p-12 space-y-8">
-            <div class="relative">
-                <h1 data-aos="fade-up" class="text-4xl md:text-5xl font-black text-gray-900 border-l-[12px] border-green-600 pl-6 leading-tight">
-                    {isEn ? 'Strategic Plan' : 'Rencana Strategi'} <br>
-                    <span class="text-green-600 text-2xl md:text-3xl font-bold italic opacity-80">(RENSTRA)</span>
-                </h1>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div class="lg:col-span-8 text-gray-700 text-lg leading-relaxed text-justify">
-                    <p class="mb-6">
-                        {isEn ? 'This strategic plan is prepared as a strategic guideline to achieve the scientific vision of the Informatics Engineering Study Program. In facing the era of' : 'Renstra ini disusun sebagai pedoman strategis untuk mencapai visi keilmuan Program Studi Teknik Informatika. Dalam menghadapi era'} <span class="text-green-700 font-semibold">{isEn ? 'Industrial Revolution 4.0' : 'Revolusi Industri 4.0'}</span> {isEn ? 'and the rapid development of technology, this strategic plan becomes the main foundation in producing competent graduates.' : 'dan pesatnya perkembangan teknologi, Renstra ini menjadi fondasi utama dalam mencetak lulusan yang kompeten.'}
-                    </p>
-                    <p>
-                        {isEn ? 'Our main focus is to equip students with' : 'Fokus utama kami adalah membekali mahasiswa dengan'} <span class="font-medium text-gray-900">{isEn ? 'relevant knowledge, strong integrity,' : 'pengetahuan yang relevan, integritas tinggi,'}</span> {isEn ? 'and the ability to adapt to rapid technological change.' : 'serta kemampuan beradaptasi terhadap perubahan teknologi yang cepat.'}
-                    </p>
-                </div>
-
-                <div class="lg:col-span-4">
-                    <div class="bg-gray-50 p-6 rounded-2xl border border-dashed border-green-300 flex flex-col items-center text-center">
-                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                        </div>
-                        <h4 class="font-bold text-gray-900 mb-2">{isEn ? 'Complete Document' : 'Dokumen Lengkap'}</h4>
-                        <p class="text-sm text-gray-500 mb-4">{isEn ? 'Want to learn the details of our strategic plan?' : 'Ingin mempelajari detail rencana strategis kami?'}</p>
-                        <a href="#" class="w-full inline-flex justify-center items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-green-200">
-                            {isEn ? 'Download TIF Renstra' : 'Unduh Renstra TIF'}
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <div class="rounded-[24px] border border-white/15 bg-white/10 p-6 backdrop-blur-sm">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 text-[#f7de8a]">
+            <FileText class="h-6 w-6" />
+          </div>
+          <h2 class="text-lg font-bold text-white">{isEn ? 'Complete Document' : 'Dokumen Lengkap'}</h2>
+          <p class="mt-2 text-sm leading-relaxed text-emerald-50/80">
+            {isEn
+              ? 'Download the full strategic plan of the Informatics Engineering Study Program.'
+              : 'Unduh dokumen lengkap rencana strategis Program Studi Teknik Informatika.'}
+          </p>
+          <a
+            href="#"
+            class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-semibold text-[#0b5c3d] transition-colors hover:bg-[#f7de8a]"
+          >
+            <Download class="h-4 w-4" />
+            {isEn ? 'Download RENSTRA' : 'Unduh Renstra TIF'}
+          </a>
         </div>
+      </div>
+
+      <div class="relative z-10 mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {highlights.map((item) => (
+          <div class="rounded-[22px] border border-white/10 bg-white/10 p-4 backdrop-blur-sm">
+            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">{item.label}</p>
+            <p class="mt-2 text-lg font-black text-white">{item.value}</p>
+          </div>
+        ))}
+      </div>
     </div>
+
+    <div class="mb-10 grid gap-6 lg:grid-cols-12">
+      <div class="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.25)] sm:p-8 lg:col-span-8">
+        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
+          {isEn ? 'Overview' : 'Ikhtisar'}
+        </p>
+        <h2 class="mt-2 text-2xl font-black text-slate-900 sm:text-3xl">
+          {isEn ? 'Purpose of the Strategic Plan' : 'Tujuan Rencana Strategis'}
+        </h2>
+        <div class="mt-5 space-y-4 text-base leading-relaxed text-slate-600">
+          <p>
+            {isEn
+              ? 'This strategic plan serves as the main reference for academic planning, quality assurance, and study program development. It guides decision-making so that teaching, research, and community service remain aligned with the program’s scientific vision.'
+              : 'Rencana strategis ini menjadi acuan utama perencanaan akademik, penjaminan mutu, dan pengembangan program studi. Dokumen ini mengarahkan pengambilan keputusan agar pembelajaran, penelitian, dan pengabdian tetap selaras dengan visi keilmuan prodi.'}
+          </p>
+          <p>
+            {isEn
+              ? 'The focus is to equip students with relevant knowledge, strong integrity, and the ability to adapt to technological change in the professional world.'
+              : 'Fokus utamanya adalah membekali mahasiswa dengan pengetahuan yang relevan, integritas tinggi, serta kemampuan beradaptasi terhadap perubahan teknologi di dunia kerja.'}
+          </p>
+        </div>
+      </div>
+
+      <div class="rounded-[28px] border border-[#dfeadf] bg-gradient-to-br from-[#edf7ee] to-white p-6 shadow-[0_18px_45px_-30px_rgba(11,92,61,0.45)] sm:p-8 lg:col-span-4">
+        <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[#0b5c3d] text-white">
+          <ShieldCheck class="h-5 w-5" />
+        </div>
+        <h3 class="text-lg font-black text-slate-900">
+          {isEn ? 'Institutional Alignment' : 'Keselarasan Institusional'}
+        </h3>
+        <p class="mt-3 text-sm leading-relaxed text-slate-600">
+          {isEn
+            ? 'RENSTRA connects the study program’s direction with faculty and university priorities in a clear and measurable way.'
+            : 'RENSTRA menghubungkan arah program studi dengan prioritas fakultas dan universitas secara jelas dan terukur.'}
+        </p>
+        <a
+          href={localizePath('/visi-misi/visimisi', lang)}
+          class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#0b5c3d] transition-colors hover:text-[#004d2c]"
+        >
+          {isEn ? 'View Vision & Mission' : 'Lihat Visi & Misi'}
+          <ArrowRight class="h-4 w-4" />
+        </a>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <span class="mb-3 inline-flex rounded-full bg-[#edf4e8] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
+        {isEn ? 'Strategic Pillars' : 'Pilar Strategis'}
+      </span>
+      <h2 class="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
+        {isEn ? 'What RENSTRA guides' : 'Yang diarahkan oleh RENSTRA'}
+      </h2>
+    </div>
+
+    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+      {pillars.map((item) => {
+        const Icon = item.icon;
+        return (
+          <div class="rounded-[26px] border border-slate-200 bg-white p-6 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_55px_-30px_rgba(0,61,42,0.35)]">
+            <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#edf4e8] text-[#0b5c3d]">
+              <Icon class="h-6 w-6" />
+            </div>
+            <h3 class="mb-2 text-lg font-bold text-slate-900">{item.title}</h3>
+            <p class="text-sm leading-relaxed text-slate-500">{item.desc}</p>
+          </div>
+        );
+      })}
+    </div>
+  </div>
 </section>
