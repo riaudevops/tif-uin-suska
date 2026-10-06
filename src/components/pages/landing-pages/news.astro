@@ -2,6 +2,7 @@
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
 import { fetchWithCache } from "../../../lib/cachedFetch";
 import { API_BASE_URL, getAssetUrl } from "../../../lib/cms";
+import { BERITA_LIST_FIELDS, normalizeBeritaList } from "../../../lib/berita.js";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === "en";
@@ -11,9 +12,8 @@ const API_TOKEN = import.meta.env.DIRECTUS_TOKEN;
 let posts = [];
 
 try {
-  // Jangan request date_created — field ini FORBIDDEN di koleksi berita
   const json = await fetchWithCache(
-    `${API_BASE_URL}/berita?fields=id,title,slug,date,modified,status,images,excerpt,featured_image&filter[status][_in]=publish,Publish,published,Published&sort=-date,-modified&limit=3`,
+    `${API_BASE_URL}/berita?fields=${BERITA_LIST_FIELDS}&filter[status][_in]=publish,Publish,published,Published&sort=-date,-modified&limit=3`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +23,7 @@ try {
     30000
   );
 
-  posts = json.data || [];
+  posts = normalizeBeritaList(json?.data || [], lang);
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.warn("Gagal mengambil berita beranda:", message);

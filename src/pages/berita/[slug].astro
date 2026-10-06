@@ -12,6 +12,7 @@ import {
 } from '@lucide/astro';
 
 import { API_BASE_URL, ASSET_URL, getAssetUrl } from '@/lib/cms.js';
+import { BERITA_DETAIL_FIELDS, normalizeBerita, normalizeBeritaList } from '@/lib/berita.js';
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -29,27 +30,45 @@ const fetchOptions = {
   }
 };
 
-
 let article = null;
 let related = [];
 let parsedBody = "";
 
 try {
   const isId = /^\d+$/.test(slug || '');
-  const filterParam = isId ? `filter[id][_eq]=${slug}` : `filter[slug][_eq]=${slug}`;
-  // Menghapus tanda koma (,) berlebih di akhir fields
-  const queryFields = "fields=id,user_created,title,slug,date,modified,status,images,excerpt,body,featured_image";
+  const filterParam = isId
+    ? `filter[id][_eq]=${encodeURIComponent(slug)}`
+    : `filter[translations][slug_translate][_eq]=${encodeURIComponent(slug)}`;
 
-  const [json, relatedJson] = await Promise.all([
-    fetchWithCache(`${API_BASE_URL}/berita?${filterParam}&${queryFields}`, fetchOptions, 60000),
-    fetchWithCache(`${API_BASE_URL}/berita?${filterParam.replace('[_eq]', '[_neq]')}&limit=3&${queryFields}`, fetchOptions, 60000)
-  ]);
+  const json = await fetchWithCache(
+    `${API_BASE_URL}/berita?${filterParam}&fields=${BERITA_DETAIL_FIELDS}`,
+    fetchOptions,
+    60000
+  );
 
-  article = json?.data?.[0] || null;
-  related = (relatedJson?.data || []).filter((item) => item.slug !== slug && String(item.id) !== String(slug));
+  const rawArticle = json?.data?.[0] || null;
+  if (rawArticle) {
+    article = normalizeBerita(rawArticle, lang);
 
-  if (article?.body) {
-    parsedBody = marked.parse(article.body);
+    if (article?.body) {
+      parsedBody = marked.parse(article.body);
+    }
+
+    const relatedParams = new URLSearchParams({
+      fields: BERITA_DETAIL_FIELDS,
+      sort: '-date,-modified',
+      limit: '3',
+      'filter[status][_in]': 'publish,Publish,published,Published',
+      'filter[id][_neq]': String(article.id),
+    });
+
+    const relatedJson = await fetchWithCache(
+      `${API_BASE_URL}/berita?${relatedParams.toString()}`,
+      fetchOptions,
+      60000
+    );
+
+    related = normalizeBeritaList(relatedJson?.data || [], lang);
   }
 } catch (error) {
   console.warn("Gagal mengambil detail berita:", error instanceof Error ? error.message : String(error));
@@ -69,8 +88,8 @@ const formattedDate = article.date
 ---
 
 <Layout title={article.title}>
-  <nav class="mx-auto max-w-5xl px-4 pt-28 text-sm sm:px-6 sm:pt-32">
-    <ol class="flex flex-wrap items-center gap-2 border-b border-slate-200 py-3 text-sm text-slate-500">
+  <nav class="mx-auto max-w-7xl px-4 pt-28 pb-4 text-sm sm:px-6 sm:pt-32 lg:px-8" aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-2 border-b border-slate-100 py-3 text-sm text-slate-500">
       <li class="flex items-center">
         <a href={localizePath('/', lang)} class="flex items-center gap-1.5 transition-colors duration-200 hover:text-[#0b5c3d]">
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -126,10 +145,10 @@ const formattedDate = article.date
       </div>
     </div>
 
-    {(article.images || article.featured_image) && (
+    {(article.image || article.featured_image || article.images) && (
       <div class="mb-10 overflow-hidden rounded-[28px] border border-slate-200 bg-slate-100 shadow-[0_24px_60px_-40px_rgba(15,23,42,0.5)]">
         <img
-          src={getAssetUrl(article.images || article.featured_image)}
+          src={getAssetUrl(article.image || article.featured_image || article.images, '/landing-pages/gedung.jpg')}
           alt={article.title}
           class="h-full max-h-[520px] w-full object-cover"
         />
@@ -165,9 +184,9 @@ const formattedDate = article.date
               class="group flex h-full flex-col rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-[#d9e8de] hover:shadow-[0_18px_45px_-35px_rgba(11,92,61,0.38)]"
             >
               <div class="mb-4 overflow-hidden rounded-2xl bg-slate-100">
-                {(item.images || item.featured_image) && (
+                {(item.image || item.featured_image || item.images) && (
                   <img
-                    src={getAssetUrl(item.images || item.featured_image)}
+                    src={getAssetUrl(item.image || item.featured_image || item.images, '/landing-pages/gedung.jpg')}
                     alt={item.title}
                     class="h-40 w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                   />
@@ -175,7 +194,7 @@ const formattedDate = article.date
               </div>
 
               <span class="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#8a6a1d]">
-                {isEn ? 'News' : 'Berita'}
+                {item.category || (isEn ? 'News' : 'Berita')}
               </span>
               <h4 class="line-clamp-2 text-base font-bold leading-snug text-slate-900 group-hover:text-[#0b5c3d]">
                 {item.title}

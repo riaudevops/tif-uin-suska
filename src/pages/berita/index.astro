@@ -3,6 +3,7 @@ import Layout from "@/layouts/Layout.astro";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 import { fetchWithCache } from '@/lib/cachedFetch.js';
 import { API_BASE_URL, getAssetUrl } from '@/lib/cms.js';
+import { BERITA_LIST_FIELDS, normalizeBeritaList, buildBeritaQueryParams } from '@/lib/berita.js';
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -33,19 +34,11 @@ let totalItems = 0;
 let fetchError = false;
 
 try {
-  const params = new URLSearchParams({
-    fields: 'id,title,slug,date,modified,status,images,excerpt,featured_image',
-    sort: '-date',
-    limit: String(PAGE_SIZE),
-    page: String(currentPage),
-    meta: 'filter_count',
+  const params = buildBeritaQueryParams({
+    searchQuery,
+    page: currentPage,
+    limit: PAGE_SIZE,
   });
-
-  if (searchQuery) {
-    params.set('filter[_or][0][title][_icontains]', searchQuery);
-    params.set('filter[_or][1][excerpt][_icontains]', searchQuery);
-    params.set('filter[_or][2][body][_icontains]', searchQuery);
-  }
 
   const json = await fetchWithCache(
     `${API_BASE_URL}/berita?${params.toString()}`,
@@ -58,8 +51,8 @@ try {
     searchQuery ? 15000 : 60000
   );
 
-  posts = json.data || [];
-  totalItems = Number(json.meta?.filter_count ?? posts.length) || 0;
+  posts = normalizeBeritaList(json?.data || [], lang);
+  totalItems = Number(json?.meta?.filter_count ?? posts.length) || 0;
 } catch (error) {
   fetchError = true;
   console.error('Terjadi kesalahan saat fetch data berita:', error);
@@ -86,8 +79,8 @@ const pageNumbers = (() => {
 ---
 
 <Layout title={isEn ? "News" : "Berita"}>
-  <nav class="mx-auto mt-32 max-w-7xl px-4 text-sm sm:px-6 lg:px-8">
-    <ol class="flex flex-wrap items-center gap-2 border-b border-slate-200 py-3 text-sm text-slate-500">
+  <nav class="mx-auto max-w-7xl px-4 pt-28 pb-4 text-sm sm:px-6 sm:pt-32 lg:px-8" aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-2 border-b border-slate-100 py-3 text-sm text-slate-500">
       <li class="flex items-center">
         <a href={localizePath('/', lang)} class="flex items-center gap-1.5 transition-colors duration-200 hover:text-[#0b5c3d]">
           <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -111,7 +104,7 @@ const pageNumbers = (() => {
             {isEn ? 'Official Newsroom' : 'Berita & Pengumuman'}
           </span>
           <h1 class="mt-5 text-3xl font-black tracking-tight text-white sm:text-4xl lg:text-5xl">
-            {isEn ? 'News & ' : 'Berita '}<span class="text-[#f4d77d]">{isEn ? 'Articles' : 'Informatika'}</span>
+            {isEn ? 'News & ' : 'Berita & '}<span class="text-[#f4d77d]">{isEn ? 'Articles' : 'Artikel'}</span>
           </h1>
           <p class="mt-4 max-w-xl text-base leading-relaxed text-emerald-50/90">
             {isEn
@@ -182,6 +175,7 @@ const pageNumbers = (() => {
               {posts.map((post: any) => {
                 const cleanExcerpt = stripHtml(post.excerpt || '');
                 const postUrl = localizePath(`/berita/${post.slug || post.id}`, lang);
+                const categoryLabel = post.category || (isEn ? 'News' : 'Berita');
                 const formattedDate = (() => {
                   const raw = post.date;
                   if (!raw) return isEn ? 'Date unavailable' : 'Tanggal tidak tersedia';
@@ -201,7 +195,7 @@ const pageNumbers = (() => {
                   >
                     <div class="relative h-56 overflow-hidden bg-slate-100">
                       <img
-                        src={getAssetUrl(post.images || post.featured_image, '/landing-pages/gedung.jpg')}
+                        src={getAssetUrl(post.image || post.featured_image || post.images, '/landing-pages/gedung.jpg')}
                         alt={post.title}
                         loading="lazy"
                         decoding="async"
@@ -209,7 +203,7 @@ const pageNumbers = (() => {
                       />
                       <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent"></div>
                       <span class="absolute left-4 top-4 rounded-full border border-white/25 bg-black/25 px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.18em] text-white backdrop-blur-sm">
-                        {isEn ? 'News' : 'Berita'}
+                        {categoryLabel}
                       </span>
                     </div>
 
