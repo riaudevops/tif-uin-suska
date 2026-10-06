@@ -120,8 +120,8 @@ const t = useTranslations(lang);
       </p>
       
       <div class="flex gap-6 mt-4 md:mt-0 text-slate-500">
-        <a href={localizePath("/privacy-policy", lang)} class="hover:text-white transition">Privacy Policy</a>
-        <a href={localizePath("/terms-of-service", lang)} class="hover:text-white transition">Terms of Service</a>
+        <a href={localizePath("/privacy-policy", lang)} class="hover:text-white transition">{t("footer.privacy")}</a>
+        <a href={localizePath("/terms-of-service", lang)} class="hover:text-white transition">{t("footer.terms")}</a>
       </div>
     </div>
   </div>
