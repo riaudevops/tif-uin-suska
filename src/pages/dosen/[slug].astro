@@ -17,7 +17,8 @@ import {
   BookmarkCheck
 } from '@lucide/astro';
 
-import { API_URL, ASSET_URL, getAssetUrl } from '@/lib/cms.js';
+import { API_URL, getAssetUrl } from '@/lib/cms.js';
+import { DOSEN_FIELDS, normalizeDosen } from '@/lib/dosen.js';
 
 export const prerender = false;
 
@@ -36,11 +37,13 @@ try {
   const isId = /^\d+$/.test(cleanSlug);
 
   // Ambil seluruh data dosen tanpa filter ketat di awal agar fungsi pencarian di Astro yang menangani pencocokannya secara akurat
-  const res = await fetch(`${API_URL}/items/dosen_tif?limit=-1&sort=id`);
+  const res = await fetch(`${API_URL}/items/dosen_tif?fields=${DOSEN_FIELDS}&limit=-1&sort=id`);
 
   if (res.ok) {
     const json = await res.json();
-    const allDosenData = json.data || [];
+    const allDosenData = (Array.isArray(json.data) ? json.data : [])
+      .map((item: any) => normalizeDosen(item, lang))
+      .filter(Boolean);
 
     if (allDosenData.length > 0) {
       // Cari dosen berdasarkan ID, slug, atau nama yang di-slug-kan

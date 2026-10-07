@@ -1,4 +1,6 @@
 import { API_URL } from "./cms.js";
+import { AGENDA_FIELDS, normalizeAgenda } from "./agenda.js";
+import { DOSEN_FIELDS, normalizeDosen } from "./dosen.js";
 
 const STATIC_PAGES = [
     {
@@ -254,8 +256,8 @@ export async function buildSearchIndex(lang = "id") {
             `${API_URL}/items/berita?fields=title,slug,excerpt&sort=-date&limit=100`,
             { cache: "no-store" },
         ),
-        fetch(`${API_URL}/items/dosen_tif?fields=id,nama,slug,jabatan,email,nip`, { cache: "no-store" }),
-        fetch(`${API_URL}/items/agenda?fields=title,deskripsi,lokasi,kategori.nama_kategori&limit=50`, {
+        fetch(`${API_URL}/items/dosen_tif?fields=${DOSEN_FIELDS}`, { cache: "no-store" }),
+        fetch(`${API_URL}/items/agenda?fields=${AGENDA_FIELDS}&limit=50`, {
             cache: "no-store",
         }),
         fetch(`${API_URL}/items/kerja_praktik?fields=id,title,slug,excerpt&limit=50`, { cache: "no-store" }),
@@ -281,11 +283,12 @@ export async function buildSearchIndex(lang = "id") {
 
     if (dosenRes.status === "fulfilled" && dosenRes.value.ok) {
         const json = await dosenRes.value.json();
-        for (const dosen of json.data || []) {
-            if (!dosen?.nama || !dosen?.slug) continue;
+        for (const rawDosen of json.data || []) {
+            const dosen = normalizeDosen(rawDosen, isEn ? "en" : "id");
+            if (!dosen?.nama) continue;
             items.push({
                 title: dosen.nama,
-                url: isEn ? `/en/dosen/${dosen.slug}` : `/dosen/${dosen.slug}`,
+                url: isEn ? `/en/dosen/${dosen.id}` : `/dosen/${dosen.id}`,
                 category: isEn ? "Lecturers" : "Dosen",
                 keywords: `${dosen.nama} ${dosen.jabatan || ""} ${dosen.email || ""} ${dosen.nip || ""} ${isEn ? "lecturer faculty" : "dosen pengajar"}`,
             });
@@ -294,15 +297,14 @@ export async function buildSearchIndex(lang = "id") {
 
     if (agendaRes.status === "fulfilled" && agendaRes.value.ok) {
         const json = await agendaRes.value.json();
-        for (const agenda of json.data || []) {
+        for (const rawAgenda of json.data || []) {
+            const agenda = normalizeAgenda(rawAgenda, isEn ? "en" : "id");
             if (!agenda?.title) continue;
-            const kategori =
-                agenda.kategori?.nama_kategori || agenda.kategori?.nama || "";
             items.push({
                 title: agenda.title,
                 url: isEn ? "/en/agenda/agenda" : "/agenda/agenda",
                 category: isEn ? "Agenda" : "Agenda",
-                keywords: `${agenda.title} ${agenda.deskripsi || ""} ${agenda.lokasi || ""} ${kategori} ${isEn ? "agenda events" : "agenda kegiatan"}`,
+                keywords: `${agenda.title} ${agenda.description} ${agenda.location} ${agenda.category} ${isEn ? "agenda events" : "agenda kegiatan"}`,
             });
         }
     }

@@ -10,6 +10,8 @@ const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 
 const API_TOKEN = import.meta.env.DIRECTUS_TOKEN;
+const HERO_SLIDER_FIELDS =
+  "id,image,button_link,status,sort,translations.languages_code,translations.title_translate,translations.subtitle_translate,translations.button_text_translate";
 
 const normalizeLink = (value) => {
   if (!value) return '#';
@@ -23,7 +25,7 @@ let slides = [];
 
 try {
   const json = await fetchWithCache(
-    `${API_BASE_URL}/hero_slider?fields=id,title,subtittle,image,button_link,button_text,status,sort&filter[status][_in]=published,Published&sort=sort`,
+    `${API_BASE_URL}/hero_slider?fields=${HERO_SLIDER_FIELDS}&filter[status][_in]=published,Published&sort=sort`,
     {
       headers: {
         "Content-Type": "application/json",
@@ -69,7 +71,38 @@ try {
         {slides.map((slide: any, slideIndex: number) => {
           const template = Number(slide.template ?? 1) || 1;
           const buttonUrl = normalizeLink(slide.button_link);
-          const subtitleText = slide.subtittle || slide.subtitle;
+          const translations = Array.isArray(slide.translations)
+            ? slide.translations.filter(
+                (translation: any) =>
+                  translation && typeof translation === "object",
+              )
+            : [];
+          const currentTranslation = translations.find(
+            (translation: any) =>
+              String(translation.languages_code || "").toLowerCase() ===
+              String(lang || "id").toLowerCase(),
+          );
+          const fallbackTranslation =
+            translations.find(
+              (translation: any) =>
+                String(translation.languages_code || "").toLowerCase() ===
+                "id",
+            ) ||
+            translations[0] ||
+            {};
+          const title =
+            currentTranslation?.title_translate ||
+            fallbackTranslation.title_translate ||
+            slide.title;
+          const subtitleText =
+            currentTranslation?.subtitle_translate ||
+            fallbackTranslation.subtitle_translate ||
+            slide.subtittle ||
+            slide.subtitle;
+          const buttonText =
+            currentTranslation?.button_text_translate ||
+            fallbackTranslation.button_text_translate ||
+            slide.button_text;
           const imageUrl = getAssetUrl(slide.image);
 
           return (
@@ -79,7 +112,7 @@ try {
               {imageUrl ? (
                 <img
                   src={imageUrl}
-                  alt={slide.title}
+                  alt={title}
                   loading={slideIndex === 0 ? "eager" : "lazy"}
                   fetchpriority={slideIndex === 0 ? "high" : "auto"}
                   class="absolute inset-0 z-0 h-full w-full object-cover object-center"
@@ -100,7 +133,7 @@ try {
                 absolute inset-0 z-20
                 flex flex-col items-center justify-center
                 px-5 sm:px-10 md:px-14 lg:px-20
-                pb-10 sm:pb-16 md:pb-20 lg:pb-24
+                pt-28 pb-6 sm:pt-32 sm:pb-8 md:pt-36 md:pb-10 lg:pt-40 lg:pb-12
                 ${template === 2 || template === 3 ? 'sm:items-start' : ''}
               `}>
                 <div class={`
@@ -135,7 +168,7 @@ try {
                     2xl:text-7xl
                     tracking-tight [text-wrap:balance]
                   ">
-                    {slide.title}
+                    {title}
                   </h1>
 
                   {/* Subtitle */}
@@ -162,7 +195,7 @@ try {
                         href={buttonUrl}
                         class="inline-flex items-center justify-center gap-2.5 rounded-xl px-6 sm:px-8 py-2.5 sm:py-3.5 text-sm sm:text-base font-bold transition-all duration-300 bg-yellow-400 text-emerald-950 hover:bg-yellow-300 hover:scale-[1.03] active:scale-[0.98] shadow-xl shadow-yellow-500/25 ring-2 ring-yellow-400/30 group/btn"
                       >
-                        <span>{slide.button_text || 'Lihat Detail'}</span>
+                        <span>{buttonText || 'Lihat Detail'}</span>
                         <svg class="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>

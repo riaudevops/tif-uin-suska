@@ -1,13 +1,14 @@
 ---
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
-import { API_BASE_URL, ASSET_URL, getAssetUrl } from "../../../lib/cms";
+import { API_BASE_URL, getAssetUrl } from "../../../lib/cms";
+import { AGENDA_FIELDS, normalizeAgenda } from "../../../lib/agenda";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 
 let posts = [];
 
 try {
-  const fetchUrl = `${API_BASE_URL}/agenda?fields=id,title,status,lokasi,deskripsi,link_pendaftaran,kategori.*,tanggal_pelaksanaan&limit=3&sort=-tanggal_pelaksanaan`;
+  const fetchUrl = `${API_BASE_URL}/agenda?fields=${AGENDA_FIELDS}&limit=3&sort=-tanggal_pelaksanaan`;
   const response = await fetch(fetchUrl, { cache: "no-store" });
 
   if (!response.ok) throw new Error(`Gagal mengambil data dari Directus (status: ${response.status})`);
@@ -16,7 +17,8 @@ try {
   const items = Array.isArray(dataDirectus.data) ? dataDirectus.data : [];
 
   posts = items.map((item: any) => {
-    const dateObj = item.tanggal_pelaksanaan ? new Date(item.tanggal_pelaksanaan) : new Date();
+    const agenda = normalizeAgenda(item, lang);
+    const dateObj = agenda?.date ? new Date(agenda.date) : new Date();
 
     const formattedDate = dateObj.toLocaleDateString(lang === 'en' ? 'en-US' : 'id-ID', {
       day: 'numeric',
@@ -25,11 +27,11 @@ try {
     });
 
     return {
-      id: item.id,
-      title: item.title || "Agenda Tanpa Judul",
+      id: agenda?.id,
+      title: agenda?.title || "Agenda Tanpa Judul",
       date: formattedDate,
-      content: item.deskripsi || "Tidak ada deskripsi untuk agenda ini.",
-      thumbnailUrl: '/landing-pages/gedung.jpg'
+      content: agenda?.description || "Tidak ada deskripsi untuk agenda ini.",
+      thumbnailUrl: getAssetUrl(agenda?.image, '/landing-pages/gedung.jpg')
     };
   });
 } catch (error) {

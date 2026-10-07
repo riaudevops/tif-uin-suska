@@ -1,6 +1,7 @@
 ---
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
-import { API_URL } from "../../../lib/cms";
+import { API_BASE_URL } from "../../../lib/cms";
+import { AGENDA_FIELDS, normalizeAgenda } from "../../../lib/agenda";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 
@@ -8,7 +9,7 @@ let agendaKegiatan = [];
 let categories: string[] = [];
 
 try {
-  const fetchUrl = `${API_URL}/items/agenda?fields=id,title,status,lokasi,deskripsi,link_pendaftaran,kategori.*,tanggal_pelaksanaan`;
+  const fetchUrl = `${API_BASE_URL}/agenda?fields=${AGENDA_FIELDS}`;
   const response = await fetch(fetchUrl);
   
   if (!response.ok) {
@@ -19,26 +20,30 @@ try {
   
   const dataDirectus = await response.json();
 
-  agendaKegiatan = dataDirectus.data.map((item: any) => {
-    const dateObj = item.tanggal_pelaksanaan ? new Date(item.tanggal_pelaksanaan) : new Date();
-    const jam = dateObj.getHours().toString().padStart(2, '0');
-    const menit = dateObj.getMinutes().toString().padStart(2, '0');
-    const waktuFormat = `${jam}:${menit} WIB`;
+  agendaKegiatan = (Array.isArray(dataDirectus.data) ? dataDirectus.data : [])
+    .map((item: any) => normalizeAgenda(item, lang))
+    .filter(Boolean)
+    .map((item: any) => {
+      const dateObj = item.date ? new Date(item.date) : new Date();
+      const jam = dateObj.getHours().toString().padStart(2, '0');
+      const menit = dateObj.getMinutes().toString().padStart(2, '0');
+      const waktuFormat = `${jam}:${menit} WIB`;
 
-    return {
-      id: item.id,
-      judul: item.title || 'Tanpa Judul',
-      tanggal: dateObj.getDate().toString().padStart(2, '0'),
-      bulan: dateObj.toLocaleString(lang === 'en' ? 'en-US' : 'id-ID', { month: 'short' }),
-      tahun: dateObj.getFullYear().toString(),
-      waktu: waktuFormat, 
-      lokasi: item.lokasi || '-',
-      kategori: item.kategori?.nama_kategori || item.kategori?.nama || 'Umum', 
-      deskripsi: item.deskripsi || '-',
-      status: item.status,
-      linkPendaftaran: item.link_pendaftaran 
-    };
-  });
+      return {
+        id: item.id,
+        judul: item.title,
+        tanggal: dateObj.getDate().toString().padStart(2, '0'),
+        bulan: dateObj.toLocaleString(lang === 'en' ? 'en-US' : 'id-ID', { month: 'short' }),
+        tahun: dateObj.getFullYear().toString(),
+        waktu: waktuFormat,
+        lokasi: item.location,
+        kategori: item.category,
+        deskripsi: item.description,
+        status: item.status,
+        linkPendaftaran: item.registrationLink,
+        image: item.image,
+      };
+    });
   // Extract unique categories for filter buttons
   categories = ['All', ...new Set(agendaKegiatan.map((item: any) => item.kategori))];
 } catch (error) {
