@@ -5,10 +5,13 @@ import Misi from "../../components/pages/visimisi-pages/misi.astro";
 import Tujuan from "../../components/pages/visimisi-pages/tujuan.astro";
 import Strategi from "../../components/pages/visimisi-pages/strategi.astro";
 import Profesional from "../../components/pages/visimisi-pages/profesional.astro";
+import { getLocaleFromUrl } from "@/lib/translations";
+
+const isEn = getLocaleFromUrl(Astro) === "en";
 
 ---
 
-<Layout title="Visi, Misi, Tujuan, dan Strategi">
+<Layout title={isEn ? "Scientific Vision" : "Visi, Misi, Tujuan, dan Strategi"}>
   <Visi />
   <Misi />
   <Tujuan />

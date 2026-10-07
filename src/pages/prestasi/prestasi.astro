@@ -2,9 +2,12 @@
 import Layout from "@/layouts/Layout.astro";
 import Prestasi from "../../components/pages/prestasi-pages/prestasi.astro";
 import Isi from "../../components/pages/prestasi-pages/isi.astro";
+import { getLocaleFromUrl } from "@/lib/translations";
+
+const isEn = getLocaleFromUrl(Astro) === "en";
 ---
 
-<Layout title="Prestasi Akademisi">
+<Layout title={isEn ? "Achievements" : "Prestasi Akademisi"}>
     <Prestasi />
     <Isi />
 </Layout>

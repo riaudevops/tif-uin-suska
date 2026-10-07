@@ -120,7 +120,7 @@ const fallbackAnnouncements: KPItem[] = isEn ? [
     id: 'fb-1',
     title: 'Registration & Verification Procedure for Odd Semester KP 2026',
     slug: 'prosedur-pendaftaran-kp-2026',
-    excerpt: 'Complete guidelines for registering Kerja Praktik for students who have completed a minimum of 90 SKS.',
+    excerpt: 'Complete guidelines for internship registration for students who have completed a minimum of 90 credits.',
     date: '15 January 2026',
     thumbnail: '/landing-pages/gedung-faste.jpg',
     category: 'Registration'
@@ -191,7 +191,7 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
       </li>
       <li class="text-slate-300">/</li>
       <li>
-        <a href={localizePath('/profil', lang)} class="hover:text-emerald-700 transition-colors">
+        <a href={localizePath('/profil/sejarah', lang)} class="hover:text-emerald-700 transition-colors">
           {t("bread.profil")}
         </a>
       </li>
@@ -224,7 +224,7 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
         <div class="rounded-[24px] border border-white/10 bg-[#dcecd1]/10 p-5 backdrop-blur-sm">
           <p class="text-base leading-relaxed text-gray-100 sm:text-lg">
             {isEn
-              ? 'Portal for announcements, implementation guidelines, application workflows, and official files for Informatics Engineering Kerja Praktik.'
+              ? 'Portal for announcements, implementation guidelines, application workflows, and official files for the Informatics Engineering internship program.'
               : 'Pusat pengumuman resmi, panduan pelaksanaan, alur pengajuan, serta unduhan berkas Kerja Praktik bagi mahasiswa Teknik Informatika UIN Suska Riau.'}
           </p>
         </div>
@@ -232,20 +232,20 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
 
       <div class="relative z-10 mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div class="rounded-[22px] border border-white/10 bg-[#dcecd1]/10 p-4 backdrop-blur-sm">
-          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">SKS</p>
-          <p class="mt-2 text-2xl font-black text-white">4</p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">{isEn ? 'Credits' : 'SKS'}</p>
+          <p class="mt-2 text-2xl font-black text-white">{isEn ? '4 credits' : '4'}</p>
         </div>
         <div class="rounded-[22px] border border-white/10 bg-[#dcecd1]/10 p-4 backdrop-blur-sm">
-          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">Durasi</p>
-          <p class="mt-2 text-2xl font-black text-white">1-2 Bulan</p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">{isEn ? 'Duration' : 'Durasi'}</p>
+          <p class="mt-2 text-2xl font-black text-white">{isEn ? '1-2 months' : '1-2 Bulan'}</p>
         </div>
         <div class="rounded-[22px] border border-white/10 bg-[#dcecd1]/10 p-4 backdrop-blur-sm">
-          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">Mitra</p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">{isEn ? 'Partners' : 'Mitra'}</p>
           <p class="mt-2 text-2xl font-black text-white">100+</p>
         </div>
         <div class="rounded-[22px] border border-white/10 bg-[#dcecd1]/10 p-4 backdrop-blur-sm">
-          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">Prasyarat</p>
-          <p class="mt-2 text-2xl font-black text-white">90+ SKS</p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">{isEn ? 'Prerequisite' : 'Prasyarat'}</p>
+          <p class="mt-2 text-2xl font-black text-white">{isEn ? '90+ credits' : '90+ SKS'}</p>
         </div>
       </div>
     </div>

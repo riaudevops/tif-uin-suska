@@ -2,9 +2,12 @@
 import Layout from "@/layouts/Layout.astro";
 import Kurikulum from "../../components/pages/kurikulum-pages/kurikulum.astro";
 import Isi from "../../components/pages/kurikulum-pages/isi.astro";
+import { getLocaleFromUrl } from "@/lib/translations";
+
+const isEn = getLocaleFromUrl(Astro) === "en";
 ---
 
-<Layout title="Kurikulum">
+<Layout title={isEn ? "Curriculum" : "Kurikulum"}>
     <Kurikulum />
     <Isi />
 </Layout>

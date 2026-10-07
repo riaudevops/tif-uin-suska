@@ -1,8 +1,11 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Organisasi from "../../components/pages/struktur-pages/organisasi.astro";
+import { getLocaleFromUrl } from "@/lib/translations";
+
+const isEn = getLocaleFromUrl(Astro) === "en";
 ---
 
-<Layout title="Struktur Organisasi">
+<Layout title={isEn ? "Organizational Structure" : "Struktur Organisasi"}>
   <Organisasi />
 </Layout>

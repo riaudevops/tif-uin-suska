@@ -1,8 +1,11 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import Tugas from "@/components/pages/tugas-pages/tugas-akhir.astro";
+import { getLocaleFromUrl } from "@/lib/translations";
+
+const isEn = getLocaleFromUrl(Astro) === "en";
 ---
 
-<Layout title="Tugas Akhir">
+<Layout title={isEn ? "Final Project Portal" : "Tugas Akhir"}>
     <Tugas />
 </Layout>

@@ -196,7 +196,7 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
       </li>
       <li class="text-slate-300">/</li>
       <li>
-        <a href={localizePath('/profil', lang)} class="transition-colors duration-200 hover:text-[#0b5c3d]">
+        <a href={localizePath('/profil/sejarah', lang)} class="transition-colors duration-200 hover:text-[#0b5c3d]">
           {t('bread.profil')}
         </a>
       </li>
@@ -233,15 +233,15 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
         <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-2">
           <div class="rounded-[22px] border border-white/15 bg-white/8 p-4 backdrop-blur-sm">
             <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100/80">{isEn ? 'Credits' : 'Bobot'}</p>
-            <p class="mt-3 text-2xl font-black text-white">6 SKS</p>
+            <p class="mt-3 text-2xl font-black text-white">{isEn ? '6 credits' : '6 SKS'}</p>
           </div>
           <div class="rounded-[22px] border border-white/15 bg-white/8 p-4 backdrop-blur-sm">
             <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100/80">{isEn ? 'Advisors' : 'Pembimbing'}</p>
-            <p class="mt-3 text-2xl font-black text-white">2 Dosen</p>
+            <p class="mt-3 text-2xl font-black text-white">{isEn ? '2 advisors' : '2 Dosen'}</p>
           </div>
           <div class="rounded-[22px] border border-white/15 bg-white/8 p-4 backdrop-blur-sm">
             <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100/80">{isEn ? 'Research' : 'Riset'}</p>
-            <p class="mt-3 text-2xl font-black text-white">5 Bidang</p>
+            <p class="mt-3 text-2xl font-black text-white">{isEn ? '5 fields' : '5 Bidang'}</p>
           </div>
           <div class="rounded-[22px] border border-[#f4d77d]/30 bg-[#f4d77d]/10 p-4 backdrop-blur-sm">
             <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#fce9a0]">{isEn ? 'Publication' : 'Publikasi'}</p>

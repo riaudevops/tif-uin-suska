@@ -1,8 +1,11 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Agenda from "../../components/pages/agenda-pages/agenda.astro";
+import { getLocaleFromUrl } from "@/lib/translations";
+
+const isEn = getLocaleFromUrl(Astro) === "en";
 ---
 
-<Layout title="Agenda Kampus">
+<Layout title={isEn ? "Events & Agenda" : "Agenda Kampus"}>
   <Agenda />
 </Layout>

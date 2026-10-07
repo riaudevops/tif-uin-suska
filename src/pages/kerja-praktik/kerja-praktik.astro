@@ -1,8 +1,11 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import Kp from '../../components/pages/kp-pages/kerja-praktik.astro';
+import { getLocaleFromUrl } from "@/lib/translations";
+
+const isEn = getLocaleFromUrl(Astro) === "en";
 ---
 
-<Layout title="Kerja Praktik">
+<Layout title={isEn ? "Internship & Industrial Placement Info" : "Kerja Praktik"}>
     <Kp />
 </Layout>

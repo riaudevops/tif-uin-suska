@@ -49,9 +49,41 @@ const isEn = lang === 'en';
 
             initAos();
 
+            function loadNearbyEmbeds() {
+                const frames = document.querySelectorAll<HTMLIFrameElement>('iframe[data-deferred-src]');
+
+                if (!('IntersectionObserver' in window)) {
+                    frames.forEach((frame) => {
+                        frame.src = frame.dataset.deferredSrc || '';
+                        frame.removeAttribute('data-deferred-src');
+                    });
+                    return;
+                }
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (!entry.isIntersecting) return;
+
+                        if (!(entry.target instanceof HTMLIFrameElement)) return;
+                        const frame = entry.target;
+                        const source = frame.dataset.deferredSrc;
+                        if (!source) return;
+
+                        frame.src = source;
+                        frame.removeAttribute('data-deferred-src');
+                        observer.unobserve(frame);
+                    });
+                });
+
+                frames.forEach((frame) => observer.observe(frame));
+            }
+
+            loadNearbyEmbeds();
+
             // Re-bind and refresh AOS when page changes via ClientRouter
             document.addEventListener('astro:page-load', () => {
                 AOS.refreshHard();
+                loadNearbyEmbeds();
             });
 
             // Mobile touchstart prefetch for zero-delay tap navigation
@@ -71,4 +103,3 @@ const isEn = lang === 'en';
         </script>
     </body>
 </html>
-

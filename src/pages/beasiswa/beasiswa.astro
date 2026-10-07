@@ -1,8 +1,11 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import Beasiswa from '../../components/pages/beasiswa-pages/beasiswa.astro';
+import { getLocaleFromUrl } from "@/lib/translations";
+
+const isEn = getLocaleFromUrl(Astro) === "en";
 ---
 
-<Layout title="Beasiswa">
+<Layout title={isEn ? "Scholarship & Educational Grants" : "Beasiswa"}>
     <Beasiswa />
 </Layout>

@@ -1,8 +1,11 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import RuangKelas from "@/components/pages/ruangkelas-pages/ruang-kelas.astro";
+import { getLocaleFromUrl } from "@/lib/translations";
+
+const isEn = getLocaleFromUrl(Astro) === "en";
 ---
 
-<Layout title="Ruang Kelas">
+<Layout title={isEn ? "Classrooms" : "Ruang Kelas"}>
     <RuangKelas />
 </Layout>
