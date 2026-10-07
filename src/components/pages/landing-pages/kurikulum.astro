@@ -1,5 +1,5 @@
 ---
-import { getLocaleFromUrl, useTranslations } from "../../../lib/translations";
+import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 ---
@@ -23,7 +23,7 @@ const t = useTranslations(lang);
                     </p>
                 </div>
                 <div class="mt-10">
-                    <a href="kurikulum-pages/kurikulum" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-900 hover:bg-green-700 transition duration-300 shadow-lg">
+                    <a href={localizePath("/kurikulum/kurikulum", lang)} class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-900 hover:bg-green-700 transition duration-300 shadow-lg">
                         {t("kurikulum.cta")}
                     </a>
                 </div>

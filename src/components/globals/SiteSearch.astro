@@ -140,13 +140,31 @@ const searchI18n = {
 			if (statusEl) statusEl.textContent = `${items.length} ${searchI18n.resultsFound}`;
 
 			items.forEach((item) => {
+				let resultUrl;
+				try {
+					resultUrl = new URL(item.url, window.location.origin);
+				} catch {
+					console.error("Skipping search result with an invalid URL.");
+					return;
+				}
+				if (resultUrl.origin !== window.location.origin) {
+					console.error("Skipping search result with a non-local URL.");
+					return;
+				}
+
 				const li = document.createElement("li");
 				li.setAttribute("role", "option");
 				const a = document.createElement("a");
-				a.href = item.url;
+				a.href = `${resultUrl.pathname}${resultUrl.search}${resultUrl.hash}`;
 				a.className =
 					"flex items-center justify-between gap-3 px-4 py-2.5 hover:bg-green-50 transition-colors group";
-				a.innerHTML = `<span class="text-sm font-medium text-slate-800 group-hover:text-[#004d2c]">${item.title}</span><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 shrink-0">${item.category}</span>`;
+				const title = document.createElement("span");
+				title.className = "text-sm font-medium text-slate-800 group-hover:text-[#004d2c]";
+				title.textContent = item.title;
+				const category = document.createElement("span");
+				category.className = "text-[10px] font-bold uppercase tracking-wider text-slate-400 shrink-0";
+				category.textContent = item.category;
+				a.append(title, category);
 				a.addEventListener("click", closeModal);
 				li.appendChild(a);
 				resultsEl.appendChild(li);

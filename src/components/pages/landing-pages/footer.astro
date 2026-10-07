@@ -6,7 +6,7 @@ import {
   Mail,
   Youtube,
 } from '@lucide/astro';
-import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
+import { getLocaleFromUrl, useTranslations } from "../../../lib/translations";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 ---
@@ -114,15 +114,10 @@ const t = useTranslations(lang);
   </div>
 
   <div class="relative z-10 mt-12 sm:mt-20 bg-slate-950 border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 flex flex-col md:flex-row justify-between items-center text-[11px] md:text-xs tracking-wide">
-      <p class="text-slate-500 text-center md:text-left">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 text-center text-[11px] md:text-xs tracking-wide">
+      <p class="text-slate-500">
         {t("footer.copyright")}
       </p>
-      
-      <div class="flex gap-6 mt-4 md:mt-0 text-slate-500">
-        <a href={localizePath("/privacy-policy", lang)} class="hover:text-white transition">{t("footer.privacy")}</a>
-        <a href={localizePath("/terms-of-service", lang)} class="hover:text-white transition">{t("footer.terms")}</a>
-      </div>
     </div>
   </div>
 </footer>

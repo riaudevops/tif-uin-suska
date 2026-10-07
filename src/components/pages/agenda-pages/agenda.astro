@@ -256,7 +256,7 @@ const getKategoriClass = (kat: string) => {
   </div>
 </div>
 
-<script define:vars={{ agendaData: agendaKegiatan, modalI18n: { register: t("common.register"), noReg: t("page.agenda.modal.noreg") } }}>
+<script define:vars={{ agendaData: agendaKegiatan, modalI18n: { register: t("common.register"), noReg: t("page.agenda.modal.noreg"), invalidReg: t("page.agenda.modal.invalidReg") } }}>
   const cards = document.querySelectorAll('.agenda-card');
   const modal = document.getElementById('agenda-modal');
   const closeModalElements = document.querySelectorAll('.close-modal');
@@ -324,19 +324,35 @@ const getKategoriClass = (kat: string) => {
     mWaktu.textContent = data.waktu;
     mLokasi.textContent = data.lokasi;
 
+    mActionArea.replaceChildren();
     if (data.linkPendaftaran) {
-      mActionArea.innerHTML = `
-        <a href="${data.linkPendaftaran}" target="_blank" rel="noopener noreferrer" 
-           class="w-full block text-center py-3 px-4 bg-[#004d2c] hover:bg-[#00361f] text-white font-bold rounded-xl transition-colors shadow-lg shadow-green-900/20 focus:ring-4 focus:ring-green-300">
-          ${modalI18n.register}
-        </a>
-      `;
+      let registrationUrl;
+      try {
+        registrationUrl = new URL(data.linkPendaftaran, window.location.origin);
+      } catch {
+        console.error("Agenda registration link is not a valid URL.");
+      }
+
+      if (registrationUrl && ['http:', 'https:'].includes(registrationUrl.protocol)) {
+        const registerLink = document.createElement('a');
+        registerLink.href = registrationUrl.href;
+        registerLink.target = '_blank';
+        registerLink.rel = 'noopener noreferrer';
+        registerLink.className = 'w-full block text-center py-3 px-4 bg-[#004d2c] hover:bg-[#00361f] text-white font-bold rounded-xl transition-colors shadow-lg shadow-green-900/20 focus:ring-4 focus:ring-green-300';
+        registerLink.textContent = modalI18n.register;
+        mActionArea.appendChild(registerLink);
+      } else {
+        console.error("Agenda registration link must use HTTP or HTTPS.");
+        const invalidMessage = document.createElement('div');
+        invalidMessage.className = 'text-center p-3 bg-amber-50 text-amber-800 rounded-xl text-sm border border-amber-200';
+        invalidMessage.textContent = modalI18n.invalidReg;
+        mActionArea.appendChild(invalidMessage);
+      }
     } else {
-      mActionArea.innerHTML = `
-        <div class="text-center p-3 bg-slate-50 text-slate-400 rounded-xl text-sm border border-slate-100 border-dashed">
-          ${modalI18n.noReg}
-        </div>
-      `;
+      const noRegistrationMessage = document.createElement('div');
+      noRegistrationMessage.className = 'text-center p-3 bg-slate-50 text-slate-400 rounded-xl text-sm border border-slate-100 border-dashed';
+      noRegistrationMessage.textContent = modalI18n.noReg;
+      mActionArea.appendChild(noRegistrationMessage);
     }
 
     modal.classList.remove('hidden');

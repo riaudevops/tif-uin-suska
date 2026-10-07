@@ -81,7 +81,7 @@ const t = useTranslations(lang);
             </div>
 
             <div
-                class="hidden lg:flex items-center gap-1 text-[13px] font-bold text-slate-700 uppercase shrink-0"
+                class="hidden xl:flex items-center gap-1 text-[13px] font-bold text-slate-700 uppercase shrink-0"
             >
                 <a
                     href={localizePath("/", lang)}
@@ -332,7 +332,7 @@ const t = useTranslations(lang);
                 </div>
             </div>
 
-            <div class="lg:hidden flex items-center gap-1.5 sm:gap-2">
+            <div class="xl:hidden flex items-center gap-1.5 sm:gap-2">
                 <SearchTrigger />
                 <button
                     aria-expanded="false"
@@ -378,7 +378,7 @@ const t = useTranslations(lang);
     <div class="w-full h-[2px] bg-[#0d3c2f] opacity-90"></div>
 
     <div id="mobile-menu"
-        class="lg:hidden absolute top-full left-0 right-0 bg-white shadow-2xl hidden border-t border-gray-100 transition-all duration-300">
+        class="xl:hidden absolute top-full left-0 right-0 bg-white shadow-2xl hidden border-t border-gray-100 transition-all duration-300">
         <div class="flex flex-col py-3 px-3 sm:px-5 max-h-[calc(100vh-110px)] overflow-y-auto overscroll-contain">
             <a href={localizePath("/", lang)} class="py-2.5 px-4 text-sm font-semibold text-slate-800 hover:text-[#004d2c] hover:bg-emerald-50/60 rounded-xl transition-colors">
                 {t("nav.home")}

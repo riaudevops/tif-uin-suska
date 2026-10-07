@@ -17,7 +17,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.3.0",
     "aos": "^2.3.4",
-    "astro": "6.4.2",
+    "astro": "6.4.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.555.0",
@@ -25,6 +25,7 @@
     "playwright": "^1.61.1",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
+    "sanitize-html": "^2.18.0",
     "shadcn-ui": "^0.9.5",
     "swiper": "^14.2.0",
     "tailwind-merge": "^3.4.0",
@@ -32,6 +33,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/sanitize-html": "^2.16.2",
     "puppeteer-core": "^25.2.1"
   }
 }
