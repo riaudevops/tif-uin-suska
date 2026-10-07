@@ -35,6 +35,17 @@ let article = null;
 let related = [];
 let parsedBody = "";
 
+function normalizeBuilderMarkdown(content: string) {
+  return content
+    .replace(
+      /(!\[[^\]]*\]\()([^)]+)(\))/g,
+      (_match, prefix: string, destination: string, suffix: string) =>
+        `${prefix}${destination.replace(/\.\s+(?=(?:jpe?g|png|gif|webp|avif|svg)(?:[?#]|$))/i, '.')}${suffix}`
+    )
+    .replace(/(^|\n)[ \t]*#{1,6}[ \t]+(?=\[!\[)/g, '$1')
+    .replace(/(\[!\[[^\]]*\]\([^)]+\)\]\([^)]+\))/g, '\n\n$1\n\n');
+}
+
 try {
   const isId = /^\d+$/.test(slug || '');
   const filterParam = isId
@@ -52,7 +63,17 @@ try {
     article = normalizeBerita(rawArticle, lang);
 
     if (article?.body) {
-      parsedBody = marked.parse(article.body);
+      parsedBody = await marked.parse(normalizeBuilderMarkdown(article.body), {
+        breaks: true,
+      });
+      parsedBody = parsedBody.replace(
+        /<h([1-6])>\s*(<a\b[^>]*>\s*<img\b[^>]*>\s*<\/a>|<img\b[^>]*>)\s*<\/h\1>/gi,
+        '<figure>$2</figure>'
+      );
+      parsedBody = parsedBody.replace(
+        /<p>\s*(<a\b[^>]*>\s*<img\b[^>]*>\s*<\/a>|<img\b[^>]*>)\s*<\/p>/gi,
+        '<figure>$1</figure>'
+      );
     }
 
     const relatedParams = new URLSearchParams({
@@ -154,8 +175,11 @@ const formattedDate = article.date
       )}
 
       <div
-        class="prose prose-lg max-w-none prose-headings:font-black prose-headings:text-slate-900 prose-a:text-[#0b5c3d] prose-strong:text-slate-900 prose-li:text-slate-700 text-slate-700 leading-relaxed"
-        set:html={sanitizeHtml(parsedBody || article.excerpt || "")}
+        class="prose prose-lg max-w-none prose-headings:font-black prose-headings:text-slate-900 prose-a:text-[#0b5c3d] prose-strong:text-slate-900 prose-li:text-slate-700 prose-figure:mx-0 prose-figure:my-6 prose-img:mx-auto prose-img:h-auto prose-img:max-w-full prose-img:rounded-xl text-slate-700 leading-relaxed"
+        set:html={sanitizeHtml(parsedBody || article.excerpt || "", {
+          allowedTags: [...sanitizeHtml.defaults.allowedTags, "img"],
+          allowedSchemesByTag: { img: ["http", "https"] },
+        })}
       />
     </div>
 

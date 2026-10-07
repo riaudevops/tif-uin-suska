@@ -6,6 +6,17 @@
 export const BERITA_LIST_FIELDS = 'id,date,modified,status,featured_image,images,categories.*,translations.*';
 export const BERITA_DETAIL_FIELDS = 'id,user_created,date,modified,status,images,featured_image,categories.*,translations.*';
 
+function getFirstContentImage(content = '') {
+  const markdownImage = content.match(/!\[[^\]]*\]\(([^)\r\n]+)\)/);
+  const htmlImage = content.match(/<img\b[^>]*\bsrc\s*=\s*["']([^"']+)["']/i);
+  const source = markdownImage?.[1] || htmlImage?.[1];
+  if (!source) return null;
+
+  return source
+    .trim()
+    .replace(/\.\s+(?=(?:jpe?g|png|gif|webp|avif|svg)(?:[?#]|$))/i, '.');
+}
+
 /**
  * Normalizes a single berita item from Directus based on requested language.
  *
@@ -80,6 +91,8 @@ export function normalizeBerita(item, lang = 'id') {
     image = item.featured_image;
   } else if (item.images && item.images !== 'default') {
     image = item.images;
+  } else {
+    image = getFirstContentImage(body);
   }
 
   return {

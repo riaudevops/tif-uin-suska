@@ -14,7 +14,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     let basePath = pathname.replace(/^\/en/, "");
     if (!basePath.startsWith("/")) basePath = "/" + basePath;
     if (basePath === "//") basePath = "/";
-    return context.rewrite(basePath);
+    return context.rewrite(new URL(`${basePath}${url.search}`, url.origin));
   }
 
   context.locals.locale = "id";
