@@ -18,7 +18,7 @@ import {
 } from '@lucide/astro';
 
 import { API_URL, getAssetUrl } from '@/lib/cms.js';
-import { DOSEN_FIELDS, normalizeDosen } from '@/lib/dosen.js';
+import { DOSEN_FIELDS, normalizeDosen, sortDosenByPosition } from '@/lib/dosen.js';
 
 export const prerender = false;
 
@@ -56,17 +56,7 @@ try {
       });
 
      // 1. Urutkan seluruh dosen berdasarkan prioritas jabatan terlebih dahulu
-      const positionPriority = (jabatan?: string): number => {
-        if (!jabatan) return 2;
-        const lower = jabatan.toLowerCase();
-        if (lower.includes('kepala prodi')) return 0;
-        if (lower.includes('sekretaris')) return 1;
-        return 2;
-      };
-
-      const sortedDosen = [...allDosenData].sort((a, b) => {
-        return positionPriority(a.jabatan) - positionPriority(b.jabatan);
-      });
+      const sortedDosen = sortDosenByPosition(allDosenData);
 
       // 2. Filter agar dosen yang sedang dibuka tidak muncul di daftar "Dosen Lainnya", lalu ambil 4 teratas
       otherDosen = sortedDosen

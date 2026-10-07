@@ -1,6 +1,53 @@
 export const DOSEN_FIELDS =
   "id,nama,foto,email,nip,goggle_scholar,sinta,bidang_keahlian,translations.languages_code,translations.jabatan_translate,translations.fakultas_translate,translations.pendidikan_translate";
 
+const getPositionPriority = (position = "") => {
+  const normalizedPosition = position
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[._-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (
+    /\b(kepala|ketua)\s+(program studi|prodi)\b/.test(normalizedPosition) ||
+    /\b(head|chair)\s+of\s+(the\s+)?(study\s+)?program\b/.test(normalizedPosition) ||
+    /\b(study\s+program\s+head|program\s+head)\b/.test(normalizedPosition)
+  ) {
+    return 0;
+  }
+  if (
+    /\bsekretaris\b/.test(normalizedPosition) ||
+    /\bsecretary\b/.test(normalizedPosition)
+  ) {
+    return 1;
+  }
+  if (
+    !normalizedPosition ||
+    /^(dosen|dosen pengajar|lecturer|teaching lecturer|faculty member)$/.test(
+      normalizedPosition,
+    )
+  ) {
+    return 3;
+  }
+  return 2;
+};
+
+export function sortDosenByPosition(items) {
+  if (!Array.isArray(items)) return [];
+
+  return items
+    .map((item, index) => ({ item, index }))
+    .sort(
+      (a, b) =>
+        getPositionPriority(a.item?.jabatan) -
+          getPositionPriority(b.item?.jabatan) ||
+        a.index - b.index,
+    )
+    .map(({ item }) => item);
+}
+
 export function normalizeDosen(item, lang = "id") {
   if (!item || typeof item !== "object") return null;
 

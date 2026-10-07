@@ -1,7 +1,8 @@
 ---
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 import { fetchWithCache } from '@/lib/cachedFetch.js';
-import { API_URL, ASSET_URL, getAssetUrl } from '@/lib/cms.js';
+import { API_BASE_URL, getAssetUrl } from '@/lib/cms.js';
+import { DOSEN_FIELDS, normalizeDosen, sortDosenByPosition } from '@/lib/dosen.js';
 import { ArrowUpRight, BriefcaseBusiness, Building2, GraduationCap, Mail, UserRound } from '@lucide/astro';
 
 const lang = getLocaleFromUrl(Astro);
@@ -11,19 +12,16 @@ const isEn = lang === 'en';
 let dosenData = [];
 
 try {
-  const dataDirectus = await fetchWithCache(`${API_URL}/items/dosen_tif?sort=id`, {}, 60000);
-  dosenData = dataDirectus.data || [];
-  const getJabatanRank = (jabatan?: string): number => {
-    if (!jabatan) return 99;
-    const j = jabatan.toLowerCase();
-    if (j.includes('kepala prodi') || j.includes('kepala program')) return 1;
-    if (j.includes('sekretaris prodi') || j.includes('sekretaris')) return 2;
-    if (j.includes('koord. tugas akhir') || j.includes('koordinator ta')) return 3;
-    if (j.includes('koord. kerja praktek') || j.includes('koordinator kp')) return 4;
-    if (j.includes('kepala lab')) return 5;
-    return 99;
-  };
-  dosenData.sort((a, b) => getJabatanRank(a.jabatan) - getJabatanRank(b.jabatan));
+  const dataDirectus = await fetchWithCache(
+    `${API_BASE_URL}/dosen_tif?fields=${DOSEN_FIELDS}&sort=id`,
+    {},
+    60000,
+  );
+  dosenData = sortDosenByPosition(
+    (Array.isArray(dataDirectus.data) ? dataDirectus.data : [])
+      .map((item: any) => normalizeDosen(item, lang))
+      .filter(Boolean),
+  );
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.error("Error fetching dosen:", message);

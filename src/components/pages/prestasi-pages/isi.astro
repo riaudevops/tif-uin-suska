@@ -1,41 +1,30 @@
 ---
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
-import { API_URL } from "../../../lib/cms";
+import { fetchWithCache } from "../../../lib/cachedFetch";
+import { API_BASE_URL } from "../../../lib/cms";
+import {
+  normalizePrestasiList,
+  PRESTASI_LIST_FIELDS,
+} from "../../../lib/prestasi.js";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
+const isEn = lang === "en";
 
 let prestasiData = [];
+const API_TOKEN = import.meta.env.DIRECTUS_TOKEN;
 
 try {
-  const response = await fetch(`${API_URL}/items/prestasi?sort=-waktu_penyelenggaraan`);
-  if (!response.ok) {
-    const errorDetails = await response.json();
-    console.error("ERROR DIRECTUS:", JSON.stringify(errorDetails, null, 2));
-    throw new Error(`Gagal (Status: ${response.status})`);
-  }
-
-  const dataDirectus = await response.json();
-  prestasiData = dataDirectus.data.map((item: any) => {
-    let year = "-";
-    if (item.waktu_penyelenggaraan) {
-      if (!isNaN(item.waktu_penyelenggaraan)) {
-        year = String(item.waktu_penyelenggaraan);
-      } else {
-        const parsedDate = new Date(item.waktu_penyelenggaraan);
-        year = !isNaN(parsedDate.getTime()) ? parsedDate.getFullYear().toString() : String(item.waktu_penyelenggaraan);
-      }
-    }
-
-    const hasilPrestasi = item.prestasi && item.prestasi.trim() !== "" ? item.prestasi : "-";
-
-    return {
-      kegiatan: item.nama_kegiatan || "Tanpa Nama",
-      nama: item.mahasiswa || "Anonim",
-      tahun: year,
-      tingkat: item.tingkat || "Lokal",
-      prestasi: hasilPrestasi,
-    };
-  });
+  const json = await fetchWithCache(
+    `${API_BASE_URL}/prestasi?fields=${PRESTASI_LIST_FIELDS}&sort=-waktu_penyelenggaraan`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {}),
+      },
+    },
+    30000,
+  );
+  prestasiData = normalizePrestasiList(json?.data || [], lang);
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.error("Error fetching prestasi:", message);
@@ -68,12 +57,14 @@ const topLevel = prestasiData.length
 <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 md:py-12">
   <div class="mb-6 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
     <div class="rounded-[30px] border border-slate-200 bg-white p-6 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.25)] sm:p-7">
-      <p class="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-500">Daftar pencapaian</p>
+      <p class="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-500">{isEn ? "Achievement list" : "Daftar pencapaian"}</p>
       <h2 class="mt-3 text-2xl font-black tracking-tight text-[#004d2c] sm:text-3xl">
         {t("page.prestasi.title")}
       </h2>
       <p class="mt-3 max-w-xl text-sm leading-relaxed text-slate-600">
-        Rekapitulasi pencapaian mahasiswa dalam berbagai aktivitas akademik dan kompetisi yang telah didokumentasikan.
+        {isEn
+          ? "A summary of student achievements documented across academic activities and competitions."
+          : "Rekapitulasi pencapaian mahasiswa dalam berbagai aktivitas akademik dan kompetisi yang telah didokumentasikan."}
       </p>
     </div>
 
@@ -83,11 +74,11 @@ const topLevel = prestasiData.length
         <p class="mt-3 text-2xl font-black text-[#003d2a]">{totalRecords}</p>
       </div>
       <div class="rounded-[24px] border border-slate-200 bg-[#f8faf3] p-4 shadow-[0_16px_35px_-28px_rgba(15,23,42,0.25)]">
-        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">Tahun</p>
+        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">{isEn ? "Year" : "Tahun"}</p>
         <p class="mt-3 text-2xl font-black text-[#003d2a]">{latestYear}</p>
       </div>
       <div class="rounded-[24px] border border-slate-200 bg-[#f8faf3] p-4 shadow-[0_16px_35px_-28px_rgba(15,23,42,0.25)]">
-        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">Tingkat</p>
+        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">{isEn ? "Level" : "Tingkat"}</p>
         <p class="mt-3 text-xl font-black text-[#003d2a]">{topLevel}</p>
       </div>
     </div>
@@ -100,7 +91,7 @@ const topLevel = prestasiData.length
         {t("page.prestasi.title")}
       </div>
       <div class="inline-flex w-fit items-center rounded-full bg-[#edf4e8] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
-        {totalRecords} data
+        {totalRecords} {isEn ? "records" : "data"}
       </div>
     </div>
 
@@ -161,7 +152,13 @@ const topLevel = prestasiData.length
     </div>
 
     <div class="flex flex-col gap-4 border-t border-slate-100 bg-slate-50/70 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-      <p id="pagination-info" class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400" data-text-show={t("page.prestasi.show")}>
+      <p
+        id="pagination-info"
+        class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400"
+        data-text-show={isEn ? "Showing" : "Menampilkan"}
+        data-text-total={isEn ? "of" : "dari total"}
+        data-text-records={isEn ? "records" : "data"}
+      >
         {t("page.prestasi.show")}
       </p>
       <div class="flex items-center gap-2">
@@ -208,7 +205,9 @@ const topLevel = prestasiData.length
 
       if (pageInfo) {
         const textShow = pageInfo.getAttribute('data-text-show') || "Menampilkan";
-        pageInfo.textContent = `${textShow} ${currentStart} - ${currentEnd} dari total ${rows.length} Records`;
+        const textTotal = pageInfo.getAttribute('data-text-total') || "dari total";
+        const textRecords = pageInfo.getAttribute('data-text-records') || "data";
+        pageInfo.textContent = `${textShow} ${currentStart} - ${currentEnd} ${textTotal} ${rows.length} ${textRecords}`;
       }
 
       if (pageNumber) {
