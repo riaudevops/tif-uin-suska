@@ -1,6 +1,9 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { API_URL } from "../../../lib/cms";
+import { getLocaleFromUrl } from "../../../lib/translations";
 
+const isEn = getLocaleFromUrl(Astro) === "en";
 let rawKurikulum = [];
 
 try {
@@ -81,19 +84,41 @@ function romanize(num: number): string {
 
 const semesterCount = Object.keys(activeCurriculum).length;
 const totalSks = Object.values(activeCurriculum).reduce((sum: number, courses: any[]) => sum + courses.reduce((courseSum: number, course: any) => courseSum + Number(course.sks || 0), 0), 0);
+
+function getLocalizedCourseName(name: string): string {
+  if (!isEn) return name;
+
+  return name
+    .replace(/^Mata Kuliah Pilihan\b/i, "Elective Course")
+    .replace(/PILIHAN BEBAS/gi, "Free Elective")
+    .replace(/\bKuliah Kerja Nyata\b/gi, "Community Service Program")
+    .replace(/\bKerja Praktik\b/gi, "Internship");
+}
+
+function getLocalizedPrerequisite(prerequisite: string): string {
+  if (!isEn) return prerequisite;
+
+  return prerequisite
+    .replace(/^minimal telah mengambil (\d+) sks$/i, "At least $1 credits completed")
+    .replace(/^wajib sem(?:ester)?\s*(\d+)/i, "Required in semester $1")
+    .replace(/\s*\(minimal c\)/gi, " (minimum grade: C)")
+    .replace(/\s*\(sudah mengambil\)/gi, " (completed)")
+    .replace(/\bSKS\b/g, "credits")
+    .replace(/\bKP\b/g, "internship");
+}
 ---
 
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12">
   {versions.length === 0 && (
     <div class="rounded-[30px] border border-dashed border-slate-200 bg-slate-50 px-6 py-20 text-center text-slate-500">
-      Belum ada data kurikulum yang tersedia.
+      {translateInline((isEn) ? "en" : "id", "inline.no-curriculum-data-is-available-yet")}
     </div>
   )}
   
   <div class="mb-12">
     <div class="mb-6 flex items-center justify-between gap-4">
       <h2 class="text-2xl font-black tracking-tight text-[#004d2c] sm:text-3xl">
-        Kurikulum {activeVersion}
+        {translateInline((isEn) ? "en" : "id", "inline.curriculum")} {activeVersion}
       </h2>
       <div class="h-px flex-1 bg-gradient-to-r from-[#004d2c]/20 to-transparent"></div>
     </div>
@@ -109,7 +134,7 @@ const totalSks = Object.values(activeCurriculum).reduce((sum: number, courses: a
                 Semester {romanize(Number(semester))}
               </span>
               <span class="text-sm font-black text-[#004d2c]">
-                {totalSKS} SKS
+                {totalSKS} {translateInline((isEn) ? "en" : "id", "inline.credits")}
               </span>
             </div>
 
@@ -118,12 +143,12 @@ const totalSks = Object.values(activeCurriculum).reduce((sum: number, courses: a
                 <thead>
                   <tr class="bg-[#004d2c] text-white">
                     <th class="w-16 px-5 py-4 text-center text-[10px] font-bold uppercase tracking-[0.2em]">No</th>
-                    <th class="w-24 px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">MK</th>
-                    <th class="w-36 px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">Resmi</th>
-                    <th class="px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">Nama Mata Kuliah</th>
-                    <th class="w-28 px-5 py-4 text-center text-[10px] font-bold uppercase tracking-[0.2em]">Singkatan</th>
-                    <th class="w-20 px-5 py-4 text-center text-[10px] font-bold uppercase tracking-[0.2em]">SKS</th>
-                    <th class="w-64 px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">Prasyarat</th>
+                    <th class="w-24 px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{translateInline((isEn) ? "en" : "id", "inline.course-code")}</th>
+                    <th class="w-36 px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{translateInline((isEn) ? "en" : "id", "inline.official-code")}</th>
+                    <th class="px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{translateInline((isEn) ? "en" : "id", "inline.course-name")}</th>
+                    <th class="w-28 px-5 py-4 text-center text-[10px] font-bold uppercase tracking-[0.2em]">{translateInline((isEn) ? "en" : "id", "inline.abbreviation")}</th>
+                    <th class="w-20 px-5 py-4 text-center text-[10px] font-bold uppercase tracking-[0.2em]">{translateInline((isEn) ? "en" : "id", "inline.credits-sks")}</th>
+                    <th class="w-64 px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{translateInline((isEn) ? "en" : "id", "inline.prerequisite")}</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
@@ -132,13 +157,13 @@ const totalSks = Object.values(activeCurriculum).reduce((sum: number, courses: a
                       <td class="px-5 py-4 text-center text-sm font-semibold text-slate-400">{index + 1}</td>
                       <td class="px-5 py-4 font-mono text-sm font-semibold text-slate-500">{c.kode_mk || "-"}</td>
                       <td class="px-5 py-4 font-mono text-sm font-semibold text-slate-500">{c.kode_resmi || "-"}</td>
-                      <td class="px-5 py-4 text-sm font-bold leading-snug text-slate-800">{c.nama_mk || "-"}</td>
+                      <td class="px-5 py-4 text-sm font-bold leading-snug text-slate-800">{getLocalizedCourseName(c.nama_mk) || "-"}</td>
                       <td class="px-5 py-4 text-center text-sm font-bold text-slate-500">{c.singkatan || "-"}</td>
                       <td class="px-5 py-4 text-center text-sm font-black text-[#004d2c]">{c.sks}</td>
                       <td class="px-5 py-4 text-xs text-slate-600">
                         {c.prasyarat ? (
                           <span class={`inline-flex rounded-full border px-2.5 py-1 text-[10px] font-bold ${c.prasyarat.toLowerCase() === "paket wajib" ? "border-emerald-100 bg-emerald-50 text-emerald-700" : "border-amber-100 bg-amber-50 text-amber-700"}`}>
-                            {c.prasyarat}
+                            {isEn && c.prasyarat.toLowerCase() === "paket wajib" ? "Required course package" : getLocalizedPrerequisite(c.prasyarat)}
                           </span>
                         ) : (
                           <span class="text-slate-300">-</span>
@@ -155,26 +180,26 @@ const totalSks = Object.values(activeCurriculum).reduce((sum: number, courses: a
                 <div class="rounded-[22px] border border-slate-200 bg-white p-4 shadow-[0_12px_28px_-25px_rgba(15,23,42,0.35)]">
                   <div class="flex items-center justify-between gap-3">
                     <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-500">
-                      {c.kode_mk || "PILIHAN"}
+                      {c.kode_mk || (translateInline((isEn) ? "en" : "id", "inline.elective"))}
                     </span>
                     <span class="text-[10px] font-mono font-bold text-slate-400">
                       {c.kode_resmi || "-"}
                     </span>
                   </div>
                   <h4 class="mt-3 text-sm font-bold leading-snug text-slate-800">
-                    {c.nama_mk}
+                    {getLocalizedCourseName(c.nama_mk)}
                   </h4>
                   {c.singkatan && (
-                    <p class="mt-1 text-[11px] font-bold text-slate-400">Singkatan: {c.singkatan}</p>
+                    <p class="mt-1 text-[11px] font-bold text-slate-400">{translateInline((isEn) ? "en" : "id", "inline.abbreviation")}: {c.singkatan}</p>
                   )}
                   <div class="mt-3 flex items-center justify-between border-t border-slate-100 pt-3 text-xs">
                     <div>
-                      <span class="text-slate-400">SKS:</span>
-                      <strong class="ml-1 font-black text-[#004d2c]">{c.sks} SKS</strong>
+                      <span class="text-slate-400">{translateInline((isEn) ? "en" : "id", "inline.credits-bb60dc1")}</span>
+                      <strong class="ml-1 font-black text-[#004d2c]">{c.sks} {translateInline((isEn) ? "en" : "id", "inline.credits")}</strong>
                     </div>
                     {c.prasyarat && (
                       <span class={`inline-flex rounded-full border px-2 py-0.5 text-[9px] font-bold ${c.prasyarat.toLowerCase() === "paket wajib" ? "border-emerald-100 bg-emerald-50 text-emerald-700" : "border-amber-100 bg-amber-50 text-amber-700"}`}>
-                        {c.prasyarat}
+                        {isEn && c.prasyarat.toLowerCase() === "paket wajib" ? "Required course package" : getLocalizedPrerequisite(c.prasyarat)}
                       </span>
                     )}
                   </div>
@@ -199,7 +224,7 @@ const totalSks = Object.values(activeCurriculum).reduce((sum: number, courses: a
               aria-expanded="false"
             >
               <span class="text-base font-black tracking-tight text-[#004d2c] sm:text-lg">
-                Kurikulum {v}
+                {translateInline((isEn) ? "en" : "id", "inline.curriculum")} {v}
               </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -223,7 +248,7 @@ const totalSks = Object.values(activeCurriculum).reduce((sum: number, courses: a
                         Semester {romanize(Number(semester))}
                       </span>
                       <span class="text-xs font-black text-[#004d2c]">
-                        {totalSKS} SKS
+                        {totalSKS} {translateInline((isEn) ? "en" : "id", "inline.credits")}
                       </span>
                     </div>
 
@@ -232,12 +257,12 @@ const totalSks = Object.values(activeCurriculum).reduce((sum: number, courses: a
                         <thead>
                           <tr class="bg-slate-100 text-slate-700">
                             <th class="w-14 px-4 py-3 text-center text-[9px] font-bold uppercase tracking-[0.18em]">No</th>
-                            <th class="w-20 px-4 py-3 text-[9px] font-bold uppercase tracking-[0.18em]">MK</th>
-                            <th class="w-32 px-4 py-3 text-[9px] font-bold uppercase tracking-[0.18em]">Resmi</th>
-                            <th class="px-4 py-3 text-[9px] font-bold uppercase tracking-[0.18em]">Nama Mata Kuliah</th>
-                            <th class="w-24 px-4 py-3 text-center text-[9px] font-bold uppercase tracking-[0.18em]">Singkatan</th>
-                            <th class="w-16 px-4 py-3 text-center text-[9px] font-bold uppercase tracking-[0.18em]">SKS</th>
-                            <th class="w-56 px-4 py-3 text-[9px] font-bold uppercase tracking-[0.18em]">Prasyarat</th>
+                            <th class="w-20 px-4 py-3 text-[9px] font-bold uppercase tracking-[0.18em]">{translateInline((isEn) ? "en" : "id", "inline.course-code")}</th>
+                            <th class="w-32 px-4 py-3 text-[9px] font-bold uppercase tracking-[0.18em]">{translateInline((isEn) ? "en" : "id", "inline.official-code")}</th>
+                            <th class="px-4 py-3 text-[9px] font-bold uppercase tracking-[0.18em]">{translateInline((isEn) ? "en" : "id", "inline.course-name")}</th>
+                            <th class="w-24 px-4 py-3 text-center text-[9px] font-bold uppercase tracking-[0.18em]">{translateInline((isEn) ? "en" : "id", "inline.abbreviation")}</th>
+                            <th class="w-16 px-4 py-3 text-center text-[9px] font-bold uppercase tracking-[0.18em]">{translateInline((isEn) ? "en" : "id", "inline.credits-sks")}</th>
+                            <th class="w-56 px-4 py-3 text-[9px] font-bold uppercase tracking-[0.18em]">{translateInline((isEn) ? "en" : "id", "inline.prerequisite")}</th>
                           </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
@@ -246,13 +271,13 @@ const totalSks = Object.values(activeCurriculum).reduce((sum: number, courses: a
                               <td class="px-4 py-3 text-center text-slate-400">{index + 1}</td>
                               <td class="px-4 py-3 font-mono text-slate-500">{c.kode_mk || "-"}</td>
                               <td class="px-4 py-3 font-mono text-slate-500">{c.kode_resmi || "-"}</td>
-                              <td class="px-4 py-3 font-bold text-slate-700">{c.nama_mk || "-"}</td>
+                              <td class="px-4 py-3 font-bold text-slate-700">{getLocalizedCourseName(c.nama_mk) || "-"}</td>
                               <td class="px-4 py-3 text-center font-bold text-slate-500">{c.singkatan || "-"}</td>
                               <td class="px-4 py-3 text-center font-black text-[#004d2c]">{c.sks}</td>
                               <td class="px-4 py-3 text-[10px] text-slate-500">
                                 {c.prasyarat ? (
                                   <span class="inline-flex rounded border border-slate-200 bg-slate-100 px-2 py-0.5 text-[9px] font-bold text-slate-600">
-                                    {c.prasyarat}
+                                    {isEn && c.prasyarat.toLowerCase() === "paket wajib" ? "Required course package" : getLocalizedPrerequisite(c.prasyarat)}
                                   </span>
                                 ) : (
                                   <span class="text-slate-300">-</span>
@@ -269,23 +294,23 @@ const totalSks = Object.values(activeCurriculum).reduce((sum: number, courses: a
                         <div class="rounded-[18px] border border-slate-200 bg-white p-4">
                           <div class="flex items-center justify-between gap-3">
                             <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-500">
-                              {c.kode_mk || "PILIHAN"}
+                              {c.kode_mk || (translateInline((isEn) ? "en" : "id", "inline.elective"))}
                             </span>
                             <span class="text-[10px] font-mono font-bold text-slate-400">
                               {c.kode_resmi || "-"}
                             </span>
                           </div>
                           <h4 class="mt-3 text-xs font-bold leading-snug text-slate-700">
-                            {c.nama_mk}
+                            {getLocalizedCourseName(c.nama_mk)}
                           </h4>
                           <div class="mt-3 flex items-center justify-between border-t border-slate-100 pt-3 text-[10px]">
                             <div>
-                              <span class="text-slate-400">SKS:</span>
-                              <strong class="ml-1 font-black text-[#004d2c]">{c.sks} SKS</strong>
+                              <span class="text-slate-400">{translateInline((isEn) ? "en" : "id", "inline.credits-bb60dc1")}</span>
+                              <strong class="ml-1 font-black text-[#004d2c]">{c.sks} {translateInline((isEn) ? "en" : "id", "inline.credits")}</strong>
                             </div>
                             {c.prasyarat && (
                               <span class="inline-flex rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[9px] font-semibold text-slate-600">
-                                {c.prasyarat}
+                                {isEn && c.prasyarat.toLowerCase() === "paket wajib" ? "Required course package" : getLocalizedPrerequisite(c.prasyarat)}
                               </span>
                             )}
                           </div>

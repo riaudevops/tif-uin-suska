@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl } from "../../../lib/translations";
 import { ArrowRight } from "@lucide/astro";
 
@@ -28,10 +29,10 @@ const isEn = lang === 'en';
 
           <div>
             <h1 class="text-2xl md:text-3xl font-bold uppercase tracking-wide text-white leading-tight">
-              {isEn ? "Informatics Engineering" : "Teknik Informatika"}
+              {translateInline((isEn) ? "en" : "id", "inline.informatics-engineering-teknik-informatika")}
             </h1>
             <h2 class="text-lg md:text-xl font-light text-yellow-500 uppercase">
-              {isEn ? "Faculty of Science and Technology" : "Fakultas Sains dan Teknologi"}
+              {translateInline((isEn) ? "en" : "id", "inline.faculty-of-science-and-technology")}
             </h2>
           </div>
         </div>
@@ -48,21 +49,19 @@ const isEn = lang === 'en';
       <!-- RIGHT : DESKRIPSI -->
       <div data-aos="fade-left" class="text-white max-w-xl">
         <p class="text-xs font-extrabold uppercase tracking-[0.25em] text-yellow-300">
-          {isEn ? "Study Program Information" : "Informasi Program Studi"}
+          {translateInline((isEn) ? "en" : "id", "inline.study-program-information")}
         </p>
 
         <h3 class="text-3xl font-bold leading-snug">
-          {isEn ? "Informatics Engineering" : "Teknik Informatika"}
+          {translateInline((isEn) ? "en" : "id", "inline.informatics-engineering-teknik-informatika")}
         </h3>
 
         <p class="text-white-400 leading-relaxed mt-2 text-sm opacity-90">
-          {isEn 
-            ? "The Informatics Engineering Study Program at UIN Sultan Syarif Kasim Riau combines information technology and Islamic values to prepare graduates with strong academic foundations, professional readiness, and ethical awareness."
-            : "Program Studi Teknik Informatika UIN Sultan Syarif Kasim Riau menggabungkan teknologi informasi dengan nilai keislaman untuk mempersiapkan lulusan yang memiliki fondasi akademik kuat, kesiapan profesional, dan kesadaran etis."
+          {translateInline((isEn) ? "en" : "id", "inline.the-informatics-engineering-study-program-at-uin")
           }
         </p>
         <button class="mt-6 inline-flex items-center justify-center rounded-lg bg-[#f3c75d] px-5 py-2.5 text-sm font-semibold text-[#0d3c2f] shadow-[0_12px_25px_-18px_rgba(243,199,93,0.9)] transition hover:bg-[#e9b94d]">
-          {isEn ? "View Details" : "Selengkapnya"}
+          {translateInline((isEn) ? "en" : "id", "inline.view-details-selengkapnya")}
         </button>
       </div>
 
@@ -79,9 +78,9 @@ const isEn = lang === 'en';
         <div class="mb-8">
           <h3 class="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-3">
             <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-            {isEn ? "UIN Systems" : "Sistem UIN"}
+            {translateInline((isEn) ? "en" : "id", "inline.uin-systems")}
           </h3>
-          <p class="text-sm text-emerald-200 mt-2">{isEn ? "Integrated academic services at the university level." : "Layanan akademik terpadu tingkat universitas."}</p>
+          <p class="text-sm text-emerald-200 mt-2">{translateInline((isEn) ? "en" : "id", "inline.integrated-academic-services-at-the-university-l")}</p>
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
@@ -91,7 +90,7 @@ const isEn = lang === 'en';
               <h4 class="font-bold text-white text-lg">SIREG</h4>
               <ArrowRight class="h-5 w-5 shrink-0 text-emerald-300/60 transition duration-300 group-hover:translate-x-1 group-hover:text-emerald-300" />
             </div>
-            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{isEn ? "Integrated academic service system for students." : "Sistem layanan akademik terpadu untuk mahasiswa."}</p>
+            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{translateInline((isEn) ? "en" : "id", "inline.integrated-academic-service-system-for-students")}</p>
           </a>
           
           <a href="https://elearning.uin-suska.ac.id/" target="_blank" rel="noopener noreferrer" class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-emerald-900/40 hover:border-emerald-400/50 transition duration-300 flex flex-col">
@@ -99,7 +98,7 @@ const isEn = lang === 'en';
               <h4 class="font-bold text-white text-lg">E-Learning</h4>
               <ArrowRight class="h-5 w-5 shrink-0 text-emerald-300/60 transition duration-300 group-hover:translate-x-1 group-hover:text-emerald-300" />
             </div>
-            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{isEn ? "Virtual classroom platform for online assignments and materials." : "Platform kelas virtual untuk tugas dan materi daring."}</p>
+            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{translateInline((isEn) ? "en" : "id", "inline.virtual-classroom-platform-for-online-assignment")}</p>
           </a>
           
           <a href="https://iraisenew.uin-suska.ac.id/" target="_blank" rel="noopener noreferrer" class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-emerald-900/40 hover:border-emerald-400/50 transition duration-300 flex flex-col">
@@ -107,7 +106,7 @@ const isEn = lang === 'en';
               <h4 class="font-bold text-white text-lg">IRaise</h4>
               <ArrowRight class="h-5 w-5 shrink-0 text-emerald-300/60 transition duration-300 group-hover:translate-x-1 group-hover:text-emerald-300" />
             </div>
-            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{isEn ? "Information system for lecturers to manage academic data." : "Sistem informasi untuk dosen dalam mengelola data akademik."}</p>
+            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{translateInline((isEn) ? "en" : "id", "inline.information-system-for-lecturers-to-manage-acade")}</p>
           </a>
  
           <a href="https://kkn.uin-suska.ac.id/" target="_blank" rel="noopener noreferrer" class="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-emerald-900/40 hover:border-emerald-400/50 transition duration-300 flex flex-col">
@@ -115,7 +114,7 @@ const isEn = lang === 'en';
               <h4 class="font-bold text-white text-lg">KKN</h4>
               <ArrowRight class="h-5 w-5 shrink-0 text-emerald-300/60 transition duration-300 group-hover:translate-x-1 group-hover:text-emerald-300" />
             </div>
-            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{isEn ? "Community service program for students." : "Program Kuliah Kerja Nyata untuk mahasiswa."}</p>
+            <p class="text-xs text-emerald-200/80 leading-relaxed flex-1">{translateInline((isEn) ? "en" : "id", "inline.community-service-program-for-students")}</p>
           </a>
  
         </div>
@@ -126,9 +125,9 @@ const isEn = lang === 'en';
         <div class="mb-8">
           <h3 class="text-2xl font-black text-yellow-400 uppercase tracking-tight flex items-center gap-3">
             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-            {isEn ? "TIF Systems" : "Sistem TIF"}
+            {translateInline((isEn) ? "en" : "id", "inline.tif-systems")}
           </h3>
-          <p class="text-sm text-emerald-200 mt-2">{isEn ? "Specialized services for Informatics Engineering students." : "Layanan khusus untuk mahasiswa Teknik Informatika."}</p>
+          <p class="text-sm text-emerald-200 mt-2">{translateInline((isEn) ? "en" : "id", "inline.specialized-services-for-informatics-engineering")}</p>
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
@@ -138,7 +137,7 @@ const isEn = lang === 'en';
               <h4 class="font-bold text-white text-lg">Dashboard TIF</h4>
               <ArrowRight class="h-5 w-5 shrink-0 text-yellow-400/60 transition duration-300 group-hover:translate-x-1 group-hover:text-yellow-400" />
             </div>
-            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{isEn ? "Internal academic reporting and monitoring portal." : "Portal pelaporan dan pemantauan akademik internal."}</p>
+            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{translateInline((isEn) ? "en" : "id", "inline.internal-academic-reporting-and-monitoring-porta")}</p>
           </a>
           
           <a href="https://hima.tif.uin-suska.ac.id/" target="_blank" rel="noopener noreferrer" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
@@ -146,7 +145,7 @@ const isEn = lang === 'en';
               <h4 class="font-bold text-white text-lg">HIMATIF</h4>
               <ArrowRight class="h-5 w-5 shrink-0 text-yellow-400/60 transition duration-300 group-hover:translate-x-1 group-hover:text-yellow-400" />
             </div>
-            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{isEn ? "Information hub for Student Association activities." : "Website pusat informasi kegiatan Himpunan Mahasiswa."}</p>
+            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{translateInline((isEn) ? "en" : "id", "inline.information-hub-for-student-association-activiti")}</p>
           </a>
           
           <a href="https://dashboard-hima.tif.uin-suska.ac.id/" target="_blank" rel="noopener noreferrer" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
@@ -154,29 +153,29 @@ const isEn = lang === 'en';
               <h4 class="font-bold text-white text-lg">Dashboard HIMATIF</h4>
               <ArrowRight class="h-5 w-5 shrink-0 text-yellow-400/60 transition duration-300 group-hover:translate-x-1 group-hover:text-yellow-400" />
             </div>
-            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{isEn ? "HIMATIF management portal for student organization activities." : "Portal manajemen kegiatan organisasi mahasiswa HIMATIF."}</p>
+            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{translateInline((isEn) ? "en" : "id", "inline.himatif-management-portal-for-student-organizati")}</p>
           </a>
  
           <a href="https://play.google.com/store/apps/details?id=uinsuska.tif.dashboard.student&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
             <div class="mb-2 flex items-start justify-between gap-3">
-              <h4 class="font-bold text-white text-lg">{isEn ? "IntegraTIF Student" : "IntegraTIF Mahasiswa"}</h4>
+              <h4 class="font-bold text-white text-lg">{translateInline((isEn) ? "en" : "id", "inline.integratif-student")}</h4>
               <ArrowRight class="h-5 w-5 shrink-0 text-yellow-400/60 transition duration-300 group-hover:translate-x-1 group-hover:text-yellow-400" />
             </div>
-            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{isEn ? "Student academic services and murajaah deposit platform." : "Platform layanan akademik mahasiswa dan setoran murajaah."}</p>
+            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{translateInline((isEn) ? "en" : "id", "inline.student-academic-services-and-murajaah-deposit-p")}</p>
           </a>
           
           <a href="https://play.google.com/store/apps/details?id=uinsuska.tif.dashboard.staff&pcampaignid=web_share" target="_blank" rel="noopener noreferrer" class="group bg-gradient-to-br from-yellow-500/10 to-transparent border border-yellow-500/20 rounded-2xl p-6 hover:bg-yellow-500/20 hover:border-yellow-400/60 transition duration-300 flex flex-col">
             <div class="mb-2 flex items-start justify-between gap-3">
-              <h4 class="font-bold text-white text-lg">{isEn ? "IntegraTIF Lecturer" : "IntegraTIF Dosen"}</h4>
+              <h4 class="font-bold text-white text-lg">{translateInline((isEn) ? "en" : "id", "inline.integratif-lecturer")}</h4>
               <ArrowRight class="h-5 w-5 shrink-0 text-yellow-400/60 transition duration-300 group-hover:translate-x-1 group-hover:text-yellow-400" />
             </div>
-            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{isEn ? "Academic data management assistant for Informatics lecturers." : "Platform asisten manajemen data untuk dosen TIF."}</p>
+            <p class="text-xs text-emerald-100/80 leading-relaxed flex-1">{translateInline((isEn) ? "en" : "id", "inline.academic-data-management-assistant-for-informati")}</p>
           </a>
  
           <div class="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-gradient-to-r from-yellow-50 to-amber-100 border border-amber-200 shadow-sm">
             <div class="w-2.5 h-2.5 rounded-lg bg-amber-500 animate-pulse"></div>
             <span class="text-sm font-semibold text-amber-800 tracking-wide">
-              {isEn ? "IntegraTIF App Coming Soon for iOS" : "Segera Hadir: IntegraTIF Versi iOS"}
+              {translateInline((isEn) ? "en" : "id", "inline.integratif-app-coming-soon-for-ios")}
             </span>
           </div>
  

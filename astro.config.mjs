@@ -20,10 +20,10 @@ export default defineConfig({
 	integrations: [react()],
 
 	i18n: {
-		defaultLocale: "id",
-		locales: ["id", "en"],
+		defaultLocale: "en",
+		locales: ["en", "id"],
 		fallback: {
-			en: "id",
+			id: "en",
 		},
 		routing: {
 			prefixDefaultLocale: false,

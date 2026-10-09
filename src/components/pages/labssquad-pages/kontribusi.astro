@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -15,15 +16,15 @@ const isEn = lang === 'en';
       <div class="relative z-10 flex flex-col items-center justify-between gap-10 lg:flex-row">
         <div class="max-w-2xl text-center lg:text-left">
           <span class="mb-6 inline-flex rounded-full border border-white/15 bg-white/10 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#f7de8a] backdrop-blur-sm">
-            {isEn ? "Open Collaboration" : "Kolaborasi Terbuka"}
+            {translateInline((isEn) ? "en" : "id", "inline.open-collaboration")}
           </span>
 
           <h2 data-aos="fade-up" class="mb-5 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
-            {isEn ? "Build research capacity together." : "Bangun kapasitas riset bersama."}
+            {translateInline((isEn) ? "en" : "id", "inline.build-research-capacity-together")}
           </h2>
 
           <p class="text-base leading-relaxed text-emerald-50/90 sm:text-lg">
-            {isEn ? "LabsSquad invites researchers, developers, and practitioners to collaborate on applied research and technology development projects." : "LabsSquad mengundang peneliti, pengembang, dan praktisi untuk berkolaborasi dalam proyek riset terapan dan pengembangan teknologi."}
+            {translateInline((isEn) ? "en" : "id", "inline.labssquad-invites-researchers-developers-and-pra")}
           </p>
         </div>
 
@@ -39,7 +40,7 @@ const isEn = lang === 'en';
 
           <button class="flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-8 py-4 font-bold text-white transition-all duration-300 hover:bg-white/10">
             <span class="text-xs uppercase tracking-[0.2em]">
-              {isEn ? "Contribution Guidelines" : "Guideline Kontribusi"}
+              {translateInline((isEn) ? "en" : "id", "inline.contribution-guidelines")}
             </span>
           </button>
         </div>

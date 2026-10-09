@@ -1,5 +1,5 @@
 export const AGENDA_FIELDS =
-  "id,tanggal_pelaksanaan,status,link_pendaftaran,kategori,image,translations.languages_code,translations.title_translate,translations.deskripsi_translate,translations.lokasi_translate";
+  "id,tanggal_pelaksanaan,status,link_pendaftaran,kategori.*,image,translations.languages_code,translations.title_translate,translations.deskripsi_translate,translations.lokasi_translate";
 
 export function normalizeAgenda(item, lang = "id") {
   if (!item || typeof item !== "object") return null;
@@ -29,7 +29,7 @@ export function normalizeAgenda(item, lang = "id") {
         item.kategori?.nama ||
         item.kategori?.title ||
         item.kategori?.name)) ||
-    item.status ||
+    (typeof item.kategori === "string" && item.kategori.trim()) ||
     "Umum";
 
   return {

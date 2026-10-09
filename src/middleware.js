@@ -8,16 +8,17 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return next();
   }
 
-  if (pathname.startsWith("/en/") || pathname === "/en") {
-    context.locals.locale = "en";
+  const localePrefix = pathname.match(/^\/(en|id)(?:\/|$)/)?.[1];
+
+  if (localePrefix) {
+    context.locals.locale = localePrefix;
     context.locals.originalUrl = url.href;
-    let basePath = pathname.replace(/^\/en/, "");
+    let basePath = pathname.replace(/^\/(?:en|id)/, "");
     if (!basePath.startsWith("/")) basePath = "/" + basePath;
-    if (basePath === "//") basePath = "/";
     return context.rewrite(new URL(`${basePath}${url.search}`, url.origin));
   }
 
-  context.locals.locale = "id";
+  context.locals.locale = "en";
   context.locals.originalUrl = url.href;
   return next();
 });

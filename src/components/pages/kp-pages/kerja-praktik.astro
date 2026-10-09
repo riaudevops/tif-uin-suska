@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 import {
   Briefcase,
@@ -40,7 +41,7 @@ try {
     const data = await res.json();
     items = (data.data || []).map((d: any) => ({
       id: d.id,
-      title: d.title || (isEn ? 'Untitled Announcement' : 'Tanpa Judul'),
+      title: d.title || (translateInline((isEn) ? "en" : "id", "inline.untitled-announcement")),
       slug: d.slug || d.id,
       excerpt: d.excerpt || '',
       date: d.published_at 
@@ -51,7 +52,7 @@ try {
           }) 
         : '',
       thumbnail: getAssetUrl(d.thumbnail),
-      category: d.category || (isEn ? 'General Info' : 'Informasi Umum')
+      category: d.category || (translateInline((isEn) ? "en" : "id", "inline.general-info"))
     }));
   } else {
     fetchError = true;
@@ -213,39 +214,37 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
         <div>
           <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
             <Briefcase class="w-4 h-4 text-[#f7de8a]" />
-            {isEn ? 'Academic & Internship Program' : 'Program Akademik & Kemitraan Industri'}
+            {translateInline((isEn) ? "en" : "id", "inline.academic-and-internship-program")}
           </span>
 
           <h1 class="mt-5 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
-            {isEn ? 'Internship & Industrial Placement Info' : 'Info Kerja Praktik (KP)'}
+            {translateInline((isEn) ? "en" : "id", "inline.internship-and-industrial-placement-info-info-kerja-praktik-kp")}
           </h1>
         </div>
 
         <div class="rounded-[24px] border border-white/10 bg-[#dcecd1]/10 p-5 backdrop-blur-sm">
           <p class="text-base leading-relaxed text-gray-100 sm:text-lg">
-            {isEn
-              ? 'Portal for announcements, implementation guidelines, application workflows, and official files for the Informatics Engineering internship program.'
-              : 'Pusat pengumuman resmi, panduan pelaksanaan, alur pengajuan, serta unduhan berkas Kerja Praktik bagi mahasiswa Teknik Informatika UIN Suska Riau.'}
+            {translateInline((isEn) ? "en" : "id", "inline.portal-for-announcements-implementation-guidelin")}
           </p>
         </div>
       </div>
 
       <div class="relative z-10 mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div class="rounded-[22px] border border-white/10 bg-[#dcecd1]/10 p-4 backdrop-blur-sm">
-          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">{isEn ? 'Credits' : 'SKS'}</p>
-          <p class="mt-2 text-2xl font-black text-white">{isEn ? '4 credits' : '4'}</p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">{translateInline((isEn) ? "en" : "id", "inline.credits-sks")}</p>
+          <p class="mt-2 text-2xl font-black text-white">{translateInline((isEn) ? "en" : "id", "inline.4-credits")}</p>
         </div>
         <div class="rounded-[22px] border border-white/10 bg-[#dcecd1]/10 p-4 backdrop-blur-sm">
-          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">{isEn ? 'Duration' : 'Durasi'}</p>
-          <p class="mt-2 text-2xl font-black text-white">{isEn ? '1-2 months' : '1-2 Bulan'}</p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">{translateInline((isEn) ? "en" : "id", "inline.duration")}</p>
+          <p class="mt-2 text-2xl font-black text-white">{translateInline((isEn) ? "en" : "id", "inline.1-2-months")}</p>
         </div>
         <div class="rounded-[22px] border border-white/10 bg-[#dcecd1]/10 p-4 backdrop-blur-sm">
-          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">{isEn ? 'Partners' : 'Mitra'}</p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">{translateInline((isEn) ? "en" : "id", "inline.partners")}</p>
           <p class="mt-2 text-2xl font-black text-white">100+</p>
         </div>
         <div class="rounded-[22px] border border-white/10 bg-[#dcecd1]/10 p-4 backdrop-blur-sm">
-          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">{isEn ? 'Prerequisite' : 'Prasyarat'}</p>
-          <p class="mt-2 text-2xl font-black text-white">{isEn ? '90+ credits' : '90+ SKS'}</p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">{translateInline((isEn) ? "en" : "id", "inline.prerequisite")}</p>
+          <p class="mt-2 text-2xl font-black text-white">{translateInline((isEn) ? "en" : "id", "inline.90-credits")}</p>
         </div>
       </div>
     </div>
@@ -255,13 +254,13 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
     <div class="mx-auto mb-8 max-w-2xl text-center">
       <span class="mb-3 inline-flex rounded-full bg-[#edf4e8] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
-        {isEn ? 'Step by Step Guide' : 'Tahapan & Prosedur'}
+        {translateInline((isEn) ? "en" : "id", "inline.step-by-step-guide")}
       </span>
       <h2 class="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
-        {isEn ? 'Internship Execution Workflow' : 'Alur Pelaksanaan Kerja Praktik'}
+        {translateInline((isEn) ? "en" : "id", "inline.internship-execution-workflow")}
       </h2>
       <p class="mt-2 text-sm text-slate-500">
-        {isEn ? 'Follow these 4 main stages from preparation to seminar.' : 'Ikuti 4 tahapan utama mulai dari pengajuan berkas hingga seminar KP.'}
+        {translateInline((isEn) ? "en" : "id", "inline.follow-these-4-main-stages-from-preparation-to-s")}
       </p>
     </div>
 
@@ -297,24 +296,24 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
     <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div>
         <span class="mb-2 inline-flex rounded-full bg-[#edf4e8] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
-          {isEn ? 'Announcements & Updates' : 'Pengumuman & Informasi Terbaru'}
+          {translateInline((isEn) ? "en" : "id", "inline.announcements-and-updates")}
         </span>
         <h2 class="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
-          {isEn ? 'Latest Internship Information' : 'Informasi & Pengumuman KP'}
+          {translateInline((isEn) ? "en" : "id", "inline.latest-internship-information")}
         </h2>
       </div>
       <p class="max-w-sm text-sm text-slate-500">
-        {isEn ? 'Stay updated with room allocations, dates, and partner listings.' : 'Dapatkan pembaharuan tenggat waktu, pengumuman mitra, dan seminar KP.'}
+        {translateInline((isEn) ? "en" : "id", "inline.stay-updated-with-room-allocations-dates-and-par")}
       </p>
     </div>
 
     {displayItems.length === 0 ? (
       <div class="text-center py-16 bg-white rounded-3xl border border-slate-100 shadow-sm">
         <p class="text-slate-500 text-base mb-2">
-          {isEn ? 'No internship announcements available yet.' : 'Belum ada konten Kerja Praktik.'}
+          {translateInline((isEn) ? "en" : "id", "inline.no-internship-announcements-available-yet")}
         </p>
         <p class="text-xs text-slate-400 max-w-md mx-auto">
-          {isEn ? 'Add entries to the `kerja_praktik` collection in Directus.' : 'Tambahkan entri baru ke koleksi `kerja_praktik` pada CMS Directus.'}
+          {translateInline((isEn) ? "en" : "id", "inline.add-entries-to-the-kerja-praktik-collection-in-d")}
         </p>
       </div>
     ) : (
@@ -339,7 +338,7 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
               <div class="p-6">
                 <div class="flex items-center gap-2 text-xs text-slate-400 mb-3">
                   <Calendar class="w-3.5 h-3.5 text-emerald-600" />
-                  <span>{item.date || (isEn ? 'Recent Update' : 'Terbaru')}</span>
+                  <span>{item.date || (translateInline((isEn) ? "en" : "id", "inline.recent-update"))}</span>
                 </div>
 
                 <h3 class="text-lg font-bold text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
@@ -347,7 +346,7 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
                 </h3>
 
                 <p class="text-slate-600 text-sm line-clamp-3 leading-relaxed mb-4">
-                  {item.excerpt || (isEn ? 'Click details to view the complete announcement.' : 'Klik selengkapnya untuk membaca informasi dan syarat rincinya.')}
+                  {item.excerpt || (translateInline((isEn) ? "en" : "id", "inline.click-details-to-view-the-complete-announcement"))}
                 </p>
               </div>
             </div>

@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations } from "@/lib/translations.js";
 import {
   Building2,
@@ -86,36 +87,34 @@ const legalityList = isEn
         <div class="space-y-6">
           <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
             <ShieldCheck class="w-3.5 h-3.5 text-secondary" />
-            {isEn ? "Program Identity" : "Identitas Prodi"}
+            {translateInline((isEn) ? "en" : "id", "inline.program-identity")}
           </span>
 
           <div>
             <h2 class="text-2xl font-black leading-tight text-white sm:text-3xl">
-              {isEn ? "Program Overview" : "Profil dan Legalitas Prodi"}
+              {translateInline((isEn) ? "en" : "id", "inline.program-overview")}
             </h2>
             <p class="mt-4 text-sm leading-relaxed text-gray-200">
-              {isEn
-                ? "Program Studi Teknik Informatika at UIN Sultan Syarif Kasim Riau is organized as a higher-education program with formal legal status, clear academic structure, and national accreditation recognition."
-                : "Program Studi Teknik Informatika UIN Sultan Syarif Kasim Riau diselenggarakan sebagai program pendidikan tinggi dengan status legalitas yang jelas, struktur akademik yang terarah, dan pengakuan akreditasi nasional."}
+              {translateInline((isEn) ? "en" : "id", "inline.program-studi-teknik-informatika-at-uin-sultan-s")}
             </p>
           </div>
         </div>
 
         <div class="mt-8 space-y-3 border-t border-white/12 pt-6">
           <div class="flex items-center justify-between gap-3 rounded-xl bg-white/8 px-3 py-2.5 text-xs backdrop-blur-sm">
-            <span class="text-gray-200">{isEn ? "Study Program Code" : "Kode Prodi"}</span>
+            <span class="text-gray-200">{translateInline((isEn) ? "en" : "id", "inline.study-program-code")}</span>
             <span class="font-bold text-secondary font-mono">55201</span>
           </div>
           <div class="flex items-center justify-between gap-3 rounded-xl bg-white/8 px-3 py-2.5 text-xs backdrop-blur-sm">
-            <span class="text-gray-200">{isEn ? "Degree" : "Gelar"}</span>
+            <span class="text-gray-200">{translateInline((isEn) ? "en" : "id", "inline.degree")}</span>
             <span class="font-bold text-white">S.T.</span>
           </div>
           <div class="flex items-center justify-between gap-3 rounded-xl bg-white/8 px-3 py-2.5 text-xs backdrop-blur-sm">
-            <span class="text-gray-200">{isEn ? "Level" : "Jenjang"}</span>
+            <span class="text-gray-200">{translateInline((isEn) ? "en" : "id", "inline.level-jenjang")}</span>
             <span class="font-bold text-white">S1</span>
           </div>
           <div class="flex items-center justify-between gap-3 rounded-xl bg-white/8 px-3 py-2.5 text-xs backdrop-blur-sm">
-            <span class="text-gray-200">{isEn ? "Established" : "Didirikan"}</span>
+            <span class="text-gray-200">{translateInline((isEn) ? "en" : "id", "inline.established")}</span>
             <span class="font-bold text-secondary">1999</span>
           </div>
         </div>
@@ -129,11 +128,11 @@ const legalityList = isEn
                 <Building2 class="h-4 w-4" />
               </div>
               <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-500">
-                {isEn ? "Faculty" : "Fakultas"}
+                {translateInline((isEn) ? "en" : "id", "inline.faculty")}
               </span>
             </div>
             <h3 class="text-lg font-bold text-gray-900">
-              {isEn ? "Science and Technology" : "Sains dan Teknologi"}
+              {translateInline((isEn) ? "en" : "id", "inline.science-and-technology")}
             </h3>
           </div>
 
@@ -143,7 +142,7 @@ const legalityList = isEn
                 <GraduationCap class="h-4 w-4" />
               </div>
               <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-500">
-                {isEn ? "University" : "Perguruan Tinggi"}
+                {translateInline((isEn) ? "en" : "id", "inline.university")}
               </span>
             </div>
             <h3 class="text-lg font-bold text-gray-900">
@@ -156,7 +155,7 @@ const legalityList = isEn
           <div class="mb-5 flex items-center gap-2">
             <FileCheck class="h-5 w-5 text-primary" />
             <h3 class="text-lg font-bold text-gray-900">
-              {isEn ? "Legal Documents & Accreditation" : "Dokumen Legalitas & Akreditasi"}
+              {translateInline((isEn) ? "en" : "id", "inline.legal-documents-and-accreditation")}
             </h3>
           </div>
 

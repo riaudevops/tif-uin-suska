@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -39,7 +40,7 @@ const isEn = lang === 'en';
 <section data-aos="fade-up" class="mx-auto mb-20 mt-12 max-w-7xl px-5 md:px-8">
     <div class="mx-auto mb-12 max-w-3xl text-center">
         <span class="mb-4 inline-flex rounded-full bg-[#edf4e8] px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
-            {isEn ? "Research & Development Division" : "Divisi Riset & Pengembangan"}
+            {translateInline((isEn) ? "en" : "id", "inline.research-and-development-division")}
         </span>
 
         <h1 data-aos="fade-up" class="mb-6 text-4xl font-black tracking-tight text-[#003d2a] md:text-6xl">
@@ -47,7 +48,7 @@ const isEn = lang === 'en';
         </h1>
 
         <p class="text-lg leading-relaxed text-slate-600">
-            {isEn ? "A collaborative student ecosystem at UIN Suska Riau focused on building competence in technology through several specialization areas." : "Ekosistem kolaboratif mahasiswa di UIN Suska Riau yang berfokus pada pengembangan kompetensi teknologi melalui berbagai bidang spesialisasi."}
+            {translateInline((isEn) ? "en" : "id", "inline.a-collaborative-student-ecosystem-at-uin-suska-r")}
         </p>
     </div>
 
@@ -56,7 +57,7 @@ const isEn = lang === 'en';
             <div class="mb-auto">
                 <span class="mb-4 inline-block rounded-xl bg-[#edf4e8] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#0b5c3d]">Cloud & Server</span>
                 <h3 class="mb-3 text-2xl font-bold text-slate-900">Riau DevOps (RDO)</h3>
-                <p class="mb-6 text-sm leading-relaxed text-slate-600">{isEn ? "Focused on collaboration culture between software development (Dev) and IT operations (Ops), CI/CD implementation, cloud computing, and modern server infrastructure." : "Fokus pada kultur kolaborasi antara pengembangan perangkat lunak (Dev) dan operasi TI (Ops), implementasi CI/CD, cloud computing, dan infrastruktur server modern."}</p>
+                <p class="mb-6 text-sm leading-relaxed text-slate-600">{translateInline((isEn) ? "en" : "id", "inline.focused-on-collaboration-culture-between-softwar")}</p>
             </div>
 
             <a href="https://instagram.com/riaudevops" class="inline-flex items-center text-sm font-bold text-[#0b5c3d] transition-colors hover:text-[#003d2a]">
@@ -68,7 +69,7 @@ const isEn = lang === 'en';
             <div class="mb-auto">
                 <span class="mb-4 inline-block rounded-xl bg-[#edf4e8] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#0b5c3d]">Cyber Security</span>
                 <h3 class="mb-3 text-2xl font-bold text-slate-900">Aliansi Siber (ALISI)</h3>
-                <p class="mb-6 text-sm leading-relaxed text-slate-600">{isEn ? "Studying network security techniques, system penetration (ethical hacking), malware analysis, and cyber defense strategies against various digital threats." : "Mempelajari teknik keamanan jaringan, penetrasi sistem (ethical hacking), analisis malware, dan strategi pertahanan siber dari berbagai ancaman digital."}</p>
+                <p class="mb-6 text-sm leading-relaxed text-slate-600">{translateInline((isEn) ? "en" : "id", "inline.studying-network-security-techniques-system-pene")}</p>
             </div>
 
             <a href="https://instagram.com/alisi.usr" class="inline-flex items-center text-sm font-bold text-[#0b5c3d] transition-colors hover:text-[#003d2a]">
@@ -80,7 +81,7 @@ const isEn = lang === 'en';
             <div class="mb-auto">
                 <span class="mb-4 inline-block rounded-xl bg-[#edf4e8] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#0b5c3d]">UI/UX Design</span>
                 <h3 class="mb-3 text-2xl font-bold text-slate-900">Figma Squad</h3>
-                <p class="mb-6 text-sm leading-relaxed text-slate-600">{isEn ? "A creative platform for UI and UX designers to create aesthetic, interactive, and user-centered digital products." : "Wadah kreatif bagi desainer antarmuka (UI) dan pengalaman pengguna (UX) untuk menciptakan produk digital yang estetis, interaktif, dan berpusat pada pengguna."}</p>
+                <p class="mb-6 text-sm leading-relaxed text-slate-600">{translateInline((isEn) ? "en" : "id", "inline.a-creative-platform-for-ui-and-ux-designers-to-c")}</p>
             </div>
 
             <a href="https://instagram.com/figmasquad" class="inline-flex items-center text-sm font-bold text-[#0b5c3d] transition-colors hover:text-[#003d2a]">
@@ -92,7 +93,7 @@ const isEn = lang === 'en';
             <div class="mb-auto">
                 <span class="mb-4 inline-block rounded-xl bg-[#edf4e8] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#0b5c3d]">AI & Internet of Things</span>
                 <h3 class="mb-3 text-2xl font-bold text-slate-900">AIOT</h3>
-                <p class="mb-6 text-sm leading-relaxed text-slate-600">{isEn ? "Research and development of AI and IoT-based systems for practical application in everyday digital environments." : "Penelitian dan pengembangan sistem berbasis AI dan IoT untuk kebutuhan aplikasi praktis dalam lingkungan digital sehari-hari."}</p>
+                <p class="mb-6 text-sm leading-relaxed text-slate-600">{translateInline((isEn) ? "en" : "id", "inline.research-and-development-of-ai-and-iot-based-sys")}</p>
             </div>
 
             <a href="https://instagram.com/aiot_research" class="inline-flex items-center text-sm font-bold text-[#0b5c3d] transition-colors hover:text-[#003d2a]">

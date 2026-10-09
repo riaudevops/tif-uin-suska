@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
 import { API_URL } from '@/lib/cms.js';
 const lang = getLocaleFromUrl(Astro);
@@ -23,10 +24,10 @@ try {
     <div class="flex flex-col gap-3 border-b border-[#dfeadf] bg-gradient-to-r from-[#edf7ee] via-[#f7faf4] to-[#f9f2df] px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
       <div>
         <p class="text-[10px] font-bold uppercase tracking-[0.24em] text-[#0b5c3d]">
-          {isEn ? "Research team" : "Tim Penelitian"}
+          {translateInline((isEn) ? "en" : "id", "inline.research-team-2002e6f")}
         </p>
         <h2 class="mt-1 text-xl font-black tracking-tight text-slate-900 sm:text-2xl">
-          {isEn ? "Research Interest" : "Bidang Riset"}
+          {translateInline((isEn) ? "en" : "id", "inline.research-interest-bidang-riset")}
         </h2>
       </div>
       <div class="inline-flex items-center rounded-full bg-[#edf4e8] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[#0b5c3d]">
@@ -39,8 +40,8 @@ try {
         <thead>
           <tr class="bg-gradient-to-r from-[#003d2a] to-[#0b5c3d] text-white">
             <th class="w-20 px-5 py-4 text-center text-[10px] font-bold uppercase tracking-[0.2em]">No</th>
-            <th class="px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{isEn ? "Researcher" : "Peneliti"}</th>
-            <th class="px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{isEn ? "Research Interest" : "Bidang Riset"}</th>
+            <th class="px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{translateInline((isEn) ? "en" : "id", "inline.researcher")}</th>
+            <th class="px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{translateInline((isEn) ? "en" : "id", "inline.research-interest-bidang-riset")}</th>
           </tr>
         </thead>
 
@@ -81,7 +82,7 @@ try {
           ) : (
             <tr>
               <td colspan="3" class="py-12 text-center text-base font-medium text-slate-400">
-                {isEn ? "No data found" : "Data tidak tersedia"}
+                {translateInline((isEn) ? "en" : "id", "inline.no-data-found")}
               </td>
             </tr>
           )}
@@ -91,7 +92,7 @@ try {
 
     <div class="flex flex-col gap-2 border-t border-slate-100 bg-slate-50/80 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
       <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
-        Total <span class="text-[#0b5c3d]">{informationData.length}</span> {isEn ? "Records" : "Data"}
+        Total <span class="text-[#0b5c3d]">{informationData.length}</span> {translateInline((isEn) ? "en" : "id", "inline.records")}
       </p>
       <div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
         <span class="inline-block h-2 w-2 rounded-full bg-[#0b5c3d]"></span>

@@ -3,7 +3,7 @@ import "../styles/global.css";
 import "aos/dist/aos.css";
 import Navbar from "../components/globals/navbar.astro";
 import Footer from "../components/pages/landing-pages/footer.astro";
-import { getLocaleFromUrl } from "../lib/translations";
+import { getLocaleFromUrl, useTranslations } from "../lib/translations";
 import { ClientRouter } from "astro:transitions";
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 
 const { title } = Astro.props;
 const lang = getLocaleFromUrl(Astro);
-const isEn = lang === 'en';
+const t = useTranslations(lang);
 ---
 
 <!doctype html>
@@ -24,7 +24,7 @@ const isEn = lang === 'en';
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" />
         <link rel="icon" type="image/svg+xml" href="/logo/uin.png" />
-        <title>{title ? `${title} - ${isEn ? 'Informatics Engineering' : 'Teknik Informatika'} UIN Suska Riau` : `${isEn ? 'Informatics Engineering' : 'Teknik Informatika'} UIN Suska Riau`}</title>
+        <title>{title ? `${title} - ${t('nav.title')} UIN Suska Riau` : `${t('nav.title')} UIN Suska Riau`}</title>
         <ClientRouter />
     </head>
     <body class="bg-white">

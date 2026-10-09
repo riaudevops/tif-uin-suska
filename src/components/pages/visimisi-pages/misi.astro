@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
 import { ArrowRight, BookOpen, Users } from '@lucide/astro';
 
@@ -10,15 +11,13 @@ const isEn = lang === 'en';
   <div class="mb-10 text-center">
     <span class="mb-3 inline-flex items-center gap-2 rounded-full bg-secondary/15 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-900">
       <BookOpen class="h-3.5 w-3.5 text-primary" />
-      {isEn ? 'Mission' : 'Misi'}
+      {translateInline((isEn) ? "en" : "id", "inline.mission")}
     </span>
     <h2 class="text-3xl font-black text-gray-900 sm:text-4xl">
-      {isEn ? 'Scientific Mission of the Study Program' : 'Misi Keilmuan Program Studi'}
+      {translateInline((isEn) ? "en" : "id", "inline.scientific-mission-of-the-study-program")}
     </h2>
     <p class="mx-auto mt-4 max-w-3xl text-base leading-relaxed text-gray-600">
-      {isEn
-        ? 'The program formulates its mission to support academic excellence, societal contribution, and the integration of science and Islamic values.'
-        : 'Program studi merumuskan misi untuk mendukung keunggulan akademik, kontribusi sosial, serta integrasi ilmu pengetahuan dan nilai keislaman.'}
+      {translateInline((isEn) ? "en" : "id", "inline.the-program-formulates-its-mission-to-support-ac")}
     </p>
   </div>
 
@@ -30,10 +29,10 @@ const isEn = lang === 'en';
       </div>
 
       <h3 class="mb-3 text-xl font-bold text-gray-900">
-        {isEn ? 'Academic Excellence' : 'Keunggulan Akademik'}
+        {translateInline((isEn) ? "en" : "id", "inline.academic-excellence")}
       </h3>
       <p class="text-base leading-relaxed text-gray-600">
-        {isEn ? 'Producing graduates with strong knowledge and competence in Data Analytics and Software Development to strengthen competitiveness at national and regional levels.' : 'Menghasilkan lulusan yang memiliki pengetahuan dan kompetensi di bidang Data Analytics dan Software Development untuk meningkatkan daya saing di tingkat nasional maupun regional.'}
+        {translateInline((isEn) ? "en" : "id", "inline.producing-graduates-with-strong-knowledge-and-co")}
       </p>
     </div>
 
@@ -44,10 +43,10 @@ const isEn = lang === 'en';
       </div>
 
       <h3 class="mb-3 text-xl font-bold text-gray-900">
-        {isEn ? 'Societal Contribution' : 'Kontribusi Sosial'}
+        {translateInline((isEn) ? "en" : "id", "inline.societal-contribution")}
       </h3>
       <p class="text-base leading-relaxed text-gray-600">
-        {isEn ? 'Developing graduates who contribute to a civilized society by integrating Informatics and Islamic values in the application of science and technology.' : 'Menghasilkan lulusan yang berkontribusi dalam pembangunan masyarakat berkeadaban dengan mengintegrasikan Informatika dan nilai-nilai keislaman dalam penerapan ilmu dan teknologi.'}
+        {translateInline((isEn) ? "en" : "id", "inline.developing-graduates-who-contribute-to-a-civiliz")}
       </p>
     </div>
   </div>

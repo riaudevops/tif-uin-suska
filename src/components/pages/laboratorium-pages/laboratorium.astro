@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -8,38 +9,30 @@ const laboratories = [
   {
     id: "technopreneur",
     code: "LAB·01",
-    name: isEn ? "Technopreneurship and Business Incubation Lab" : "Lab Technopreneur dan Inkubator Bisnis",
-    oldName: isEn ? "Formerly Database Lab" : "eks. Lab Database",
+    name: translateInline((isEn) ? "en" : "id", "inline.technopreneurship-and-business-incubation-lab"),
+    oldName: translateInline((isEn) ? "en" : "id", "inline.formerly-database-lab"),
     facilities: [
       {
-        title: isEn ? "Computers" : "Komputer",
-        description: isEn
-          ? "The Technopreneurship and Business Incubation Lab provides high-quality computers to support students in developing their business ideas."
-          : "Lab Technopreneur dan Inkubator Bisnis menyediakan perangkat komputer yang canggih dan berkualitas tinggi untuk mendukung dan memudahkan mahasiswa dalam mengembangkan ide-ide bisnis mereka.",
+        title: translateInline((isEn) ? "en" : "id", "inline.computers"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-technopreneurship-and-business-incubation-la"),
         image: "/laboratorium/technopreneur_komputer.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230120091459-scaled.jpg"
       },
       {
-        title: isEn ? "Lecturer Desk" : "Meja Dosen",
-        description: isEn
-          ? "The lab has a comfortable, professional lecturer desk for teaching and research in technopreneurship and business incubation."
-          : "Lab Technopreneur dan Inkubator Bisnis memiliki meja dosen yang nyaman dan profesional untuk mendukung kegiatan belajar mengajar dan riset yang dilakukan oleh para dosen dalam bidang technopreneurship dan inkubator bisnis.",
+        title: translateInline((isEn) ? "en" : "id", "inline.lecturer-desk"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-lab-has-a-comfortable-professional-lecturer"),
         image: "/laboratorium/technopreneur_mejadosen.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230120091415-scaled.jpg"
       },
       {
-        title: isEn ? "Lab Assistant Desk" : "Meja Aslab",
-        description: isEn
-          ? "The lab has a modern, ergonomic lab assistant desk to support research and training in technopreneurship and business incubation."
-          : "Lab Technopreneur dan Inkubator Bisnis memiliki meja asisten lab yang modern dan ergonomis untuk mendukung kegiatan riset dan pelatihan yang dilakukan oleh asisten lab dalam bidang technopreneurship dan inkubator bisnis.",
+        title: translateInline((isEn) ? "en" : "id", "inline.lab-assistant-desk"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-lab-has-a-modern-ergonomic-lab-assistant-des"),
         image: "/laboratorium/technopreneur_mejaaslab.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230120091440-scaled.jpg"
       },
       {
-        title: isEn ? "Storage Lockers" : "Loker Barang",
-        description: isEn
-          ? "The lab provides secure lockers for visitors to store personal belongings during research, development, and training activities."
-          : "Lab Technopreneur dan Inkubator Bisnis menyediakan loker barang yang aman dan berkualitas untuk menyimpan barang-barang pribadi para pengunjung lab yang digunakan dalam kegiatan riset, pengembangan, dan pelatihan dalam bidang technopreneurship dan inkubator bisnis.",
+        title: translateInline((isEn) ? "en" : "id", "inline.storage-lockers"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-lab-provides-secure-lockers-for-visitors-to"),
         image: "/laboratorium/technopreneur_loker.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230120091427-scaled.jpg"
       }
@@ -48,38 +41,30 @@ const laboratories = [
   {
     id: "datascience",
     code: "LAB·02",
-    name: isEn ? "Data Science and Business Intelligence Research Lab" : "Lab Riset Data Science dan Business Intelligence",
-    oldName: isEn ? "Formerly Computer Networking Lab" : "eks. Lab Jaringan Komputer",
+    name: translateInline((isEn) ? "en" : "id", "inline.data-science-and-business-intelligence-research"),
+    oldName: translateInline((isEn) ? "en" : "id", "inline.formerly-computer-networking-lab"),
     facilities: [
       {
-        title: isEn ? "Computers" : "Komputer",
-        description: isEn
-          ? "The Data Science and Business Intelligence Lab provides high-quality computers for data analysis and informed business decision-making."
-          : "Lab Data Science dan Business Intelligence menyediakan perangkat komputer yang canggih dan berkualitas tinggi untuk melakukan analisis data dan pengambilan keputusan bisnis yang akurat.",
+        title: translateInline((isEn) ? "en" : "id", "inline.computers"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-data-science-and-business-intelligence-lab-p"),
         image: "/laboratorium/datascience_komputer.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230120121115-scaled.jpg"
       },
       {
-        title: isEn ? "Lecturer Desk" : "Meja Dosen",
-        description: isEn
-          ? "The campus lab's spacious, comfortable lecturer desk gives lecturers room to work and supervise student activities."
-          : "Meja dosen yang ada di Lab Data Science dan Business Intelligence di kampus sangat nyaman dan luas, sehingga dosen dapat bekerja dengan leluasa dan memantau kegiatan mahasiswa dengan mudah.",
+        title: translateInline((isEn) ? "en" : "id", "inline.lecturer-desk"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-campus-lab-s-spacious-comfortable-lecturer-d"),
         image: "/laboratorium/datascience_mejadosen.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230120121050-scaled.jpg"
       },
       {
-        title: isEn ? "Lab Assistant Desk" : "Meja Aslab",
-        description: isEn
-          ? "The ergonomic lab assistant desk is equipped with the necessary tools, helping assistants carry out their duties and support student learning."
-          : "Meja asisten laboratorium yang terdapat di Laboratorium Data Science dan Business Intelligence di kampus sangat ergonomis dan dilengkapi dengan peralatan yang dibutuhkan, sehingga memudahkan asisten laboratorium dalam melakukan tugas-tugas mereka dan membantu mahasiswa dalam belajar.",
+        title: translateInline((isEn) ? "en" : "id", "inline.lab-assistant-desk"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-ergonomic-lab-assistant-desk-is-equipped-wit"),
         image: "/laboratorium/datascience_mejaaslab.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230120121015-scaled.jpg"
       },
       {
-        title: isEn ? "Storage Lockers" : "Loker Barang",
-        description: isEn
-          ? "The lab's secure, organized lockers allow students to store the equipment and materials they need for their studies."
-          : "Loker barang yang tersedia di Laboratorium Data Science dan Business Intelligence di kampus sangat aman dan terorganisir, sehingga memungkinkan mahasiswa untuk menyimpan peralatan dan bahan-bahan yang dibutuhkan dalam proses belajar dengan rapi dan aman.",
+        title: translateInline((isEn) ? "en" : "id", "inline.storage-lockers"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-lab-s-secure-organized-lockers-allow-student-loker-barang-yang-tersed"),
         image: "/laboratorium/datascience_loker.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230120120830-scaled.jpg"
       }
@@ -88,46 +73,36 @@ const laboratories = [
   {
     id: "ai",
     code: "LAB·03",
-    name: isEn ? "Artificial Intelligence and Computer Science Research Lab" : "Lab Riset Kecerdasan Buatan dan Sains Komputer",
-    oldName: isEn ? "Formerly Multimedia Lab" : "eks. Lab Multimedia",
+    name: translateInline((isEn) ? "en" : "id", "inline.artificial-intelligence-and-computer-science-res"),
+    oldName: translateInline((isEn) ? "en" : "id", "inline.formerly-multimedia-lab"),
     facilities: [
       {
-        title: isEn ? "Computers" : "Komputer",
-        description: isEn
-          ? "The Artificial Intelligence and Computer Science Research Lab provides high-quality computers to support research and development in these fields."
-          : "Lab riset kecerdasan buatan dan sains komputer menyediakan perangkat komputer yang canggih dan berkualitas tinggi untuk mendukung riset dan pengembangan dalam bidang kecerdasan buatan dan sains komputer.",
+        title: translateInline((isEn) ? "en" : "id", "inline.computers"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-artificial-intelligence-and-computer-science"),
         image: "/laboratorium/ai_komputer.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230118100051-scaled.jpg"
       },
       {
         title: "Samsung Flip",
-        description: isEn
-          ? "The lab's Samsung Flip combines a traditional whiteboard with digital technology for more dynamic and effective presentations."
-          : "Lab riset kecerdasan buatan dan sains komputer dilengkapi dengan Samsung Flip yang menggabungkan fitur-fitur whiteboard tradisional dengan teknologi digital untuk memberikan pengalaman presentasi yang lebih dinamis dan efektif.",
+        description: translateInline((isEn) ? "en" : "id", "inline.the-lab-s-samsung-flip-combines-a-traditional-wh"),
         image: "/laboratorium/ai_samsungflip.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230124104405-scaled.jpg"
       },
       {
-        title: isEn ? "Lecturer Desk" : "Meja Dosen",
-        description: isEn
-          ? "The lab has a comfortable, professional lecturer desk to support teaching and research by students and lecturers."
-          : "Lab riset kecerdasan buatan dan sains komputer memiliki meja dosen yang nyaman dan profesional untuk mendukung kegiatan belajar mengajar dan riset yang dilakukan oleh para mahasiswa dan dosen.",
+        title: translateInline((isEn) ? "en" : "id", "inline.lecturer-desk"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-lab-has-a-comfortable-professional-lecturer-43c2f89"),
         image: "/laboratorium/ai_mejadosen.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230118095421-scaled.jpg"
       },
       {
-        title: isEn ? "Lab Assistant Desk" : "Meja Aslab",
-        description: isEn
-          ? "The lab has a modern, ergonomic lab assistant desk to support research activities."
-          : "Lab riset kecerdasan buatan dan sains komputer memiliki meja asisten lab yang modern dan ergonomis untuk mendukung kegiatan riset yang dilakukan oleh asisten lab.",
+        title: translateInline((isEn) ? "en" : "id", "inline.lab-assistant-desk"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-lab-has-a-modern-ergonomic-lab-assistant-des-06eaf34"),
         image: "/laboratorium/ai_mejaaslab.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230118100752-scaled.jpg"
       },
       {
-        title: isEn ? "Storage Lockers" : "Loker Barang",
-        description: isEn
-          ? "The lab provides secure lockers for visitors to store their personal belongings."
-          : "Lab riset kecerdasan buatan dan sains komputer menyediakan loker barang yang aman dan berkualitas untuk menyimpan barang-barang pribadi para pengunjung lab.",
+        title: translateInline((isEn) ? "en" : "id", "inline.storage-lockers"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-lab-provides-secure-lockers-for-visitors-to-3d31781"),
         image: "/laboratorium/ai_loker.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230118100728-scaled.jpg"
       }
@@ -136,46 +111,36 @@ const laboratories = [
   {
     id: "programming",
     code: "LAB·04",
-    name: isEn ? "Programming and Application Development Lab" : "Lab Pemrograman dan Pengembangan Aplikasi",
-    oldName: isEn ? "Formerly Software Engineering Lab" : "eks. Lab RPL",
+    name: translateInline((isEn) ? "en" : "id", "inline.programming-and-application-development-lab"),
+    oldName: translateInline((isEn) ? "en" : "id", "inline.formerly-software-engineering-lab"),
     facilities: [
       {
-        title: isEn ? "Computers" : "Komputer",
-        description: isEn
-          ? "The Programming and Application Development Lab is equipped with modern computers and the software needed for programming and application development."
-          : "Komputer yang terdapat di Laboratorium Pemrograman dan Pengembangan Aplikasi sangat canggih dan dilengkapi dengan software yang dibutuhkan untuk pemrograman dan pengembangan aplikasi, sehingga memudahkan mahasiswa dalam belajar dan mengejar cita-cita mereka dalam bidang teknologi.",
+        title: translateInline((isEn) ? "en" : "id", "inline.computers"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-programming-and-application-development-lab"),
         image: "/laboratorium/programming_komputer.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230125092608-scaled.jpg"
       },
       {
-        title: isEn ? "Projector" : "Proyektor",
-        description: isEn
-          ? "The lab's modern, high-quality projector helps lecturers present material clearly and engagingly, supporting the learning process."
-          : "Proyektor yang tersedia di Laboratorium Pemrograman dan Pengembangan Aplikasi sangat modern dan berkualitas tinggi, sehingga memungkinkan dosen untuk menyajikan materi dengan jelas dan menarik bagi mahasiswa dan memudahkan proses belajar.",
+        title: translateInline((isEn) ? "en" : "id", "inline.projector"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-lab-s-modern-high-quality-projector-helps-le"),
         image: "/laboratorium/programming_proyektor.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230118104722-scaled.jpg"
       },
       {
-        title: isEn ? "Lecturer Desk" : "Meja Dosen",
-        description: isEn
-          ? "The ergonomic lecturer desk is equipped with modern technology to support effective, engaging teaching."
-          : "Meja dosen yang terdapat di Laboratorium Pemrograman dan Pengembangan Aplikasi sangat ergonomis dan dilengkapi dengan peralatan teknologi terkini, sehingga dosen dapat memberikan pengajaran yang efektif dan menyenangkan bagi mahasiswa.",
+        title: translateInline((isEn) ? "en" : "id", "inline.lecturer-desk"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-ergonomic-lecturer-desk-is-equipped-with-mod"),
         image: "/laboratorium/programming_mejadosen.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230126085213-scaled.jpg"
       },
       {
-        title: isEn ? "Lab Assistant Desk" : "Meja Aslab",
-        description: isEn
-          ? "The ergonomic lab assistant desk has the equipment assistants need to perform their duties and support student learning."
-          : "Meja asisten laboratorium yang terdapat di Laboratorium Pemrograman dan Pengembangan Aplikasi sangat ergonomis dan dilengkapi dengan peralatan yang dibutuhkan, sehingga memudahkan asisten laboratorium dalam melakukan tugas-tugas mereka dan membantu mahasiswa dalam belajar.",
+        title: translateInline((isEn) ? "en" : "id", "inline.lab-assistant-desk"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-ergonomic-lab-assistant-desk-has-the-equipme"),
         image: "/laboratorium/programming_mejaaslab.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230118104607-scaled.jpg"
       },
       {
-        title: isEn ? "Storage Lockers" : "Loker Barang",
-        description: isEn
-          ? "The lab's secure, organized lockers allow students to store the equipment and materials they need for their studies."
-          : "Loker barang yang tersedia di Laboratorium Pemrograman dan Pengembangan Aplikasi sangat aman dan terorganisir, sehingga memungkinkan mahasiswa untuk menyimpan peralatan dan bahan-bahan yang dibutuhkan dalam proses belajar dengan rapi dan aman.",
+        title: translateInline((isEn) ? "en" : "id", "inline.storage-lockers"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-lab-s-secure-organized-lockers-allow-student-loker-barang-yang-tersed-e9debba"),
         image: "/laboratorium/programming_loker.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/01/IMG20230118104347-scaled.jpg"
       }
