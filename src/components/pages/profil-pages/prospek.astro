@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -14,19 +15,19 @@ const isEn = lang === 'en';
             <div class="relative z-10 text-white">
                 <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.25em] text-white/90 backdrop-blur-sm">
                     <span class="h-2 w-2 rounded-full bg-secondary"></span>
-                    {isEn ? 'Future Career Opportunities' : 'Peluang Karir Masa Depan'}
+                    {translateInline((isEn) ? "en" : "id", "inline.future-career-opportunities")}
                 </div>
 
                 <h1 data-aos="fade-up" class="text-4xl md:text-5xl lg:text-6xl font-black leading-[0.95] tracking-tight">
-                    {isEn ? 'Career' : 'Prospek'} <span class="text-secondary">{isEn ? 'Paths' : 'Karier'}</span>
+                    {translateInline((isEn) ? "en" : "id", "inline.career")} <span class="text-secondary">{translateInline((isEn) ? "en" : "id", "inline.paths")}</span>
                     <br />
-                    {isEn ? 'for Informatics Graduates' : 'Lulusan Teknik Informatika'}
+                    {translateInline((isEn) ? "en" : "id", "inline.for-informatics-graduates")}
                 </h1>
 
                 <div class="mt-8 flex flex-wrap gap-3 text-sm text-gray-100">
-                    <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 backdrop-blur-sm">{isEn ? 'Software' : 'Perangkat Lunak'}</span>
+                    <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 backdrop-blur-sm">{translateInline((isEn) ? "en" : "id", "inline.software-perangkat-lunak")}</span>
                     <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 backdrop-blur-sm">{isEn ? 'Data & AI' : 'Data & AI'}</span>
-                    <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 backdrop-blur-sm">{isEn ? 'Systems & Infrastructure' : 'Sistem & Infrastruktur'}</span>
+                    <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1.5 backdrop-blur-sm">{translateInline((isEn) ? "en" : "id", "inline.systems-and-infrastructure")}</span>
                 </div>
             </div>
         </div>
@@ -37,13 +38,13 @@ const isEn = lang === 'en';
     <div class="mb-10 text-center">
         <span class="mb-3 inline-flex items-center gap-2 rounded-full bg-secondary/15 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-900">
             <span class="h-2 w-2 rounded-full bg-primary"></span>
-            {isEn ? 'Career Pathways' : 'Jalur Karier'}
+            {translateInline((isEn) ? "en" : "id", "inline.career-pathways")}
         </span>
         <h2 data-aos="fade-up" class="text-3xl md:text-4xl font-black text-emerald-900 mb-4">
-            {isEn ? 'Career Opportunities in the Digital Era' : 'Peluang Karier di Era Digital'}
+            {translateInline((isEn) ? "en" : "id", "inline.career-opportunities-in-the-digital-era")}
         </h2>
         <p class="text-slate-600 text-lg max-w-3xl mx-auto leading-relaxed">
-            {isEn ? 'Graduates of the Informatics Engineering Study Program are prepared to work in software development, systems, data, infrastructure, and digital services across public and private institutions.' : 'Lulusan Program Studi Teknik Informatika dipersiapkan untuk bekerja di bidang pengembangan perangkat lunak, sistem, data, infrastruktur, serta layanan digital di lembaga pemerintah, perusahaan, dan industri teknologi.'}
+            {translateInline((isEn) ? "en" : "id", "inline.graduates-of-the-informatics-engineering-study-p")}
         </p>
     </div>
 
@@ -78,7 +79,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="mt-4 text-sm leading-relaxed text-slate-500">
-                {isEn ? 'Developing, testing, and maintaining program code.' : 'Mengembangkan, menguji, dan memelihara kode program.'}
+                {translateInline((isEn) ? "en" : "id", "inline.developing-testing-and-maintaining-program-code")}
             </p>
         </div>
 
@@ -108,7 +109,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="mt-4 text-sm leading-relaxed text-slate-500">
-                {isEn ? 'Managing technology projects and IT teams.' : 'Mengelola proyek teknologi dan tim IT.'}
+                {translateInline((isEn) ? "en" : "id", "inline.managing-technology-projects-and-it-teams")}
             </p>
         </div>
 
@@ -137,7 +138,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="mt-4 text-sm leading-relaxed text-slate-500">
-                {isEn ? 'Managing systems and technology infrastructure.' : 'Mengelola sistem dan infrastruktur teknologi.'}
+                {translateInline((isEn) ? "en" : "id", "inline.managing-systems-and-technology-infrastructure")}
             </p>
         </div>
 
@@ -166,7 +167,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="mt-4 text-sm leading-relaxed text-slate-500">
-                {isEn ? 'Leading IT teams and overseeing technology operations.' : 'Memimpin tim IT dan mengawasi operasi teknologi.'}
+                {translateInline((isEn) ? "en" : "id", "inline.leading-it-teams-and-overseeing-technology-opera")}
             </p>
         </div>
 
@@ -196,7 +197,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Planning and managing IT projects from start to finish.' : 'Merencanakan dan mengelola proyek IT dari awal hingga akhir.'}
+                {translateInline((isEn) ? "en" : "id", "inline.planning-and-managing-it-projects-from-start-to")}
             </p>
         </div>
 
@@ -225,7 +226,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Providing technical support to users.' : 'Memberikan dukungan teknis kepada pengguna.'}
+                {translateInline((isEn) ? "en" : "id", "inline.providing-technical-support-to-users")}
             </p>
         </div>
 
@@ -258,7 +259,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Providing various information technology services.' : 'Menyediakan berbagai layanan teknologi informasi.'}
+                {translateInline((isEn) ? "en" : "id", "inline.providing-various-information-technology-service")}
             </p>
         </div>
 
@@ -288,7 +289,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Analyzing system needs and designing solutions.' : 'Menganalisis kebutuhan sistem dan merancang solusi.'}
+                {translateInline((isEn) ? "en" : "id", "inline.analyzing-system-needs-and-designing-solutions")}
             </p>
         </div>
 
@@ -318,7 +319,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Designing, developing, and maintaining complex systems.' : 'Mendesain, mengembangkan, dan memelihara sistem kompleks.'}
+                {translateInline((isEn) ? "en" : "id", "inline.designing-developing-and-maintaining-complex-sys")}
             </p>
         </div>
 
@@ -348,7 +349,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Combining system analysis with program development.' : 'Menggabungkan analisis sistem dengan pengembangan program.'}
+                {translateInline((isEn) ? "en" : "id", "inline.combining-system-analysis-with-program-developme")}
             </p>
         </div>
 
@@ -382,7 +383,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Managing, maintaining, and securing databases.' : 'Mengelola, memelihara, dan mengamankan database.'}
+                {translateInline((isEn) ? "en" : "id", "inline.managing-maintaining-and-securing-databases")}
             </p>
         </div>
 
@@ -411,7 +412,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Managing and maintaining network infrastructure.' : 'Mengatur dan memelihara infrastruktur jaringan.'}
+                {translateInline((isEn) ? "en" : "id", "inline.managing-and-maintaining-network-infrastructure")}
             </p>
         </div>
 
@@ -441,7 +442,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Designing and implementing network solutions.' : 'Mendesain dan mengimplementasikan solusi jaringan.'}
+                {translateInline((isEn) ? "en" : "id", "inline.designing-and-implementing-network-solutions")}
             </p>
         </div>
 
@@ -471,7 +472,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Building complex software applications.' : 'Membangun aplikasi perangkat lunak yang kompleks.'}
+                {translateInline((isEn) ? "en" : "id", "inline.building-complex-software-applications")}
             </p>
         </div>
 
@@ -501,7 +502,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Creating and implementing software.' : 'Membuat dan mengimplementasikan perangkat lunak.'}
+                {translateInline((isEn) ? "en" : "id", "inline.creating-and-implementing-software")}
             </p>
         </div>
 
@@ -531,7 +532,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Designing website user interfaces.' : 'Mendesain antarmuka pengguna situs web.'}
+                {translateInline((isEn) ? "en" : "id", "inline.designing-website-user-interfaces")}
             </p>
         </div>
 
@@ -561,7 +562,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Managing and maintaining web servers and sites.' : 'Mengelola dan memelihara server web dan situs.'}
+                {translateInline((isEn) ? "en" : "id", "inline.managing-and-maintaining-web-servers-and-sites")}
             </p>
         </div>
 
@@ -591,7 +592,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Building and developing web applications.' : 'Membangun dan mengembangkan aplikasi web.'}
+                {translateInline((isEn) ? "en" : "id", "inline.building-and-developing-web-applications")}
             </p>
         </div>
 
@@ -621,7 +622,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Providing support and resolving technical issues.' : 'Memberikan dukungan dan penyelesaian masalah teknis.'}
+                {translateInline((isEn) ? "en" : "id", "inline.providing-support-and-resolving-technical-issues")}
             </p>
         </div>
 
@@ -655,7 +656,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Protecting systems and data from cyber threats.' : 'Melindungi sistem dan data dari ancaman siber.'}
+                {translateInline((isEn) ? "en" : "id", "inline.protecting-systems-and-data-from-cyber-threats")}
             </p>
         </div>
 
@@ -685,7 +686,7 @@ const isEn = lang === 'en';
                 </span>
             </div>
             <p class="text-sm text-slate-500 mt-3">
-                {isEn ? 'Leading information technology strategy in an organization.' : 'Memimpin strategi teknologi informasi di sebuah organisasi.'}
+                {translateInline((isEn) ? "en" : "id", "inline.leading-information-technology-strategy-in-an-or")}
             </p>
         </div>
     </div>
@@ -695,7 +696,7 @@ const isEn = lang === 'en';
         class="bg-emerald-50 border-l-4 border-emerald-500 p-8 rounded-r-2xl text-base text-emerald-900 leading-relaxed mt-16 shadow-lg"
     >
         <p class="font-medium">
-            {isEn ? 'Graduates can also contribute in government institutions, private organizations, and technology-based startups that require analytical thinking, technical skills, and digital problem-solving ability.' : 'Lulusan juga berpotensi berkontribusi di lembaga pemerintahan, organisasi swasta, maupun startup berbasis teknologi yang membutuhkan kemampuan analitis, teknis, dan pemecahan masalah digital.'}
+            {translateInline((isEn) ? "en" : "id", "inline.graduates-can-also-contribute-in-government-inst")}
         </p>
     </div>
 </section>

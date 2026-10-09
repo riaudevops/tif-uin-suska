@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -8,40 +9,30 @@ const classrooms = [
   {
     id: "fst",
     code: "GB·01",
-    name: isEn ? "Faculty of Science and Technology (FST) Building" : "Gedung Fakultas Sains dan Teknologi (FST)",
-    description: isEn
-      ? "Classrooms in the main FST building are designed to support comfortable daily learning with appropriate facilities."
-      : "Ruang kelas di gedung utama FST yang dirancang untuk kenyamanan proses perkuliahan harian dengan sarana yang representatif.",
+    name: translateInline((isEn) ? "en" : "id", "inline.faculty-of-science-and-technology-fst-building"),
+    description: translateInline((isEn) ? "en" : "id", "inline.classrooms-in-the-main-fst-building-are-designed"),
     facilities: [
       {
-        title: isEn ? "Student Chairs" : "Kursi Mahasiswa",
-        description: isEn
-          ? "Ergonomically designed chairs in the Informatics Engineering classrooms support student comfort and concentration throughout class."
-          : "Kursi mahasiswa pada kelas prodi teknik informatika memiliki desain ergonomis dan nyaman untuk mendukung konsentrasi dan kenyamanan belajar mahasiswa sepanjang perkuliahan.",
+        title: translateInline((isEn) ? "en" : "id", "inline.student-chairs"),
+        description: translateInline((isEn) ? "en" : "id", "inline.ergonomically-designed-chairs-in-the-informatics"),
         image: "/ruang-kelas/fst_kursimahasiswa.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/02/IMG20230120090527-scaled.jpg"
       },
       {
-        title: isEn ? "Lecturer Desk" : "Meja Dosen",
-        description: isEn
-          ? "Modern, functional lecturer desks help instructors manage teaching materials and deliver lessons effectively."
-          : "Meja dosen di kelas Prodi Teknik Informatika memiliki desain modern dan fungsional, memudahkan dosen dalam mengelola media ajar dan mengajar dengan efektif.",
+        title: translateInline((isEn) ? "en" : "id", "inline.lecturer-desk"),
+        description: translateInline((isEn) ? "en" : "id", "inline.modern-functional-lecturer-desks-help-instructor"),
         image: "/ruang-kelas/fst_mejadosen.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/02/IMG20230120090550-scaled.jpg"
       },
       {
-        title: isEn ? "Whiteboard" : "Papan Tulis",
-        description: isEn
-          ? "Large whiteboards help lecturers present material, write formulas, and lead interactive classroom discussions."
-          : "Papan tulis berukuran besar sangat penting sebagai alat bantu visual bagi dosen untuk menyampaikan materi, menuliskan rumus, dan melakukan diskusi interaktif saat perkuliahan.",
+        title: translateInline((isEn) ? "en" : "id", "inline.whiteboard"),
+        description: translateInline((isEn) ? "en" : "id", "inline.large-whiteboards-help-lecturers-present-materia"),
         image: "/ruang-kelas/fst_papantulis.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/02/IMG20230120090557-scaled.jpg"
       },
       {
-        title: isEn ? "Climate Control" : "Pendingin Ruangan",
-        description: isEn
-          ? "A combination of fans and air conditioning keeps classrooms at a comfortable temperature during lessons."
-          : "Sistem pendingin ruangan di kelas memastikan suhu yang ideal dan nyaman dengan menggunakan kombinasi kipas angin dan AC selama kegiatan belajar mengajar berlangsung.",
+        title: translateInline((isEn) ? "en" : "id", "inline.climate-control"),
+        description: translateInline((isEn) ? "en" : "id", "inline.a-combination-of-fans-and-air-conditioning-keeps"),
         image: "/ruang-kelas/fst_pendinginruangan.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/02/IMG20230120090606-scaled.jpg"
       }
@@ -50,40 +41,30 @@ const classrooms = [
   {
     id: "fstgb",
     code: "GB·02",
-    name: isEn ? "New Faculty of Science and Technology Building (FST.GB)" : "Gedung Baru Fakultas Sains dan Teknologi (FST.GB)",
-    description: isEn
-      ? "The modern classrooms in the New Building (GB) feature flexible layouts to support technology-enabled learning."
-      : "Ruang kelas di Gedung Baru (GB) yang modern dengan tata ruang yang dinamis untuk mendukung perkuliahan berbasis teknologi.",
+    name: translateInline((isEn) ? "en" : "id", "inline.new-faculty-of-science-and-technology-building-f"),
+    description: translateInline((isEn) ? "en" : "id", "inline.the-modern-classrooms-in-the-new-building-gb-fea"),
     facilities: [
       {
-        title: isEn ? "Student Chairs" : "Kursi Mahasiswa",
-        description: isEn
-          ? "The New Building's ergonomically designed chairs provide added comfort for group interaction and active learning."
-          : "Kursi mahasiswa di Gedung Baru memiliki desain ergonomis terkini, memberikan kenyamanan ekstra untuk interaksi kelompok dan pembelajaran aktif.",
+        title: translateInline((isEn) ? "en" : "id", "inline.student-chairs"),
+        description: translateInline((isEn) ? "en" : "id", "inline.the-new-building-s-ergonomically-designed-chairs"),
         image: "/ruang-kelas/fstgb_kursimahasiswa.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/03/IMG20230317092730-scaled.jpg"
       },
       {
-        title: isEn ? "Lecturer Desk" : "Meja Dosen",
-        description: isEn
-          ? "Modern lecturer desks in the New Building provide convenient power access and support digital presentation equipment."
-          : "Meja dosen modern di Gedung Baru dilengkapi dengan kemudahan akses kelistrikan dan penataan perangkat presentasi digital.",
+        title: translateInline((isEn) ? "en" : "id", "inline.lecturer-desk"),
+        description: translateInline((isEn) ? "en" : "id", "inline.modern-lecturer-desks-in-the-new-building-provid"),
         image: "/ruang-kelas/fstgb_mejadosen.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/03/WhatsApp-Image-2023-03-17-at-09.49.02.jpeg"
       },
       {
-        title: isEn ? "Whiteboard" : "Papan Tulis",
-        description: isEn
-          ? "High-quality whiteboards in the New Building complement the main projector for handwritten notes and explanations."
-          : "Papan tulis berkualitas tinggi di Gedung Baru untuk menunjang pencatatan manual di samping penggunaan proyektor utama.",
+        title: translateInline((isEn) ? "en" : "id", "inline.whiteboard"),
+        description: translateInline((isEn) ? "en" : "id", "inline.high-quality-whiteboards-in-the-new-building-com"),
         image: "/ruang-kelas/fstgb_papantulis.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/03/IMG20230317092855-1-scaled.jpg"
       },
       {
-        title: isEn ? "Climate Control" : "Pendingin Ruangan",
-        description: isEn
-          ? "High-capacity air conditioning keeps New Building classrooms cool and comfortable for students."
-          : "Suhu ruangan kelas di Gedung Baru selalu terjaga sejuk berkat AC berkapasitas besar untuk menunjang kenyamanan belajar mahasiswa secara optimal.",
+        title: translateInline((isEn) ? "en" : "id", "inline.climate-control"),
+        description: translateInline((isEn) ? "en" : "id", "inline.high-capacity-air-conditioning-keeps-new-buildin"),
         image: "/ruang-kelas/fstgb_pendinginruangan.jpg",
         fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/03/WhatsApp-Image-2023-03-17-at-09.46.00.jpeg"
       }

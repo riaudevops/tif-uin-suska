@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
 import { API_URL } from '@/lib/cms.js';
 const lang = getLocaleFromUrl(Astro);
@@ -20,16 +21,12 @@ try {
 const mission = aiorcInfo?.mission_en && isEn
   ? aiorcInfo.mission_en
   : aiorcInfo?.mission
-  ?? (isEn
-    ? "Conduct research and foster collaboration among lecturers and students in Artificial Intelligence and related optimization problems."
-    : "Melaksanakan penelitian dan membangun kolaborasi antara dosen dan mahasiswa di bidang Kecerdasan Buatan serta permasalahan optimasi terkait.");
+  ?? (translateInline((isEn) ? "en" : "id", "inline.conduct-research-and-foster-collaboration-among"));
 
 const vision = aiorcInfo?.vision_en && isEn
   ? aiorcInfo.vision_en
   : aiorcInfo?.vision
-  ?? (isEn
-    ? "To become a leading research center for Artificial Intelligence and Optimization at the national and international levels."
-    : "Menjadi pusat riset unggulan di bidang Kecerdasan Buatan dan Optimasi di tingkat nasional maupun internasional.");
+  ?? (translateInline((isEn) ? "en" : "id", "inline.to-become-a-leading-research-center-for-artifici"));
 ---
 
 <section data-aos="fade-up" class="mx-auto max-w-7xl px-5 py-16 md:px-8">
@@ -41,9 +38,9 @@ const vision = aiorcInfo?.vision_en && isEn
         </svg>
       </div>
       <span class="mb-2 inline-block text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
-        {isEn ? "Our Mission" : "Misi Kami"}
+        {translateInline((isEn) ? "en" : "id", "inline.our-mission")}
       </span>
-      <h3 class="mb-4 text-2xl font-bold text-slate-900">{isEn ? "Mission" : "Misi"}</h3>
+      <h3 class="mb-4 text-2xl font-bold text-slate-900">{translateInline((isEn) ? "en" : "id", "inline.mission")}</h3>
       <p class="text-base leading-relaxed text-slate-600">{mission}</p>
     </div>
 
@@ -55,9 +52,9 @@ const vision = aiorcInfo?.vision_en && isEn
         </svg>
       </div>
       <span class="mb-2 inline-block text-[10px] font-bold uppercase tracking-[0.2em] text-[#5a4c18]">
-        {isEn ? "Our Vision" : "Visi Kami"}
+        {translateInline((isEn) ? "en" : "id", "inline.our-vision")}
       </span>
-      <h3 class="mb-4 text-2xl font-bold text-slate-900">{isEn ? "Vision" : "Visi"}</h3>
+      <h3 class="mb-4 text-2xl font-bold text-slate-900">{translateInline((isEn) ? "en" : "id", "inline.vision")}</h3>
       <p class="text-base leading-relaxed text-slate-600">{vision}</p>
     </div>
   </div>

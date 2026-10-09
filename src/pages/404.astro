@@ -3,10 +3,9 @@ import Layout from "@/layouts/Layout.astro";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
-const isEn = lang === 'en';
 ---
 
-<Layout title={isEn ? "404 - Page Not Found" : "404 - Halaman Tidak Ditemukan"}>
+<Layout title={t('page.404.title')}>
   <!-- Breadcrumbs -->
   <nav class="mx-auto max-w-7xl px-4 pt-28 pb-4 text-sm sm:px-6 sm:pt-32 lg:px-8" aria-label="Breadcrumb">
     <ol class="flex flex-wrap items-center gap-2 border-b border-slate-100 py-3 text-sm text-slate-500">
@@ -24,7 +23,7 @@ const isEn = lang === 'en';
         </svg>
       </li>
       <li class="text-[#004d2c] font-bold tracking-tight">
-        {isEn ? '404 - Not Found' : '404 - Tidak Ditemukan'}
+        {t('page.404.notFound')}
       </li>
     </ol>
   </nav>
@@ -34,13 +33,13 @@ const isEn = lang === 'en';
     <div class="container mx-auto px-6">
       <div class="max-w-4xl mx-auto text-center">
         <span class="px-4 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block font-sans">
-          {isEn ? 'Error' : 'Kesalahan'}
+          {t('page.404.error')}
         </span>
         <h1 data-aos="fade-up" class="text-4xl md:text-5xl font-black text-[#004d2c] mb-6 leading-tight font-heading">
-          {isEn ? 'Page Not Found' : 'Halaman Tidak Ditemukan'}
+          {t('page.404.heading')}
         </h1>
         <p class="text-lg text-gray-600 mb-8 leading-relaxed font-sans max-w-2xl mx-auto">
-          {isEn ? 'Sorry, the page you are looking for cannot be found. The page may have been moved, deleted, or the URL you entered is incorrect.' : 'Maaf, halaman yang Anda cari tidak dapat ditemukan. Mungkin halaman telah dipindahkan, dihapus, atau URL yang Anda masukkan salah.'}
+          {t('page.404.description')}
         </p>
       </div>
     </div>
@@ -83,11 +82,11 @@ const isEn = lang === 'en';
           </div>
 
           <h2 data-aos="fade-up" class="text-2xl md:text-3xl font-black mb-3 font-heading tracking-tight leading-tight text-white drop-shadow-sm">
-            {isEn ? 'Oops! Page Missing' : 'Oops! Halaman Hilang'}
+            {t('page.404.oops')}
           </h2>
           <div class="w-12 h-1 bg-yellow-400 rounded-full mb-5"></div>
           <p class="text-sm md:text-base text-blue-100/80 leading-relaxed font-sans font-medium mb-8">
-            {isEn ? 'The page you are looking for does not exist or is no longer available. Please go back to the homepage or use the navigation above to find the information you need.' : 'Halaman yang Anda tuju tidak ada atau sudah tidak tersedia. Silakan kembali ke beranda atau gunakan navigasi di atas untuk menemukan informasi yang Anda butuhkan.'}
+            {t('page.404.unavailable')}
           </p>
 
           <!-- Action Buttons -->
@@ -100,7 +99,7 @@ const isEn = lang === 'en';
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
-              {isEn ? 'Back to Home' : 'Kembali ke Beranda'}
+              {t('page.404.backHome')}
             </a>
             <button
               onclick="history.back()"
@@ -110,7 +109,7 @@ const isEn = lang === 'en';
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
               </svg>
-              {isEn ? 'Previous Page' : 'Halaman Sebelumnya'}
+              {t('page.404.previous')}
             </button>
           </div>
         </div>
@@ -119,14 +118,14 @@ const isEn = lang === 'en';
 
       <!-- Quick Links -->
       <div class="mt-12 text-center">
-        <p class="text-sm text-gray-500 font-sans mb-6 font-medium">{isEn ? 'Or visit the following popular pages:' : 'Atau kunjungi halaman populer berikut:'}</p>
+        <p class="text-sm text-gray-500 font-sans mb-6 font-medium">{t('page.404.popular')}</p>
         <div class="flex flex-wrap justify-center gap-3">
           {[
-            { href: localizePath('/profil/sejarah', lang), label: isEn ? 'Study Program Profile' : 'Profil Prodi' },
-            { href: localizePath('/kurikulum/kurikulum', lang), label: isEn ? 'Curriculum' : 'Kurikulum' },
-            { href: localizePath('/dosen/dosen', lang), label: isEn ? 'Lecturers' : 'Dosen' },
-            { href: localizePath('/laboratorium/laboratorium', lang), label: isEn ? 'Laboratory' : 'Laboratorium' },
-            { href: localizePath('/berita', lang), label: isEn ? 'News' : 'Berita' },
+            { href: localizePath('/profil/sejarah', lang), label: t('page.404.profile') },
+            { href: localizePath('/kurikulum/kurikulum', lang), label: t('menu.kurikulum') },
+            { href: localizePath('/dosen/dosen', lang), label: t('bread.dosen') },
+            { href: localizePath('/laboratorium/laboratorium', lang), label: t('page.404.laboratory') },
+            { href: localizePath('/berita', lang), label: t('nav.berita') },
           ].map((link) => (
             <a
               href={link.href}

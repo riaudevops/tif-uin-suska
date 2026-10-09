@@ -1,11 +1,12 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Laboratorium from "../../components/pages/laboratorium-pages/laboratorium.astro";
-import { getLocaleFromUrl } from "@/lib/translations";
+import { getLocaleFromUrl, useTranslations } from "@/lib/translations";
 
-const isEn = getLocaleFromUrl(Astro) === "en";
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
 ---
 
-<Layout title={isEn ? "Laboratories" : "Laboratorium"}>
+<Layout title={t("page.lab.title")}>
     <Laboratorium />
 </Layout>

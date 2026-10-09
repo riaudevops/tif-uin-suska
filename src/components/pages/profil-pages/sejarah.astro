@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from "@/lib/translations.js";
 import {
   Home,
@@ -119,7 +120,7 @@ const milestones = isEn
       <ChevronRight class="w-4 h-4" />
     </li>
     <li class="text-primary font-semibold">
-      {isEn ? "History & Journey" : "Sejarah & Perjalanan"}
+      {translateInline((isEn) ? "en" : "id", "inline.history-and-journey")}
     </li>
   </ol>
 </nav>
@@ -136,28 +137,26 @@ const milestones = isEn
         <div>
           <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
             <History class="w-3.5 h-3.5 text-secondary" />
-            {isEn ? "Since 1999 • 25+ Years of Growth" : "Sejak 1999 • 25+ Tahun Perkembangan"}
+            {translateInline((isEn) ? "en" : "id", "inline.since-1999-25-years-of-growth")}
           </span>
 
           <h1 class="mt-4 text-3xl sm:text-4xl md:text-5xl font-black leading-tight tracking-tight text-white">
-            {isEn ? "History and Development of" : "Sejarah dan Perkembangan"}
+            {translateInline((isEn) ? "en" : "id", "inline.history-and-development-of")}
             <span class="mt-2 block text-secondary">
-              {isEn ? "Informatics Engineering" : "Teknik Informatika UIN Suska"}
+              {translateInline((isEn) ? "en" : "id", "inline.informatics-engineering-teknik-informatika-uin-s")}
             </span>
           </h1>
         </div>
 
         <div class="rounded-r-2xl border-l-4 border-secondary bg-[#dcecd1]/10 p-5 sm:p-6 backdrop-blur-sm">
           <p class="text-base sm:text-lg leading-relaxed text-gray-100 italic">
-            "{isEn
-              ? 'Since its founding in 1999, the study program has developed through changes in institutional structure, curriculum refinement, and strengthening of academic and research capacity.'
-              : 'Sejak berdirinya pada 1999, program studi ini berkembang melalui perubahan struktur kelembagaan, pembaruan kurikulum, serta penguatan kapasitas akademik dan riset.'}"
+            "{translateInline((isEn) ? "en" : "id", "inline.since-its-founding-in-1999-the-study-program-has")}"
           </p>
 
           <div class="mt-5 flex flex-wrap items-center gap-3 text-xs sm:text-sm">
             <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 font-medium text-white ring-1 ring-white/10">
               <Award class="w-4 h-4 text-secondary" />
-              <span>{isEn ? "Accreditation: 'Unggul'" : "Akreditasi Unggul"}</span>
+              <span>{translateInline((isEn) ? "en" : "id", "inline.accreditation-unggul")}</span>
             </div>
             <span class="font-mono text-[11px] text-gray-200">SK No. 086/SK/LAM-INFOKOM/2025</span>
           </div>
@@ -168,24 +167,24 @@ const milestones = isEn
         <div class="rounded-2xl border border-white/10 bg-[#dfeec5]/10 p-6 text-center backdrop-blur-md">
           <span class="block text-4xl font-black text-secondary sm:text-5xl">1999</span>
           <span class="mt-2 block text-[11px] font-semibold uppercase tracking-[0.22em] text-gray-200">
-            {isEn ? "Founding Year" : "Tahun Didirikan"}
+            {translateInline((isEn) ? "en" : "id", "inline.founding-year")}
           </span>
         </div>
 
         <div class="rounded-2xl border border-white/10 bg-[#e4efd9]/10 p-6 text-center backdrop-blur-md">
           <span class="block text-4xl font-black text-white sm:text-5xl">3.000+</span>
           <span class="mt-2 block text-[11px] font-semibold uppercase tracking-[0.22em] text-gray-200">
-            {isEn ? "Alumni Across Industry" : "Alumni Berkarir"}
+            {translateInline((isEn) ? "en" : "id", "inline.alumni-across-industry")}
           </span>
         </div>
 
         <div class="rounded-2xl border border-secondary/30 bg-secondary/10 p-6 text-center sm:col-span-2 lg:col-span-1">
           <div class="flex items-center justify-center gap-2 text-secondary">
             <GraduationCap class="w-5 h-5" />
-            <span class="text-sm font-bold uppercase tracking-[0.2em]">{isEn ? "Excellence" : "Unggul"}</span>
+            <span class="text-sm font-bold uppercase tracking-[0.2em]">{translateInline((isEn) ? "en" : "id", "inline.excellence")}</span>
           </div>
           <p class="mt-3 text-sm text-gray-100">
-            {isEn ? "Committed to academic quality and relevance to industry needs." : "Berkomitmen pada mutu akademik dan relevansi terhadap kebutuhan industri."}
+            {translateInline((isEn) ? "en" : "id", "inline.committed-to-academic-quality-and-relevance-to-i")}
           </p>
         </div>
       </div>
@@ -198,15 +197,13 @@ const milestones = isEn
   <div class="mx-auto mb-12 max-w-3xl text-center">
     <span class="mb-3 inline-flex items-center gap-2 rounded-full bg-secondary/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-900">
       <Sparkles class="w-3.5 h-3.5 text-primary" />
-      {isEn ? "Chronological Milestones" : "Linimasa Transformasi"}
+      {translateInline((isEn) ? "en" : "id", "inline.chronological-milestones")}
     </span>
     <h2 class="text-2xl font-black text-gray-900 sm:text-3xl">
-      {isEn ? "Key Milestones in Our Journey" : "Tonggak Sejarah & Jejak Langkah Prodi"}
+      {translateInline((isEn) ? "en" : "id", "inline.key-milestones-in-our-journey")}
     </h2>
     <p class="mt-3 text-base leading-relaxed text-gray-600">
-      {isEn
-        ? "The growth of the program is reflected in its institutional milestones, curriculum development, and continued commitment to academic quality."
-        : "Perkembangan program studi terlihat dari perjalanan kelembagaan, pembaruan kurikulum, dan komitmen berkelanjutan terhadap mutu akademik."}
+      {translateInline((isEn) ? "en" : "id", "inline.the-growth-of-the-program-is-reflected-in-its-in")}
     </p>
   </div>
 

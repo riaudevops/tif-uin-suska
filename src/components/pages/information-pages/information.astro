@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from "@/lib/translations.js";
 import { Home, ChevronRight, Database, ShieldCheck, MonitorCog, ArrowRight } from "@lucide/astro";
 
@@ -63,7 +64,7 @@ const features = isEn
       <ChevronRight class="h-4 w-4" />
     </li>
     <li class="font-semibold text-[#0b5c3d]">
-      {isEn ? "Information Technology" : "Teknologi Informasi"}
+      {translateInline((isEn) ? "en" : "id", "inline.information-technology")}
     </li>
   </ol>
 </nav>
@@ -73,32 +74,28 @@ const features = isEn
     <div class="grid gap-8 lg:grid-cols-12 lg:items-center">
       <div class="lg:col-span-5">
         <span class="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/90 backdrop-blur-sm">
-          {isEn ? "Academic Support Unit" : "Unit Pendukung Akademik"}
+          {translateInline((isEn) ? "en" : "id", "inline.academic-support-unit")}
         </span>
         <h1 class="mt-5 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
-          {isEn ? "Information" : "Teknologi"}
-          <span class="mt-2 block text-[#f7d67a]">{isEn ? "Technology" : "Informasi"}</span>
+          {translateInline((isEn) ? "en" : "id", "inline.information")}
+          <span class="mt-2 block text-[#f7d67a]">{translateInline((isEn) ? "en" : "id", "inline.technology")}</span>
         </h1>
         <p class="mt-5 max-w-md text-base leading-relaxed text-emerald-50/90">
-          {isEn
-            ? "Supporting academic activities through reliable digital infrastructure, secure data services, and efficient information systems."
-            : "Mendukung kegiatan akademik melalui infrastruktur digital yang handal, layanan data yang aman, dan sistem informasi yang efisien."}
+          {translateInline((isEn) ? "en" : "id", "inline.supporting-academic-activities-through-reliable")}
         </p>
       </div>
 
       <div class="lg:col-span-7">
         <div class="rounded-[26px] border border-white/15 bg-white/10 p-5 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.35)] backdrop-blur-sm sm:p-6">
           <p class="text-lg leading-relaxed text-emerald-50 sm:text-xl">
-            {isEn
-              ? '"The role of information technology is to strengthen academic services, support research processes, and ensure information is managed securely and accessibly."'
-              : '"Peran teknologi informasi adalah memperkuat layanan akademik, mendukung proses riset, dan memastikan informasi dikelola secara aman serta mudah diakses."'}
+            {translateInline((isEn) ? "en" : "id", "inline.the-role-of-information-technology-is-to-strengt")}
           </p>
           <div class="mt-5 flex flex-wrap gap-3">
             <span class="rounded-full bg-[#f7d67a]/20 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[#fef3c7]">
-              {isEn ? "Digital Services" : "Layanan Digital"}
+              {translateInline((isEn) ? "en" : "id", "inline.digital-services")}
             </span>
             <span class="rounded-full bg-[#d8f0d9]/15 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[#eafcf0]">
-              {isEn ? "Academic Systems" : "Sistem Akademik"}
+              {translateInline((isEn) ? "en" : "id", "inline.academic-systems")}
             </span>
           </div>
         </div>
@@ -126,28 +123,26 @@ const features = isEn
     <div class="flex items-center gap-3">
       <div class="h-1.5 w-10 rounded-full bg-[#0b5c3d]"></div>
       <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500">
-        {isEn ? "Core Role" : "Peran Utama"}
+        {translateInline((isEn) ? "en" : "id", "inline.core-role")}
       </span>
     </div>
 
     <div class="mt-6 grid gap-6 lg:grid-cols-[1.3fr_0.7fr] lg:items-center">
       <p class="text-base leading-relaxed text-slate-700 sm:text-lg">
-        {isEn
-          ? "The Information Technology unit supports the academic community with reliable digital systems, structured data governance, and secure access to information needed for learning, research, and institutional operations."
-          : "Unit Teknologi Informasi mendukung civitas akademika dengan sistem digital yang andal, tata kelola data yang terstruktur, serta akses informasi yang aman untuk kebutuhan pembelajaran, riset, dan operasional institusi."}
+        {translateInline((isEn) ? "en" : "id", "inline.the-information-technology-unit-supports-the-aca")}
       </p>
 
       <div class="rounded-[24px] border border-[#dfeadf] bg-white p-5 shadow-[0_18px_40px_-30px_rgba(15,23,42,0.24)]">
         <div class="flex items-center justify-between gap-4">
           <span class="text-sm font-bold uppercase tracking-[0.18em] text-[#0b5c3d]">
-            {isEn ? "Priority" : "Prioritas"}
+            {translateInline((isEn) ? "en" : "id", "inline.priority")}
           </span>
           <ArrowRight class="h-4 w-4 text-[#0b5c3d]" />
         </div>
         <ul class="mt-4 space-y-3 text-sm text-slate-700">
-          <li>• {isEn ? "Reliable academic infrastructure" : "Infrastruktur akademik yang andal"}</li>
-          <li>• {isEn ? "Secure information management" : "Pengelolaan informasi yang aman"}</li>
-          <li>• {isEn ? "Efficient digital collaboration" : "Kolaborasi digital yang efisien"}</li>
+          <li>• {translateInline((isEn) ? "en" : "id", "inline.reliable-academic-infrastructure")}</li>
+          <li>• {translateInline((isEn) ? "en" : "id", "inline.secure-information-management")}</li>
+          <li>• {translateInline((isEn) ? "en" : "id", "inline.efficient-digital-collaboration")}</li>
         </ul>
       </div>
     </div>

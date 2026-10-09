@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
 import { API_URL, getAssetUrl } from '@/lib/cms.js';
 const lang = getLocaleFromUrl(Astro);
@@ -26,17 +27,13 @@ try {
     console.error(`[AIORC Researchers] Fetch gagal - status ${res.status} ${res.statusText}`);
     console.error(`[AIORC Researchers] Endpoint: ${endpoint}`);
     console.error(`[AIORC Researchers] Response body: ${body}`);
-    errorMessage = isEn
-      ? "Failed to load researcher data. Please try again later."
-      : "Gagal memuat data peneliti. Silakan coba lagi nanti.";
+    errorMessage = translateInline((isEn) ? "en" : "id", "inline.failed-to-load-researcher-data-please-try-again");
   } else {
     const json = await res.json();
 
     if (!json.data || json.data.length === 0) {
       console.warn(`[AIORC Researchers] Collection "${COLLECTION}" kosong.`);
-      errorMessage = isEn
-        ? "No researcher data is available yet."
-        : "Belum ada data peneliti yang tersedia.";
+      errorMessage = translateInline((isEn) ? "en" : "id", "inline.no-researcher-data-is-available-yet");
     } else {
       researcherData = json.data.map((item: any) => ({
         name: pick(item, ['name', 'nama', 'nama_peneliti', 'full_name']),
@@ -51,9 +48,7 @@ try {
   const message = e instanceof Error ? e.message : String(e);
   console.error(`[AIORC Researchers] Fetch error: ${message}`);
   console.error(`[AIORC Researchers] API_URL yang dipakai: ${API_URL}`);
-  errorMessage = isEn
-    ? "Could not connect to the data server."
-    : "Tidak dapat terhubung ke server data.";
+  errorMessage = translateInline((isEn) ? "en" : "id", "inline.could-not-connect-to-the-data-server");
 }
 ---
 
@@ -61,15 +56,13 @@ try {
   <div class="mx-auto max-w-7xl px-5 md:px-8">
     <div class="mb-8">
       <span class="mb-3 inline-flex rounded-full bg-[#edf4e8] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
-        {isEn ? "Research Team" : "Tim Peneliti"}
+        {translateInline((isEn) ? "en" : "id", "inline.research-team")}
       </span>
       <h2 class="text-3xl font-black tracking-tight text-slate-900 sm:text-5xl">
-        {isEn ? "Researcher" : "Peneliti"}
+        {translateInline((isEn) ? "en" : "id", "inline.researcher")}
       </h2>
       <p class="mt-3 max-w-2xl text-base text-slate-600">
-        {isEn
-          ? "Meet the researchers and their areas of expertise in Artificial Intelligence and Optimization."
-          : "Kenali para peneliti dan bidang keahlian mereka dalam Kecerdasan Buatan dan Optimasi."}
+        {translateInline((isEn) ? "en" : "id", "inline.meet-the-researchers-and-their-areas-of-expertis")}
       </p>
     </div>
 
@@ -89,8 +82,8 @@ try {
             <thead>
               <tr class="bg-[#003d2a] text-white">
                 <th class="w-16 border-b border-white/10 px-5 py-4 text-center text-[10px] font-bold uppercase tracking-[0.2em]">No</th>
-                <th class="border-b border-white/10 px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{isEn ? "Researcher" : "Peneliti"}</th>
-                <th class="border-b border-white/10 px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{isEn ? "Research Interest" : "Bidang Riset"}</th>
+                <th class="border-b border-white/10 px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{translateInline((isEn) ? "en" : "id", "inline.researcher")}</th>
+                <th class="border-b border-white/10 px-5 py-4 text-[10px] font-bold uppercase tracking-[0.2em]">{translateInline((isEn) ? "en" : "id", "inline.research-interest-bidang-riset")}</th>
               </tr>
             </thead>
 
@@ -136,7 +129,7 @@ try {
 
         <div class="flex items-center justify-between border-t border-slate-100 bg-[#f8faf3] px-5 py-4">
           <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
-            Total <span class="text-[#0b5c3d]">{researcherData.length}</span> {isEn ? "Researchers" : "Peneliti"}
+            Total <span class="text-[#0b5c3d]">{researcherData.length}</span> {translateInline((isEn) ? "en" : "id", "inline.researchers")}
           </p>
           <div class="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">
             <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z"/></svg>

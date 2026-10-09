@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../lib/translations.js";
 import Layout from "@/layouts/Layout.astro";
 import Panduan from "../../components/pages/panduan-pages/panduan.astro";
 import { getLocaleFromUrl } from "@/lib/translations.js";
@@ -7,6 +8,6 @@ const lang = getLocaleFromUrl(Astro);
 const isEn = lang === "en";
 ---
 
-<Layout title={isEn ? "Education Management Guide" : "Panduan Pengelolaan Pendidikan"}>
+<Layout title={translateInline((isEn) ? "en" : "id", "inline.education-management-guide")}>
   <Panduan />
 </Layout>

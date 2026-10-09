@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 import {
   Home,
@@ -99,7 +100,7 @@ const highlights = isEn
       <ChevronRight class="h-4 w-4" />
     </li>
     <li class="font-semibold text-[#0b5c3d]">
-      {isEn ? 'Education Management Guide' : 'Panduan Pengelolaan Pendidikan'}
+      {translateInline((isEn) ? "en" : "id", "inline.education-management-guide")}
     </li>
   </ol>
 </nav>
@@ -115,16 +116,14 @@ const highlights = isEn
         <div>
           <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
             <BookOpen class="h-3.5 w-3.5 text-[#f7de8a]" />
-            {isEn ? 'Official Document' : 'Dokumen Resmi'}
+            {translateInline((isEn) ? "en" : "id", "inline.official-document")}
           </span>
           <h1 class="mt-5 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
-            {isEn ? 'Education' : 'Panduan'} <span class="text-[#f4d77d]">{isEn ? 'Management Guide' : 'Pengelolaan Pendidikan'}</span>
+            {translateInline((isEn) ? "en" : "id", "inline.education-panduan")} <span class="text-[#f4d77d]">{translateInline((isEn) ? "en" : "id", "inline.management-guide")}</span>
             <span class="mt-2 block text-xl font-bold text-emerald-100/90 sm:text-2xl">(P3)</span>
           </h1>
           <p class="mt-4 max-w-xl text-base leading-relaxed text-emerald-50/90">
-            {isEn
-              ? 'An official guide for managing academic processes so learning, administration, and integrity remain consistent across the study program.'
-              : 'Panduan resmi pengelolaan proses akademik agar pembelajaran, administrasi, dan integritas tetap konsisten di lingkungan program studi.'}
+            {translateInline((isEn) ? "en" : "id", "inline.an-official-guide-for-managing-academic-processe")}
           </p>
         </div>
 
@@ -132,18 +131,16 @@ const highlights = isEn
           <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 text-[#f7de8a]">
             <FileText class="h-6 w-6" />
           </div>
-          <h2 class="text-lg font-bold text-white">{isEn ? 'Complete Document' : 'Dokumen Lengkap'}</h2>
+          <h2 class="text-lg font-bold text-white">{translateInline((isEn) ? "en" : "id", "inline.complete-document")}</h2>
           <p class="mt-2 text-sm leading-relaxed text-emerald-50/80">
-            {isEn
-              ? 'Download the full education management guide of the Informatics Engineering Study Program.'
-              : 'Unduh dokumen lengkap panduan pengelolaan pendidikan Program Studi Teknik Informatika.'}
+            {translateInline((isEn) ? "en" : "id", "inline.download-the-full-education-management-guide-of")}
           </p>
           <a
             href="#"
             class="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-semibold text-[#0b5c3d] transition-colors hover:bg-[#f7de8a]"
           >
             <Download class="h-4 w-4" />
-            {isEn ? 'Download Guide' : 'Unduh Panduan P3'}
+            {translateInline((isEn) ? "en" : "id", "inline.download-guide")}
           </a>
         </div>
       </div>
@@ -161,21 +158,17 @@ const highlights = isEn
     <div class="mb-10 grid gap-6 lg:grid-cols-12">
       <div class="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.25)] sm:p-8 lg:col-span-8">
         <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
-          {isEn ? 'Overview' : 'Ikhtisar'}
+          {translateInline((isEn) ? "en" : "id", "inline.overview-ikhtisar")}
         </p>
         <h2 class="mt-2 text-2xl font-black text-slate-900 sm:text-3xl">
-          {isEn ? 'Purpose of the Education Guide' : 'Tujuan Panduan Pengelolaan Pendidikan'}
+          {translateInline((isEn) ? "en" : "id", "inline.purpose-of-the-education-guide")}
         </h2>
         <div class="mt-5 space-y-4 text-base leading-relaxed text-slate-600">
           <p>
-            {isEn
-              ? 'This Education Management Guide provides a practical framework for academic operations in the Informatics Engineering Study Program. It clarifies roles, procedures, and expectations so education services remain orderly and accountable.'
-              : 'Panduan Pengelolaan Pendidikan ini menyediakan kerangka kerja praktis untuk operasional akademik Program Studi Teknik Informatika. Dokumen ini memperjelas peran, prosedur, dan ekspektasi agar layanan pendidikan tetap tertib dan akuntabel.'}
+            {translateInline((isEn) ? "en" : "id", "inline.this-education-management-guide-provides-a-pract")}
           </p>
           <p>
-            {isEn
-              ? 'The guide focuses on academic preparation, integrity, and the ability to adapt to changes in the learning environment and the professional world.'
-              : 'Panduan ini berfokus pada pembekalan akademik, integritas, dan kemampuan beradaptasi terhadap perubahan lingkungan belajar serta dunia kerja.'}
+            {translateInline((isEn) ? "en" : "id", "inline.the-guide-focuses-on-academic-preparation-integr")}
           </p>
         </div>
       </div>
@@ -185,18 +178,16 @@ const highlights = isEn
           <ShieldCheck class="h-5 w-5" />
         </div>
         <h3 class="text-lg font-black text-slate-900">
-          {isEn ? 'Consistent Governance' : 'Tata Kelola yang Konsisten'}
+          {translateInline((isEn) ? "en" : "id", "inline.consistent-governance")}
         </h3>
         <p class="mt-3 text-sm leading-relaxed text-slate-600">
-          {isEn
-            ? 'P3 helps keep academic services, teaching practices, and student guidance under one clear operational standard.'
-            : 'P3 membantu menjaga layanan akademik, praktik pengajaran, dan pembimbingan mahasiswa dalam satu standar operasional yang jelas.'}
+          {translateInline((isEn) ? "en" : "id", "inline.p3-helps-keep-academic-services-teaching-practic")}
         </p>
         <a
           href={localizePath('/struktur/struktur', lang)}
           class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#0b5c3d] transition-colors hover:text-[#004d2c]"
         >
-          {isEn ? 'View Organization' : 'Lihat Struktur Organisasi'}
+          {translateInline((isEn) ? "en" : "id", "inline.view-organization")}
           <ArrowRight class="h-4 w-4" />
         </a>
       </div>
@@ -204,10 +195,10 @@ const highlights = isEn
 
     <div class="mb-4">
       <span class="mb-3 inline-flex rounded-full bg-[#edf4e8] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
-        {isEn ? 'Guide Pillars' : 'Pilar Panduan'}
+        {translateInline((isEn) ? "en" : "id", "inline.guide-pillars")}
       </span>
       <h2 class="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl">
-        {isEn ? 'What P3 regulates' : 'Yang diatur dalam P3'}
+        {translateInline((isEn) ? "en" : "id", "inline.what-p3-regulates")}
       </h2>
     </div>
 

@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -23,7 +24,7 @@ const isEn = lang === 'en';
     </li>
     <li class="text-slate-300">/</li>
     <li class="font-semibold text-[#0b5c3d]">
-      {isEn ? 'Organizational Structure' : 'Struktur Organisasi'}
+      {translateInline((isEn) ? "en" : "id", "inline.organizational-structure")}
     </li>
   </ol>
 </nav>
@@ -34,15 +35,13 @@ const isEn = lang === 'en';
       <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
         <div>
           <span class="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.24em] text-white/90">
-            {isEn ? 'Governance' : 'Tata Kelola'}
+            {translateInline((isEn) ? "en" : "id", "inline.governance")}
           </span>
           <h1 class="mt-5 text-3xl font-black tracking-tight text-white sm:text-4xl lg:text-5xl">
-            {isEn ? 'Organizational' : 'Struktur'} <span class="text-[#f4d77d]">{isEn ? 'Structure' : 'Organisasi'}</span>
+            {translateInline((isEn) ? "en" : "id", "inline.organizational")} <span class="text-[#f4d77d]">{translateInline((isEn) ? "en" : "id", "inline.structure-organisasi")}</span>
           </h1>
           <p class="mt-4 max-w-xl text-base leading-relaxed text-emerald-50/90">
-            {isEn
-              ? 'Leadership, academic staff, and supporting units work together to manage the study program in an orderly and effective manner.'
-              : 'Kepemimpinan, tenaga akademik, dan unit pendukung bekerja secara terkoordinasi untuk mengelola program studi dengan tata kelola yang tertib dan efektif.'}
+            {translateInline((isEn) ? "en" : "id", "inline.leadership-academic-staff-and-supporting-units-w")}
           </p>
         </div>
       </div>
@@ -51,9 +50,9 @@ const isEn = lang === 'en';
     <div class="mb-8 rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.25)] sm:p-8">
       <div class="mb-6 flex items-center justify-between gap-3">
         <div>
-          <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">{isEn ? 'Structure' : 'Struktur'}</p>
+          <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">{translateInline((isEn) ? "en" : "id", "inline.structure-struktur")}</p>
           <h2 class="mt-2 text-2xl font-black text-slate-900 sm:text-3xl">
-            {isEn ? 'Leadership and Operational Support' : 'Pimpinan dan Dukungan Operasional'}
+            {translateInline((isEn) ? "en" : "id", "inline.leadership-and-operational-support")}
           </h2>
         </div>
         <div class="hidden h-12 w-12 items-center justify-center rounded-full bg-[#edf5ee] text-[#0b5c3d] sm:flex">
@@ -72,14 +71,12 @@ const isEn = lang === 'en';
               </svg>
             </span>
             <div>
-              <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">{isEn ? 'Leadership' : 'Pimpinan'}</p>
-              <h3 class="mt-1 text-xl font-black text-slate-900">{isEn ? 'Head of Study Program' : 'Ketua Program Studi'}</h3>
+              <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">{translateInline((isEn) ? "en" : "id", "inline.leadership")}</p>
+              <h3 class="mt-1 text-xl font-black text-slate-900">{translateInline((isEn) ? "en" : "id", "inline.head-of-study-program")}</h3>
             </div>
           </div>
           <p class="text-sm leading-relaxed text-slate-600">
-            {isEn
-              ? 'Responsible for academic leadership, strategic planning, and coordination of study program development.'
-              : 'Bertanggung jawab dalam memimpin aspek akademik, perencanaan strategis, dan koordinasi pengembangan program studi.'}
+            {translateInline((isEn) ? "en" : "id", "inline.responsible-for-academic-leadership-strategic-pl")}
           </p>
         </div>
 
@@ -89,11 +86,9 @@ const isEn = lang === 'en';
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0H3m2 0h2m10 0h2M9 7h1m4 0h1M9 11h1m4 0h1M9 15h1m4 0h1" />
             </svg>
           </div>
-          <h3 class="text-lg font-black text-slate-900">{isEn ? 'Academic Affairs' : 'Bidang Akademik'}</h3>
+          <h3 class="text-lg font-black text-slate-900">{translateInline((isEn) ? "en" : "id", "inline.academic-affairs")}</h3>
           <p class="mt-3 text-sm leading-relaxed text-slate-600">
-            {isEn
-              ? 'Supports curriculum implementation, teaching processes, and academic quality assurance.'
-              : 'Mendukung pelaksanaan kurikulum, proses pembelajaran, dan penjaminan mutu akademik.'}
+            {translateInline((isEn) ? "en" : "id", "inline.supports-curriculum-implementation-teaching-proc")}
           </p>
         </div>
 
@@ -103,11 +98,9 @@ const isEn = lang === 'en';
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z" />
             </svg>
           </div>
-          <h3 class="text-lg font-black text-slate-900">{isEn ? 'Administration' : 'Administrasi'}</h3>
+          <h3 class="text-lg font-black text-slate-900">{translateInline((isEn) ? "en" : "id", "inline.administration")}</h3>
           <p class="mt-3 text-sm leading-relaxed text-slate-600">
-            {isEn
-              ? 'Coordinates students services, documentation, and operational administrative support.'
-              : 'Mengkoordinasikan pelayanan mahasiswa, dokumentasi, dan dukungan administrasi operasional.'}
+            {translateInline((isEn) ? "en" : "id", "inline.coordinates-students-services-documentation-and")}
           </p>
         </div>
 
@@ -117,11 +110,9 @@ const isEn = lang === 'en';
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.628.288a2 2 0 01-1.18.208l-2.35-.448a2 2 0 01-1.18-.208l-.628-.288a6 6 0 00-3.86-.517l-2.387.477a2 2 0 00-1.022.547V18.318a5 5 0 001.13 2.541l2.35 2.35a2 2 0 002.828 0l2.35-2.35a5 5 0 001.13-2.541V15.428z" />
             </svg>
           </div>
-          <h3 class="text-lg font-black text-slate-900">{isEn ? 'Laboratory & Research' : 'Laboratorium & Riset'}</h3>
+          <h3 class="text-lg font-black text-slate-900">{translateInline((isEn) ? "en" : "id", "inline.laboratory-and-research")}</h3>
           <p class="mt-3 text-sm leading-relaxed text-slate-600">
-            {isEn
-              ? 'Supports research development, facility management, and student practical activities.'
-              : 'Mendukung pengembangan riset, pengelolaan fasilitas, dan kegiatan praktikum mahasiswa.'}
+            {translateInline((isEn) ? "en" : "id", "inline.supports-research-development-facility-managemen")}
           </p>
         </div>
       </div>
@@ -129,40 +120,34 @@ const isEn = lang === 'en';
 
     <div class="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.25)] sm:p-8">
       <div class="mb-5">
-        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">{isEn ? 'Overview' : 'Ikhtisar'}</p>
+        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">{translateInline((isEn) ? "en" : "id", "inline.overview-ikhtisar")}</p>
         <h2 class="mt-2 text-2xl font-black text-slate-900 sm:text-3xl">
-          {isEn ? 'Organizational Function' : 'Fungsi Organisasi'}
+          {translateInline((isEn) ? "en" : "id", "inline.organizational-function")}
         </h2>
       </div>
 
       <div class="grid gap-5 md:grid-cols-3">
         <div class="rounded-[24px] border border-slate-200 bg-[#f9fbf9] p-5">
           <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">{isEn ? '1' : '1'}</p>
-          <h3 class="mt-3 text-lg font-black text-slate-900">{isEn ? 'Academic Governance' : 'Tata Kelola Akademik'}</h3>
+          <h3 class="mt-3 text-lg font-black text-slate-900">{translateInline((isEn) ? "en" : "id", "inline.academic-governance")}</h3>
           <p class="mt-2 text-sm leading-relaxed text-slate-600">
-            {isEn
-              ? 'Ensuring teaching quality, curriculum alignment, and student development.'
-              : 'Menjamin kualitas pembelajaran, kesesuaian kurikulum, dan pengembangan mahasiswa.'}
+            {translateInline((isEn) ? "en" : "id", "inline.ensuring-teaching-quality-curriculum-alignment-a")}
           </p>
         </div>
 
         <div class="rounded-[24px] border border-slate-200 bg-[#f9fbf9] p-5">
           <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">{isEn ? '2' : '2'}</p>
-          <h3 class="mt-3 text-lg font-black text-slate-900">{isEn ? 'Research Support' : 'Dukungan Riset'}</h3>
+          <h3 class="mt-3 text-lg font-black text-slate-900">{translateInline((isEn) ? "en" : "id", "inline.research-support")}</h3>
           <p class="mt-2 text-sm leading-relaxed text-slate-600">
-            {isEn
-              ? 'Developing learning activities and research capacity through facilities and coordination.'
-              : 'Mendorong kegiatan pembelajaran dan kapasitas riset melalui fasilitas serta koordinasi yang terarah.'}
+            {translateInline((isEn) ? "en" : "id", "inline.developing-learning-activities-and-research-capa")}
           </p>
         </div>
 
         <div class="rounded-[24px] border border-slate-200 bg-[#f9fbf9] p-5">
           <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">{isEn ? '3' : '3'}</p>
-          <h3 class="mt-3 text-lg font-black text-slate-900">{isEn ? 'Administrative Service' : 'Pelayanan Administrasi'}</h3>
+          <h3 class="mt-3 text-lg font-black text-slate-900">{translateInline((isEn) ? "en" : "id", "inline.administrative-service")}</h3>
           <p class="mt-2 text-sm leading-relaxed text-slate-600">
-            {isEn
-              ? 'Providing orderly service to students, lecturers, and education stakeholders.'
-              : 'Memberikan pelayanan yang tertib kepada mahasiswa, dosen, dan pemangku kepentingan pendidikan.'}
+            {translateInline((isEn) ? "en" : "id", "inline.providing-orderly-service-to-students-lecturers")}
           </p>
         </div>
       </div>

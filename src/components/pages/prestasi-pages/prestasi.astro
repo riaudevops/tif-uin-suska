@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -41,34 +42,28 @@ const isEn = lang === "en";
   <div class="grid gap-4 md:grid-cols-3">
     <div class="rounded-[26px] border border-slate-200 bg-white p-6 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_55px_-30px_rgba(0,61,42,0.35)]">
       <div class="inline-flex rounded-full bg-[#edf4e8] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
-        {isEn ? "Academic Achievements" : "Prestasi Akademik"}
+        {translateInline((isEn) ? "en" : "id", "inline.academic-achievements")}
       </div>
       <p class="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
-        {isEn
-          ? "Student and faculty performance reflected in competitions, publications, and industry-relevant innovation."
-          : "Kinerja mahasiswa dan dosen yang ditunjukkan melalui capaian kompetisi, publikasi, dan inovasi berbasis kebutuhan industri."}
+        {translateInline((isEn) ? "en" : "id", "inline.student-and-faculty-performance-reflected-in-com")}
       </p>
     </div>
 
     <div class="rounded-[26px] border border-slate-200 bg-white p-6 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_55px_-30px_rgba(0,61,42,0.35)]">
       <div class="inline-flex rounded-full bg-[#f4f0dd] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#5a4c18]">
-        {isEn ? "Innovation and Research" : "Inovasi dan Riset"}
+        {translateInline((isEn) ? "en" : "id", "inline.innovation-and-research")}
       </div>
       <p class="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
-        {isEn
-          ? "Developing ideas, work, and digital solutions that connect education, research, and community service."
-          : "Pengembangan ide, karya, dan solusi digital yang menjembatani pendidikan, riset, dan pengabdian masyarakat."}
+        {translateInline((isEn) ? "en" : "id", "inline.developing-ideas-work-and-digital-solutions-that")}
       </p>
     </div>
 
     <div class="rounded-[26px] border border-slate-200 bg-white p-6 shadow-[0_18px_45px_-30px_rgba(15,23,42,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_55px_-30px_rgba(0,61,42,0.35)]">
       <div class="inline-flex rounded-full bg-[#eef5f3] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#1d4d42]">
-        {isEn ? "Competitions and Collaboration" : "Kompetisi dan Kolaborasi"}
+        {translateInline((isEn) ? "en" : "id", "inline.competitions-and-collaboration")}
       </div>
       <p class="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
-        {isEn
-          ? "Strategic collaboration among the academic community, partners, and communities to deliver meaningful work."
-          : "Kolaborasi strategis antara civitas akademika, mitra, dan komunitas untuk menghadirkan karya yang berdampak nyata."}
+        {translateInline((isEn) ? "en" : "id", "inline.strategic-collaboration-among-the-academic-commu")}
       </p>
     </div>
   </div>
@@ -79,7 +74,7 @@ const isEn = lang === "en";
     <div class="overflow-hidden rounded-[24px] border border-slate-100 bg-slate-50">
       <img
         src="/prestasi-pages/prestasi.jpg"
-        alt={isEn ? "Informatics Engineering achievements" : "Prestasi Teknik Informatika"}
+        alt={translateInline((isEn) ? "en" : "id", "inline.informatics-engineering-achievements")}
         class="h-[420px] w-full object-cover object-center sm:h-[520px] lg:h-[620px]"
       />
     </div>
@@ -90,9 +85,9 @@ const isEn = lang === "en";
   <div class="rounded-[30px] border border-slate-200 bg-[#f8faf3] p-6 shadow-[0_18px_45px_-35px_rgba(15,23,42,0.25)] sm:p-8 lg:p-10">
     <div class="mb-6 flex items-center justify-between gap-4 border-b border-slate-200 pb-4">
       <div>
-        <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-500">{isEn ? "Highlights" : "Sorotan"}</p>
+        <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-500">{translateInline((isEn) ? "en" : "id", "inline.highlights")}</p>
         <h2 class="mt-2 text-2xl font-black tracking-tight text-[#004d2c] sm:text-3xl">
-          {isEn ? "Notable Achievements" : "Capaian yang membanggakan"}
+          {translateInline((isEn) ? "en" : "id", "inline.notable-achievements")}
         </h2>
       </div>
     </div>
@@ -100,23 +95,19 @@ const isEn = lang === "en";
     <div class="grid gap-5 md:grid-cols-2">
       <div class="rounded-[24px] border border-[#dfe7d7] bg-white p-5">
         <div class="mb-3 inline-flex rounded-full bg-[#edf4e8] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#0b5c3d]">
-          {isEn ? "Academic" : "Akademik"}
+          {translateInline((isEn) ? "en" : "id", "inline.academic")}
         </div>
         <p class="text-base leading-relaxed text-slate-600">
-          {isEn
-            ? "The Informatics Engineering Study Program is committed to producing capable, innovative graduates prepared for the challenges of the digital workplace."
-            : "Program Studi Teknik Informatika terus menampilkan komitmen kuat dalam menghasilkan lulusan yang kompeten, inovatif, dan siap menghadapi tantangan dunia kerja digital."}
+          {translateInline((isEn) ? "en" : "id", "inline.the-informatics-engineering-study-program-is-com")}
         </p>
       </div>
 
       <div class="rounded-[24px] border border-[#e8dca0] bg-[#f4f0dd] p-5">
         <div class="mb-3 inline-flex rounded-full bg-[#efe4b5] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#5a4c18]">
-          {isEn ? "Innovation" : "Inovasi"}
+          {translateInline((isEn) ? "en" : "id", "inline.innovation")}
         </div>
         <p class="text-base leading-relaxed text-slate-700">
-          {isEn
-            ? "The work, programs, and competitions our community takes part in demonstrate its continued commitment to quality, creativity, and social impact."
-            : "Berbagai karya, program, dan kompetisi yang diikuti menjadi bukti nyata bahwa civitas akademika prodi terus mendorong kualitas, kreativitas, dan dampak sosial."}
+          {translateInline((isEn) ? "en" : "id", "inline.the-work-programs-and-competitions-our-community")}
         </p>
       </div>
     </div>

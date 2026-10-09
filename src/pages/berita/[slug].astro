@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../lib/translations.js";
 import Layout from "../../layouts/Layout.astro";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 import { fetchWithCache } from '@/lib/cachedFetch.js';
@@ -139,7 +140,7 @@ const formattedDate = article.date
       class="mb-6 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-100 px-4 py-2 text-xs font-bold text-slate-700 transition-all duration-200 hover:border-[#cfe4d6] hover:bg-[#edf8f1] hover:text-[#0b5c3d] sm:text-sm"
     >
       <ArrowLeft class="h-4 w-4" />
-      {isEn ? 'Back to News' : 'Kembali ke Berita'}
+      {translateInline((isEn) ? "en" : "id", "inline.back-to-news")}
     </a>
 
     <div class="mb-8">
@@ -162,7 +163,7 @@ const formattedDate = article.date
         <span class="text-slate-300">•</span>
         <div class="flex items-center gap-2">
           <User class="h-4 w-4 text-[#0b5c3d]" />
-          <span>{isEn ? 'Academic Information Unit' : 'Unit Informasi Akademik'}</span>
+          <span>{translateInline((isEn) ? "en" : "id", "inline.academic-information-unit")}</span>
         </div>
       </div>
     </div>
@@ -188,7 +189,7 @@ const formattedDate = article.date
         <div class="mb-6 flex items-center gap-2 text-slate-900">
           <Clock3 class="h-5 w-5 text-[#0b5c3d]" />
           <h3 class="text-2xl font-black tracking-tight">
-            {isEn ? 'Latest News' : 'Berita Terkini'}
+            {translateInline((isEn) ? "en" : "id", "inline.latest-news")}
           </h3>
         </div>
 
@@ -209,13 +210,13 @@ const formattedDate = article.date
               </div>
 
               <span class="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#8a6a1d]">
-                {item.category || (isEn ? 'News' : 'Berita')}
+                {item.category || (translateInline((isEn) ? "en" : "id", "inline.news"))}
               </span>
               <h4 class="line-clamp-2 text-base font-bold leading-snug text-slate-900 group-hover:text-[#0b5c3d]">
                 {item.title}
               </h4>
               <span class="mt-4 inline-flex items-center text-xs font-semibold text-[#0b5c3d]">
-                {isEn ? 'Read article' : 'Baca selengkapnya'} &rarr;
+                {translateInline((isEn) ? "en" : "id", "inline.read-article")} &rarr;
               </span>
             </a>
           ))}

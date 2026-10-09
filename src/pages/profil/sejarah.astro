@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../lib/translations.js";
 import Layout from "@/layouts/Layout.astro";
 import { getLocaleFromUrl, useTranslations } from "@/lib/translations.js";
 import Sejarah from "../../components/pages/profil-pages/sejarah.astro";
@@ -11,7 +12,7 @@ const t = useTranslations(lang);
 const isEn = lang === "en";
 ---
 
-<Layout title={isEn ? "History & Profile - Informatics Engineering" : "Sejarah & Profil - Teknik Informatika"}>
+<Layout title={translateInline((isEn) ? "en" : "id", "inline.history-and-profile-informatics-engineering")}>
   <Sejarah />
   <Informasi />
   <Tujuan />

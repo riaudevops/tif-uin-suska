@@ -1,24 +1,36 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
 import { API_BASE_URL } from "../../../lib/cms";
 import { AGENDA_FIELDS, normalizeAgenda } from "../../../lib/agenda";
+import { fetchWithCache } from "../../../lib/cachedFetch.js";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
+const PAGE_SIZE = 10;
+const rawPage = Number(Astro.url.searchParams.get("page") || "1");
+const currentPage = Number.isFinite(rawPage) && rawPage > 0 ? Math.floor(rawPage) : 1;
 
 let agendaKegiatan = [];
 let categories: string[] = [];
+let totalItems = 0;
+let fetchError = false;
+
+function buildAgendaUrl(page: number) {
+  const base = localizePath("/agenda/agenda", lang);
+  return page > 1 ? `${base}?page=${page}` : base;
+}
 
 try {
-  const fetchUrl = `${API_BASE_URL}/agenda?fields=${AGENDA_FIELDS}`;
-  const response = await fetch(fetchUrl);
-  
-  if (!response.ok) {
-    const errorDetails = await response.json(); 
-    console.error("ALASAN ERROR DIRECTUS:", JSON.stringify(errorDetails, null, 2));
-    throw new Error(`Gagal (Status: ${response.status})`);
-  }
-  
-  const dataDirectus = await response.json();
+  const params = new URLSearchParams({
+    fields: AGENDA_FIELDS,
+    limit: String(PAGE_SIZE),
+    page: String(currentPage),
+    sort: "-tanggal_pelaksanaan",
+    meta: "filter_count",
+  });
+  const fetchUrl = `${API_BASE_URL}/agenda?${params.toString()}`;
+  const dataDirectus = await fetchWithCache(fetchUrl, {}, 60000);
+  totalItems = Number(dataDirectus?.meta?.filter_count ?? dataDirectus?.data?.length ?? 0) || 0;
 
   agendaKegiatan = (Array.isArray(dataDirectus.data) ? dataDirectus.data : [])
     .map((item: any) => normalizeAgenda(item, lang))
@@ -49,7 +61,24 @@ try {
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.error("Error dari Astro:", message);
+  fetchError = true;
 }
+
+const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+const isOutOfRange = !fetchError && totalItems > 0 && currentPage > totalPages;
+const safePage = Math.min(currentPage, totalPages);
+const hasPrev = safePage > 1;
+const hasNext = safePage < totalPages;
+const firstItem = totalItems === 0 ? 0 : (safePage - 1) * PAGE_SIZE + 1;
+const lastItem = Math.min(safePage * PAGE_SIZE, totalItems);
+const pageNumbers = (() => {
+  const pages: number[] = [];
+  const windowSize = 2;
+  const start = Math.max(1, safePage - windowSize);
+  const end = Math.min(totalPages, safePage + windowSize);
+  for (let page = start; page <= end; page += 1) pages.push(page);
+  return pages;
+})();
 
 const getKategoriClass = (kat: string) => {
   if (!kat) return 'bg-slate-100 text-slate-700 border-slate-200';
@@ -97,7 +126,7 @@ const getKategoriClass = (kat: string) => {
             {t("page.agenda.badge")}
           </span>
           <h1 class="mt-5 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
-            {lang === 'en' ? 'Events &' : 'Agenda'} <span class="text-[#f4d77d]">{lang === 'en' ? 'Agenda' : 'Kegiatan'}</span>
+            {translateInline((lang === 'en') ? "en" : "id", "inline.events-and")} <span class="text-[#f4d77d]">{translateInline((lang === 'en') ? "en" : "id", "inline.agenda")}</span>
           </h1>
           <p class="mt-4 max-w-xl text-base leading-relaxed text-emerald-50/90">
             {t("page.agenda.desc")}
@@ -114,11 +143,11 @@ const getKategoriClass = (kat: string) => {
           <div class="mt-5 grid grid-cols-2 gap-3">
             <div class="rounded-[18px] border border-white/10 bg-white/10 p-3">
               <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-white/60">Agenda</p>
-              <p class="mt-1 text-2xl font-black text-white">{agendaKegiatan.length}</p>
+              <p class="mt-1 text-2xl font-black text-white">{totalItems}</p>
             </div>
             <div class="rounded-[18px] border border-white/10 bg-white/10 p-3">
               <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-white/60">
-                {lang === 'en' ? 'Categories' : 'Kategori'}
+                {translateInline((lang === 'en') ? "en" : "id", "inline.categories")}
               </p>
               <p class="mt-1 text-2xl font-black text-[#f4d77d]">{Math.max(categories.length - 1, 0)}</p>
             </div>
@@ -152,7 +181,14 @@ const getKategoriClass = (kat: string) => {
       </div>
     </div>
 
-    {agendaKegiatan.length === 0 ? (
+    {isOutOfRange ? (
+      <div class="rounded-[28px] border border-slate-200 bg-white px-6 py-16 text-center shadow-sm">
+        <p class="font-medium text-slate-600">{t("page.agenda.outOfRange")}</p>
+        <a href={buildAgendaUrl(1)} class="mt-4 inline-flex font-semibold text-[#0b5c3d] hover:underline">
+          {translateInline((lang === "en") ? "en" : "id", "inline.view-first-page")}
+        </a>
+      </div>
+    ) : agendaKegiatan.length === 0 ? (
       <div class="rounded-[28px] border border-slate-200 bg-slate-50 py-20 text-center">
         <p class="text-slate-500 font-medium">{t("page.agenda.empty")}</p>
       </div>
@@ -205,6 +241,71 @@ const getKategoriClass = (kat: string) => {
             </div>
           </div>
         ))}
+      </div>
+    )}
+
+    {totalItems > 0 && (
+      <div class="mt-8 flex flex-col items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm shadow-sm sm:flex-row">
+        <p class="text-sm text-slate-600">
+          {lang === "en"
+            ? `Showing ${firstItem}–${lastItem} of ${totalItems} events`
+            : `Menampilkan ${firstItem}–${lastItem} dari ${totalItems} agenda`}
+        </p>
+        {totalPages > 1 && (
+          <nav class="flex flex-wrap items-center justify-center gap-2" aria-label={translateInline((lang === "en") ? "en" : "id", "inline.agenda-pagination")}>
+            <a
+              href={hasPrev ? buildAgendaUrl(safePage - 1) : undefined}
+              aria-disabled={!hasPrev}
+              class={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
+                hasPrev
+                  ? "border-slate-200 bg-white text-slate-700 hover:border-[#cfe4d6] hover:text-[#0b5c3d]"
+                  : "pointer-events-none border-slate-100 bg-slate-50 text-slate-300"
+              }`}
+            >
+              {t("common.prev")}
+            </a>
+
+            {pageNumbers[0] > 1 && (
+              <>
+                <a href={buildAgendaUrl(1)} class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:border-[#cfe4d6] hover:text-[#0b5c3d]">1</a>
+                {pageNumbers[0] > 2 && <span class="px-1 text-slate-400">…</span>}
+              </>
+            )}
+
+            {pageNumbers.map((page) => (
+              <a
+                href={buildAgendaUrl(page)}
+                aria-current={page === safePage ? "page" : undefined}
+                class={`inline-flex h-10 w-10 items-center justify-center rounded-full border text-sm font-semibold transition-colors ${
+                  page === safePage
+                    ? "border-[#0b5c3d] bg-[#0b5c3d] text-white"
+                    : "border-slate-200 bg-white text-slate-700 hover:border-[#cfe4d6] hover:text-[#0b5c3d]"
+                }`}
+              >
+                {page}
+              </a>
+            ))}
+
+            {pageNumbers[pageNumbers.length - 1] < totalPages && (
+              <>
+                {pageNumbers[pageNumbers.length - 1] < totalPages - 1 && <span class="px-1 text-slate-400">…</span>}
+                <a href={buildAgendaUrl(totalPages)} class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:border-[#cfe4d6] hover:text-[#0b5c3d]">{totalPages}</a>
+              </>
+            )}
+
+            <a
+              href={hasNext ? buildAgendaUrl(safePage + 1) : undefined}
+              aria-disabled={!hasNext}
+              class={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
+                hasNext
+                  ? "border-slate-200 bg-white text-slate-700 hover:border-[#cfe4d6] hover:text-[#0b5c3d]"
+                  : "pointer-events-none border-slate-100 bg-slate-50 text-slate-300"
+              }`}
+            >
+              {t("common.next")}
+            </a>
+          </nav>
+        )}
       </div>
     )}
 

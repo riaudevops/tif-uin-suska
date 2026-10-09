@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../lib/translations.js";
 import Layout from "@/layouts/Layout.astro";
 import sanitizeHtml from "sanitize-html";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
@@ -57,12 +58,10 @@ if (!article) {
   article = {
     title: slug === 'prosedur-pendaftaran-kp-2026' 
       ? 'Prosedur Pendaftaran & Verifikasi Berkas Kerja Praktik Semester Ganjil 2026'
-      : (isEn ? 'Internship Announcement Detail' : 'Pengumuman Kerja Praktik'),
+      : (translateInline((isEn) ? "en" : "id", "inline.internship-announcement-detail")),
     published_at: new Date().toISOString(),
-    category: isEn ? 'Registration' : 'Pendaftaran',
-    excerpt: isEn 
-      ? 'Complete guidelines for registering Kerja Praktik for students who have completed a minimum of 90 SKS.'
-      : 'Panduan lengkap alur pendaftaran dan pengajuan surat pengantar KP bagi mahasiswa yang telah menempuh minimal 90 SKS.',
+    category: translateInline((isEn) ? "en" : "id", "inline.registration"),
+    excerpt: translateInline((isEn) ? "en" : "id", "inline.complete-guidelines-for-registering-kerja-prakti"),
     content: isEn ? `
       <h3>General Terms & Requirements</h3>
       <p>Students eligible for Kerja Praktik must meet the following criteria:</p>
@@ -130,14 +129,14 @@ const formattedDate = article.published_at
       class="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 text-xs sm:text-sm font-bold rounded-xl transition-all mb-6 border border-slate-200"
     >
       <ArrowLeft class="w-4 h-4" />
-      {isEn ? 'Back to KP Info' : 'Kembali ke Info KP'}
+      {translateInline((isEn) ? "en" : "id", "inline.back-to-kp-info")}
     </a>
 
     {/* Header & Meta */}
     <div class="mb-8">
       <span class="inline-flex items-center gap-1.5 px-3.5 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full mb-4">
         <Briefcase class="w-3.5 h-3.5" />
-        {article.category || (isEn ? 'Internship Info' : 'Info Kerja Praktik')}
+        {article.category || (translateInline((isEn) ? "en" : "id", "inline.internship-info"))}
       </span>
 
       <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-6">
@@ -152,7 +151,7 @@ const formattedDate = article.published_at
         <span class="text-slate-300">•</span>
         <div class="flex items-center gap-2">
           <User class="w-4 h-4 text-emerald-600" />
-          <span>{isEn ? 'Informatics Academic Office' : 'Prodi Teknik Informatika'}</span>
+          <span>{translateInline((isEn) ? "en" : "id", "inline.informatics-academic-office")}</span>
         </div>
       </div>
     </div>
@@ -186,7 +185,7 @@ const formattedDate = article.published_at
     {related.length > 0 && (
       <div class="pt-10 border-t border-slate-200">
         <h3 class="text-2xl font-black text-slate-900 mb-6">
-          {isEn ? 'Other Internship Announcements' : 'Pengumuman KP Lainnya'}
+          {translateInline((isEn) ? "en" : "id", "inline.other-internship-announcements")}
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {related.map((item: any) => (

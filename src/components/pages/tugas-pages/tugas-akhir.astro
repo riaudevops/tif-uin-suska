@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 import {
   GraduationCap,
@@ -47,7 +48,7 @@ try {
     const data = await res.json();
     items = (data?.data ?? []).map((d: any) => ({
       id: d.id,
-      title: d.title || (isEn ? 'Untitled Announcement' : 'Tanpa Judul'),
+      title: d.title || (translateInline((isEn) ? "en" : "id", "inline.untitled-announcement")),
       slug: d.slug || d.id,
       excerpt: d.excerpt || '',
       date: d.published_at
@@ -58,7 +59,7 @@ try {
           })
         : '',
       thumbnail: getAssetUrl(d.thumbnail),
-      category: d.category || (isEn ? 'Thesis Info' : 'Informasi TA')
+      category: d.category || (translateInline((isEn) ? "en" : "id", "inline.thesis-info-informasi-ta"))
     }));
   } else {
     fetchError = true;
@@ -216,35 +217,33 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
         <div>
           <span class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-50">
             <GraduationCap class="h-4 w-4 text-[#f4d77d]" />
-            {isEn ? 'Curriculum & Final Milestone' : 'Kurikulum & Kelulusan Mahasiswa'}
+            {translateInline((isEn) ? "en" : "id", "inline.curriculum-and-final-milestone")}
           </span>
 
           <h1 class="mt-5 text-3xl font-black tracking-tight text-white sm:text-4xl lg:text-5xl">
-            {isEn ? 'Final Project' : 'Tugas Akhir'} <span class="text-[#f4d77d]">{isEn ? 'Portal' : 'Program Studi'}</span>
+            {translateInline((isEn) ? "en" : "id", "inline.final-project")} <span class="text-[#f4d77d]">{translateInline((isEn) ? "en" : "id", "inline.portal")}</span>
           </h1>
 
           <p class="mt-4 max-w-xl text-base leading-relaxed text-emerald-50/90">
-            {isEn
-              ? 'Information on thesis procedures, proposal defense stages, final assignment requirements, and academic schedules for students.'
-              : 'Informasi mengenai prosedur tugas akhir, tahap seminar proposal, persyaratan sidang akhir, dan jadwal akademik mahasiswa.'}
+            {translateInline((isEn) ? "en" : "id", "inline.information-on-thesis-procedures-proposal-defens")}
           </p>
         </div>
 
         <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-2">
           <div class="rounded-[22px] border border-white/15 bg-white/8 p-4 backdrop-blur-sm">
-            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100/80">{isEn ? 'Credits' : 'Bobot'}</p>
-            <p class="mt-3 text-2xl font-black text-white">{isEn ? '6 credits' : '6 SKS'}</p>
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100/80">{translateInline((isEn) ? "en" : "id", "inline.credits-bobot")}</p>
+            <p class="mt-3 text-2xl font-black text-white">{translateInline((isEn) ? "en" : "id", "inline.6-credits")}</p>
           </div>
           <div class="rounded-[22px] border border-white/15 bg-white/8 p-4 backdrop-blur-sm">
-            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100/80">{isEn ? 'Advisors' : 'Pembimbing'}</p>
-            <p class="mt-3 text-2xl font-black text-white">{isEn ? '2 advisors' : '2 Dosen'}</p>
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100/80">{translateInline((isEn) ? "en" : "id", "inline.advisors")}</p>
+            <p class="mt-3 text-2xl font-black text-white">{translateInline((isEn) ? "en" : "id", "inline.2-advisors")}</p>
           </div>
           <div class="rounded-[22px] border border-white/15 bg-white/8 p-4 backdrop-blur-sm">
-            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100/80">{isEn ? 'Research' : 'Riset'}</p>
-            <p class="mt-3 text-2xl font-black text-white">{isEn ? '5 fields' : '5 Bidang'}</p>
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100/80">{translateInline((isEn) ? "en" : "id", "inline.research")}</p>
+            <p class="mt-3 text-2xl font-black text-white">{translateInline((isEn) ? "en" : "id", "inline.5-fields")}</p>
           </div>
           <div class="rounded-[22px] border border-[#f4d77d]/30 bg-[#f4d77d]/10 p-4 backdrop-blur-sm">
-            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#fce9a0]">{isEn ? 'Publication' : 'Publikasi'}</p>
+            <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#fce9a0]">{translateInline((isEn) ? "en" : "id", "inline.publication")}</p>
             <p class="mt-3 text-2xl font-black text-white">CoreIT</p>
           </div>
         </div>
@@ -254,12 +253,12 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
 
   <section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
     <div class="mb-8 text-center">
-      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#0b5c3d]">{isEn ? 'Milestone' : 'Tahapan'}</p>
+      <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#0b5c3d]">{translateInline((isEn) ? "en" : "id", "inline.milestone")}</p>
       <h2 class="mt-2 text-2xl font-black text-slate-900 sm:text-3xl">
-        {isEn ? 'Final Project Completion Stages' : 'Tahapan Proses Tugas Akhir'}
+        {translateInline((isEn) ? "en" : "id", "inline.final-project-completion-stages")}
       </h2>
       <p class="mt-3 text-sm text-slate-600">
-        {isEn ? 'Four key stages from proposal to final defense.' : 'Empat tahap utama dari pengajuan proposal hingga sidang akhir.'}
+        {translateInline((isEn) ? "en" : "id", "inline.four-key-stages-from-proposal-to-final-defense")}
       </p>
     </div>
 
@@ -287,19 +286,19 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
   <section class="mx-auto max-w-7xl px-4 pb-20 pt-4 sm:px-6 lg:px-8">
     <div class="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#0b5c3d]">{isEn ? 'Announcements' : 'Pengumuman'}</p>
+        <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#0b5c3d]">{translateInline((isEn) ? "en" : "id", "inline.announcements")}</p>
         <h2 class="mt-2 text-2xl font-black text-slate-900 sm:text-3xl">
-          {isEn ? 'Latest Final Project Information' : 'Informasi Tugas Akhir Terbaru'}
+          {translateInline((isEn) ? "en" : "id", "inline.latest-final-project-information")}
         </h2>
       </div>
       <p class="max-w-md text-sm text-slate-600">
-        {isEn ? 'Updated schedules, proposal regulations, and final defense information.' : 'Jadwal terupdate, panduan proposal, dan informasi sidang akhir mahasiswa.'}
+        {translateInline((isEn) ? "en" : "id", "inline.updated-schedules-proposal-regulations-and-final")}
       </p>
     </div>
 
     {displayItems.length === 0 ? (
       <div class="rounded-[28px] border border-slate-200 bg-white py-16 text-center shadow-[0_18px_45px_-30px_rgba(15,23,42,0.25)]">
-        <p class="text-base text-slate-600">{isEn ? 'No final project announcements available yet.' : 'Belum ada konten Tugas Akhir.'}</p>
+        <p class="text-base text-slate-600">{translateInline((isEn) ? "en" : "id", "inline.no-final-project-announcements-available-yet")}</p>
       </div>
     ) : (
       <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -320,12 +319,12 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
             <div class="flex flex-1 flex-col p-5">
               <div class="mb-3 flex items-center gap-2 text-[11px] font-medium text-slate-500">
                 <Calendar class="h-3.5 w-3.5 text-[#0b5c3d]" />
-                <span>{item.date || (isEn ? 'Recent Update' : 'Terbaru')}</span>
+                <span>{item.date || (translateInline((isEn) ? "en" : "id", "inline.recent-update"))}</span>
               </div>
 
               <h3 class="text-lg font-black leading-snug text-slate-900">{item.title}</h3>
               <p class="mt-3 flex-1 text-sm leading-relaxed text-slate-600">
-                {item.excerpt || (isEn ? 'View the complete details to read the full announcement.' : 'Baca selengkapnya untuk melihat informasi dan persyaratan lengkap.')}
+                {item.excerpt || (translateInline((isEn) ? "en" : "id", "inline.view-the-complete-details-to-read-the-full-annou"))}
               </p>
 
               <a

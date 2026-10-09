@@ -1,4 +1,5 @@
 ---
+import { translateInline } from "../../lib/translations.js";
 import Layout from "@/layouts/Layout.astro";
 import sanitizeHtml from "sanitize-html";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
@@ -58,13 +59,11 @@ if (!article) {
   article = {
     title: slug === 'beasiswa-bank-indonesia-genbi-2026' 
       ? 'Pembukaan Pendaftaran Beasiswa Bank Indonesia (GenBI) Tahun 2026'
-      : (isEn ? 'Scholarship Opening Detail' : 'Pengumuman Pendaftaran Beasiswa'),
+      : (translateInline((isEn) ? "en" : "id", "inline.scholarship-opening-detail")),
     published_at: new Date().toISOString(),
     deadline: '28 Februari 2026',
     category: isEn ? 'Bank Indonesia' : 'Bank Indonesia',
-    excerpt: isEn 
-      ? 'Opportunity for active students in semester 4-6 to receive monthly stipends and join GenBI leadership community.'
-      : 'Kesempatan bagi mahasiswa aktif semester 4 dan 6 untuk mendapatkan bantuan uang saku bulanan dan pelatihan leadership.',
+    excerpt: translateInline((isEn) ? "en" : "id", "inline.opportunity-for-active-students-in-semester-4-6"),
     content: isEn ? `
       <h3>Scholarship Benefits & Coverage</h3>
       <p>Selected GenBI scholarship awardees will receive:</p>
@@ -142,7 +141,7 @@ const formattedDate = article.published_at
       class="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-teal-50 text-slate-700 hover:text-teal-800 text-xs sm:text-sm font-bold rounded-xl transition-all mb-6 border border-slate-200"
     >
       <ArrowLeft class="w-4 h-4" />
-      {isEn ? 'Back to Scholarships' : 'Kembali ke Info Beasiswa'}
+      {translateInline((isEn) ? "en" : "id", "inline.back-to-scholarships")}
     </a>
 
     {/* Header & Meta */}
@@ -150,7 +149,7 @@ const formattedDate = article.published_at
       <div class="flex flex-wrap items-center gap-3 mb-4">
         <span class="inline-flex items-center gap-1.5 px-3.5 py-1 bg-teal-100 text-teal-800 text-xs font-bold rounded-full">
           <Award class="w-3.5 h-3.5" />
-          {article.category || (isEn ? 'Scholarship Program' : 'Program Beasiswa')}
+          {article.category || (translateInline((isEn) ? "en" : "id", "inline.scholarship-program"))}
         </span>
 
         {article.deadline && (
@@ -173,7 +172,7 @@ const formattedDate = article.published_at
         <span class="text-slate-300">•</span>
         <div class="flex items-center gap-2">
           <User class="w-4 h-4 text-teal-600" />
-          <span>{isEn ? 'Academic & Student Affairs' : 'Bagian Kemahasiswaan FST'}</span>
+          <span>{translateInline((isEn) ? "en" : "id", "inline.academic-and-student-affairs")}</span>
         </div>
       </div>
     </div>
@@ -205,15 +204,15 @@ const formattedDate = article.published_at
       {/* External Registration Action Card */}
       <div class="mt-10 p-6 bg-slate-900 text-white rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
-          <h4 class="font-bold text-base">{isEn ? 'Ready to Apply?' : 'Tertarik Mengajukan Beasiswa Ini?'}</h4>
-          <p class="text-xs text-slate-300 mt-1">{isEn ? 'Prepare your documents and click the portal link below.' : 'Pastikan seluruh berkas persyaratan telah lengkap sesuai petunjuk.'}</p>
+          <h4 class="font-bold text-base">{translateInline((isEn) ? "en" : "id", "inline.ready-to-apply")}</h4>
+          <p class="text-xs text-slate-300 mt-1">{translateInline((isEn) ? "en" : "id", "inline.prepare-your-documents-and-click-the-portal-link")}</p>
         </div>
         <a 
           href="#"
           onclick="alert('Pendaftaran dapat diakses melalui portal iRaise / situs resmi penyedia beasiswa.'); return false;"
           class="px-5 py-3 bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs rounded-xl transition-colors inline-flex items-center gap-2 flex-shrink-0"
         >
-          {isEn ? 'Open Application Portal' : 'Buka Portal Pendaftaran'}
+          {translateInline((isEn) ? "en" : "id", "inline.open-application-portal")}
           <ExternalLink class="w-4 h-4" />
         </a>
       </div>
@@ -223,7 +222,7 @@ const formattedDate = article.published_at
     {related.length > 0 && (
       <div class="pt-10 border-t border-slate-200">
         <h3 class="text-2xl font-black text-slate-900 mb-6">
-          {isEn ? 'Other Scholarship Programs' : 'Pengumuman Beasiswa Lainnya'}
+          {translateInline((isEn) ? "en" : "id", "inline.other-scholarship-programs")}
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {related.map((item: any) => (
