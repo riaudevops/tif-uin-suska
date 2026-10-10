@@ -40,16 +40,6 @@ try {
 }
 ---
 
-<!--
-  STRUKTUR:
-  <section> → tinggi eksplisit di setiap breakpoint (position: relative)
-    └── .hero-swiper  → absolute inset-0, fill penuh section
-          └── .swiper-wrapper (h-full)
-                └── .swiper-slide (h-full, flex-col, justify-end)
-                      ├── <img> background (absolute inset-0)
-                      ├── overlay gradient (absolute inset-0)
-                      └── konten teks (relative z-20, di bawah via pb-*)
--->
 <section
   id="hero-slider"
   class="
@@ -196,9 +186,10 @@ try {
                         class="inline-flex items-center justify-center gap-2.5 rounded-xl px-6 sm:px-8 py-2.5 sm:py-3.5 text-sm sm:text-base font-bold transition-all duration-300 bg-yellow-400 text-emerald-950 hover:bg-yellow-300 hover:scale-[1.03] active:scale-[0.98] shadow-xl shadow-yellow-500/25 ring-2 ring-yellow-400/30 group/btn"
                       >
                         <span>{buttonText || 'Lihat Detail'}</span>
-                        <svg class="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right preview-icon">
+                          <path d="M7 7h10v10"/>
+                          <path d="M7 17 17 7"/>
+                          </svg>
                       </a>
                     </div>
                   )}
@@ -232,7 +223,7 @@ try {
       </button>
 
       <!-- Pagination Bullets -->
-      <div class="swiper-pagination !bottom-5 sm:!bottom-7 md:!bottom-9"></div>
+      {/* <div class="swiper-pagination !bottom-5 sm:!bottom-7 md:!bottom-9"></div> */}
     </div>
   )}
 </section>

@@ -1,7 +1,7 @@
 ---
 import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from "@/lib/translations.js";
-import { Home, ChevronRight, Database, ShieldCheck, MonitorCog, ArrowRight } from "@lucide/astro";
+import { Home, ChevronRight, Database, ShieldCheck, MonitorCog, ArrowUpRight } from "@lucide/astro";
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -137,7 +137,7 @@ const features = isEn
           <span class="text-sm font-bold uppercase tracking-[0.18em] text-[#0b5c3d]">
             {translateInline((isEn) ? "en" : "id", "inline.priority")}
           </span>
-          <ArrowRight class="h-4 w-4 text-[#0b5c3d]" />
+          <ArrowUpRight class="h-4 w-4 text-[#0b5c3d]" />
         </div>
         <ul class="mt-4 space-y-3 text-sm text-slate-700">
           <li>• {translateInline((isEn) ? "en" : "id", "inline.reliable-academic-infrastructure")}</li>

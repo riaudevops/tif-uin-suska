@@ -1,7 +1,7 @@
 ---
 import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
-import { Eye, ArrowRight, Sparkles, Target } from '@lucide/astro';
+import { Eye, ArrowUpRight, Sparkles, Target } from '@lucide/astro';
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -79,7 +79,7 @@ const isEn = lang === 'en';
             <span class="inline-flex items-center gap-2 rounded-full bg-secondary/15 px-3 py-1.5 text-secondary font-semibold">
               {translateInline((isEn) ? "en" : "id", "inline.institutional-excellence")}
             </span>
-            <ArrowRight class="h-4 w-4 text-gray-300" />
+            <ArrowUpRight class="h-4 w-4 text-gray-300" />
             <span>{translateInline((isEn) ? "en" : "id", "inline.2025-outlook")}</span>
           </div>
         </div>

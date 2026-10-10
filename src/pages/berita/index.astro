@@ -5,6 +5,7 @@ import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translati
 import { fetchWithCache } from '@/lib/cachedFetch.js';
 import { API_BASE_URL, getAssetUrl } from '@/lib/cms.js';
 import { BERITA_LIST_FIELDS, normalizeBeritaList, buildBeritaQueryParams } from '@/lib/berita.js';
+import { ArrowUpRight } from '@lucide/astro';
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -227,7 +228,7 @@ const pageNumbers = (() => {
                           {translateInline((isEn) ? "en" : "id", "inline.read-article")}
                         </span>
                         <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#edf8f1] text-lg text-[#0b5c3d] transition-all duration-200 group-hover:bg-[#0b5c3d] group-hover:text-[#f4d77d]">
-                          →
+                          <ArrowUpRight class="h-4 w-4" aria-hidden="true" />
                         </span>
                       </div>
                     </div>
