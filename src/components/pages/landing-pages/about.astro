@@ -1,73 +1,11 @@
 ---
 import { translateInline } from "../../../lib/translations.js";
-import { getLocaleFromUrl } from "../../../lib/translations";
+import { getLocaleFromUrl, localizePath } from "../../../lib/translations";
 import { ArrowUpRight } from "@lucide/astro";
 
 const lang = getLocaleFromUrl(Astro);
 const isEn = lang === 'en';
 ---
-
-<section class="relative">
-  <div class="relative overflow-hidden shadow-[0_30px_70px_-40px_rgba(0,61,42,0.7)]">
-
-    <!-- BACKGROUND -->
-    <div class="absolute inset-0 bg-gradient-to-br from-[#0a3d2e] via-[#0f5d44] to-[#1b7255]"></div>
-    <div class="absolute inset-0 bg-[url('/landing-pages/gedung.jpg')] bg-cover bg-center opacity-12"></div>
-
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 py-10 sm:py-14 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
-
-      <div data-aos="fade-right" class="flex flex-col gap-10">
-
-        <!-- LOGO + TITLE -->
-        <div class="flex items-center gap-6">
-          <div class="flex flex-col items-center border-r border-white/20 pr-6">
-            <img src="/logo/uin.png" alt="Logo UIN Suska" class="h-14 sm:h-20 w-auto">
-            <span class="mt-2 text-[10px] font-bold text-yellow-300 uppercase tracking-widest text-center">
-              UIN Suska Riau
-            </span>
-          </div>
-
-          <div>
-            <h1 class="text-2xl md:text-3xl font-bold uppercase tracking-wide text-white leading-tight">
-              {translateInline((isEn) ? "en" : "id", "inline.informatics-engineering-teknik-informatika")}
-            </h1>
-            <h2 class="text-lg md:text-xl font-light text-yellow-500 uppercase">
-              {translateInline((isEn) ? "en" : "id", "inline.faculty-of-science-and-technology")}
-            </h2>
-          </div>
-        </div>
-
-        <!-- AKREDITASI -->
-        <div class="flex items-center gap-3">
-          <img src="/logo/unggul.png" alt="Akreditasi Unggul" class="h-12 w-auto"/>
-          <img src="/logo/blu.png" alt="BLU" class="h-12 w-auto"/>
-          <img src="/logo/kemenag.png" alt="Kemenag" class="h-12 w-auto"/>
-        </div>
-
-      </div>
-
-      <!-- RIGHT : DESKRIPSI -->
-      <div data-aos="fade-left" class="text-white max-w-xl">
-        <p class="text-xs font-extrabold uppercase tracking-[0.25em] text-yellow-300">
-          {translateInline((isEn) ? "en" : "id", "inline.study-program-information")}
-        </p>
-
-        <h3 class="text-3xl font-bold leading-snug">
-          {translateInline((isEn) ? "en" : "id", "inline.informatics-engineering-teknik-informatika")}
-        </h3>
-
-        <p class="text-white-400 leading-relaxed mt-2 text-sm opacity-90">
-          {translateInline((isEn) ? "en" : "id", "inline.the-informatics-engineering-study-program-at-uin")
-          }
-        </p>
-        <button class="mt-6 inline-flex items-center justify-center rounded-lg bg-[#f3c75d] px-5 py-2.5 text-sm font-semibold text-[#0d3c2f] shadow-[0_12px_25px_-18px_rgba(243,199,93,0.9)] transition hover:bg-[#e9b94d]">
-          {translateInline((isEn) ? "en" : "id", "inline.view-details-selengkapnya")}
-        </button>
-      </div>
-
-    </div>
-  </div>
-</section>
 
 <section class="relative bg-gradient-to-br from-green-900 to-emerald-800">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
