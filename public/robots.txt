@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://tif.uin-suska.ac.id/sitemap.xml
+Sitemap: https://tif.uin-suska.ac.id/sitemap-index.xml

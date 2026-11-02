@@ -1,0 +1,12 @@
+# Security Policy & Responsible Disclosure
+# Program Studi Teknik Informatika - UIN Sultan Syarif Kasim Riau
+# https://tif.uin-suska.ac.id
+
+Contact: mailto:tif@uin-suska.ac.id
+Contact: mailto:ptipd@uin-suska.ac.id
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: id, en
+Canonical: https://tif.uin-suska.ac.id/.well-known/security.txt
+Policy: https://tif.uin-suska.ac.id/
+Acknowledgments: https://tif.uin-suska.ac.id/
+
