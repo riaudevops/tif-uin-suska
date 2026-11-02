@@ -21,7 +21,7 @@ const isEn = lang === "en";
           </div>
 
           <div>
-            <p class="text-3xl font-bold text-green-900"><span class="counter" data-target="30">0</span>+</p>
+            <p class="text-3xl font-bold text-green-900"><span class="counter" data-target="30">30</span>+</p>
             <p class="text-gray-600 font-medium">{t("stats.dosen")}</p>
           </div>
         </div>
@@ -37,7 +37,7 @@ const isEn = lang === "en";
           </div>
 
           <div>
-            <p class="text-3xl font-bold text-gray-900"><span class="counter" data-target="1000">0</span>+</p>
+            <p class="text-3xl font-bold text-gray-900"><span class="counter" data-target="1000">1,000</span>+</p>
             <p class="text-gray-600 font-medium">{t("stats.mahasiswa")}</p>
           </div>
         </div>
@@ -54,7 +54,7 @@ const isEn = lang === "en";
           </div>
 
           <div>
-            <p class="text-3xl font-bold text-gray-900"><span class="counter" data-target="1756">0</span>+</p>
+            <p class="text-3xl font-bold text-gray-900"><span class="counter" data-target="1756">1,756</span>+</p>
             <p class="text-gray-600 font-medium">{t("stats.alumni")}</p>
           </div>
         </div>
@@ -71,7 +71,7 @@ const isEn = lang === "en";
           </div>
 
           <div>
-            <p class="text-3xl font-bold text-gray-900"><span class="counter" data-target="20">0</span>+</p>
+            <p class="text-3xl font-bold text-gray-900"><span class="counter" data-target="20">20</span>+</p>
             <p class="text-gray-600 font-medium">{t("stats.ruang")}</p>
           </div>
         </div>
@@ -213,15 +213,14 @@ const isEn = lang === "en";
 <script>
   function initCounters() {
     const counters = document.querySelectorAll(".counter");
+    if (!counters.length) return;
 
     const startCounting = (counter) => {
       const target = Number(counter.getAttribute("data-target") || 0);
-      if (!target) {
-        counter.innerText = "0";
-        return;
-      }
+      if (!target) return;
 
-      const duration = 700;
+      counter.innerText = "0";
+      const duration = 1000;
       const startTime = performance.now();
 
       const updateCounter = (now) => {
@@ -241,7 +240,12 @@ const isEn = lang === "en";
       requestAnimationFrame(updateCounter);
     };
 
-    const observer = new IntersectionObserver((entries, observer) => {
+    if (!("IntersectionObserver" in window)) {
+      counters.forEach(startCounting);
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           startCounting(entry.target);
@@ -249,12 +253,16 @@ const isEn = lang === "en";
         }
       });
     }, {
-      threshold: 0.15,
+      threshold: 0.1,
     });
 
     counters.forEach((counter) => observer.observe(counter));
   }
 
-  document.addEventListener("DOMContentLoaded", initCounters);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initCounters);
+  } else {
+    initCounters();
+  }
   document.addEventListener("astro:page-load", initCounters);
 </script>
