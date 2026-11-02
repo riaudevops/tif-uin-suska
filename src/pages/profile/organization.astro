@@ -1,0 +1,12 @@
+---
+import { translateInline } from "@/lib/translations.js";
+import Layout from "@/layouts/Layout.astro";
+import Organisasi from "@/components/pages/struktur-pages/organisasi.astro";
+import { getLocaleFromUrl } from "@/lib/translations";
+
+const isEn = getLocaleFromUrl(Astro) === "en";
+---
+
+<Layout title={translateInline((isEn) ? "en" : "id", "inline.organizational-structure")}>
+  <Organisasi />
+</Layout>

@@ -113,12 +113,9 @@ try {
                 </div>
 
                 <div class="mt-5 flex items-center justify-between gap-3 border-t border-gray-100 pt-4">
-                  <span class="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
-                    NIP: {dosen.nip || '-'}
-                  </span>
 
                   <a
-                    href={localizePath(`/dosen/${dosen.slug || dosen.id}`, lang)}
+                    href={localizePath(`/profile/faculty/${dosen.slug || dosen.id}`, lang)}
                     class="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-primary/90"
                   >
                     {translateInline((isEn) ? "en" : "id", "inline.view-details-lihat-detail")}

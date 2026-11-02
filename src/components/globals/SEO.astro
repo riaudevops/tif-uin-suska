@@ -1,0 +1,177 @@
+---
+import { getLocaleFromUrl, useTranslations } from "../../lib/translations";
+
+interface ArticleData {
+  headline?: string;
+  datePublished?: string;
+  dateModified?: string;
+  author?: string;
+  image?: string;
+  description?: string;
+}
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: "website" | "article";
+  keywords?: string;
+  author?: string;
+  articleData?: ArticleData;
+}
+
+const {
+  title,
+  description,
+  image = "/landing-pages/gedung.jpg",
+  type = "website",
+  keywords,
+  author = "Program Studi Teknik Informatika UIN Suska Riau",
+  articleData,
+} = Astro.props;
+
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const isEn = lang === "en";
+
+const departmentName = t("nav.title");
+const siteName = `${departmentName} UIN Suska Riau`;
+
+const fullTitle = title
+  ? `${title} | ${siteName}`
+  : `${siteName} - Universitas Islam Negeri Sultan Syarif Kasim Riau`;
+
+const defaultDescription = isEn
+  ? (title
+      ? `${title} - Department of Informatics Engineering, Faculty of Science and Technology, UIN Sultan Syarif Kasim Riau.`
+      : "Official Website of the Department of Informatics Engineering, Faculty of Science and Technology, UIN Sultan Syarif Kasim Riau. Center of excellence in Islamic-integrated IT education and research.")
+  : (title
+      ? `${title} - Program Studi Teknik Informatika, Fakultas Sains dan Teknologi, UIN Sultan Syarif Kasim Riau.`
+      : "Website resmi Program Studi Teknik Informatika, Fakultas Sains dan Teknologi, UIN Sultan Syarif Kasim Riau. Pusat keunggulan pendidikan dan riset bidang teknologi informasi yang terintegrasi nilai-nilai keislaman.");
+
+const metaDescription = description || defaultDescription;
+
+const siteUrl = (Astro.site ? Astro.site.toString() : "https://tif.uin-suska.ac.id").replace(/\/$/, "");
+const currentPath = Astro.url.pathname;
+const canonicalUrl = new URL(currentPath, siteUrl).href;
+
+const ogImage = image.startsWith("http")
+  ? image
+  : new URL(image.startsWith("/") ? image : `/${image}`, siteUrl).href;
+
+const defaultKeywords = isEn
+  ? "Informatics Engineering, Computer Science, UIN Suska Riau, Faculty of Science and Technology, Sultan Syarif Kasim Islamic University, Pekanbaru, Riau, IT Higher Education"
+  : "Teknik Informatika, UIN Suska Riau, Fakultas Sains dan Teknologi, UIN Sultan Syarif Kasim, Pekanbaru, Riau, Kuliah Informatika, Ilmu Komputer, Kampus Islam Negeri";
+
+const metaKeywords = keywords || defaultKeywords;
+
+// Generate Schema.org JSON-LD
+const organizationSchema = {
+  "@type": "EducationalOrganization",
+  "@id": `${siteUrl}/#organization`,
+  "name": "Teknik Informatika UIN Sultan Syarif Kasim Riau",
+  "alternateName": "Department of Informatics Engineering UIN Suska Riau",
+  "url": siteUrl,
+  "logo": `${siteUrl}/logo/uin.png`,
+  "image": `${siteUrl}/landing-pages/gedung.jpg`,
+  "email": "tif@uin-suska.ac.id",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Jl. H.R. Soebrantas Km. 15 No. 155, Simpang Baru, Tampan",
+    "addressLocality": "Pekanbaru",
+    "addressRegion": "Riau",
+    "postalCode": "28293",
+    "addressCountry": "ID"
+  },
+  "parentOrganization": {
+    "@type": "CollegeOrUniversity",
+    "name": "Universitas Islam Negeri Sultan Syarif Kasim Riau",
+    "url": "https://uin-suska.ac.id"
+  }
+};
+
+const websiteSchema = {
+  "@type": "WebSite",
+  "@id": `${siteUrl}/#website`,
+  "url": siteUrl,
+  "name": siteName,
+  "publisher": {
+    "@id": `${siteUrl}/#organization`
+  },
+  "inLanguage": isEn ? "en-US" : "id-ID"
+};
+
+let jsonLdGraph: any[] = [organizationSchema, websiteSchema];
+
+// If page is an article/news, inject NewsArticle schema (Point 3)
+if (type === "article" && articleData) {
+  const newsArticleSchema = {
+    "@type": "NewsArticle",
+    "@id": `${canonicalUrl}#article`,
+    "isPartOf": {
+      "@id": `${siteUrl}/#website`
+    },
+    "headline": articleData.headline || title,
+    "description": articleData.description || metaDescription,
+    "image": articleData.image ? [articleData.image.startsWith("http") ? articleData.image : `${siteUrl}${articleData.image}`] : [ogImage],
+    "datePublished": articleData.datePublished || new Date().toISOString(),
+    "dateModified": articleData.dateModified || articleData.datePublished || new Date().toISOString(),
+    "mainEntityOfPage": canonicalUrl,
+    "author": {
+      "@type": "Organization",
+      "name": articleData.author || "Program Studi Teknik Informatika UIN Suska Riau",
+      "url": siteUrl
+    },
+    "publisher": {
+      "@id": `${siteUrl}/#organization`
+    },
+    "inLanguage": isEn ? "en-US" : "id-ID"
+  };
+  jsonLdGraph.push(newsArticleSchema);
+}
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": jsonLdGraph
+};
+---
+
+<!-- Primary Meta Tags -->
+<title>{fullTitle}</title>
+<meta name="title" content={fullTitle} />
+<meta name="description" content={metaDescription} />
+<meta name="keywords" content={metaKeywords} />
+<meta name="author" content={author} />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="theme-color" content="#004d2c" />
+<meta name="color-scheme" content="light" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+
+<!-- Canonical & Language Alternates -->
+<link rel="canonical" href={canonicalUrl} />
+<link rel="alternate" hreflang="id" href={`${siteUrl}${currentPath}`} />
+<link rel="alternate" hreflang="en" href={`${siteUrl}${currentPath}`} />
+<link rel="alternate" hreflang="x-default" href={`${siteUrl}${currentPath}`} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={metaDescription} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:alt" content={fullTitle} />
+<meta property="og:locale" content={isEn ? "en_US" : "id_ID"} />
+<meta property="og:locale:alternate" content={isEn ? "id_ID" : "en_US"} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={metaDescription} />
+<meta name="twitter:image" content={ogImage} />
+
+<!-- Structured Data (JSON-LD) -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+

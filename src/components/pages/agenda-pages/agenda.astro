@@ -16,7 +16,7 @@ let totalItems = 0;
 let fetchError = false;
 
 function buildAgendaUrl(page: number) {
-  const base = localizePath("/agenda/agenda", lang);
+  const base = localizePath("/events", lang);
   return page > 1 ? `${base}?page=${page}` : base;
 }
 

@@ -3,16 +3,40 @@ import "../styles/global.css";
 import "aos/dist/aos.css";
 import Navbar from "../components/globals/navbar.astro";
 import Footer from "../components/pages/landing-pages/footer.astro";
-import { getLocaleFromUrl, useTranslations } from "../lib/translations";
+import SEO from "../components/globals/SEO.astro";
+import { getLocaleFromUrl } from "../lib/translations";
 import { ClientRouter } from "astro:transitions";
+
+interface ArticleData {
+  headline?: string;
+  datePublished?: string;
+  dateModified?: string;
+  author?: string;
+  image?: string;
+  description?: string;
+}
 
 interface Props {
   title?: string;
+  description?: string;
+  image?: string;
+  type?: "website" | "article";
+  keywords?: string;
+  author?: string;
+  articleData?: ArticleData;
 }
 
-const { title } = Astro.props;
+const {
+  title,
+  description,
+  image = "/landing-pages/gedung.jpg",
+  type = "website",
+  keywords,
+  author,
+  articleData,
+} = Astro.props;
+
 const lang = getLocaleFromUrl(Astro);
-const t = useTranslations(lang);
 ---
 
 <!doctype html>
@@ -20,11 +44,25 @@ const t = useTranslations(lang);
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- Dynamic SEO Component -->
+        <SEO
+          title={title}
+          description={description}
+          image={image}
+          type={type}
+          keywords={keywords}
+          author={author}
+          articleData={articleData}
+        />
+
+        <!-- Fonts & Icons -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" />
-        <link rel="icon" type="image/svg+xml" href="/logo/uin.png" />
-        <title>{title ? `${title} - ${t('nav.title')} UIN Suska Riau` : `${t('nav.title')} UIN Suska Riau`}</title>
+        <link rel="icon" type="image/png" href="/logo/uin.png" />
+        <link rel="apple-touch-icon" href="/logo/uin.png" />
+
         <ClientRouter />
     </head>
     <body class="bg-white">

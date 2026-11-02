@@ -1,0 +1,12 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Laboratorium from "@/components/pages/laboratorium-pages/laboratorium.astro";
+import { getLocaleFromUrl, useTranslations } from "@/lib/translations";
+
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+---
+
+<Layout title={t("page.lab.title")}>
+    <Laboratorium />
+</Layout>

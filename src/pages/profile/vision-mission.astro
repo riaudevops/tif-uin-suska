@@ -1,0 +1,20 @@
+---
+import { translateInline } from "@/lib/translations.js";
+import Layout from "@/layouts/Layout.astro";
+import Visi from "@/components/pages/visimisi-pages/visi.astro";
+import Misi from "@/components/pages/visimisi-pages/misi.astro";
+import Tujuan from "@/components/pages/visimisi-pages/tujuan.astro";
+import Strategi from "@/components/pages/visimisi-pages/strategi.astro";
+import Profesional from "@/components/pages/visimisi-pages/profesional.astro";
+import { getLocaleFromUrl } from "@/lib/translations";
+
+const isEn = getLocaleFromUrl(Astro) === "en";
+---
+
+<Layout title={translateInline((isEn) ? "en" : "id", "inline.scientific-vision-visi-misi-tujuan-dan-str")}>
+  <Visi />
+  <Misi />
+  <Tujuan />
+  <Strategi />
+  <Profesional />
+</Layout>

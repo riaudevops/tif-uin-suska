@@ -90,7 +90,7 @@ try {
 
               <div class="mt-auto pt-2">
                 <a
-                  href={localizePath(`/agenda/agenda?id=${post.id}`, lang)}
+                  href={localizePath(`/events?id=${post.id}`, lang)}
                   class="inline-flex items-center rounded-full text-sm font-semibold text-[#0d3c2f] transition-colors hover:text-[#d7a62b]"
                 >
                   {translateInline((lang === 'en') ? "en" : "id", "inline.view-detail")}
@@ -106,7 +106,7 @@ try {
     )}
 
     <div class="mt-16 text-center">
-      <a href={localizePath("/agenda/agenda", lang)} class="inline-flex items-center justify-center rounded-full border border-[#0d3c2f] px-7 py-3 font-semibold text-[#0d3c2f] transition-all hover:bg-[#0d3c2f] hover:text-white">
+      <a href={localizePath("/events", lang)} class="inline-flex items-center justify-center rounded-full border border-[#0d3c2f] px-7 py-3 font-semibold text-[#0d3c2f] transition-all hover:bg-[#0d3c2f] hover:text-white">
         {t("agenda.viewall")}
       </a>
     </div>

@@ -15,7 +15,7 @@ const STATIC_PAGES = [
     {
         title: "Sejarah",
         title_en: "History",
-        url: "/profil/sejarah",
+        url: "/profile/history",
         category: "Profil",
         category_en: "Profile",
         keywords: "sejarah prodi teknik informatika",
@@ -24,7 +24,7 @@ const STATIC_PAGES = [
     {
         title: "Visi, Misi, Tujuan, dan Strategi",
         title_en: "Vision, Mission, Goals, and Strategy",
-        url: "/visimisi/visimisi",
+        url: "/profile/vision-mission",
         category: "Profil",
         category_en: "Profile",
         keywords: "visi misi tujuan strategi",
@@ -33,7 +33,7 @@ const STATIC_PAGES = [
     {
         title: "Rencana Strategis",
         title_en: "Strategic Plan",
-        url: "/rencana/rencana",
+        url: "/profile/strategic-plan",
         category: "Profil",
         category_en: "Profile",
         keywords: "rencana strategis perencanaan",
@@ -42,7 +42,7 @@ const STATIC_PAGES = [
     {
         title: "Panduan Pengelolaan Pendidikan",
         title_en: "Educational Management Guidelines",
-        url: "/panduan/panduan",
+        url: "/profile/guidelines",
         category: "Profil",
         category_en: "Profile",
         keywords: "panduan pengelolaan pendidikan",
@@ -51,7 +51,7 @@ const STATIC_PAGES = [
     {
         title: "Struktur Organisasi",
         title_en: "Organizational Structure",
-        url: "/struktur/struktur",
+        url: "/profile/organization",
         category: "Profil",
         category_en: "Profile",
         keywords: "struktur organisasi pimpinan",
@@ -60,7 +60,7 @@ const STATIC_PAGES = [
     {
         title: "Dosen",
         title_en: "Lecturers",
-        url: "/dosen/dosen",
+        url: "/profile/faculty",
         category: "Profil",
         category_en: "Profile",
         keywords: "dosen pengajar tenaga pendidik",
@@ -69,7 +69,7 @@ const STATIC_PAGES = [
     {
         title: "Laboratorium",
         title_en: "Laboratories",
-        url: "/laboratorium/laboratorium",
+        url: "/profile/laboratories",
         category: "Profil",
         category_en: "Profile",
         keywords: "laboratorium lab fasilitas",
@@ -78,7 +78,7 @@ const STATIC_PAGES = [
     {
         title: "Ruang Kelas",
         title_en: "Classrooms",
-        url: "/ruangkelas/ruangkelas",
+        url: "/profile/classrooms",
         category: "Profil",
         category_en: "Profile",
         keywords: "ruang kelas",
@@ -87,7 +87,7 @@ const STATIC_PAGES = [
     {
         title: "Prestasi",
         title_en: "Achievements",
-        url: "/prestasi/prestasi",
+        url: "/profile/achievements",
         category: "Profil",
         category_en: "Profile",
         keywords: "prestasi penghargaan",
@@ -96,7 +96,7 @@ const STATIC_PAGES = [
     {
         title: "Kurikulum",
         title_en: "Curriculum",
-        url: "/kurikulum/kurikulum",
+        url: "/academics/curriculum",
         category: "Akademik",
         category_en: "Academic",
         keywords: "kurikulum mata kuliah",
@@ -105,7 +105,7 @@ const STATIC_PAGES = [
     {
         title: "Beasiswa",
         title_en: "Scholarships",
-        url: "/beasiswa/beasiswa",
+        url: "/academics/scholarships",
         category: "Akademik",
         category_en: "Academic",
         keywords: "beasiswa",
@@ -114,7 +114,7 @@ const STATIC_PAGES = [
     {
         title: "Info Tugas Akhir (TA)",
         title_en: "Thesis Information (TA)",
-        url: "/tugas/tugas-akhir",
+        url: "/academics/thesis",
         category: "Akademik",
         category_en: "Academic",
         keywords: "tugas akhir skripsi ta",
@@ -123,7 +123,7 @@ const STATIC_PAGES = [
     {
         title: "Info Kerja Praktik (KP)",
         title_en: "Internship Information (KP)",
-        url: "/kp/kerja-praktik",
+        url: "/academics/internship",
         category: "Akademik",
         category_en: "Academic",
         keywords: "kerja praktik kp magang",
@@ -132,7 +132,7 @@ const STATIC_PAGES = [
     {
         title: "Labs Squad",
         title_en: "Labs Squad",
-        url: "/labssquad/labssquad",
+        url: "/academics/labs-squad",
         category: "Akademik",
         category_en: "Academic",
         keywords: "labs squad",
@@ -141,7 +141,7 @@ const STATIC_PAGES = [
     {
         title: "Software Engineering",
         title_en: "Software Engineering",
-        url: "/software/software",
+        url: "/research/software-engineering",
         category: "Penelitian",
         category_en: "Research",
         keywords: "software engineering riset",
@@ -150,7 +150,7 @@ const STATIC_PAGES = [
     {
         title: "Information Technology",
         title_en: "Information Technology",
-        url: "/information/information",
+        url: "/research/information-technology",
         category: "Penelitian",
         category_en: "Research",
         keywords: "information technology riset",
@@ -159,7 +159,7 @@ const STATIC_PAGES = [
     {
         title: "AIORC",
         title_en: "AIORC",
-        url: "/aiorc/aiorc",
+        url: "/research/aiorc",
         category: "Penelitian",
         category_en: "Research",
         keywords: "aiorc penelitian kecerdasan buatan optimasi",
@@ -168,7 +168,7 @@ const STATIC_PAGES = [
     {
         title: "Berita",
         title_en: "News",
-        url: "/berita",
+        url: "/news",
         category: "Berita",
         category_en: "News",
         keywords: "berita artikel informasi",
@@ -177,7 +177,7 @@ const STATIC_PAGES = [
     {
         title: "Agenda",
         title_en: "Agenda",
-        url: "/agenda/agenda",
+        url: "/events",
         category: "Agenda",
         category_en: "Agenda",
         keywords: "agenda kegiatan acara",
@@ -186,7 +186,7 @@ const STATIC_PAGES = [
     // {
     //     title: "Alumni",
     //     title_en: "Alumni",
-    //     url: "/alumni/alumni",
+    //     url: "/alumni",
     //     category: "Alumni",
     //     category_en: "Alumni",
     //     keywords: "alumni lulusan",
@@ -195,7 +195,7 @@ const STATIC_PAGES = [
     {
         title: "Akreditasi",
         title_en: "Accreditation",
-        url: "/akreditasi",
+        url: "/accreditation",
         category: "Halaman",
         category_en: "Page",
         keywords: "akreditasi lam infokom",
@@ -204,7 +204,7 @@ const STATIC_PAGES = [
     {
         title: "Mitra",
         title_en: "Partners",
-        url: "/mitra",
+        url: "/partners",
         category: "Halaman",
         category_en: "Page",
         keywords: "mitra kerjasama kolaborasi",
@@ -274,7 +274,7 @@ export async function buildSearchIndex(lang = "id") {
             const categoryName = isEn ? "News" : "Berita";
             items.push({
                 title: post.title,
-                url: isEn ? `/en/berita/${post.slug}` : `/berita/${post.slug}`,
+                url: isEn ? `/en/news/${post.slug}` : `/news/${post.slug}`,
                 category: isEn ? "News" : "Berita",
                 keywords: `${post.title} ${post.excerpt || ""} ${categoryName} ${isEn ? "news article" : "berita artikel"}`,
             });
@@ -288,7 +288,7 @@ export async function buildSearchIndex(lang = "id") {
             if (!dosen?.nama) continue;
             items.push({
                 title: dosen.nama,
-                url: isEn ? `/en/dosen/${dosen.id}` : `/dosen/${dosen.id}`,
+                url: isEn ? `/en/profile/faculty/${dosen.id}` : `/profile/faculty/${dosen.id}`,
                 category: isEn ? "Lecturers" : "Dosen",
                 keywords: `${dosen.nama} ${dosen.jabatan || ""} ${dosen.email || ""} ${dosen.nip || ""} ${isEn ? "lecturer faculty" : "dosen pengajar"}`,
             });
@@ -302,7 +302,7 @@ export async function buildSearchIndex(lang = "id") {
             if (!agenda?.title) continue;
             items.push({
                 title: agenda.title,
-                url: isEn ? "/en/agenda/agenda" : "/agenda/agenda",
+                url: isEn ? "/en/events" : "/events",
                 category: isEn ? "Agenda" : "Agenda",
                 keywords: `${agenda.title} ${agenda.description} ${agenda.location} ${agenda.category} ${isEn ? "agenda events" : "agenda kegiatan"}`,
             });
@@ -315,7 +315,7 @@ export async function buildSearchIndex(lang = "id") {
             if (!kp?.title || !kp?.slug) continue;
             items.push({
                 title: kp.title,
-                url: isEn ? `/en/kerja-praktik/${kp.slug}` : `/kerja-praktik/${kp.slug}`,
+                url: isEn ? `/en/academics/internship/${kp.slug}` : `/academics/internship/${kp.slug}`,
                 category: isEn ? "Internship" : "Kerja Praktik",
                 keywords: `${kp.title} ${kp.excerpt || ""} ${isEn ? "internship kp" : "kerja praktik kp magang"}`,
             });
@@ -328,7 +328,7 @@ export async function buildSearchIndex(lang = "id") {
             if (!ta?.title || !ta?.slug) continue;
             items.push({
                 title: ta.title,
-                url: isEn ? `/en/tugas-akhir/${ta.slug}` : `/tugas-akhir/${ta.slug}`,
+                url: isEn ? `/en/academics/thesis/${ta.slug}` : `/academics/thesis/${ta.slug}`,
                 category: isEn ? "Thesis" : "Tugas Akhir",
                 keywords: `${ta.title} ${ta.excerpt || ""} ${isEn ? "thesis final project" : "tugas akhir skripsi ta sempro munaqasyah"}`,
             });
@@ -341,7 +341,7 @@ export async function buildSearchIndex(lang = "id") {
             if (!bs?.title || !bs?.slug) continue;
             items.push({
                 title: bs.title,
-                url: isEn ? `/en/beasiswa/${bs.slug}` : `/beasiswa/${bs.slug}`,
+                url: isEn ? `/en/academics/scholarships/${bs.slug}` : `/academics/scholarships/${bs.slug}`,
                 category: isEn ? "Scholarships" : "Beasiswa",
                 keywords: `${bs.title} ${bs.excerpt || ""} ${isEn ? "scholarship grant tuition funding" : "beasiswa bantuan ukt kip-k genbi"}`,
             });

@@ -121,11 +121,11 @@ const t = useTranslations(lang);
         <p class="text-sm text-gray-500 font-sans mb-6 font-medium">{t('page.404.popular')}</p>
         <div class="flex flex-wrap justify-center gap-3">
           {[
-            { href: localizePath('/profil/sejarah', lang), label: t('page.404.profile') },
-            { href: localizePath('/kurikulum/kurikulum', lang), label: t('menu.kurikulum') },
-            { href: localizePath('/dosen/dosen', lang), label: t('bread.dosen') },
-            { href: localizePath('/laboratorium/laboratorium', lang), label: t('page.404.laboratory') },
-            { href: localizePath('/berita', lang), label: t('nav.berita') },
+            { href: localizePath('/profile/history', lang), label: t('page.404.profile') },
+            { href: localizePath('/academics/curriculum', lang), label: t('menu.kurikulum') },
+            { href: localizePath('/profile/faculty', lang), label: t('bread.dosen') },
+            { href: localizePath('/profile/laboratories', lang), label: t('page.404.laboratory') },
+            { href: localizePath('/news', lang), label: t('nav.berita') },
           ].map((link) => (
             <a
               href={link.href}

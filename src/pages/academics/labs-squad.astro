@@ -1,0 +1,14 @@
+---
+import { translateInline } from "@/lib/translations.js";
+import Layout from '@/layouts/Layout.astro';
+import LabsSquad from '@/components/pages/labssquad-pages/labssquad.astro';
+import Kontribusi from '@/components/pages/labssquad-pages/kontribusi.astro';
+import { getLocaleFromUrl } from "@/lib/translations";
+
+const isEn = getLocaleFromUrl(Astro) === "en";
+---
+
+<Layout title={translateInline((isEn) ? "en" : "id", "inline.labs-squad")}>
+  <LabsSquad />
+  <Kontribusi />
+</Layout>

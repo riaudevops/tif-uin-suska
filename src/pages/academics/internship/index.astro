@@ -1,0 +1,12 @@
+---
+import { translateInline } from "@/lib/translations.js";
+import Layout from '@/layouts/Layout.astro';
+import Kp from '@/components/pages/kp-pages/kerja-praktik.astro';
+import { getLocaleFromUrl } from "@/lib/translations";
+
+const isEn = getLocaleFromUrl(Astro) === "en";
+---
+
+<Layout title={translateInline((isEn) ? "en" : "id", "inline.internship-and-industrial-placement-info-kerja-praktik")}>
+    <Kp />
+</Layout>

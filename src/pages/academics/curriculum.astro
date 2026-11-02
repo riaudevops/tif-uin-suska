@@ -1,0 +1,14 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Kurikulum from "@/components/pages/kurikulum-pages/kurikulum.astro";
+import Isi from "@/components/pages/kurikulum-pages/isi.astro";
+import { getLocaleFromUrl, useTranslations } from "@/lib/translations";
+
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+---
+
+<Layout title={t("menu.kurikulum")}>
+    <Kurikulum />
+    <Isi />
+</Layout>
