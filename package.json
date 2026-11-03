@@ -7,34 +7,29 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "astro build && vercel --prod"
+    "check": "astro check",
+    "ci": "astro check && astro build && bun run security:check",
+    "start": "bun server.mjs",
+    "cms:check": "bun scripts/check-cms.mjs",
+    "images:optimize": "bun scripts/optimize-images.mjs",
+    "security:check": "bun scripts/check-security.mjs"
   },
   "dependencies": {
-    "@astrojs/node": "^10.1.2",
-    "@astrojs/react": "5.0.6",
-    "@astrojs/sitemap": "^3.7.4",
-    "@lucide/astro": "^0.556.0",
-    "@radix-ui/react-navigation-menu": "^1.2.14",
+    "@astrojs/node": "^11.1.9",
+    "@lucide/astro": "^1.66.0",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.3.0",
     "aos": "^2.3.4",
-    "astro": "6.4.8",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "lucide-react": "^0.555.0",
+    "astro": "^7.4.4",
     "marked": "^18.0.14",
-    "playwright": "^1.61.1",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1",
     "sanitize-html": "^2.18.0",
-    "shadcn-ui": "^0.9.5",
     "swiper": "^14.2.0",
-    "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^4.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.12",
     "@types/sanitize-html": "^2.16.2",
-    "puppeteer-core": "^25.2.1"
+    "sharp": "^0.35.5",
+    "typescript": "^6"
   }
 }

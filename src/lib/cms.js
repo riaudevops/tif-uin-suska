@@ -35,9 +35,34 @@ export const ASSET_BASE_URL = rawAssetsUrl ? rawAssetsUrl : `${API_URL}/assets`;
 export const ASSET_URL = `${ASSET_BASE_URL}/`;
 
 /**
- * Safely format an asset or image URL.
- * Handles full URLs, relative paths, null/undefined, and Directus file UUIDs.
+ * Formats an asset URL for a specific display size.
+ *
+ * Directus can generate derived images on the fly; asking for ~800px WebP
+ * thumbnails instead of the original upload keeps cards light. External URLs
+ * and local `/public` paths are returned unchanged.
+ *
+ * @param {string} fileOrUrl
+ * @param {{ width?: number, height?: number, fit?: string, quality?: number, format?: string }} [options]
+ * @param {string} [fallback]
  */
+export function getImageUrl(fileOrUrl, options = {}, fallback = "") {
+  const base = getAssetUrl(fileOrUrl, fallback);
+  if (!base) return base;
+
+  // Only transform assets served by Directus (UUID references).
+  if (!base.startsWith(ASSET_URL)) return base;
+
+  const params = new URLSearchParams();
+  if (options.width) params.set("width", String(options.width));
+  if (options.height) params.set("height", String(options.height));
+  if (options.fit) params.set("fit", options.fit);
+  if (options.quality) params.set("quality", String(options.quality));
+  params.set("format", options.format || "webp");
+
+  const separator = base.includes("?") ? "&" : "?";
+  return `${base}${separator}${params.toString()}`;
+}
+
 export function getAssetUrl(fileOrUrl, fallback = "") {
   if (!fileOrUrl || typeof fileOrUrl !== "string") return fallback;
   const trimmed = fileOrUrl.trim();

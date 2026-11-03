@@ -3,7 +3,7 @@ import { translateInline } from "@/lib/translations.js";
 import Layout from "@/layouts/Layout.astro";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 import { fetchWithCache } from '@/lib/cachedFetch.js';
-import { API_BASE_URL, getAssetUrl } from '@/lib/cms.js';
+import { API_BASE_URL, getImageUrl } from '@/lib/cms.js';
 import { BERITA_LIST_FIELDS, normalizeBeritaList, buildBeritaQueryParams } from '@/lib/berita.js';
 import { ArrowUpRight } from '@lucide/astro';
 
@@ -25,6 +25,15 @@ function buildBeritaUrl(page: number, q = searchQuery) {
   if (q) params.set('q', q);
   const qs = params.toString();
   return qs ? `${base}?${qs}` : base;
+}
+
+/** Locale-less variant used for canonical / hreflang URLs. */
+function buildCanonicalTarget(page: number, q = searchQuery) {
+  const params = new URLSearchParams();
+  if (page > 1) params.set('page', String(page));
+  if (q) params.set('q', q);
+  const qs = params.toString();
+  return qs ? `/news?${qs}` : '/news';
 }
 
 function stripHtml(value = '') {
@@ -80,7 +89,11 @@ const pageNumbers = (() => {
 })();
 ---
 
-<Layout title={translateInline((isEn) ? "en" : "id", "inline.news")}>
+<Layout
+  title={translateInline((isEn) ? "en" : "id", "inline.news")}
+  canonicalPath={buildCanonicalTarget(safePage, searchQuery)}
+  noindex={Boolean(searchQuery)}
+>
   <nav class="mx-auto max-w-7xl px-4 pt-28 pb-4 text-sm sm:px-6 sm:pt-32 lg:px-8" aria-label="Breadcrumb">
     <ol class="flex flex-wrap items-center gap-2 border-b border-slate-100 py-3 text-sm text-slate-500">
       <li class="flex items-center">
@@ -131,7 +144,7 @@ const pageNumbers = (() => {
         <form
           id="news-search-form"
           method="get"
-          action={localizePath('/berita', lang)}
+          action={localizePath('/news', lang)}
           class="relative w-full sm:max-w-6xl lg:max-w-5xl"
           role="search"
           transition:persist="news-search-form"
@@ -150,7 +163,7 @@ const pageNumbers = (() => {
             autocomplete="off"
             placeholder={translateInline((isEn) ? "en" : "id", "inline.search-title-or-content")}
             class="w-full rounded-full border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-700 shadow-sm outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-[#0b5c3d] focus:ring-2 focus:ring-[#0b5c3d]/15"
-            data-base-path={localizePath('/berita', lang)}
+            data-base-path={localizePath('/news', lang)}
           />
         </form>
       </div>
@@ -159,9 +172,13 @@ const pageNumbers = (() => {
         {posts.length === 0 ? (
           <div class="rounded-[28px] border border-slate-200 bg-white px-6 py-16 text-center shadow-sm">
             <p class="text-slate-500">
-              {searchQuery
-                ? (translateInline((isEn) ? "en" : "id", "inline.no-news-matched-your-search"))
-                : (translateInline((isEn) ? "en" : "id", "inline.no-news-has-been-published-at-this-time"))}
+              {fetchError
+                ? (isEn
+                    ? "We could not load the news right now. Please try again later."
+                    : "Berita sedang tidak dapat dimuat. Silakan coba beberapa saat lagi.")
+                : searchQuery
+                  ? (translateInline((isEn) ? "en" : "id", "inline.no-news-matched-your-search"))
+                  : (translateInline((isEn) ? "en" : "id", "inline.no-news-has-been-published-at-this-time"))}
             </p>
             {searchQuery && (
               <a href={buildBeritaUrl(1, '')} class="mt-4 inline-flex text-sm font-semibold text-[#0b5c3d] hover:underline">
@@ -195,10 +212,11 @@ const pageNumbers = (() => {
                   >
                     <div class="relative h-56 overflow-hidden bg-slate-100">
                       <img
-                        src={getAssetUrl(post.image || post.featured_image || post.images, '/landing-pages/gedung.jpg')}
+                        src={getImageUrl(post.image || post.featured_image || post.images, { width: 800 }, '/landing-pages/gedung.webp')}
                         alt={post.title}
                         loading="lazy"
                         decoding="async"
+                        data-fallback-src="/landing-pages/gedung.webp"
                         class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                       />
                       <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent"></div>
@@ -336,7 +354,7 @@ const pageNumbers = (() => {
     if (input.dataset.liveBound === 'true') return;
     input.dataset.liveBound = 'true';
 
-    const basePath = input.dataset.basePath || form.getAttribute('action') || '/berita';
+    const basePath = input.dataset.basePath || form.getAttribute('action') || '/news';
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();

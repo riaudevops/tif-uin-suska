@@ -1,7 +1,7 @@
 ---
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
 import { fetchWithCache } from "../../../lib/cachedFetch";
-import { API_BASE_URL, ASSET_URL, getAssetUrl } from "../../../lib/cms";
+import { API_BASE_URL, ASSET_URL, getImageUrl } from "../../../lib/cms";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -93,14 +93,14 @@ try {
             currentTranslation?.button_text_translate ||
             fallbackTranslation.button_text_translate ||
             slide.button_text;
-          const imageUrl = getAssetUrl(slide.image);
+          const imageUrl = getImageUrl(slide.image, { width: 1920, quality: 78 });
 
           return (
             <div class="swiper-slide relative h-full w-full">
 
               {/* ── Background ── */}
               {imageUrl ? (
-                <img
+                <img decoding="async"
                   src={imageUrl}
                   alt={title}
                   loading={slideIndex === 0 ? "eager" : "lazy"}
@@ -230,49 +230,7 @@ try {
 
 <!-- Script inisialisasi Swiper -->
 <script>
-  import Swiper from 'swiper';
-  import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-
-  let heroSwiperInstance: any = null;
-
-  function initSwiper() {
-    const swiperEl = document.querySelector('.hero-swiper') as HTMLElement | null;
-    if (!swiperEl) return;
-
-    if (heroSwiperInstance) {
-      heroSwiperInstance.destroy(true, true);
-      heroSwiperInstance = null;
-    }
-
-    const slidesCount = swiperEl.querySelectorAll('.swiper-slide').length;
-    const hasMultipleSlides = slidesCount > 1;
-
-    heroSwiperInstance = new Swiper('.hero-swiper', {
-      modules: [Navigation, Pagination, Autoplay],
-      loop: hasMultipleSlides,
-      speed: 700,
-      grabCursor: true,
-      touchRatio: 1,
-      resistanceRatio: 0.85,
-      autoplay: hasMultipleSlides ? {
-        delay: 5500,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: true,
-      } : false,
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-        dynamicBullets: hasMultipleSlides && slidesCount > 6,
-      },
-      navigation: {
-        prevEl: '.swiper-hero-prev',
-        nextEl: '.swiper-hero-next',
-      },
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', initSwiper);
-  document.addEventListener('astro:page-load', initSwiper);
+  import "../../../scripts/hero-slider.js";
 </script>
 
 <style>

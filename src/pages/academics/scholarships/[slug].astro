@@ -1,7 +1,7 @@
 ---
 import { translateInline } from "@/lib/translations.js";
 import Layout from "@/layouts/Layout.astro";
-import sanitizeHtml from "sanitize-html";
+import { sanitizeArticleHtml } from "@/lib/sanitize.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 import {
   Calendar,
@@ -19,86 +19,85 @@ import {
 
 export const prerender = false;
 
-import { API_URL, ASSET_URL, getAssetUrl } from '@/lib/cms.js';
+import { getImageUrl } from '@/lib/cms.js';
+import { getCollection, isAccessError, isTransportError } from '@/lib/directus.js';
+import ContentState from '@/components/globals/ContentState.astro';
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
 
 const { slug } = Astro.params;
+const cleanSlug = String(slug ?? "").trim();
 
 let article: any = null;
 let related: any[] = [];
-let fetchError = false;
+let loadState: "ok" | "not-found" | "unavailable" = "not-found";
 
-try {
-  const isId = /^\d+$/.test(slug || '');
-  const filterParam = isId ? `filter[id][_eq]=${slug}` : `filter[slug][_eq]=${slug}`;
+const isNumericId = /^\d+$/.test(cleanSlug);
+const identifierFilter = isNumericId
+  ? `&filter[id][_eq]=${encodeURIComponent(cleanSlug)}`
+  : `&filter[slug][_eq]=${encodeURIComponent(cleanSlug)}`;
 
-  const [res, relatedRes] = await Promise.all([
-    fetch(`${API_URL}/items/beasiswa?${filterParam}`),
-    fetch(`${API_URL}/items/beasiswa?limit=4&sort=-published_at`)
-  ]);
+const detailResult = await getCollection("beasiswa", {
+  query: `?limit=1${identifierFilter}`,
+  ttlMs: 60000,
+});
 
-  if (res.ok) {
-    const json = await res.json();
-    article = json.data?.[0];
+if (!detailResult.ok) {
+  // Distinguish "we cannot read the collection" from "the entry does not exist"
+  // so the page never renders invented content with a 200 status.
+  loadState =
+    isAccessError(detailResult) || isTransportError(detailResult)
+      ? "unavailable"
+      : "not-found";
+} else if (detailResult.data.length > 0) {
+  article = detailResult.data[0];
+  loadState = "ok";
+
+  const relatedResult = await getCollection("beasiswa", {
+    query: "?limit=4&sort=-published_at",
+    ttlMs: 60000,
+  });
+
+  if (relatedResult.ok) {
+    related = relatedResult.data.filter(
+      (item: any) => item?.slug !== cleanSlug && String(item?.id) !== cleanSlug,
+    );
   }
-
-  if (relatedRes.ok) {
-    const jsonRel = await relatedRes.json();
-    related = (jsonRel.data || []).filter((item: any) => item.slug !== slug && String(item.id) !== slug);
-  }
-} catch (error) {
-  console.error("Gagal mengambil detail Beasiswa:", error);
-  fetchError = true;
 }
 
-// Fallback dummy article if not in Directus
-if (!article) {
-  article = {
-    title: slug === 'beasiswa-bank-indonesia-genbi-2026' 
-      ? 'Pembukaan Pendaftaran Beasiswa Bank Indonesia (GenBI) Tahun 2026'
-      : (translateInline((isEn) ? "en" : "id", "inline.scholarship-opening-detail")),
-    published_at: new Date().toISOString(),
-    deadline: '28 Februari 2026',
-    category: isEn ? 'Bank Indonesia' : 'Bank Indonesia',
-    excerpt: translateInline((isEn) ? "en" : "id", "inline.opportunity-for-active-students-in-semester-4-6"),
-    content: isEn ? `
-      <h3>Scholarship Benefits & Coverage</h3>
-      <p>Selected GenBI scholarship awardees will receive:</p>
-      <ul>
-        <li>Monthly stipend of Rp 1,000,000 for 1 academic year.</li>
-        <li>Leadership, entrepreneurship, and public speaking training.</li>
-        <li>Membership in Generasi Baru Indonesia (GenBI) national network.</li>
-      </ul>
-      <h3>Eligibility Criteria</h3>
-      <ul>
-        <li>Active student currently in semester 4 or semester 6.</li>
-        <li>Cumulative GPA (IPK) minimum 3.25 (scale 4.00).</li>
-        <li>Minimum 40 SKS completed.</li>
-        <li>Not currently receiving scholarship from other institutions.</li>
-      </ul>
-    ` : `
-      <h3 class="text-xl font-bold text-slate-900 mt-4 mb-2">Cakupan & Fasilitas Beasiswa</h3>
-      <p class="text-slate-700 leading-relaxed mb-4">Penerima Beasiswa Bank Indonesia (GenBI) akan memperoleh fasilitas pendukung meliputi:</p>
-      <ul class="list-disc pl-5 text-slate-700 space-y-2 mb-6">
-        <li>Bantuan biaya pendidikan / uang saku sebesar <strong>Rp 1.000.000,- / bulan</strong>.</li>
-        <li>Pelatihan pengembangan karakter, kepemimpinan, dan kewirausahaan.</li>
-        <li>Keanggotaan aktif komunitas Generasi Baru Indonesia (GenBI) Riau.</li>
-      </ul>
-      <h3 class="text-xl font-bold text-slate-900 mt-6 mb-2">Persyaratan & Kriteria Kelayakan</h3>
-      <ul class="list-disc pl-5 text-slate-700 space-y-2 mb-6">
-        <li>Mahasiswa aktif S1 Teknik Informatika semester 4 atau 6.</li>
-        <li>Memiliki Indeks Prestasi Kumulatif (IPK) minimal <strong>3.25</strong>.</li>
-        <li>Telah menyelesaikan minimal 40 SKS mata kuliah.</li>
-        <li>Surat pernyataan tidak sedang menerima beasiswa dari pihak/instansi lain.</li>
-      </ul>
-    `
-  };
+if (loadState === "not-found") {
+  Astro.response.status = 404;
+} else if (loadState === "unavailable") {
+  Astro.response.status = 503;
+  Astro.response.statusText = "Service Unavailable";
+  Astro.response.headers.set("Retry-After", "300");
 }
 
-const formattedDate = article.published_at 
+const pageTitle = article?.title || t("inline.scholarship-program");
+const listHref = localizePath("/academics/scholarships", lang);
+const backLabel = translateInline(isEn ? "en" : "id", "inline.back-to-scholarships");
+
+const stateTitle =
+  loadState === "unavailable"
+    ? isEn
+      ? "This information is temporarily unavailable"
+      : "Informasi ini sedang tidak dapat ditampilkan"
+    : isEn
+      ? "Announcement not found"
+      : "Pengumuman tidak ditemukan";
+
+const stateDescription =
+  loadState === "unavailable"
+    ? isEn
+      ? "We could not load this page from the content system. Please try again later or contact the department for the latest information."
+      : "Halaman ini gagal dimuat dari sistem konten. Silakan coba beberapa saat lagi atau hubungi program studi untuk informasi terbaru."
+    : isEn
+      ? "The announcement you are looking for does not exist or may have been moved."
+      : "Pengumuman yang Anda cari tidak tersedia atau mungkin sudah dipindahkan.";
+
+const formattedDate = article?.published_at
   ? new Date(article.published_at).toLocaleDateString(isEn ? 'en-US' : 'id-ID', {
       day: 'numeric',
       month: 'long',
@@ -107,8 +106,11 @@ const formattedDate = article.published_at
   : '-';
 ---
 
-<Layout title={article.title}>
-  
+<Layout title={pageTitle}>
+  {loadState === "ok" ? (
+    <>
+
+
   {/* Breadcrumb Navigation */}
   <nav class="mx-auto max-w-7xl px-4 pt-28 pb-4 text-sm sm:px-6 sm:pt-32 lg:px-8" aria-label="Breadcrumb">
     <ol class="flex flex-wrap items-center gap-2 border-b border-slate-100 py-3 text-sm text-slate-500">
@@ -134,9 +136,9 @@ const formattedDate = article.published_at
   </nav>
 
   <article class="max-w-5xl mx-auto px-4 sm:px-6 py-10 font-sans">
-    
+
     {/* Back Button */}
-    <a 
+    <a
       href={localizePath('/academics/scholarships', lang)}
       class="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-teal-50 text-slate-700 hover:text-teal-800 text-xs sm:text-sm font-bold rounded-xl transition-all mb-6 border border-slate-200"
     >
@@ -180,8 +182,8 @@ const formattedDate = article.published_at
     {/* Cover Image */}
     {article.thumbnail && (
       <div class="rounded-3xl overflow-hidden shadow-xl mb-10 max-h-[460px] bg-slate-100">
-        <img 
-          src={getAssetUrl(article.thumbnail)} 
+        <img decoding="async" loading="lazy"
+          src={getImageUrl(article.thumbnail, { width: 1200 })}
           alt={article.title}
           class="w-full h-full object-cover"
         />
@@ -196,9 +198,9 @@ const formattedDate = article.published_at
         </p>
       )}
 
-      <div 
+      <div
         class="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-slate-900 prose-a:text-teal-700 text-slate-700 leading-relaxed"
-        set:html={sanitizeHtml(String(article.content || article.fulltext || article.excerpt || ""))}
+        set:html={sanitizeArticleHtml(String(article.content || article.fulltext || article.excerpt || ""))}
       />
 
       {/* External Registration Action Card */}
@@ -207,9 +209,10 @@ const formattedDate = article.published_at
           <h4 class="font-bold text-base">{translateInline((isEn) ? "en" : "id", "inline.ready-to-apply")}</h4>
           <p class="text-xs text-slate-300 mt-1">{translateInline((isEn) ? "en" : "id", "inline.prepare-your-documents-and-click-the-portal-link")}</p>
         </div>
-        <a 
-          href="#"
-          onclick="alert('Pendaftaran dapat diakses melalui portal iRaise / situs resmi penyedia beasiswa.'); return false;"
+        <a
+          href="https://iraisenew.uin-suska.ac.id/"
+          target="_blank"
+          rel="noopener noreferrer"
           class="px-5 py-3 bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs rounded-xl transition-colors inline-flex items-center gap-2 flex-shrink-0"
         >
           {translateInline((isEn) ? "en" : "id", "inline.open-application-portal")}
@@ -226,7 +229,7 @@ const formattedDate = article.published_at
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {related.map((item: any) => (
-            <a 
+            <a
               href={localizePath(`/academics/scholarships/${item.slug || item.id}`, lang)}
               class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-teal-200 transition-all flex flex-col justify-between group"
             >
@@ -249,4 +252,15 @@ const formattedDate = article.published_at
 
   </article>
 
+
+    </>
+  ) : (
+    <ContentState
+      variant={loadState === "unavailable" ? "unavailable" : "not-found"}
+      title={stateTitle}
+      description={stateDescription}
+      backHref={listHref}
+      backLabel={backLabel}
+    />
+  )}
 </Layout>

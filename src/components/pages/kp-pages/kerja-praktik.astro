@@ -17,7 +17,8 @@ import {
   ExternalLink
 } from '@lucide/astro';
 
-import { API_URL, getAssetUrl } from "../../../lib/cms";
+import { getImageUrl } from "../../../lib/cms";
+import { getCollection } from "../../../lib/directus.js";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
@@ -33,36 +34,38 @@ interface KPItem {
 }
 
 let items: KPItem[] = [];
-let fetchError = false;
+let loadState: "ok" | "unavailable" = "ok";
 
-try {
-  const res = await fetch(`${API_URL}/items/kerja_praktik?fields=id,title,slug,excerpt,published_at,thumbnail,category&sort=-published_at`);
-  if (res.ok) {
-    const data = await res.json();
-    items = (data.data || []).map((d: any) => ({
-      id: d.id,
-      title: d.title || (translateInline((isEn) ? "en" : "id", "inline.untitled-announcement")),
-      slug: d.slug || d.id,
-      excerpt: d.excerpt || '',
-      date: d.published_at 
-        ? new Date(d.published_at).toLocaleDateString(isEn ? 'en-US' : 'id-ID', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-          }) 
-        : '',
-      thumbnail: getAssetUrl(d.thumbnail),
-      category: d.category || (translateInline((isEn) ? "en" : "id", "inline.general-info"))
-    }));
-  } else {
-    fetchError = true;
-  }
-} catch (e) {
-  console.error('Error fetching Kerja Praktik items:', e);
-  fetchError = true;
+const collectionResult = await getCollection("kerja_praktik", {
+  query: "?fields=id,title,slug,excerpt,published_at,thumbnail,category&sort=-published_at&limit=50",
+  ttlMs: 60000,
+});
+
+if (!collectionResult.ok) {
+  // Never substitute invented announcements: surface the real state instead.
+  loadState = "unavailable";
+} else {
+  items = collectionResult.data.map((d: any) => ({
+    id: d.id,
+    title: d.title || translateInline(isEn ? "en" : "id", "inline.untitled-announcement"),
+    slug: d.slug || d.id,
+    excerpt: d.excerpt || "",
+    date: d.published_at
+      ? new Date(d.published_at).toLocaleDateString(isEn ? "en-US" : "id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        })
+      : "",
+    thumbnail: getImageUrl(d.thumbnail, { width: 800 }),
+    category: d.category || translateInline(isEn ? "en" : "id", "inline.latest-internship-information"),
+    ...(d.deadline ? { deadline: d.deadline } : {}),
+  }));
 }
 
-// Default guides & procedures data for rich experience
+const displayItems = items;
+
+
 const workflowSteps = isEn ? [
   {
     step: "01",
@@ -115,70 +118,10 @@ const workflowSteps = isEn ? [
   }
 ];
 
-// Fallback items if Directus empty
-const fallbackAnnouncements: KPItem[] = isEn ? [
-  {
-    id: 'fb-1',
-    title: 'Registration & Verification Procedure for Odd Semester KP 2026',
-    slug: 'prosedur-pendaftaran-kp-2026',
-    excerpt: 'Complete guidelines for internship registration for students who have completed a minimum of 90 credits.',
-    date: '15 January 2026',
-    thumbnail: '/landing-pages/gedung-faste.jpg',
-    category: 'Registration'
-  },
-  {
-    id: 'fb-2',
-    title: 'List of Recommended Partner Companies & State Agencies for KP',
-    slug: 'daftar-mitra-perusahaan-kp',
-    excerpt: 'Directory of industry partners accepting informatics internship placements across Riau and national locations.',
-    date: '10 January 2026',
-    thumbnail: '/dosen-pages/dosen.jpg',
-    category: 'Partnership'
-  },
-  {
-    id: 'fb-3',
-    title: 'Seminar Schedule & Report Submission Deadline for KP Batch 1',
-    slug: 'jadwal-seminar-kp-gelombang-1',
-    excerpt: 'Announcement of room allocations and examiner assignments for Batch 1 Internship Seminar.',
-    date: '02 January 2026',
-    thumbnail: '/ruang-kelas/fst_mejadosen.jpg',
-    category: 'Schedule'
-  }
-] : [
-  {
-    id: 'fb-1',
-    title: 'Prosedur Pendaftaran & Verifikasi Berkas Kerja Praktik Semester Ganjil 2026',
-    slug: 'prosedur-pendaftaran-kp-2026',
-    excerpt: 'Panduan lengkap alur pendaftaran dan pengajuan surat pengantar KP bagi mahasiswa yang telah menempuh minimal 90 SKS.',
-    date: '15 Januari 2026',
-    thumbnail: '/landing-pages/gedung-faste.jpg',
-    category: 'Pendaftaran'
-  },
-  {
-    id: 'fb-2',
-    title: 'Daftar Rekomendasi Mitra Industri & Instansi Pemerintahan Tempat KP',
-    slug: 'daftar-mitra-perusahaan-kp',
-    excerpt: 'Daftar perusahaan dan instansi mitra yang menerima mahasiswa Teknik Informatika untuk program Kerja Praktik.',
-    date: '10 Januari 2026',
-    thumbnail: '/dosen-pages/dosen.jpg',
-    category: 'Kemitraan'
-  },
-  {
-    id: 'fb-3',
-    title: 'Jadwal Pelaksanaan Seminar KP & Batas Akhir Penyerahan Nilai Gelombang I',
-    slug: 'jadwal-seminar-kp-gelombang-1',
-    excerpt: 'Pengumuman alokasi ruangan, dosen penguji, dan tenggat waktu pengumpulan naskah akhir Kerja Praktik.',
-    date: '02 Januari 2026',
-    thumbnail: '/ruang-kelas/fst_mejadosen.jpg',
-    category: 'Jadwal'
-  }
-];
-
-const displayItems = items.length > 0 ? items : fallbackAnnouncements;
 ---
 
 <div class="font-sans bg-slate-50/60 min-h-screen">
-  
+
   {/* Breadcrumb Navigation */}
   <nav class="mx-auto max-w-7xl px-4 pt-28 pb-4 text-sm sm:px-6 sm:pt-32 lg:px-8" aria-label="Breadcrumb">
     <ol class="flex items-center flex-wrap gap-2 text-sm text-slate-500 py-3 border-b border-slate-100">
@@ -310,7 +253,11 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
     {displayItems.length === 0 ? (
       <div class="text-center py-16 bg-white rounded-3xl border border-slate-100 shadow-sm">
         <p class="text-slate-500 text-base mb-2">
-          {translateInline((isEn) ? "en" : "id", "inline.no-internship-announcements-available-yet")}
+          {loadState === "unavailable"
+              ? (isEn
+                  ? "We could not load this information right now. Please try again later."
+                  : "Informasi ini sedang tidak dapat dimuat. Silakan coba beberapa saat lagi.")
+              : translateInline((isEn) ? "en" : "id", "inline.no-internship-announcements-available-yet")}
         </p>
         <p class="text-xs text-slate-400 max-w-md mx-auto">
           {translateInline((isEn) ? "en" : "id", "inline.add-entries-to-the-kerja-praktik-collection-in-d")}
@@ -323,11 +270,11 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
             <div>
               {/* Thumbnail Image */}
               <div class="relative w-full h-48 bg-slate-100 overflow-hidden">
-                <img 
-                  src={item.thumbnail || '/landing-pages/gedung-faste.jpg'} 
-                  alt={item.title} 
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                  onError="this.onerror=null; this.src='/landing-pages/gedung-faste.jpg';"
+                <img decoding="async" loading="lazy"
+                  src={item.thumbnail || '/landing-pages/gedung-faste.webp'}
+                  alt={item.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  data-fallback-src="/landing-pages/gedung-faste.webp"
                 />
                 <span class="absolute top-4 left-4 px-3 py-1 bg-slate-900/80 backdrop-blur-md text-emerald-300 text-xs font-bold rounded-full border border-emerald-500/30">
                   {item.category || (isEn ? 'Info KP' : 'Info KP')}
@@ -353,8 +300,8 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
 
             {/* Footer Action */}
             <div class="px-6 pb-6 pt-2 border-t border-slate-100 flex items-center justify-between">
-              <a 
-                href={localizePath(`/academics/internship/${item.slug}`, lang)} 
+              <a
+                href={localizePath(`/academics/internship/${item.slug}`, lang)}
                 class="inline-flex items-center gap-1.5 text-sm font-bold text-emerald-700 hover:text-emerald-800 group-hover:translate-x-1 transition-transform"
               >
                 {t("common.detail")}

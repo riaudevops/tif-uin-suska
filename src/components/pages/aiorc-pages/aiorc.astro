@@ -1,23 +1,26 @@
 ---
 import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
-import { API_URL } from '@/lib/cms.js';
+import { getCollection } from '@/lib/directus.js';
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
 
-let aiorcInfo = null;
+let aiorcInfo: any = null;
 
-try {
-  const res = await fetch(`${API_URL}/items/aiorc_info?limit=1`, { cache: 'no-store' });
-  if (res.ok) {
-    const json = await res.json();
-    if (json.data && json.data.length > 0) {
-      aiorcInfo = json.data[0];
-    }
-  }
-} catch (e) {
-  // Fallback to default data
+const aiorcResult = await getCollection("aiorc_info", {
+  query: "?limit=1",
+  ttlMs: 300000,
+});
+
+if (aiorcResult.ok) {
+  aiorcInfo = aiorcResult.data[0] ?? null;
+} else {
+  // `aiorc_info` is not readable with the current public role; the page falls
+  // back to the translated static copy below.
+  console.warn(
+    `[aiorc] using fallback copy (${aiorcResult.error?.kind}: ${aiorcResult.error?.message})`,
+  );
 }
 
 const description = aiorcInfo?.description_en && isEn

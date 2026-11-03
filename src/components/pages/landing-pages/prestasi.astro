@@ -1,15 +1,23 @@
 ---
 import { getLocaleFromUrl, useTranslations } from "../../../lib/translations";
-import { fetchWithCache } from "../../../lib/cachedFetch";
-import { API_URL, getAssetUrl } from "../../../lib/cms";
+import { getImageUrl } from "../../../lib/cms";
+import { getCollection } from "../../../lib/directus.js";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 
 let prestasiData: any[] = [];
 
 try {
-  const json = await fetchWithCache(`${API_URL}/items/prestasi?sort=-tahun&limit=6`, {}, 60000);
-  prestasiData = json.data || [];
+  const result = await getCollection("prestasi", {
+    query: "?sort=-tahun&limit=6",
+    ttlMs: 300000,
+  });
+
+  if (!result.ok) {
+    throw new Error(`${result.error?.kind}: ${result.error?.message}`);
+  }
+
+  prestasiData = result.data;
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.warn("Gagal mengambil prestasi landing:", message);
@@ -38,8 +46,8 @@ try {
 
         {/* IMAGE */}
         <div class="relative">
-          <img
-            src={getAssetUrl(item.gambar)}
+          <img decoding="async" loading="lazy"
+            src={getImageUrl(item.gambar, { width: 640 })}
             alt={item.title}
             class="w-full h-64 object-cover"
           />
@@ -59,7 +67,7 @@ try {
             <p class="text-gray-600 text-sm mt-1">{item.lokasi}</p>
           )}
         </div>
-        
+
         <div class="h-1 bg-green-500 w-full"></div>
       </div>
     ))}

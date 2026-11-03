@@ -1,4 +1,6 @@
 import { defineMiddleware } from "astro:middleware";
+import { LEGACY_REDIRECTS } from "./lib/legacy-redirects.js";
+import { applySecurityHeaders, isSecureRequest } from "../security-headers.mjs";
 
 // Patterns for common vulnerability probes / bot scans
 const BOT_PROBE_PATTERNS = [
@@ -6,35 +8,38 @@ const BOT_PROBE_PATTERNS = [
   /^\/(wp-admin|wp-login|wp-content|wp-includes|xmlrpc|phpmyadmin|pma|admin\/|administrator|eval-stdin|telescope|_profiler|\.env|\.git)/i,
 ];
 
-// Content Security Policy directive
-const CSP_DIRECTIVES = [
-  "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com",
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "img-src 'self' data: blob: https: http:",
-  "font-src 'self' data: https://fonts.gstatic.com",
-  "connect-src 'self' https://exam.tif.uin-suska.ac.id https://*.uin-suska.ac.id https://cloudflareinsights.com",
-  "frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube.com https://youtube.com",
-  "object-src 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-  "frame-ancestors 'self'",
-].join("; ");
+/**
+ * Dev detection must not rely on `import.meta.env.DEV` alone: this repository
+ * ships a `.env` with `NODE_ENV=production`, which flips `DEV` to `false` even
+ * under `astro dev`. `MODE` stays "development" in that case.
+ *
+ * Astro explicitly does not support its CSP feature in dev, and Vite injects
+ * inline styles for HMR, so the strict production CSP is skipped there.
+ */
+const DEV_MODE = import.meta.env?.MODE ?? "";
+const IS_DEV =
+  import.meta.env?.DEV === true ||
+  DEV_MODE === "development" ||
+  DEV_MODE === "dev";
+const TRUST_PROXY = !/^(0|false|no)$/i.test(String(import.meta.env?.TRUST_PROXY ?? "true"));
 
-function applySecurityHeaders(response) {
-  if (!response || !(response instanceof Response)) return response;
+/** Applies dev-aware security headers, including HSTS only on HTTPS. */
+function harden(response, context) {
+  const hardened = applySecurityHeaders(response, {
+    env: import.meta.env,
+    dev: IS_DEV,
+    secure: isSecureRequest(context.request, { trustProxy: TRUST_PROXY }),
+  });
 
-  response.headers.set("X-Frame-Options", "SAMEORIGIN");
-  response.headers.set("X-Content-Type-Options", "nosniff");
-  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-  response.headers.set(
-    "Permissions-Policy",
-    "camera=(), microphone=(), geolocation=(), browsing-topics=(), payment=()"
-  );
-  response.headers.set("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
-  response.headers.set("Content-Security-Policy", CSP_DIRECTIVES);
+  // API/data responses should never be cached as documents.
+  if (hardened?.headers.get("content-type")?.includes("application/json")) {
+    hardened.headers.set("X-Content-Type-Options", "nosniff");
+    if (!hardened.headers.has("Cache-Control")) {
+      hardened.headers.set("Cache-Control", "no-store");
+    }
+  }
 
-  return response;
+  return hardened;
 }
 
 export const onRequest = defineMiddleware(async (context, next) => {
@@ -43,21 +48,23 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // Intercept bot scanning probes (wp-login.php, xmlrpc, etc.) with a lightweight 404
   if (BOT_PROBE_PATTERNS.some((pattern) => pattern.test(pathname))) {
-    return new Response("Not Found", {
-      status: 404,
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "X-Content-Type-Options": "nosniff",
-        "X-Robots-Tag": "noindex, nofollow",
-      },
-    });
+    return harden(
+      new Response("Not Found", {
+        status: 404,
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "X-Robots-Tag": "noindex, nofollow",
+        },
+      }),
+      context,
+    );
   }
 
   let response;
 
   if (context.locals.locale) {
     response = await next();
-    return applySecurityHeaders(response);
+    return harden(response, context);
   }
 
   const localePrefix = pathname.match(/^\/(en|id)(?:\/|$)/)?.[1];
@@ -67,6 +74,28 @@ export const onRequest = defineMiddleware(async (context, next) => {
     context.locals.originalUrl = url.href;
     let basePath = pathname.replace(/^\/(?:en|id)/, "");
     if (!basePath.startsWith("/")) basePath = "/" + basePath;
+
+    // Legacy paths keep working under a locale prefix (`/id/berita`), which the
+    // static `redirects` config cannot handle because the prefix is stripped
+    // by a rewrite rather than a redirect.
+    const normalizedBase = basePath.replace(/\/+$/, "") || "/";
+    const legacyTarget = LEGACY_REDIRECTS[normalizedBase];
+    if (legacyTarget) {
+      const localizedTarget =
+        localePrefix === "id"
+          ? legacyTarget === "/"
+            ? "/id"
+            : `/id${legacyTarget}`
+          : legacyTarget;
+      return harden(
+        new Response(null, {
+          status: 301,
+          headers: { Location: `${localizedTarget}${url.search}` },
+        }),
+        context,
+      );
+    }
+
     response = await context.rewrite(new URL(`${basePath}${url.search}`, url.origin));
   } else {
     context.locals.locale = "en";
@@ -74,5 +103,5 @@ export const onRequest = defineMiddleware(async (context, next) => {
     response = await next();
   }
 
-  return applySecurityHeaders(response);
+  return harden(response, context);
 });

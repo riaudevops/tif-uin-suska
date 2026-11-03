@@ -1,5 +1,13 @@
 ---
 import { getLocaleFromUrl, useTranslations } from "../../lib/translations";
+import {
+  DEFAULT_SITE,
+  FALLBACK_OG_IMAGE,
+  localeUrl,
+  resolveImageUrl,
+  splitLocale,
+  stripTrackingParams,
+} from "../../lib/seo.js";
 
 interface ArticleData {
   headline?: string;
@@ -18,21 +26,58 @@ interface Props {
   keywords?: string;
   author?: string;
   articleData?: ArticleData;
+  /** Locale-less path (may include a query) used as the canonical target. */
+  canonicalPath?: string;
+  /** Locale-less paths that differ per language, e.g. translated article slugs. */
+  alternatePaths?: { en?: string; id?: string };
+  /** Set to true for pages that must not be indexed (e.g. search results). */
+  noindex?: boolean;
 }
 
 const {
   title,
   description,
-  image = "/landing-pages/gedung.jpg",
+  image,
   type = "website",
   keywords,
   author = "Program Studi Teknik Informatika UIN Suska Riau",
   articleData,
+  canonicalPath,
+  alternatePaths,
+  noindex = false,
 } = Astro.props;
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === "en";
+
+const siteUrl = (Astro.site ? Astro.site.toString() : DEFAULT_SITE).replace(/\/+$/, "");
+
+/**
+ * `Astro.url` points at the rewritten route (the middleware strips the `/id`
+ * prefix), so the requested path is recovered from `Astro.locals.originalUrl`.
+ */
+const locals = Astro.locals as any;
+let originalTarget: string;
+try {
+  const original = new URL(String(locals?.originalUrl || Astro.url.href));
+  originalTarget = `${original.pathname}${original.search}`;
+} catch {
+  originalTarget = `${Astro.url.pathname}${Astro.url.search}`;
+}
+
+const { path: basePath, query: baseQuery } = splitLocale(originalTarget);
+const canonicalTarget =
+  canonicalPath || `${basePath}${stripTrackingParams(baseQuery)}`;
+const enTarget = alternatePaths?.en || canonicalTarget;
+const idTarget = alternatePaths?.id || canonicalTarget;
+
+const canonicalUrl = localeUrl(isEn ? enTarget : idTarget, lang, siteUrl);
+const enUrl = localeUrl(enTarget, "en", siteUrl);
+const idUrl = localeUrl(idTarget, "id", siteUrl);
+
+// `x-default` points at the default locale (English) version.
+const xDefaultUrl = enUrl;
 
 const departmentName = t("nav.title");
 const siteName = `${departmentName} UIN Suska Riau`;
@@ -51,19 +96,17 @@ const defaultDescription = isEn
 
 const metaDescription = description || defaultDescription;
 
-const siteUrl = (Astro.site ? Astro.site.toString() : "https://tif.uin-suska.ac.id").replace(/\/$/, "");
-const currentPath = Astro.url.pathname;
-const canonicalUrl = new URL(currentPath, siteUrl).href;
-
-const ogImage = image.startsWith("http")
-  ? image
-  : new URL(image.startsWith("/") ? image : `/${image}`, siteUrl).href;
+const ogImage = resolveImageUrl(image, siteUrl, FALLBACK_OG_IMAGE);
 
 const defaultKeywords = isEn
   ? "Informatics Engineering, Computer Science, UIN Suska Riau, Faculty of Science and Technology, Sultan Syarif Kasim Islamic University, Pekanbaru, Riau, IT Higher Education"
   : "Teknik Informatika, UIN Suska Riau, Fakultas Sains dan Teknologi, UIN Sultan Syarif Kasim, Pekanbaru, Riau, Kuliah Informatika, Ilmu Komputer, Kampus Islam Negeri";
 
 const metaKeywords = keywords || defaultKeywords;
+
+const robotsContent = noindex
+  ? "noindex, follow"
+  : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
 
 // Generate Schema.org JSON-LD
 const organizationSchema = {
@@ -73,7 +116,7 @@ const organizationSchema = {
   "alternateName": "Department of Informatics Engineering UIN Suska Riau",
   "url": siteUrl,
   "logo": `${siteUrl}/logo/uin.png`,
-  "image": `${siteUrl}/landing-pages/gedung.jpg`,
+  "image": `${siteUrl}${FALLBACK_OG_IMAGE}`,
   "email": "tif@uin-suska.ac.id",
   "address": {
     "@type": "PostalAddress",
@@ -103,8 +146,14 @@ const websiteSchema = {
 
 let jsonLdGraph: any[] = [organizationSchema, websiteSchema];
 
-// If page is an article/news, inject NewsArticle schema (Point 3)
+// If page is an article/news, inject NewsArticle schema
 if (type === "article" && articleData) {
+  const articleImage = resolveImageUrl(
+    articleData.image || image,
+    siteUrl,
+    FALLBACK_OG_IMAGE,
+  );
+
   const newsArticleSchema = {
     "@type": "NewsArticle",
     "@id": `${canonicalUrl}#article`,
@@ -113,7 +162,7 @@ if (type === "article" && articleData) {
     },
     "headline": articleData.headline || title,
     "description": articleData.description || metaDescription,
-    "image": articleData.image ? [articleData.image.startsWith("http") ? articleData.image : `${siteUrl}${articleData.image}`] : [ogImage],
+    "image": [articleImage],
     "datePublished": articleData.datePublished || new Date().toISOString(),
     "dateModified": articleData.dateModified || articleData.datePublished || new Date().toISOString(),
     "mainEntityOfPage": canonicalUrl,
@@ -134,6 +183,16 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@graph": jsonLdGraph
 };
+
+/**
+ * JSON.stringify alone can terminate a `<script>` block when CMS content
+ * contains `</script>`. Escaping `<`, `>` and `&` keeps the JSON valid while
+ * preventing the browser's HTML parser from closing the element early.
+ */
+const jsonLdString = JSON.stringify(jsonLd)
+  .replace(/</g, "\\u003c")
+  .replace(/>/g, "\\u003e")
+  .replace(/&/g, "\\u0026");
 ---
 
 <!-- Primary Meta Tags -->
@@ -142,18 +201,16 @@ const jsonLd = {
 <meta name="description" content={metaDescription} />
 <meta name="keywords" content={metaKeywords} />
 <meta name="author" content={author} />
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="robots" content={robotsContent} />
 <meta name="theme-color" content="#004d2c" />
 <meta name="color-scheme" content="light" />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
-<meta http-equiv="X-Content-Type-Options" content="nosniff" />
-<meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
 
 <!-- Canonical & Language Alternates -->
 <link rel="canonical" href={canonicalUrl} />
-<link rel="alternate" hreflang="id" href={`${siteUrl}${currentPath}`} />
-<link rel="alternate" hreflang="en" href={`${siteUrl}${currentPath}`} />
-<link rel="alternate" hreflang="x-default" href={`${siteUrl}${currentPath}`} />
+<link rel="alternate" hreflang="id" href={idUrl} />
+<link rel="alternate" hreflang="en" href={enUrl} />
+<link rel="alternate" hreflang="x-default" href={xDefaultUrl} />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={type} />
@@ -173,5 +230,4 @@ const jsonLd = {
 <meta name="twitter:image" content={ogImage} />
 
 <!-- Structured Data (JSON-LD) -->
-<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-
+<script type="application/ld+json" set:html={jsonLdString} />

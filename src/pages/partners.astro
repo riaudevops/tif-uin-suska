@@ -1,4 +1,6 @@
 ---
+
+export const prerender = true;
 import { translateInline } from "../lib/translations.js";
 import Layout from '@/layouts/Layout.astro';
 import { getLocaleFromUrl, useTranslations, localizePath } from '../lib/translations';
@@ -233,7 +235,7 @@ const fundingPartners = isEn
               <div class="flex flex-wrap items-center gap-6">
                 {group.logos.map((logo) => (
                   <div class="flex h-16 items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-3">
-                    <img src={logo.src} alt={logo.alt} class="max-h-10 w-auto object-contain" />
+                    <img decoding="async" loading="lazy" src={logo.src} alt={logo.alt} class="max-h-10 w-auto object-contain" />
                   </div>
                 ))}
               </div>

@@ -1,21 +1,22 @@
 ---
 import { translateInline } from "../../../lib/translations.js";
-import { API_URL } from "../../../lib/cms";
+import { getCollection } from "../../../lib/directus.js";
 import { getLocaleFromUrl } from "../../../lib/translations";
 
 const isEn = getLocaleFromUrl(Astro) === "en";
-let rawKurikulum = [];
+let rawKurikulum: any[] = [];
 
-try {
-  const response = await fetch(`${API_URL}/items/kurikulum?limit=-1`);
-  if (response.ok) {
-    const json = await response.json();
-    rawKurikulum = json.data || [];
-  } else {
-    console.warn("Directus API returned non-OK status.");
-  }
-} catch (error: any) {
-  console.warn("Failed to fetch from Directus API:", error?.message || error);
+const result = await getCollection("kurikulum", {
+  query: "?limit=-1",
+  ttlMs: 300000,
+});
+
+if (result.ok) {
+  rawKurikulum = result.data;
+} else {
+  console.warn(
+    `[kurikulum] ${result.error?.kind}: ${result.error?.message}`,
+  );
 }
 
 const kurikulumList = rawKurikulum;
@@ -114,7 +115,7 @@ function getLocalizedPrerequisite(prerequisite: string): string {
       {translateInline((isEn) ? "en" : "id", "inline.no-curriculum-data-is-available-yet")}
     </div>
   )}
-  
+
   <div class="mb-12">
     <div class="mb-6 flex items-center justify-between gap-4">
       <h2 class="text-2xl font-black tracking-tight text-[#004d2c] sm:text-3xl">
@@ -328,32 +329,6 @@ function getLocalizedPrerequisite(prerequisite: string): string {
   )}
 </section>
 
-<script is:inline>
-  function initAccordions() {
-    const triggers = document.querySelectorAll('[data-accordion-trigger]');
-    triggers.forEach((trigger) => {
-      const newTrigger = trigger.cloneNode(true);
-      trigger.parentNode.replaceChild(newTrigger, trigger);
-
-      newTrigger.addEventListener('click', () => {
-        const version = newTrigger.getAttribute('data-accordion-trigger');
-        const content = document.querySelector(`[data-accordion-content="${version}"]`);
-        const icon = newTrigger.querySelector('[data-accordion-icon]');
-        const isExpanded = newTrigger.getAttribute('aria-expanded') === 'true';
-
-        newTrigger.setAttribute('aria-expanded', !isExpanded ? 'true' : 'false');
-
-        if (!isExpanded) {
-          content?.classList.remove('hidden');
-          icon?.classList.add('rotate-180');
-        } else {
-          content?.classList.add('hidden');
-          icon?.classList.remove('rotate-180');
-        }
-      });
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', initAccordions);
-  document.addEventListener('astro:page-load', initAccordions);
+<script>
+  import "../../../scripts/accordion.js";
 </script>

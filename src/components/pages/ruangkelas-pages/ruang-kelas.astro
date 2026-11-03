@@ -15,26 +15,22 @@ const classrooms = [
       {
         title: translateInline((isEn) ? "en" : "id", "inline.student-chairs"),
         description: translateInline((isEn) ? "en" : "id", "inline.ergonomically-designed-chairs-in-the-informatics"),
-        image: "/ruang-kelas/fst_kursimahasiswa.jpg",
-        fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/02/IMG20230120090527-scaled.jpg"
+        image: "/ruang-kelas/fst_kursimahasiswa.webp",
       },
       {
         title: translateInline((isEn) ? "en" : "id", "inline.lecturer-desk"),
         description: translateInline((isEn) ? "en" : "id", "inline.modern-functional-lecturer-desks-help-instructor"),
-        image: "/ruang-kelas/fst_mejadosen.jpg",
-        fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/02/IMG20230120090550-scaled.jpg"
+        image: "/ruang-kelas/fst_mejadosen.webp",
       },
       {
         title: translateInline((isEn) ? "en" : "id", "inline.whiteboard"),
         description: translateInline((isEn) ? "en" : "id", "inline.large-whiteboards-help-lecturers-present-materia"),
-        image: "/ruang-kelas/fst_papantulis.jpg",
-        fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/02/IMG20230120090557-scaled.jpg"
+        image: "/ruang-kelas/fst_papantulis.webp",
       },
       {
         title: translateInline((isEn) ? "en" : "id", "inline.climate-control"),
         description: translateInline((isEn) ? "en" : "id", "inline.a-combination-of-fans-and-air-conditioning-keeps"),
-        image: "/ruang-kelas/fst_pendinginruangan.jpg",
-        fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/02/IMG20230120090606-scaled.jpg"
+        image: "/ruang-kelas/fst_pendinginruangan.webp",
       }
     ]
   },
@@ -47,26 +43,22 @@ const classrooms = [
       {
         title: translateInline((isEn) ? "en" : "id", "inline.student-chairs"),
         description: translateInline((isEn) ? "en" : "id", "inline.the-new-building-s-ergonomically-designed-chairs"),
-        image: "/ruang-kelas/fstgb_kursimahasiswa.jpg",
-        fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/03/IMG20230317092730-scaled.jpg"
+        image: "/ruang-kelas/fstgb_kursimahasiswa.webp",
       },
       {
         title: translateInline((isEn) ? "en" : "id", "inline.lecturer-desk"),
         description: translateInline((isEn) ? "en" : "id", "inline.modern-lecturer-desks-in-the-new-building-provid"),
-        image: "/ruang-kelas/fstgb_mejadosen.jpg",
-        fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/03/WhatsApp-Image-2023-03-17-at-09.49.02.jpeg"
+        image: "/ruang-kelas/fstgb_mejadosen.webp",
       },
       {
         title: translateInline((isEn) ? "en" : "id", "inline.whiteboard"),
         description: translateInline((isEn) ? "en" : "id", "inline.high-quality-whiteboards-in-the-new-building-com"),
-        image: "/ruang-kelas/fstgb_papantulis.jpg",
-        fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/03/IMG20230317092855-1-scaled.jpg"
+        image: "/ruang-kelas/fstgb_papantulis.webp",
       },
       {
         title: translateInline((isEn) ? "en" : "id", "inline.climate-control"),
         description: translateInline((isEn) ? "en" : "id", "inline.high-capacity-air-conditioning-keeps-new-buildin"),
-        image: "/ruang-kelas/fstgb_pendinginruangan.jpg",
-        fallbackImage: "https://tif.uin-suska.ac.id/wp-content/uploads/2023/03/WhatsApp-Image-2023-03-17-at-09.46.00.jpeg"
+        image: "/ruang-kelas/fstgb_pendinginruangan.webp",
       }
     ]
   }
@@ -134,11 +126,11 @@ const classrooms = [
             <div class="group overflow-hidden rounded-[26px] border border-[#dfe7d7] bg-[#f8faf3] transition-all duration-300 hover:-translate-y-1 hover:border-[#bfd2a9] hover:shadow-[0_22px_50px_-28px_rgba(0,61,42,0.35)]">
               <div class="flex h-full flex-col sm:flex-row">
                 <div class="relative w-full sm:w-2/5 shrink-0 overflow-hidden bg-[#123b2c]">
-                  <img
+                  <img decoding="async" loading="lazy"
                     src={fac.image}
                     alt={fac.title}
                     class="h-48 w-full object-cover transition-all duration-500 group-hover:scale-[1.02] sm:h-full"
-                    onerror={`this.onerror=null; this.src='${fac.fallbackImage}';`}
+                    data-fallback-src="/landing-pages/gedung.webp"
                   />
                   <div class="absolute inset-0 bg-gradient-to-t from-[#123b2c]/20 to-transparent"></div>
                 </div>

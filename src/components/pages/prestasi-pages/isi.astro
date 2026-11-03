@@ -11,7 +11,7 @@ const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === "en";
 
-let prestasiData = [];
+let prestasiData: any[] = [];
 const API_TOKEN = import.meta.env.DIRECTUS_TOKEN;
 
 try {

@@ -4,7 +4,7 @@ import Layout from "@/layouts/Layout.astro";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 import { fetchWithCache } from '@/lib/cachedFetch.js';
 import { marked } from 'marked';
-import sanitizeHtml from 'sanitize-html';
+import { sanitizeArticleHtml } from '@/lib/sanitize.js';
 import {
   ArrowLeft,
   Calendar,
@@ -13,8 +13,9 @@ import {
   User
 } from '@lucide/astro';
 
-import { API_BASE_URL, ASSET_URL, getAssetUrl } from '@/lib/cms.js';
-import { BERITA_DETAIL_FIELDS, normalizeBerita, normalizeBeritaList } from '@/lib/berita.js';
+import { API_BASE_URL, getImageUrl } from '@/lib/cms.js';
+import { BERITA_DETAIL_FIELDS, normalizeBerita, normalizeBeritaList, getBeritaSlugMap } from '@/lib/berita.js';
+import ContentState from '@/components/globals/ContentState.astro';
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -32,9 +33,10 @@ const fetchOptions = {
   }
 };
 
-let article = null;
-let related = [];
+let article: any = null;
+let related: any[] = [];
 let parsedBody = "";
+let loadState: "ok" | "not-found" | "unavailable" = "ok";
 
 function normalizeBuilderMarkdown(content: string) {
   return content
@@ -48,18 +50,31 @@ function normalizeBuilderMarkdown(content: string) {
 }
 
 try {
-  const isId = /^\d+$/.test(slug || '');
+  const cleanSlug = String(slug ?? '').trim();
+  const isId = /^\d+$/.test(cleanSlug);
   const filterParam = isId
-    ? `filter[id][_eq]=${encodeURIComponent(slug)}`
-    : `filter[translations][slug_translate][_eq]=${encodeURIComponent(slug)}`;
+    ? `filter[id][_eq]=${encodeURIComponent(cleanSlug)}`
+    : `filter[translations][slug_translate][_eq]=${encodeURIComponent(cleanSlug)}`;
 
   const json = await fetchWithCache(
-    `${API_BASE_URL}/berita?${filterParam}&fields=${BERITA_DETAIL_FIELDS}`,
+    `${API_BASE_URL}/berita?${filterParam}` +
+      `&fields=${BERITA_DETAIL_FIELDS}` +
+      `&filter[status][_in]=publish,Publish,published,Published` +
+      `&sort=-date,-modified`,
     fetchOptions,
     60000
   );
 
-  const rawArticle = json?.data?.[0] || null;
+  const matches = Array.isArray(json?.data) ? json.data : [];
+  if (matches.length > 1) {
+    // Directus contains rows sharing a translated slug; picking deterministically
+    // keeps the canonical URL and the sitemap entry in sync.
+    console.warn(
+      `[news] ${matches.length} entries share the slug "${cleanSlug}"; using the newest (id ${matches[0]?.id}).`,
+    );
+  }
+
+  const rawArticle = matches[0] || null;
   if (rawArticle) {
     article = normalizeBerita(rawArticle, lang);
 
@@ -68,11 +83,11 @@ try {
         breaks: true,
       });
       parsedBody = parsedBody.replace(
-        /<h([1-6])>\s*(<a\b[^>]*>\s*<img\b[^>]*>\s*<\/a>|<img\b[^>]*>)\s*<\/h\1>/gi,
+        /<h([1-6])>\s*(<a\b[^>]*>\s*<img decoding="async" loading="lazy"\b[^>]*>\s*<\/a>|<img decoding="async" loading="lazy"\b[^>]*>)\s*<\/h\1>/gi,
         '<figure>$2</figure>'
       );
       parsedBody = parsedBody.replace(
-        /<p>\s*(<a\b[^>]*>\s*<img\b[^>]*>\s*<\/a>|<img\b[^>]*>)\s*<\/p>/gi,
+        /<p>\s*(<a\b[^>]*>\s*<img decoding="async" loading="lazy"\b[^>]*>\s*<\/a>|<img decoding="async" loading="lazy"\b[^>]*>)\s*<\/p>/gi,
         '<figure>$1</figure>'
       );
     }
@@ -94,36 +109,77 @@ try {
     related = normalizeBeritaList(relatedJson?.data || [], lang);
   }
 } catch (error) {
+  const status = Number((error as any)?.status ?? 0);
+
+  // Forbidden / server / network problems are not "not found".
+  if (status === 0 || status === 401 || status === 403 || status >= 500) {
+    loadState = "unavailable";
+  }
+
   console.warn("Gagal mengambil detail berita:", error instanceof Error ? error.message : String(error));
 }
 
 if (!article) {
-  return Astro.redirect("/404");
+  if (loadState === "unavailable") {
+    Astro.response.status = 503;
+    Astro.response.statusText = "Service Unavailable";
+    Astro.response.headers.set("Retry-After", "300");
+  } else {
+    Astro.response.status = 404;
+  }
 }
 
-const formattedDate = article.date
+const slugMap = getBeritaSlugMap(article);
+const localeSlugs = slugMap.id && slugMap.en
+  ? {
+      en: `/news/${slugMap.en}`,
+      id: `/news/${slugMap.id}`,
+    }
+  : undefined;
+const canonicalTarget = localeSlugs
+  ? (lang === "id" ? localeSlugs.id : localeSlugs.en)
+  : `/news/${article?.slug || article?.id || String(slug ?? '')}`;
+
+const formattedDate = article?.date
   ? new Date(article.date).toLocaleDateString(lang === 'en' ? "en-US" : "id-ID", {
       day: "numeric",
       month: "long",
       year: "numeric"
     })
   : '-';
+
+const pageTitle = article?.title || t("nav.berita");
+const plainText = (value: unknown) =>
+  typeof value === "string" ? value.replace(/<[^>]*>/g, "").trim() : "";
+const pageDescription = article
+  ? (plainText(article.excerpt) || plainText(article.content).slice(0, 160) || undefined)
+  : undefined;
+const pageImage = article?.featured_image || article?.image;
+const articleData = article
+  ? {
+      headline: article.title,
+      description: pageDescription,
+      image: pageImage,
+      datePublished: article.date,
+      dateModified: article.modified || article.date,
+      author: "Program Studi Teknik Informatika UIN Suska Riau",
+    }
+  : undefined;
+
 ---
 
 <Layout
-  title={article.title}
-  description={article.excerpt || (article.content ? article.content.replace(/<[^>]*>/g, '').slice(0, 160) : undefined)}
-  image={article.featured_image || article.image}
+  title={pageTitle}
+  description={pageDescription}
+  image={pageImage}
   type="article"
-  articleData={{
-    headline: article.title,
-    description: article.excerpt || (article.content ? article.content.replace(/<[^>]*>/g, '').slice(0, 160) : undefined),
-    image: article.featured_image || article.image,
-    datePublished: article.date,
-    dateModified: article.modified || article.date,
-    author: "Program Studi Teknik Informatika UIN Suska Riau"
-  }}
+  canonicalPath={canonicalTarget}
+  alternatePaths={localeSlugs}
+  noindex={!article}
 >
+
+  {article ? (
+    <>
   <nav class="mx-auto max-w-7xl px-4 pt-28 pb-4 text-sm sm:px-6 sm:pt-32 lg:px-8" aria-label="Breadcrumb">
     <ol class="flex flex-wrap items-center gap-2 border-b border-slate-100 py-3 text-sm text-slate-500">
       <li class="flex items-center">
@@ -190,10 +246,7 @@ const formattedDate = article.date
 
       <div
         class="prose prose-lg max-w-none prose-headings:font-black prose-headings:text-slate-900 prose-a:text-[#0b5c3d] prose-strong:text-slate-900 prose-li:text-slate-700 prose-figure:mx-0 prose-figure:my-6 prose-img:mx-auto prose-img:h-auto prose-img:max-w-full prose-img:rounded-xl text-slate-700 leading-relaxed"
-        set:html={sanitizeHtml(parsedBody || article.excerpt || "", {
-          allowedTags: [...sanitizeHtml.defaults.allowedTags, "img"],
-          allowedSchemesByTag: { img: ["http", "https"] },
-        })}
+        set:html={sanitizeArticleHtml(parsedBody || article.excerpt || "")}
       />
     </div>
 
@@ -215,7 +268,7 @@ const formattedDate = article.date
               <div class="mb-4 overflow-hidden rounded-2xl bg-slate-100">
                 {(item.image || item.featured_image || item.images) && (
                   <img
-                    src={getAssetUrl(item.image || item.featured_image || item.images, '/landing-pages/gedung.jpg')}
+                    src={getImageUrl(item.image || item.featured_image || item.images, { width: 480 }, '/landing-pages/gedung.webp')}
                     alt={item.title}
                     width="400"
                     height="160"
@@ -241,4 +294,23 @@ const formattedDate = article.date
       </div>
     )}
   </article>
+
+    </>
+  ) : (
+    <ContentState
+      variant={loadState === "unavailable" ? "unavailable" : "not-found"}
+      title={loadState === "unavailable"
+        ? (isEn ? "News is temporarily unavailable" : "Berita sedang tidak dapat ditampilkan")
+        : (isEn ? "Article not found" : "Berita tidak ditemukan")}
+      description={loadState === "unavailable"
+        ? (isEn
+            ? "We could not load this article from the content system. Please try again later."
+            : "Artikel ini gagal dimuat dari sistem konten. Silakan coba beberapa saat lagi.")
+        : (isEn
+            ? "The article you are looking for does not exist or may have been removed."
+            : "Berita yang Anda cari tidak tersedia atau sudah dihapus.")}
+      backHref={localizePath("/news", lang)}
+      backLabel={translateInline(isEn ? "en" : "id", "inline.back-to-news")}
+    />
+  )}
 </Layout>

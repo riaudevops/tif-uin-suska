@@ -104,12 +104,42 @@ export function normalizeBerita(item, lang = 'id') {
     content: body,
     category,
     image,
-    featured_image: image || item.featured_image || null,
-    images: image || item.images || null,
+    featured_image: image,
+    images: image,
     date: item.date || item.modified || null,
     modified: item.modified || item.date || null,
     activeTranslation: active,
   };
+}
+
+/**
+ * Returns the per-language slugs for a berita item.
+ *
+ * Useful for building canonical URLs and `hreflang` alternates so that the
+ * Indonesian and English versions of the same article do not compete as
+ * duplicate content.
+ *
+ * @param {object} item - Raw berita item from Directus
+ * @returns {{ id: string|null, en: string|null }}
+ */
+export function getBeritaSlugMap(item) {
+  const map = { id: null, en: null };
+  if (!item || typeof item !== 'object') return map;
+
+  const translations = Array.isArray(item.translations) ? item.translations : [];
+  for (const translation of translations) {
+    if (!translation || typeof translation !== 'object') continue;
+    const code = String(translation.languages_code || '').toLowerCase();
+    const slug = String(translation.slug_translate || '').trim();
+    if (!slug) continue;
+    if (code === 'id' || code === 'en') map[code] = slug;
+  }
+
+  const baseSlug = String(item.slug || item.id || '').trim() || null;
+  if (!map.id) map.id = baseSlug;
+  if (!map.en) map.en = map.id;
+
+  return map;
 }
 
 /**

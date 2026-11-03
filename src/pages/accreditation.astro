@@ -1,4 +1,6 @@
 ---
+
+export const prerender = true;
 import { translateInline } from "../lib/translations.js";
 import Layout from '@/layouts/Layout.astro';
 import { getLocaleFromUrl, useTranslations, localizePath } from '../lib/translations';
@@ -170,7 +172,7 @@ const documents = isEn
           </div>
 
           <div class="flex flex-col items-center justify-center rounded-[24px] border border-white/10 bg-white/10 p-6 backdrop-blur-sm sm:flex-row sm:gap-6">
-            <img src="/logo/unggul.png" alt="Akreditasi Unggul" class="h-24 w-auto object-contain sm:h-28" />
+            <img height="500" width="500" decoding="async" loading="lazy" src="/logo/unggul.png" alt="Akreditasi Unggul" class="h-24 w-auto object-contain sm:h-28" />
             <div class="mt-4 text-center sm:mt-0 sm:text-left">
               <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">
                 {translateInline((isEn) ? "en" : "id", "inline.current-status")}
@@ -233,9 +235,9 @@ const documents = isEn
               {translateInline((isEn) ? "en" : "id", "inline.key-decrees-that-establish-legality-operational")}
             </p>
             <div class="mt-8 flex flex-wrap items-center gap-3 border-t border-white/12 pt-6">
-              <img src="/logo/uin.png" alt="UIN Suska" class="h-10 w-auto object-contain" />
-              <img src="/logo/kemenag.png" alt="Kemenag" class="h-10 w-auto object-contain" />
-              <img src="/logo/blu.png" alt="BLU" class="h-10 w-auto object-contain" />
+              <img height="517" width="483" decoding="async" loading="lazy" src="/logo/uin.png" alt="UIN Suska" class="h-10 w-auto object-contain" />
+              <img height="287" width="512" decoding="async" loading="lazy" src="/logo/kemenag.png" alt="Kemenag" class="h-10 w-auto object-contain" />
+              <img height="500" width="500" decoding="async" loading="lazy" src="/logo/blu.png" alt="BLU" class="h-10 w-auto object-contain" />
             </div>
           </div>
 

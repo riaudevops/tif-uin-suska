@@ -1,18 +1,23 @@
 ---
 import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
-import { API_URL } from '@/lib/cms.js';
+import { getCollection } from '@/lib/directus.js';
 const lang = getLocaleFromUrl(Astro);
 const isEn = lang === 'en';
 
 let informationData: any[] = [];
 
 try {
-  const response = await fetch(`${API_URL}/items/information?limit=-1`);
-  if (!response.ok) throw new Error("Gagal mengambil data information");
+  const result = await getCollection("information", {
+    query: "?limit=-1",
+    ttlMs: 300000,
+  });
 
-  const dataDirectus = await response.json();
-  informationData = dataDirectus.data || [];
+  if (!result.ok) {
+    throw new Error(`${result.error?.kind}: ${result.error?.message}`);
+  }
+
+  informationData = result.data;
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.error("Error fetching information:", message);

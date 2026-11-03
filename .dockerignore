@@ -1,0 +1,32 @@
+# --- Dependencies & build output (harus di-install ulang di dalam image) ---
+node_modules
+dist
+.astro
+.bun
+
+# --- Environment & secrets ---
+.env
+.env.*
+!.env.example
+
+# --- VCS & tooling ---
+.git
+.gitignore
+.github
+.vscode
+.idea
+
+# --- Logs & OS noise ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+
+# --- Lockfile lain (project memakai bun.lock) ---
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# --- Docs ---
+README.md

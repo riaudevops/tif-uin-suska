@@ -2,15 +2,16 @@
 import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 import { fetchWithCache } from '@/lib/cachedFetch.js';
-import { API_BASE_URL, getAssetUrl } from '@/lib/cms.js';
+import { API_BASE_URL, getImageUrl } from '@/lib/cms.js';
 import { DOSEN_FIELDS, normalizeDosen, sortDosenByPosition } from '@/lib/dosen.js';
 import { ArrowUpRight, BriefcaseBusiness, Building2, GraduationCap, Mail, UserRound } from '@lucide/astro';
+import { safeMailto } from "../../../lib/url-safety.js";
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
 
-let dosenData = [];
+let dosenData: any[] = [];
 
 try {
   const dataDirectus = await fetchWithCache(
@@ -63,7 +64,7 @@ try {
               <div class="relative w-full sm:w-40">
                 <div class="absolute -inset-2 rounded-[22px] bg-primary/5 blur-xl"></div>
                 <img
-                  src={getAssetUrl(dosen.foto, '/images/default-avatar.jpg')}
+                  src={getImageUrl(dosen.foto, { width: 480, height: 480, fit: 'cover' }, '/logo/uin.png')}
                   alt={dosen.nama}
                   class="relative z-10 aspect-[3/4] w-full rounded-[22px] object-cover object-center shadow-[0_18px_35px_-25px_rgba(0,0,0,0.55)] grayscale transition-all duration-500 group-hover:grayscale-0"
                   loading="lazy"
@@ -105,7 +106,7 @@ try {
                     </li>
                     <li class="flex items-center gap-3">
                       <Mail class="h-4 w-4 shrink-0 text-primary" />
-                      <a href={`mailto:${dosen.email}`} class="text-primary transition-colors hover:text-primary/80 hover:underline">
+                      <a href={safeMailto(dosen.email)} class="text-primary transition-colors hover:text-primary/80 hover:underline">
                         {dosen.email || '-'}
                       </a>
                     </li>

@@ -1,6 +1,9 @@
+# Crawlers are welcome on public pages.
 User-agent: *
 Allow: /
 Disallow: /api/
 
+# Search result pages ( ?q=... ) are noindex, so keep crawlers away from them.
+Disallow: /*?q=
+
 Sitemap: https://tif.uin-suska.ac.id/sitemap.xml
-Sitemap: https://tif.uin-suska.ac.id/sitemap-index.xml

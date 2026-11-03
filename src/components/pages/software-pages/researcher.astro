@@ -1,7 +1,7 @@
 ---
 import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
-import { API_URL } from '@/lib/cms.js';
+import { getCollection } from '@/lib/directus.js';
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
@@ -9,11 +9,16 @@ const isEn = lang === 'en';
 let softwareData: any[] = [];
 
 try {
-  const response = await fetch(`${API_URL}/items/software?limit=-1`);
-  if (!response.ok) throw new Error("Gagal mengambil data software");
+  const result = await getCollection("software", {
+    query: "?limit=-1",
+    ttlMs: 300000,
+  });
 
-  const dataDirectus = await response.json();
-  softwareData = dataDirectus.data || [];
+  if (!result.ok) {
+    throw new Error(`${result.error?.kind}: ${result.error?.message}`);
+  }
+
+  softwareData = result.data;
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.error("Error fetching software:", message);
@@ -23,7 +28,7 @@ try {
 <section data-aos="fade-up" class="py-16 px-4 sm:px-6 lg:px-8">
   {/* Mengubah max-w-6xl menjadi max-w-7xl agar tabel lebih lebar dan proporsional */}
   <div class="max-w-7xl mx-auto bg-white rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-100">
-    
+
     <div class="overflow-x-auto">
       <table class="w-full text-left border-collapse">
         <thead>
@@ -33,11 +38,11 @@ try {
             <th class="py-5 px-8 font-bold uppercase text-xs tracking-[0.2em] border-b border-white/10">{translateInline((isEn) ? "en" : "id", "inline.research-interest-bidang-riset-research-in")}</th>
           </tr>
         </thead>
-        
+
         <tbody class="divide-y divide-slate-100">
           {softwareData.length > 0 ? (
             softwareData.map((item: any, index: number) => {
-              const interests = item.research_interest 
+              const interests = item.research_interest
                 ? item.research_interest.split(/[,;]/).map((i: string) => i.trim()).filter(Boolean)
                 : [];
 
@@ -81,7 +86,7 @@ try {
         </tbody>
       </table>
     </div>
-    
+
     <div class="bg-slate-50/80 px-8 py-5 border-t border-slate-100 flex justify-between items-center">
       <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">
         Total <span class="text-emerald-600">{softwareData.length}</span> {translateInline((isEn) ? "en" : "id", "inline.innovators-found")}

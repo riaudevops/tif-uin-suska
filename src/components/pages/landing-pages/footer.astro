@@ -1,25 +1,20 @@
 ---
 import { translateInline } from "../../../lib/translations.js";
-import {
-  Facebook,
-  Instagram,
-  Github,
-  Mail,
-  Youtube,
-} from '@lucide/astro';
+import { Mail } from '@lucide/astro';
+import SocialIcon from "../../globals/SocialIcon.astro";
 import { getLocaleFromUrl, useTranslations } from "../../../lib/translations";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 ---
 
 <footer class="relative bg-slate-900 text-slate-300 pt-14 sm:pt-20">
-   <div class="absolute inset-0 bg-[url('/landing-pages/gedung-faste.jpg')] bg-cover bg-center opacity-5"></div>
+   <div class="absolute inset-0 bg-[url('/landing-pages/gedung-faste.webp')] bg-cover bg-center opacity-5"></div>
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12">
-    
+
     <div class="lg:col-span-5 flex flex-col gap-6 sm:gap-8">
       <div class="flex items-center gap-4 sm:gap-6">
         <div class="flex flex-col items-center border-r border-slate-700 pr-4 sm:pr-6">
-          <img src="/logo/uin.png" alt="Logo UIN Suska" width="80" height="80" class="h-14 sm:h-20 w-auto">
+          <img decoding="async" loading="lazy" src="/logo/uin.png" alt="Logo UIN Suska" width="80" height="80" class="h-14 sm:h-20 w-auto">
           <span class="text-[9px] sm:text-[10px] font-bold text-blue-400 mt-1 sm:mt-2 uppercase tracking-tighter text-center">
             UIN Suska Riau
           </span>
@@ -40,10 +35,10 @@ const t = useTranslations(lang);
         </p>
 
         <div class="flex flex-wrap items-center gap-6 pt-2">
-          <img src="/logo/uin.png" alt="UIN Suska" width="32" height="32" class="h-8 w-auto opacity-50 hover:opacity-100 transition grayscale hover:grayscale-0"/>
-          <img src="/logo/unggul.png" alt="Akreditasi Unggul" width="28" height="35" class="h-7 w-auto opacity-50 hover:opacity-100 transition grayscale hover:grayscale-0"/>
-          <img src="/logo/blu.png" alt="BLU" width="24" height="24" class="h-6 w-auto opacity-50 hover:opacity-100 transition grayscale hover:grayscale-0"/>
-          <img src="/logo/kemenag.png" alt="Kemenag" width="28" height="28" class="h-7 w-auto opacity-50 hover:opacity-100 transition grayscale hover:grayscale-0"/>
+          <img decoding="async" loading="lazy" src="/logo/uin.png" alt="UIN Suska" width="32" height="32" class="h-8 w-auto opacity-50 hover:opacity-100 transition grayscale hover:grayscale-0"/>
+          <img decoding="async" loading="lazy" src="/logo/unggul.png" alt="Akreditasi Unggul" width="28" height="35" class="h-7 w-auto opacity-50 hover:opacity-100 transition grayscale hover:grayscale-0"/>
+          <img decoding="async" loading="lazy" src="/logo/blu.png" alt="BLU" width="24" height="24" class="h-6 w-auto opacity-50 hover:opacity-100 transition grayscale hover:grayscale-0"/>
+          <img decoding="async" loading="lazy" src="/logo/kemenag.png" alt="Kemenag" width="28" height="28" class="h-7 w-auto opacity-50 hover:opacity-100 transition grayscale hover:grayscale-0"/>
         </div>
       </div>
     </div>
@@ -62,14 +57,14 @@ const t = useTranslations(lang);
           tif@uin-suska.ac.id
         </a>
         <div class="flex gap-4 mt-6">
-          <a href="https://web.facebook.com/share/g/14nnsEYrm9n/" class="p-2 bg-slate-800 rounded-lg hover:bg-blue-600 hover:text-white transition"><Facebook size={18}/></a>
-          <a href="https://instagram.com/tifuinsuska" class="p-2 bg-slate-800 rounded-lg hover:bg-pink-600 hover:text-white transition"><Instagram size={18}/></a>
-          <a href="https://github.com/tifsuska" class="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 hover:text-white transition"><Github size={18}/></a>
-          <a href="https://www.youtube.com/@teknikinformatikauinsuskar8865" class="p-2 bg-slate-800 rounded-lg hover:bg-red-600 hover:text-white transition"><Youtube size={18}/></a>
+          <a href="https://web.facebook.com/share/g/14nnsEYrm9n/" aria-label="Facebook" target="_blank" rel="noopener noreferrer" class="p-2 bg-slate-800 rounded-lg hover:bg-blue-600 hover:text-white transition"><SocialIcon name="facebook" /></a>
+          <a href="https://instagram.com/tifuinsuska" aria-label="Instagram" target="_blank" rel="noopener noreferrer" class="p-2 bg-slate-800 rounded-lg hover:bg-pink-600 hover:text-white transition"><SocialIcon name="instagram" /></a>
+          <a href="https://github.com/tifsuska" aria-label="GitHub" target="_blank" rel="noopener noreferrer" class="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 hover:text-white transition"><SocialIcon name="github" /></a>
+          <a href="https://www.youtube.com/@teknikinformatikauinsuskar8865" aria-label="YouTube" target="_blank" rel="noopener noreferrer" class="p-2 bg-slate-800 rounded-lg hover:bg-red-600 hover:text-white transition"><SocialIcon name="youtube" /></a>
         </div>
       </div>
     </div>
-    
+
     <div class="lg:col-span-2 text-sm">
       <h3 class="text-lg font-semibold text-white mb-6 border-b border-slate-800 pb-2">{t("footer.layanan")}</h3>
       <ul class="space-y-3">
@@ -96,7 +91,7 @@ const t = useTranslations(lang);
       <div class="flex flex-col items-center">
         <h3 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-4 text-center">{t("footer.lokasi")}</h3>
         <div class="w-[280px] h-[150px] rounded-xl overflow-hidden border border-slate-700 grayscale hover:grayscale-0 transition duration-500">
-          <iframe 
+          <iframe
             data-deferred-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3205.0309365499875!2d101.35441385085029!3d0.4656198166098458!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d5ac01177a52af%3A0xbb3c60772e1579a!2sUniversitas%20Islam%20Negeri%20Sultan%20Syarif%20Kasim!5e0!3m2!1sid!2sid!4v1769956666957!5m2!1sid!2sid"
             class="w-full h-full"
             loading="lazy"
@@ -107,7 +102,7 @@ const t = useTranslations(lang);
       <div class="flex flex-col items-center text-center">
         <h3 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-4">{t("footer.layanan.admin")}</h3>
         <div class="bg-white p-2 rounded-lg w-[120px]">
-          <img src="/qr/qrcode-tif-e1732246849890.jpeg" alt="QR Administrasi" width="120" height="120" class="w-full h-auto" loading="lazy" decoding="async" />
+          <img src="/qr/qrcode-tif.webp" alt="QR Administrasi" width="120" height="120" class="w-full h-auto" loading="lazy" decoding="async" />
         </div>
         <p class="text-[10px] mt-3 text-slate-500 max-w-[150px]">{t("footer.qr.desc")}</p>
       </div>

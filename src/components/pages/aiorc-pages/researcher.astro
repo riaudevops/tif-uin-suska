@@ -1,7 +1,8 @@
 ---
 import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
-import { API_URL, getAssetUrl } from '@/lib/cms.js';
+import { getAssetUrl } from '@/lib/cms.js';
+import { getCollection } from '@/lib/directus.js';
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
@@ -18,37 +19,32 @@ function pick(obj: any, keys: string[]) {
   return undefined;
 }
 
-try {
-  const endpoint = `${API_URL}/items/${COLLECTION}?sort=id&limit=-1`;
-  const res = await fetch(endpoint, { cache: 'no-store' });
+const result = await getCollection(COLLECTION, {
+  query: "?sort=id&limit=-1",
+  ttlMs: 300000,
+});
 
-  if (!res.ok) {
-    const body = await res.text();
-    console.error(`[AIORC Researchers] Fetch gagal - status ${res.status} ${res.statusText}`);
-    console.error(`[AIORC Researchers] Endpoint: ${endpoint}`);
-    console.error(`[AIORC Researchers] Response body: ${body}`);
-    errorMessage = translateInline((isEn) ? "en" : "id", "inline.failed-to-load-researcher-data-please-try-again");
-  } else {
-    const json = await res.json();
-
-    if (!json.data || json.data.length === 0) {
-      console.warn(`[AIORC Researchers] Collection "${COLLECTION}" kosong.`);
-      errorMessage = translateInline((isEn) ? "en" : "id", "inline.no-researcher-data-is-available-yet");
-    } else {
-      researcherData = json.data.map((item: any) => ({
-        name: pick(item, ['name', 'nama', 'nama_peneliti', 'full_name']),
-        research: isEn
-          ? pick(item, ['research_interest_en', 'research_en', 'research_interest', 'research', 'bidang_riset'])
-          : pick(item, ['research_interest', 'research', 'bidang_riset', 'keahlian']),
-        photo: pick(item, ['photo', 'foto', 'image', 'avatar']),
-      }));
-    }
-  }
-} catch (e) {
-  const message = e instanceof Error ? e.message : String(e);
-  console.error(`[AIORC Researchers] Fetch error: ${message}`);
-  console.error(`[AIORC Researchers] API_URL yang dipakai: ${API_URL}`);
-  errorMessage = translateInline((isEn) ? "en" : "id", "inline.could-not-connect-to-the-data-server");
+if (!result.ok) {
+  console.error(
+    `[AIORC Researchers] ${result.error?.kind} (status ${result.error?.status}): ${result.error?.message}`,
+  );
+  errorMessage = translateInline(
+    isEn ? "en" : "id",
+    result.error?.kind === "forbidden" || result.error?.kind === "unauthorized"
+      ? "inline.failed-to-load-researcher-data-please-try-again"
+      : "inline.could-not-connect-to-the-data-server",
+  );
+} else if (result.data.length === 0) {
+  console.warn(`[AIORC Researchers] Collection "${COLLECTION}" kosong.`);
+  errorMessage = translateInline(isEn ? "en" : "id", "inline.no-researcher-data-is-available-yet");
+} else {
+  researcherData = result.data.map((item: any) => ({
+    name: pick(item, ['name', 'nama', 'nama_peneliti', 'full_name']),
+    research: isEn
+      ? pick(item, ['research_interest_en', 'research_en', 'research_interest', 'research', 'bidang_riset'])
+      : pick(item, ['research_interest', 'research', 'bidang_riset', 'keahlian']),
+    photo: pick(item, ['photo', 'foto', 'image', 'avatar']),
+  }));
 }
 ---
 
@@ -96,7 +92,7 @@ try {
                     <td class="border-b border-slate-100 px-5 py-5">
                       <div class="flex items-center gap-4">
                         {item.photo ? (
-                          <img
+                          <img decoding="async" loading="lazy"
                             src={getAssetUrl(item.photo)}
                             alt={item.name}
                             class="h-10 w-10 shrink-0 rounded-xl border border-[#dfeee1] object-cover"

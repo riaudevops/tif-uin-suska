@@ -1,6 +1,9 @@
-import { API_URL } from "./cms.js";
+import { API_ITEMS_URL } from "./cms.js";
+import { fetchWithCache } from "./cachedFetch.js";
 import { AGENDA_FIELDS, normalizeAgenda } from "./agenda.js";
 import { DOSEN_FIELDS, normalizeDosen } from "./dosen.js";
+import { BERITA_LIST_FIELDS, normalizeBeritaList } from "./berita.js";
+import { localizePath } from "./translations.js";
 
 const STATIC_PAGES = [
     {
@@ -240,110 +243,116 @@ export function filterSearchItems(items, query, limit = 12) {
         .slice(0, limit);
 }
 
-export async function buildSearchIndex(lang = "id") {
-    const isEn = lang === "en";
+const API_TOKEN = import.meta.env?.DIRECTUS_TOKEN;
 
-    // Localize static pages based on language
+const API_HEADERS = {
+    "Content-Type": "application/json",
+    ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {}),
+};
+
+/**
+ * Fetches a Directus collection through the shared cache so a slow or failing
+ * CMS never blocks (or duplicates) work on every search-index request.
+ */
+async function fetchCollection(query, ttlMs = 300000) {
+    return fetchWithCache(`${API_ITEMS_URL}${query}`, { headers: API_HEADERS }, ttlMs);
+}
+
+export async function buildSearchIndex(lang = "id") {
+    const currentLang = lang === "en" ? "en" : "id";
+    const isEn = currentLang === "en";
+
+    // Localized static pages (Indonesian URLs are always prefixed with /id)
     const items = STATIC_PAGES.map((page) => ({
         title: isEn ? (page.title_en || page.title) : page.title,
-        url: isEn ? `/en${page.url === "/" ? "" : page.url}` : page.url,
+        url: localizePath(page.url, currentLang),
         category: isEn ? (page.category_en || page.category) : page.category,
         keywords: isEn ? (page.keywords_en || page.keywords) : page.keywords,
     }));
 
-    const fetches = await Promise.allSettled([
-        fetch(
-            `${API_URL}/items/berita?fields=title,slug,excerpt&sort=-date&limit=100`,
-            { cache: "no-store" },
+    const results = await Promise.allSettled([
+        fetchCollection(
+            `/berita?fields=${BERITA_LIST_FIELDS}` +
+                `&filter[status][_in]=publish,Publish,published,Published` +
+                `&sort=-date,-modified&limit=100`,
         ),
-        fetch(`${API_URL}/items/dosen_tif?fields=${DOSEN_FIELDS}`, { cache: "no-store" }),
-        fetch(`${API_URL}/items/agenda?fields=${AGENDA_FIELDS}&limit=50`, {
-            cache: "no-store",
-        }),
-        fetch(`${API_URL}/items/kerja_praktik?fields=id,title,slug,excerpt&limit=50`, { cache: "no-store" }),
-        fetch(`${API_URL}/items/tugas_akhir?fields=id,title,slug,excerpt&limit=50`, { cache: "no-store" }),
-        fetch(`${API_URL}/items/beasiswa?fields=id,title,slug,excerpt&limit=50`, { cache: "no-store" }),
+        fetchCollection(`/dosen_tif?fields=${DOSEN_FIELDS}&limit=-1`),
+        fetchCollection(`/agenda?fields=${AGENDA_FIELDS}&limit=50`),
+        fetchCollection(`/kerja_praktik?fields=id,title,slug,excerpt&limit=50`),
+        fetchCollection(`/tugas_akhir?fields=id,title,slug,excerpt&limit=50`),
+        fetchCollection(`/beasiswa?fields=id,title,slug,excerpt&limit=50`),
     ]);
 
-    const [articlesRes, dosenRes, agendaRes, kpRes, taRes, beasiswaRes] = fetches;
+    /** Returns `data` for a settled, successful collection request. */
+    const dataAt = (index) => {
+        const result = results[index];
+        if (result.status !== "fulfilled") return [];
+        const payload = result.value;
+        return Array.isArray(payload?.data) ? payload.data : [];
+    };
 
-    if (articlesRes.status === "fulfilled" && articlesRes.value.ok) {
-        const json = await articlesRes.value.json();
-        for (const post of json.data || []) {
-            if (!post?.title || !post?.slug) continue;
-            const categoryName = isEn ? "News" : "Berita";
-            items.push({
-                title: post.title,
-                url: isEn ? `/en/news/${post.slug}` : `/news/${post.slug}`,
-                category: isEn ? "News" : "Berita",
-                keywords: `${post.title} ${post.excerpt || ""} ${categoryName} ${isEn ? "news article" : "berita artikel"}`,
-            });
-        }
+    // Berita lives in a `translations` relation, so it must be normalized first.
+    for (const post of normalizeBeritaList(dataAt(0), currentLang)) {
+        if (!post?.title || !post?.slug) continue;
+        items.push({
+            title: post.title,
+            url: localizePath(`/news/${post.slug}`, currentLang),
+            category: isEn ? "News" : "Berita",
+            keywords: `${post.title} ${post.excerpt || ""} ${isEn ? "news article" : "berita artikel"}`,
+        });
     }
 
-    if (dosenRes.status === "fulfilled" && dosenRes.value.ok) {
-        const json = await dosenRes.value.json();
-        for (const rawDosen of json.data || []) {
-            const dosen = normalizeDosen(rawDosen, isEn ? "en" : "id");
-            if (!dosen?.nama) continue;
-            items.push({
-                title: dosen.nama,
-                url: isEn ? `/en/profile/faculty/${dosen.id}` : `/profile/faculty/${dosen.id}`,
-                category: isEn ? "Lecturers" : "Dosen",
-                keywords: `${dosen.nama} ${dosen.jabatan || ""} ${dosen.email || ""} ${dosen.nip || ""} ${isEn ? "lecturer faculty" : "dosen pengajar"}`,
-            });
-        }
+    for (const rawDosen of dataAt(1)) {
+        const dosen = normalizeDosen(rawDosen, currentLang);
+        if (!dosen?.nama) continue;
+        items.push({
+            title: dosen.nama,
+            url: localizePath(`/profile/faculty/${dosen.id}`, currentLang),
+            category: isEn ? "Lecturers" : "Dosen",
+            keywords: `${dosen.nama} ${dosen.jabatan || ""} ${dosen.email || ""} ${dosen.nip || ""} ${isEn ? "lecturer faculty" : "dosen pengajar"}`,
+        });
     }
 
-    if (agendaRes.status === "fulfilled" && agendaRes.value.ok) {
-        const json = await agendaRes.value.json();
-        for (const rawAgenda of json.data || []) {
-            const agenda = normalizeAgenda(rawAgenda, isEn ? "en" : "id");
-            if (!agenda?.title) continue;
-            items.push({
-                title: agenda.title,
-                url: isEn ? "/en/events" : "/events",
-                category: isEn ? "Agenda" : "Agenda",
-                keywords: `${agenda.title} ${agenda.description} ${agenda.location} ${agenda.category} ${isEn ? "agenda events" : "agenda kegiatan"}`,
-            });
-        }
+    for (const rawAgenda of dataAt(2)) {
+        const agenda = normalizeAgenda(rawAgenda, currentLang);
+        if (!agenda?.title) continue;
+        items.push({
+            title: agenda.title,
+            url: localizePath("/events", currentLang),
+            category: "Agenda",
+            keywords: `${agenda.title} ${agenda.description} ${agenda.location} ${agenda.category} ${isEn ? "agenda events" : "agenda kegiatan"}`,
+        });
     }
 
-    if (kpRes.status === "fulfilled" && kpRes.value.ok) {
-        const json = await kpRes.value.json();
-        for (const kp of json.data || []) {
-            if (!kp?.title || !kp?.slug) continue;
-            items.push({
-                title: kp.title,
-                url: isEn ? `/en/academics/internship/${kp.slug}` : `/academics/internship/${kp.slug}`,
-                category: isEn ? "Internship" : "Kerja Praktik",
-                keywords: `${kp.title} ${kp.excerpt || ""} ${isEn ? "internship kp" : "kerja praktik kp magang"}`,
-            });
-        }
-    }
+    const detailCollections = [
+        {
+            index: 3,
+            base: "/academics/internship",
+            category: isEn ? "Internship" : "Kerja Praktik",
+            extra: isEn ? "internship kp" : "kerja praktik kp magang",
+        },
+        {
+            index: 4,
+            base: "/academics/thesis",
+            category: isEn ? "Thesis" : "Tugas Akhir",
+            extra: isEn ? "thesis final project" : "tugas akhir skripsi ta sempro munaqasyah",
+        },
+        {
+            index: 5,
+            base: "/academics/scholarships",
+            category: isEn ? "Scholarships" : "Beasiswa",
+            extra: isEn ? "scholarship grant tuition funding" : "beasiswa bantuan ukt kip-k genbi",
+        },
+    ];
 
-    if (taRes.status === "fulfilled" && taRes.value.ok) {
-        const json = await taRes.value.json();
-        for (const ta of json.data || []) {
-            if (!ta?.title || !ta?.slug) continue;
+    for (const collection of detailCollections) {
+        for (const entry of dataAt(collection.index)) {
+            if (!entry?.title || !entry?.slug) continue;
             items.push({
-                title: ta.title,
-                url: isEn ? `/en/academics/thesis/${ta.slug}` : `/academics/thesis/${ta.slug}`,
-                category: isEn ? "Thesis" : "Tugas Akhir",
-                keywords: `${ta.title} ${ta.excerpt || ""} ${isEn ? "thesis final project" : "tugas akhir skripsi ta sempro munaqasyah"}`,
-            });
-        }
-    }
-
-    if (beasiswaRes.status === "fulfilled" && beasiswaRes.value.ok) {
-        const json = await beasiswaRes.value.json();
-        for (const bs of json.data || []) {
-            if (!bs?.title || !bs?.slug) continue;
-            items.push({
-                title: bs.title,
-                url: isEn ? `/en/academics/scholarships/${bs.slug}` : `/academics/scholarships/${bs.slug}`,
-                category: isEn ? "Scholarships" : "Beasiswa",
-                keywords: `${bs.title} ${bs.excerpt || ""} ${isEn ? "scholarship grant tuition funding" : "beasiswa bantuan ukt kip-k genbi"}`,
+                title: entry.title,
+                url: localizePath(`${collection.base}/${entry.slug}`, currentLang),
+                category: collection.category,
+                keywords: `${entry.title} ${entry.excerpt || ""} ${collection.extra}`,
             });
         }
     }

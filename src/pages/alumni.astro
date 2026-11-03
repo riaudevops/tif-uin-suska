@@ -1,10 +1,27 @@
-<!-- ---
+---
 import Layout from "@/layouts/Layout.astro";
-import Alumni from "../../components/pages/alumni-pages/alumni.astro";
-import Badge from "../../components/pages/alumni-pages/badge.astro";
+import { getLocaleFromUrl, useTranslations } from "@/lib/translations";
+import ContentState from "@/components/globals/ContentState.astro";
+
+/**
+ * The alumni section has no published content yet. Instead of serving an empty
+ * page with a 200 status (and leaking commented-out source), return a real 404.
+ */
+const lang = getLocaleFromUrl(Astro);
+const t = useTranslations(lang);
+const isEn = lang === "en";
+
+Astro.response.status = 404;
 ---
 
-<Layout title="Alumni">
-  <Alumni />
-  <Badge />
-</Layout> -->
+<Layout title={t("nav.home")} noindex>
+  <ContentState
+    variant="not-found"
+    title={isEn ? "Alumni page is not available yet" : "Halaman alumni belum tersedia"}
+    description={isEn
+      ? "The alumni section is still being prepared. Please use the main navigation to find the information you need."
+      : "Bagian alumni masih dalam persiapan. Silakan gunakan navigasi utama untuk menemukan informasi yang Anda butuhkan."}
+    backHref={isEn ? "/" : "/id"}
+    backLabel={isEn ? "Back to home" : "Kembali ke beranda"}
+  />
+</Layout>

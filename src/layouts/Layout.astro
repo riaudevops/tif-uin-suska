@@ -24,16 +24,22 @@ interface Props {
   keywords?: string;
   author?: string;
   articleData?: ArticleData;
+  canonicalPath?: string;
+  alternatePaths?: { en?: string; id?: string };
+  noindex?: boolean;
 }
 
 const {
   title,
   description,
-  image = "/landing-pages/gedung.jpg",
+  image = "/landing-pages/gedung.webp",
   type = "website",
   keywords,
   author,
   articleData,
+  canonicalPath,
+  alternatePaths,
+  noindex,
 } = Astro.props;
 
 const lang = getLocaleFromUrl(Astro);
@@ -54,12 +60,13 @@ const lang = getLocaleFromUrl(Astro);
           keywords={keywords}
           author={author}
           articleData={articleData}
+          canonicalPath={canonicalPath}
+          alternatePaths={alternatePaths}
+          noindex={noindex}
         />
 
-        <!-- Fonts & Icons -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" />
+        <!-- Fonts are self-hosted (public/fonts) so the CSP needs no Google origins -->
+        <link rel="preload" href="/fonts/figtree-latin.woff2" as="font" type="font/woff2" crossorigin />
         <link rel="icon" type="image/png" href="/logo/uin.png" />
         <link rel="apple-touch-icon" href="/logo/uin.png" />
 
@@ -72,6 +79,7 @@ const lang = getLocaleFromUrl(Astro);
         </main>
         <Footer />
         <script>
+            import "../scripts/client-ui.js";
             import AOS from 'aos';
 
             function initAos() {

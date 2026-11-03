@@ -16,7 +16,8 @@ import {
   Building2
 } from '@lucide/astro';
 
-import { API_URL, getAssetUrl } from "../../../lib/cms";
+import { getImageUrl } from "../../../lib/cms";
+import { getCollection } from "../../../lib/directus.js";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
@@ -33,35 +34,37 @@ interface BeasiswaItem {
 }
 
 let items: BeasiswaItem[] = [];
-let fetchError = false;
+let loadState: "ok" | "unavailable" = "ok";
 
-try {
-  const res = await fetch(`${API_URL}/items/beasiswa?fields=id,title,slug,excerpt,published_at,thumbnail,category,deadline&sort=-published_at`);
-  if (res.ok) {
-    const data = await res.json();
-    items = (data.data || []).map((d: any) => ({
-      id: d.id,
-      title: d.title || (translateInline((isEn) ? "en" : "id", "inline.untitled-scholarship")),
-      slug: d.slug || d.id,
-      excerpt: d.excerpt || '',
-      date: d.published_at 
-        ? new Date(d.published_at).toLocaleDateString(isEn ? 'en-US' : 'id-ID', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-          }) 
-        : '',
-      thumbnail: getAssetUrl(d.thumbnail),
-      category: d.category || (translateInline((isEn) ? "en" : "id", "inline.scholarship-program")),
-      deadline: d.deadline || ''
-    }));
-  } else {
-    fetchError = true;
-  }
-} catch (e) {
-  console.error('Error fetching Beasiswa items:', e);
-  fetchError = true;
+const collectionResult = await getCollection("beasiswa", {
+  query: "?fields=id,title,slug,excerpt,published_at,thumbnail,category,deadline&sort=-published_at&limit=50",
+  ttlMs: 60000,
+});
+
+if (!collectionResult.ok) {
+  // Never substitute invented announcements: surface the real state instead.
+  loadState = "unavailable";
+} else {
+  items = collectionResult.data.map((d: any) => ({
+    id: d.id,
+    title: d.title || translateInline(isEn ? "en" : "id", "inline.untitled-announcement"),
+    slug: d.slug || d.id,
+    excerpt: d.excerpt || "",
+    date: d.published_at
+      ? new Date(d.published_at).toLocaleDateString(isEn ? "en-US" : "id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        })
+      : "",
+    thumbnail: getImageUrl(d.thumbnail, { width: 800 }),
+    category: d.category || translateInline(isEn ? "en" : "id", "inline.scholarship-program"),
+    ...(d.deadline ? { deadline: d.deadline } : {}),
+  }));
 }
+
+const displayItems = items;
+
 
 // Scholarship Categories Overview
 const scholarshipCategories = isEn ? [
@@ -117,6 +120,7 @@ const scholarshipCategories = isEn ? [
 ];
 
 // Workflow Steps
+
 const applicationSteps = isEn ? [
   { step: "01", title: "Check Eligibility", desc: "Ensure GPA >= 3.00, active student status, and required certificates.", icon: CheckCircle2 },
   { step: "02", title: "Prepare Documents", desc: "Gather transcript, recommendation letter, and statement of non-receipt of other grants.", icon: FileText },
@@ -130,76 +134,10 @@ const applicationSteps = isEn ? [
 ];
 
 
-// Fallback announcements if Directus empty
-const fallbackAnnouncements: BeasiswaItem[] = isEn ? [
-  {
-    id: 'bs-fb-1',
-    title: 'Bank Indonesia (GenBI) Scholarship Opening 2026',
-    slug: 'beasiswa-bank-indonesia-genbi-2026',
-    excerpt: 'Opportunity for active students in semester 4-6 to receive monthly stipends and join GenBI leadership community.',
-    date: '18 January 2026',
-    thumbnail: '/landing-pages/gedung-faste.jpg',
-    category: 'Bank Indonesia',
-    deadline: '28 February 2026'
-  },
-  {
-    id: 'bs-fb-2',
-    title: 'KIP Kuliah & Provincial Government Educational Grant Selection',
-    slug: 'pendaftaran-kip-kuliah-2026',
-    excerpt: 'Registration guidelines for new and ongoing informatics students for full tuition coverage.',
-    date: '10 January 2026',
-    thumbnail: '/dosen-pages/dosen.jpg',
-    category: 'KIP-Kuliah',
-    deadline: '15 March 2026'
-  },
-  {
-    id: 'bs-fb-3',
-    title: 'Djarum Beasiswa Plus Prestasi & Leadership Development',
-    slug: 'djarum-beasiswa-plus-2026',
-    excerpt: 'Merit-based scholarship program offering soft skills training and financial support for semester 4 students.',
-    date: '05 January 2026',
-    thumbnail: '/ruang-kelas/fst_mejadosen.jpg',
-    category: 'Djarum Plus',
-    deadline: '30 April 2026'
-  }
-] : [
-  {
-    id: 'bs-fb-1',
-    title: 'Pembukaan Pendaftaran Beasiswa Bank Indonesia (GenBI) Tahun 2026',
-    slug: 'beasiswa-bank-indonesia-genbi-2026',
-    excerpt: 'Kesempatan bagi mahasiswa aktif semester 4 dan 6 untuk mendapatkan bantuan uang saku bulanan dan pelatihan leadership.',
-    date: '18 Januari 2026',
-    thumbnail: '/landing-pages/gedung-faste.jpg',
-    category: 'Bank Indonesia',
-    deadline: '28 Februari 2026'
-  },
-  {
-    id: 'bs-fb-2',
-    title: 'Pendaftaran & Verifikasi Berkas KIP Kuliah & Beasiswa Pemprov Riau',
-    slug: 'pendaftaran-kip-kuliah-2026',
-    excerpt: 'Informasi dan alur verifikasi berkas bagi mahasiswa Teknik Informatika penerima bantuan biaya pendidikan penuh.',
-    date: '10 Januari 2026',
-    thumbnail: '/dosen-pages/dosen.jpg',
-    category: 'KIP-Kuliah',
-    deadline: '15 Maret 2026'
-  },
-  {
-    id: 'bs-fb-3',
-    title: 'Program Djarum Beasiswa Plus & Pelatihan Soft Skills Mahasiswa',
-    slug: 'djarum-beasiswa-plus-2026',
-    excerpt: 'Program beasiswa prestasi bagi mahasiswa semester 4 dengan bantuan dana serta pembekalan karakter dan kepemimpinan.',
-    date: '05 Januari 2026',
-    thumbnail: '/ruang-kelas/fst_mejadosen.jpg',
-    category: 'Djarum Plus',
-    deadline: '30 April 2026'
-  }
-];
-
-const displayItems = items.length > 0 ? items : fallbackAnnouncements;
 ---
 
 <div class="font-sans bg-slate-50/60 min-h-screen">
-  
+
   {/* Breadcrumb Navigation */}
   <nav class="mx-auto max-w-7xl px-4 pt-28 pb-4 text-sm sm:px-6 sm:pt-32 lg:px-8" aria-label="Breadcrumb">
     <ol class="flex items-center flex-wrap gap-2 text-sm text-slate-500 py-3 border-b border-slate-100">
@@ -366,7 +304,11 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
     {displayItems.length === 0 ? (
       <div class="text-center py-16 bg-white rounded-3xl border border-slate-100 shadow-sm">
         <p class="text-slate-500 text-base mb-2">
-          {t("page.beasiswa.empty")}
+          {loadState === "unavailable"
+            ? (isEn
+                ? "We could not load this information right now. Please try again later."
+                : "Informasi ini sedang tidak dapat dimuat. Silakan coba beberapa saat lagi.")
+            : t("page.beasiswa.empty")}
         </p>
       </div>
     ) : (
@@ -376,11 +318,11 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
             <div>
               {/* Thumbnail Image */}
               <div class="relative w-full h-48 bg-slate-100 overflow-hidden">
-                <img 
-                  src={item.thumbnail || '/landing-pages/gedung-faste.jpg'} 
-                  alt={item.title} 
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                  onError="this.onerror=null; this.src='/landing-pages/gedung-faste.jpg';"
+                <img decoding="async" loading="lazy"
+                  src={item.thumbnail || '/landing-pages/gedung-faste.webp'}
+                  alt={item.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  data-fallback-src="/landing-pages/gedung-faste.webp"
                 />
                 <span class="absolute top-4 left-4 px-3 py-1 bg-slate-900/80 backdrop-blur-md text-teal-300 text-xs font-bold rounded-full border border-teal-500/30">
                   {item.category || (translateInline((isEn) ? "en" : "id", "inline.scholarship"))}
@@ -414,8 +356,8 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
 
             {/* Footer Action */}
             <div class="px-6 pb-6 pt-2 border-t border-slate-100 flex items-center justify-between">
-              <a 
-                href={localizePath(`/academics/scholarships/${item.slug}`, lang)} 
+              <a
+                href={localizePath(`/academics/scholarships/${item.slug}`, lang)}
                 class="inline-flex items-center gap-1.5 text-sm font-bold text-teal-700 hover:text-teal-800 group-hover:translate-x-1 transition-transform"
               >
                 {t("common.detail")}

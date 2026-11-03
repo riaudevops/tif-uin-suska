@@ -1,18 +1,19 @@
 ---
 import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
-import { API_URL } from '@/lib/cms.js';
+import { getCollection } from '@/lib/directus.js';
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
 
-let aiorcInfo = null;
+let aiorcInfo: any = null;
 
 try {
-  const response = await fetch(`${API_URL}/items/aiorc_fields?limit=1`);
-  if (!response.ok) throw new Error("Gagal mengambil data AIORC info");
-  const dataDirectus = await response.json();
-  aiorcInfo = dataDirectus.data?.[0] ?? null;
+  const result = await getCollection("aiorc_fields", { query: "?limit=1", ttlMs: 300000 });
+  if (!result.ok) {
+    throw new Error(`${result.error?.kind}: ${result.error?.message}`);
+  }
+  aiorcInfo = result.data[0] ?? null;
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.error("Error fetching aiorc_info:", message);

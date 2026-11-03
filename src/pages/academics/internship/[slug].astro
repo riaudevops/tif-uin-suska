@@ -1,7 +1,7 @@
 ---
 import { translateInline } from "@/lib/translations.js";
 import Layout from "@/layouts/Layout.astro";
-import sanitizeHtml from "sanitize-html";
+import { sanitizeArticleHtml } from "@/lib/sanitize.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 import {
   Calendar,
@@ -18,75 +18,85 @@ import {
 
 export const prerender = false;
 
-import { API_URL, ASSET_URL, getAssetUrl } from '@/lib/cms.js';
+import { getImageUrl } from '@/lib/cms.js';
+import { getCollection, isAccessError, isTransportError } from '@/lib/directus.js';
+import ContentState from '@/components/globals/ContentState.astro';
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
 
 const { slug } = Astro.params;
+const cleanSlug = String(slug ?? "").trim();
 
 let article: any = null;
 let related: any[] = [];
-let fetchError = false;
+let loadState: "ok" | "not-found" | "unavailable" = "not-found";
 
-try {
-  const isId = /^\d+$/.test(slug || '');
-  const filterParam = isId ? `filter[id][_eq]=${slug}` : `filter[slug][_eq]=${slug}`;
+const isNumericId = /^\d+$/.test(cleanSlug);
+const identifierFilter = isNumericId
+  ? `&filter[id][_eq]=${encodeURIComponent(cleanSlug)}`
+  : `&filter[slug][_eq]=${encodeURIComponent(cleanSlug)}`;
 
-  const [res, relatedRes] = await Promise.all([
-    fetch(`${API_URL}/items/kerja_praktik?${filterParam}`),
-    fetch(`${API_URL}/items/kerja_praktik?limit=4&sort=-published_at`)
-  ]);
+const detailResult = await getCollection("kerja_praktik", {
+  query: `?limit=1${identifierFilter}`,
+  ttlMs: 60000,
+});
 
-  if (res.ok) {
-    const json = await res.json();
-    article = json.data?.[0];
+if (!detailResult.ok) {
+  // Distinguish "we cannot read the collection" from "the entry does not exist"
+  // so the page never renders invented content with a 200 status.
+  loadState =
+    isAccessError(detailResult) || isTransportError(detailResult)
+      ? "unavailable"
+      : "not-found";
+} else if (detailResult.data.length > 0) {
+  article = detailResult.data[0];
+  loadState = "ok";
+
+  const relatedResult = await getCollection("kerja_praktik", {
+    query: "?limit=4&sort=-published_at",
+    ttlMs: 60000,
+  });
+
+  if (relatedResult.ok) {
+    related = relatedResult.data.filter(
+      (item: any) => item?.slug !== cleanSlug && String(item?.id) !== cleanSlug,
+    );
   }
-
-  if (relatedRes.ok) {
-    const jsonRel = await relatedRes.json();
-    related = (jsonRel.data || []).filter((item: any) => item.slug !== slug && String(item.id) !== slug);
-  }
-} catch (error) {
-  console.error("Gagal mengambil detail Kerja Praktik:", error);
-  fetchError = true;
 }
 
-// Fallback dummy article if not in Directus
-if (!article) {
-  article = {
-    title: slug === 'prosedur-pendaftaran-kp-2026' 
-      ? 'Prosedur Pendaftaran & Verifikasi Berkas Kerja Praktik Semester Ganjil 2026'
-      : (translateInline((isEn) ? "en" : "id", "inline.internship-announcement-detail")),
-    published_at: new Date().toISOString(),
-    category: translateInline((isEn) ? "en" : "id", "inline.registration"),
-    excerpt: translateInline((isEn) ? "en" : "id", "inline.complete-guidelines-for-registering-kerja-prakti"),
-    content: isEn ? `
-      <h3>General Terms & Requirements</h3>
-      <p>Students eligible for Kerja Praktik must meet the following criteria:</p>
-      <ul>
-        <li>Completed a minimum of 90 academic credit units (SKS).</li>
-        <li>Registered active student status in the current semester.</li>
-        <li>Approved internship proposal signed by academic advisor.</li>
-      </ul>
-      <h3>Registration Workflow</h3>
-      <p>1. Submit company cover letter request via student iRaise portal.<br>2. Submit verified approval letter to the Department Coordinator.<br>3. Report to target company supervisor upon arrival.</p>
-    ` : `
-      <h3 class="text-xl font-bold text-slate-900 mt-4 mb-2">Persyaratan Umum Kerja Praktik</h3>
-      <p class="text-slate-700 leading-relaxed mb-4">Mahasiswa yang mengajukan Kerja Praktik (KP) wajib memenuhi ketentuan akademik berikut:</p>
-      <ul class="list-disc pl-5 text-slate-700 space-y-2 mb-6">
-        <li>Telah menempuh dan lulus minimal <strong>90 SKS</strong> mata kuliah.</li>
-        <li>Tercatat sebagai mahasiswa aktif pada semester berjalan.</li>
-        <li>Memiliki proposal KP yang telah disetujui Dosen Pembimbing Akademik.</li>
-      </ul>
-      <h3 class="text-xl font-bold text-slate-900 mt-6 mb-2">Alur Pendaftaran & Pengajuan Surat Pengantar</h3>
-      <p class="text-slate-700 leading-relaxed mb-4">Pengajuan surat pengantar ke instansi/perusahaan dilakukan secara daring melalui sistem integratif universitas (iRaise) dengan melampirkan draf proposal dan transkrip nilai terbaru.</p>
-    `
-  };
+if (loadState === "not-found") {
+  Astro.response.status = 404;
+} else if (loadState === "unavailable") {
+  Astro.response.status = 503;
+  Astro.response.statusText = "Service Unavailable";
+  Astro.response.headers.set("Retry-After", "300");
 }
 
-const formattedDate = article.published_at 
+const pageTitle = article?.title || t("inline.latest-internship-information");
+const listHref = localizePath("/academics/internship", lang);
+const backLabel = translateInline(isEn ? "en" : "id", "inline.back-to-kp-info");
+
+const stateTitle =
+  loadState === "unavailable"
+    ? isEn
+      ? "This information is temporarily unavailable"
+      : "Informasi ini sedang tidak dapat ditampilkan"
+    : isEn
+      ? "Announcement not found"
+      : "Pengumuman tidak ditemukan";
+
+const stateDescription =
+  loadState === "unavailable"
+    ? isEn
+      ? "We could not load this page from the content system. Please try again later or contact the department for the latest information."
+      : "Halaman ini gagal dimuat dari sistem konten. Silakan coba beberapa saat lagi atau hubungi program studi untuk informasi terbaru."
+    : isEn
+      ? "The announcement you are looking for does not exist or may have been moved."
+      : "Pengumuman yang Anda cari tidak tersedia atau mungkin sudah dipindahkan.";
+
+const formattedDate = article?.published_at
   ? new Date(article.published_at).toLocaleDateString(isEn ? 'en-US' : 'id-ID', {
       day: 'numeric',
       month: 'long',
@@ -95,8 +105,11 @@ const formattedDate = article.published_at
   : '-';
 ---
 
-<Layout title={article.title}>
-  
+<Layout title={pageTitle}>
+  {loadState === "ok" ? (
+    <>
+
+
   {/* Breadcrumb Navigation */}
   <nav class="mx-auto max-w-7xl px-4 pt-28 pb-4 text-sm sm:px-6 sm:pt-32 lg:px-8" aria-label="Breadcrumb">
     <ol class="flex flex-wrap items-center gap-2 border-b border-slate-100 py-3 text-sm text-slate-500">
@@ -122,9 +135,9 @@ const formattedDate = article.published_at
   </nav>
 
   <article class="max-w-5xl mx-auto px-4 sm:px-6 py-10 font-sans">
-    
+
     {/* Back Button */}
-    <a 
+    <a
       href={localizePath('/academics/internship', lang)}
       class="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 text-xs sm:text-sm font-bold rounded-xl transition-all mb-6 border border-slate-200"
     >
@@ -159,8 +172,8 @@ const formattedDate = article.published_at
     {/* Cover Image */}
     {article.thumbnail && (
       <div class="rounded-3xl overflow-hidden shadow-xl mb-10 max-h-[460px] bg-slate-100">
-        <img 
-          src={getAssetUrl(article.thumbnail)} 
+        <img decoding="async" loading="lazy"
+          src={getImageUrl(article.thumbnail, { width: 1200 })}
           alt={article.title}
           class="w-full h-full object-cover"
         />
@@ -175,9 +188,9 @@ const formattedDate = article.published_at
         </p>
       )}
 
-      <div 
+      <div
         class="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-slate-900 prose-a:text-emerald-700 text-slate-700 leading-relaxed"
-        set:html={sanitizeHtml(String(article.content || article.fulltext || article.excerpt || ""))}
+        set:html={sanitizeArticleHtml(String(article.content || article.fulltext || article.excerpt || ""))}
       />
     </div>
 
@@ -189,7 +202,7 @@ const formattedDate = article.published_at
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {related.map((item: any) => (
-            <a 
+            <a
               href={localizePath(`/academics/internship/${item.slug || item.id}`, lang)}
               class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-emerald-200 transition-all flex flex-col justify-between group"
             >
@@ -212,4 +225,15 @@ const formattedDate = article.published_at
 
   </article>
 
+
+    </>
+  ) : (
+    <ContentState
+      variant={loadState === "unavailable" ? "unavailable" : "not-found"}
+      title={stateTitle}
+      description={stateDescription}
+      backHref={listHref}
+      backLabel={backLabel}
+    />
+  )}
 </Layout>

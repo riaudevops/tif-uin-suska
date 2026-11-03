@@ -17,7 +17,8 @@ import {
   School
 } from '@lucide/astro';
 
-import { API_URL, getAssetUrl } from "../../../lib/cms";
+import { getImageUrl } from "../../../lib/cms";
+import { getCollection } from "../../../lib/directus.js";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 const isEn = lang === 'en';
@@ -33,41 +34,37 @@ interface TugasAkhirItem {
 }
 
 let items: TugasAkhirItem[] = [];
-let fetchError = false;
+let loadState: "ok" | "unavailable" = "ok";
 
-try {
-  const params = new URLSearchParams({
-    fields: 'id,title,slug,excerpt,published_at,thumbnail,category',
-    sort: '-published_at',
-    limit: '50',
-  });
+const collectionResult = await getCollection("tugas_akhir", {
+  query: "?fields=id,title,slug,excerpt,published_at,thumbnail,category&sort=-published_at&limit=50",
+  ttlMs: 60000,
+});
 
-  const res = await fetch(`${API_URL}/items/tugas_akhir?${params.toString()}`);
-
-  if (res.ok) {
-    const data = await res.json();
-    items = (data?.data ?? []).map((d: any) => ({
-      id: d.id,
-      title: d.title || (translateInline((isEn) ? "en" : "id", "inline.untitled-announcement")),
-      slug: d.slug || d.id,
-      excerpt: d.excerpt || '',
-      date: d.published_at
-        ? new Date(d.published_at).toLocaleDateString(isEn ? 'en-US' : 'id-ID', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-          })
-        : '',
-      thumbnail: getAssetUrl(d.thumbnail),
-      category: d.category || (translateInline((isEn) ? "en" : "id", "inline.thesis-info-informasi-ta"))
-    }));
-  } else {
-    fetchError = true;
-  }
-} catch (e) {
-  console.error('Error fetching Tugas Akhir items:', e);
-  fetchError = true;
+if (!collectionResult.ok) {
+  // Never substitute invented announcements: surface the real state instead.
+  loadState = "unavailable";
+} else {
+  items = collectionResult.data.map((d: any) => ({
+    id: d.id,
+    title: d.title || translateInline(isEn ? "en" : "id", "inline.untitled-announcement"),
+    slug: d.slug || d.id,
+    excerpt: d.excerpt || "",
+    date: d.published_at
+      ? new Date(d.published_at).toLocaleDateString(isEn ? "en-US" : "id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        })
+      : "",
+    thumbnail: getImageUrl(d.thumbnail, { width: 800 }),
+    category: d.category || translateInline(isEn ? "en" : "id", "inline.thesis-info-informasi-ta"),
+    ...(d.deadline ? { deadline: d.deadline } : {}),
+  }));
 }
+
+const displayItems = items;
+
 
 // Milestone & Process Steps Data
 const milestoneSteps = isEn ? [
@@ -122,66 +119,6 @@ const milestoneSteps = isEn ? [
   }
 ];
 
-// Fallback announcements if Directus empty
-const fallbackAnnouncements: TugasAkhirItem[] = isEn ? [
-  {
-    id: 'ta-fb-1',
-    title: 'Registration & Schedule for Even Semester Proposal Defense 2026',
-    slug: 'pendaftaran-jadwal-sempro-2026',
-    excerpt: 'Detailed schedule and guidelines for registering for Proposal Defense in Informatics Engineering.',
-    date: '20 January 2026',
-    thumbnail: '/landing-pages/gedung-faste.jpg',
-    category: 'Sempro'
-  },
-  {
-    id: 'ta-fb-2',
-    title: 'Scientific Journal Publication Guidelines for Graduating Students',
-    slug: 'panduan-publikasi-jurnal-coreit',
-    excerpt: 'Mandatory journal article submission requirement for final project approval and graduation clearance.',
-    date: '12 January 2026',
-    thumbnail: '/dosen-pages/dosen.jpg',
-    category: 'Publication'
-  },
-  {
-    id: 'ta-fb-3',
-    title: 'Final Thesis Defense (Munaqasyah) Period & Examiner List Batch 2',
-    slug: 'jadwal-sidang-munaqasyah-batch-2',
-    excerpt: 'Announcement of room assignments, time slots, and board of examiners for Munaqasyah thesis defense.',
-    date: '05 January 2026',
-    thumbnail: '/ruang-kelas/fst_mejadosen.jpg',
-    category: 'Munaqasyah'
-  }
-] : [
-  {
-    id: 'ta-fb-1',
-    title: 'Pendaftaran & Pembagian Jadwal Seminar Proposal Semester Genap 2026',
-    slug: 'pendaftaran-jadwal-sempro-2026',
-    excerpt: 'Informasi lengkap persetujuan berkas, syarat bebas SKS, dan pembagian ruang ujian Seminar Proposal.',
-    date: '20 Januari 2026',
-    thumbnail: '/landing-pages/gedung-faste.jpg',
-    category: 'Sempro'
-  },
-  {
-    id: 'ta-fb-2',
-    title: 'Panduan Kewajiban Publikasi Artikel Ilmiah sebagai Syarat Kelulusan TA',
-    slug: 'panduan-publikasi-jurnal-coreit',
-    excerpt: 'Petunjuk penyusunan artikel ringkas sesuai format Jurnal CoreIT / Jurnal terakreditasi Sinta.',
-    date: '12 Januari 2026',
-    thumbnail: '/dosen-pages/dosen.jpg',
-    category: 'Publikasi'
-  },
-  {
-    id: 'ta-fb-3',
-    title: 'Jadwal Pelaksanaan Sidang Munaqasyah & Dewan Penguji Gelombang II',
-    slug: 'jadwal-sidang-munaqasyah-batch-2',
-    excerpt: 'Pengumuman jadwal majelis sidang skripsi, alokasi dosen penguji, dan tata tertib ujian munaqasyah.',
-    date: '05 Januari 2026',
-    thumbnail: '/ruang-kelas/fst_mejadosen.jpg',
-    category: 'Munaqasyah'
-  }
-];
-
-const displayItems = items.length > 0 ? items : fallbackAnnouncements;
 ---
 
 <div class="min-h-screen bg-[#f5f8f4] text-slate-800">
@@ -298,18 +235,22 @@ const displayItems = items.length > 0 ? items : fallbackAnnouncements;
 
     {displayItems.length === 0 ? (
       <div class="rounded-[28px] border border-slate-200 bg-white py-16 text-center shadow-[0_18px_45px_-30px_rgba(15,23,42,0.25)]">
-        <p class="text-base text-slate-600">{translateInline((isEn) ? "en" : "id", "inline.no-final-project-announcements-available-yet")}</p>
+        <p class="text-base text-slate-600">{loadState === "unavailable"
+              ? (isEn
+                  ? "We could not load this information right now. Please try again later."
+                  : "Informasi ini sedang tidak dapat dimuat. Silakan coba beberapa saat lagi.")
+              : translateInline((isEn) ? "en" : "id", "inline.no-final-project-announcements-available-yet")}</p>
       </div>
     ) : (
       <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {displayItems.map((item) => (
           <article class="group flex min-h-full flex-col overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_18px_45px_-32px_rgba(15,23,42,0.25)] transition-all duration-200 hover:-translate-y-1 hover:border-[#dfeadf] hover:shadow-[0_26px_70px_-36px_rgba(11,92,61,0.45)]">
             <div class="relative h-52 overflow-hidden bg-slate-100">
-              <img
-                src={item.thumbnail || '/landing-pages/gedung-faste.jpg'}
+              <img decoding="async" loading="lazy"
+                src={item.thumbnail || '/landing-pages/gedung-faste.webp'}
                 alt={item.title}
                 class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                onError="this.onerror=null; this.src='/landing-pages/gedung-faste.jpg';"
+                data-fallback-src="/landing-pages/gedung-faste.webp"
               />
               <span class="absolute left-4 top-4 rounded-full border border-emerald-500/30 bg-slate-900/80 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#dff7db]">
                 {item.category || 'TA'}

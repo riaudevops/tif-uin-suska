@@ -2,7 +2,7 @@
 import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
 import { fetchWithCache } from "../../../lib/cachedFetch";
-import { API_BASE_URL, getAssetUrl } from "../../../lib/cms";
+import { API_BASE_URL, getImageUrl } from "../../../lib/cms";
 import { BERITA_LIST_FIELDS, normalizeBeritaList } from "../../../lib/berita.js";
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -10,7 +10,7 @@ const isEn = lang === "en";
 
 const API_TOKEN = import.meta.env.DIRECTUS_TOKEN;
 
-let posts = [];
+let posts: any[] = [];
 
 try {
   const json = await fetchWithCache(
@@ -48,7 +48,7 @@ function formatDate(dateStr: string | null | undefined): string {
 
 <section class="relative py-16 sm:py-24 px-4 sm:px-6 overflow-hidden bg-[#022c22]">
   <div class="absolute top-0 left-1/4 w-96 h-96 bg-black-800 rounded-lg blur-[120px]"></div>
-  <div class="absolute inset-0 bg-[url('/landing-pages/gedung.jpg')] bg-cover bg-center opacity-15"></div> 
+  <div class="absolute inset-0 bg-[url('/landing-pages/gedung.webp')] bg-cover bg-center opacity-15"></div>
   <div class="relative z-10 max-w-7xl mx-auto">
     <div data-aos="fade-right" class="mb-8 sm:mb-12 border-l-4 border-yellow-400 pl-4 sm:pl-6">
       <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">
@@ -67,15 +67,15 @@ function formatDate(dateStr: string | null | undefined): string {
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
       {posts.map((post: any, i: number) => (
         <div data-aos="fade-up" data-aos-delay={i * 40} class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-300 group">
-          
+
           <div class="overflow-hidden h-52">
-            <img 
-              src={getAssetUrl(post.image || post.featured_image || post.images, "/landing-pages/gedung.jpg")}
-              alt={post.title} 
+            <img
+              src={getImageUrl(post.image || post.featured_image || post.images, { width: 800 }, "/landing-pages/gedung.webp")}
+              alt={post.title}
               loading="lazy"
               decoding="async"
-              onError="this.onerror=null; this.src='/landing-pages/gedung.jpg';"
-              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+              data-fallback-src="/landing-pages/gedung.webp"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             />
           </div>
 

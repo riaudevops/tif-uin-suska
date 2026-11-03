@@ -37,7 +37,7 @@ const t = useTranslations(lang);
                 <div
                     class="flex flex-col items-center border-r-2 border-slate-100 pr-3 sm:pr-5 group cursor-pointer"
                 >
-                    <img
+                    <img decoding="async" fetchpriority="high"
                         src="/logo/uin.png"
                         alt="Logo UIN Suska"
                         width="40"
@@ -64,21 +64,21 @@ const t = useTranslations(lang);
                 </div>
 
                 <div class="hidden xl:flex items-center">
-                    <img
+                    <img decoding="async" loading="lazy"
                         src="/logo/unggul.png"
                         alt="Logo Unggul"
                         width="40"
                         height="48"
                         class="w-8 h-10 2xl:w-10 2xl:h-12 object-contain ml-2.5 opacity-90 hover:opacity-100 transition-opacity drop-shadow-sm"
                     />
-                    <img
+                    <img decoding="async" loading="lazy"
                         src="/logo/blu.png"
                         alt="Logo Blu"
                         width="40"
                         height="48"
                         class="w-8 h-10 2xl:w-10 2xl:h-12 object-contain ml-2.5 opacity-90 hover:opacity-100 transition-opacity drop-shadow-sm"
                     />
-                    <img
+                    <img decoding="async" loading="lazy"
                         src="/logo/kemenag.png"
                         alt="Logo Kemenag"
                         width="40"
@@ -388,8 +388,8 @@ const t = useTranslations(lang);
             </a>
 
             <div class="flex flex-col">
-                <button 
-                    type="button" 
+                <button
+                    type="button"
                     aria-expanded="false"
                     class="group flex items-center justify-between py-2.5 px-4 text-sm font-semibold text-slate-800 hover:text-[#004d2c] hover:bg-emerald-50/60 rounded-xl transition-colors text-left w-full"
                     data-menu-btn="profil-mobile"
@@ -399,7 +399,7 @@ const t = useTranslations(lang);
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </button>
-                
+
                 <div id="menu-profil-mobile" class="hidden flex-col pb-2 pt-1 pl-2 space-y-0.5 border-l-2 border-emerald-100 ml-4 my-1" data-menu="profil-mobile">
                     <a href={localizePath("/profile/history", lang)} class="block py-2 px-3 text-[13px] font-medium text-slate-600 hover:text-[#004d2c] hover:bg-emerald-50/80 rounded-lg transition-colors">{t("menu.sejarah")}</a>
                     <a href={localizePath("/profile/vision-mission", lang)} class="block py-2 px-3 text-[13px] font-medium text-slate-600 hover:text-[#004d2c] hover:bg-emerald-50/80 rounded-lg transition-colors">{t("menu.visimisi")}</a>
@@ -414,8 +414,8 @@ const t = useTranslations(lang);
             </div>
 
             <div class="flex flex-col">
-                <button 
-                    type="button" 
+                <button
+                    type="button"
                     aria-expanded="false"
                     class="group flex items-center justify-between py-2.5 px-4 text-sm font-semibold text-slate-800 hover:text-[#004d2c] hover:bg-emerald-50/60 rounded-xl transition-colors text-left w-full"
                     data-menu-btn="akademik-mobile"
@@ -425,7 +425,7 @@ const t = useTranslations(lang);
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </button>
-                
+
                 <div id="menu-akademik-mobile" class="hidden flex-col pb-2 pt-1 pl-2 space-y-0.5 border-l-2 border-emerald-100 ml-4 my-1" data-menu="akademik-mobile">
                     <a href="https://pmb.uin-suska.ac.id/" target="_blank" rel="noopener noreferrer" class="block py-2 px-3 text-[13px] font-medium text-slate-600 hover:text-[#004d2c] hover:bg-emerald-50/80 rounded-lg transition-colors">{t("menu.penerimaan")}</a>
                     <a href="https://linktr.ee/administrasi_prodi_tif" target="_blank" rel="noopener noreferrer" class="block py-2 px-3 text-[13px] font-medium text-slate-600 hover:text-[#004d2c] hover:bg-emerald-50/80 rounded-lg transition-colors">{t("menu.administrasi")}</a>
@@ -439,8 +439,8 @@ const t = useTranslations(lang);
             </div>
 
             <div class="flex flex-col">
-                <button 
-                    type="button" 
+                <button
+                    type="button"
                     aria-expanded="false"
                     class="group flex items-center justify-between py-2.5 px-4 text-sm font-semibold text-slate-800 hover:text-[#004d2c] hover:bg-emerald-50/60 rounded-xl transition-colors text-left w-full"
                     data-menu-btn="penelitian-mobile"
@@ -450,7 +450,7 @@ const t = useTranslations(lang);
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </button>
-                
+
                 <div id="menu-penelitian-mobile" class="hidden flex-col pb-2 pt-1 pl-2 space-y-0.5 border-l-2 border-emerald-100 ml-4 my-1" data-menu="penelitian-mobile">
                     <a href="https://ejournal.uin-suska.ac.id/index.php/coreit" target="_blank" rel="noopener noreferrer" class="block py-2 px-3 text-[13px] font-medium text-slate-600 hover:text-[#004d2c] hover:bg-emerald-50/80 rounded-lg transition-colors">{t("menu.jurnal")}</a>
                     <a href={localizePath("/research/aiorc", lang)} class="block py-2 px-3 text-[13px] font-medium text-slate-600 hover:text-[#004d2c] hover:bg-emerald-50/80 rounded-lg transition-colors">{t("menu.aiorc")}</a>
@@ -462,7 +462,7 @@ const t = useTranslations(lang);
             <a href={localizePath("/news", lang)} class="py-2.5 px-4 text-sm font-semibold text-slate-800 hover:text-[#004d2c] hover:bg-emerald-50/60 rounded-xl transition-colors">{t("nav.berita")}</a>
             <a href={localizePath("/events", lang)} class="py-2.5 px-4 text-sm font-semibold text-slate-800 hover:text-[#004d2c] hover:bg-emerald-50/60 rounded-xl transition-colors">{t("nav.agenda")}</a>
             <!-- <a href={localizePath("/alumni/alumni", lang)} class="py-2.5 px-4 text-sm font-semibold text-slate-800 hover:text-[#004d2c] hover:bg-emerald-50/60 rounded-xl transition-colors">{t("nav.alumni")}</a> -->
-            
+
             <div class="mt-3 pt-3 border-t border-slate-100 flex flex-col gap-2.5 pb-2">
                 <a href="https://hima.tif.uin-suska.ac.id/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 w-full py-3 px-4 bg-[#004d2c] text-sm font-bold rounded-xl hover:bg-[#003820] active:scale-[0.99] transition shadow-md shadow-emerald-900/10">
                     <span>{t("nav.himatif")}</span>
@@ -493,194 +493,6 @@ const t = useTranslations(lang);
     <SiteSearch />
 </nav>
 
-<script is:inline>
-    function initNavbar() {
-        const nav = document.querySelector("nav");
-        if (!nav) return;
-
-        const mobileBtn = document.getElementById("mobile-menu-btn");
-        const mobileMenu = document.getElementById("mobile-menu");
-        const iconOpen = document.getElementById("mobile-icon-open");
-        const iconClose = document.getElementById("mobile-icon-close");
-        const topBar = nav.querySelector("[data-topbar]");
-
-        function setMobileMenu(isOpen) {
-            if (!mobileMenu || !mobileBtn) return;
-            if (isOpen) {
-                mobileMenu.classList.remove("hidden");
-                mobileBtn.setAttribute("aria-expanded", "true");
-                iconOpen?.classList.add("hidden");
-                iconClose?.classList.remove("hidden");
-            } else {
-                mobileMenu.classList.add("hidden");
-                mobileBtn.setAttribute("aria-expanded", "false");
-                iconOpen?.classList.remove("hidden");
-                iconClose?.classList.add("hidden");
-            }
-        }
-
-        function closeAllSubmenus() {
-            const subMenus = nav.querySelectorAll("[data-menu]");
-            const subBtns = nav.querySelectorAll("[data-menu-btn]");
-            subMenus.forEach((menu) => menu.classList.add("hidden"));
-            subBtns.forEach((btn) => btn.setAttribute("aria-expanded", "false"));
-        }
-
-        // ── Desktop dropdown coordination ─────────────────────────────────
-        // Close every desktop dropdown except the one passed in (or all if none)
-        function closeDesktopDropdowns(except = null) {
-            const groups = nav.querySelectorAll("[data-desktop-dropdown]");
-            groups.forEach((group) => {
-                if (group === except) return;
-                const menu = group.querySelector("[data-desktop-menu]");
-                const btn  = group.querySelector("[data-desktop-btn]");
-                const arrow = btn?.querySelector(".desktop-btn-arrow");
-                if (menu) {
-                    menu.classList.remove("opacity-100", "visible", "translate-y-0", "pointer-events-auto");
-                    menu.classList.add("opacity-0", "invisible", "translate-y-1", "pointer-events-none");
-                }
-                if (btn) btn.setAttribute("aria-expanded", "false");
-                if (arrow) arrow.classList.remove("rotate-180", "opacity-100");
-            });
-        }
-
-        function openDesktopDropdown(group) {
-            const menu  = group.querySelector("[data-desktop-menu]");
-            const btn   = group.querySelector("[data-desktop-btn]");
-            const arrow = btn?.querySelector(".desktop-btn-arrow");
-            if (!menu) return;
-            menu.classList.remove("opacity-0", "invisible", "translate-y-1", "pointer-events-none");
-            menu.classList.add("opacity-100", "visible", "translate-y-0", "pointer-events-auto");
-            if (btn) btn.setAttribute("aria-expanded", "true");
-            if (arrow) arrow.classList.add("rotate-180", "opacity-100");
-        }
-
-        function isDesktopDropdownOpen(group) {
-            const menu = group.querySelector("[data-desktop-menu]");
-            return menu && menu.classList.contains("visible");
-        }
-
-        // Attach events to each desktop dropdown group
-        nav.querySelectorAll("[data-desktop-dropdown]").forEach((group) => {
-            const btn  = group.querySelector("[data-desktop-btn]");
-            const menu = group.querySelector("[data-desktop-menu]");
-
-            // Click button: toggle this menu, close all others
-            btn?.addEventListener("click", (e) => {
-                e.stopPropagation();
-                const wasOpen = isDesktopDropdownOpen(group);
-                closeDesktopDropdowns();
-                if (!wasOpen) openDesktopDropdown(group);
-                btn.blur(); // prevent focus-trap
-            });
-
-            // Hover into the group: close others, open this
-            group.addEventListener("mouseenter", () => {
-                closeDesktopDropdowns(group);
-                openDesktopDropdown(group);
-            });
-
-            // Hover out: close this group
-            group.addEventListener("mouseleave", () => {
-                closeDesktopDropdowns();
-            });
-
-            // Clicking a link inside closes the dropdown
-            menu?.querySelectorAll("a").forEach((link) => {
-                link.addEventListener("click", () => closeDesktopDropdowns());
-            });
-        });
-
-        // Close desktop dropdowns on outside click
-        document.addEventListener("click", (e) => {
-            if (!nav.contains(e.target)) closeDesktopDropdowns();
-        });
-
-        // Close desktop dropdowns on Escape
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape") closeDesktopDropdowns();
-        });
-        // ─────────────────────────────────────────────────────────────────
-
-        // Submenu accordion toggles (mobile dropdowns)
-        const subButtons = nav.querySelectorAll("[data-menu-btn]");
-        subButtons.forEach((btn) => {
-            btn.onclick = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-
-                const key = btn.dataset.menuBtn;
-                const menu = document.getElementById(`menu-${key}`);
-                if (!menu) return;
-
-                const isCurrentlyOpen = !menu.classList.contains("hidden");
-                closeAllSubmenus();
-
-                if (!isCurrentlyOpen) {
-                    menu.classList.remove("hidden");
-                    btn.setAttribute("aria-expanded", "true");
-                }
-            };
-        });
-
-        // Mobile main menu toggle button
-        if (mobileBtn) {
-            mobileBtn.onclick = (e) => {
-                e.stopPropagation();
-                const isCurrentlyOpen = !mobileMenu?.classList.contains("hidden");
-                setMobileMenu(!isCurrentlyOpen);
-            };
-        }
-
-        // Close when clicking mobile menu links
-        mobileMenu?.querySelectorAll("a").forEach((link) => {
-            link.onclick = () => {
-                closeAllSubmenus();
-                setMobileMenu(false);
-            };
-        });
-
-        // Scroll listener for topbar hiding & shadow
-        const handleScroll = () => {
-            const currentScrollY = window.scrollY;
-            if (topBar) {
-                topBar.classList.toggle("hidden", currentScrollY > 50);
-            }
-            nav.classList.toggle("shadow-md", currentScrollY > 30);
-        };
-
-        window.removeEventListener("scroll", handleScroll);
-        window.addEventListener("scroll", handleScroll, { passive: true });
-
-        // Close on outer click
-        document.onclick = (e) => {
-            if (!nav.contains(e.target)) {
-                closeAllSubmenus();
-                setMobileMenu(false);
-            }
-        };
-
-        // Close on Escape key
-        document.onkeydown = (e) => {
-            if (e.key === "Escape") {
-                closeAllSubmenus();
-                setMobileMenu(false);
-            }
-        };
-
-        // Auto close mobile menu if screen resized to desktop (>= 1024px)
-        window.onresize = () => {
-            if (window.innerWidth >= 1024) {
-                setMobileMenu(false);
-                closeAllSubmenus();
-            }
-        };
-    }
-
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initNavbar);
-    } else {
-        initNavbar();
-    }
-    document.addEventListener("astro:page-load", initNavbar);
+<script>
+  import "../../scripts/navbar.js";
 </script>
