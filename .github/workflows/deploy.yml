@@ -3,19 +3,28 @@ name: Build, Push to GHCR, & Deploy to Portainer
 on:
   push:
     branches: ["master", "staging", "dev"]
+    tags: ["v*", "*.*.*"]
   workflow_dispatch:
 
 permissions:
   packages: write
   contents: read
 
+concurrency:
+  # One deploy at a time per ref. A tag push gets its own group so releasing a
+  # version cannot cancel an in-flight branch deploy (and vice versa).
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
-    # Otomatis masuk ke environment yang tepat di Github Settings
+    # Otomatis masuk ke environment yang tepat di Github Settings.
+    # Tag push memakai environment Production agar bisa membawa
+    # PORTAINER_WEBHOOK_URL_PROD (atau secrets khusus environment tersebut).
     environment:
-      name: ${{ github.ref == 'refs/heads/master' && 'Production' || github.ref == 'refs/heads/staging' && 'Staging' || 'Development' }}
+      name: ${{ startsWith(github.ref, 'refs/tags/') && 'Production' || github.ref == 'refs/heads/master' && 'Production' || github.ref == 'refs/heads/staging' && 'Staging' || 'Development' }}
 
     steps:
       - name: Checkout kode
@@ -65,9 +74,12 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/riaudevops/fe-tif-uin-suska
+          # Git tag push  -> Docker tag persis mengikuti nama git tag (v1.2.3 -> v1.2.3)
+          # Branch push   -> nama branch + sha, plus `latest` hanya untuk master
           tags: |
+            type=ref,event=tag
             type=ref,event=branch
-            type=sha,prefix={{branch}}-
+            type=sha,prefix={{branch}}-,enable=${{ !startsWith(github.ref, 'refs/tags/') }}
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' }}
 
       - name: Build and Push to GHCR
@@ -90,8 +102,15 @@ jobs:
         env:
           B_USER: ${{ secrets.BASIC_AUTH_USER }}
           B_PASS: ${{ secrets.BASIC_AUTH_PASS }}
-          B_URL: ${{ secrets.PORTAINER_WEBHOOK_URL }}
+          # Git tag push dipisah ke stack produksi; branch push tetap memakai
+          # webhook lama (staging/dev/master sesuai environment).
+          B_URL: ${{ startsWith(github.ref, 'refs/tags/') && secrets.PORTAINER_WEBHOOK_URL_PROD || secrets.PORTAINER_WEBHOOK_URL }}
         run: |
-          echo "🚀 Triggering Portainer Webhook..."
-          curl -sS --fail -u "$B_USER:$B_PASS" -X POST "$B_URL"
+          if [ -z "$B_URL" ]; then
+            echo "::error::Webhook URL kosong. Untuk git tag, set PORTAINER_WEBHOOK_URL_PROD."
+            exit 1
+          fi
+          echo "🚀 Triggering Portainer Webhook (${{ startsWith(github.ref, 'refs/tags/') && 'tag/production' || 'branch' }})..."
+          curl -sS --fail --max-time 30 --retry 3 --retry-delay 5 --retry-connrefused \
+            -u "$B_USER:$B_PASS" -X POST "$B_URL"
           echo "✅ Deploy berhasil di-trigger!"

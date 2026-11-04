@@ -266,17 +266,22 @@ const articleData = article
               class="group flex h-full flex-col rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-[#d9e8de] hover:shadow-[0_18px_45px_-35px_rgba(11,92,61,0.38)]"
             >
               <div class="mb-4 overflow-hidden rounded-2xl bg-slate-100">
-                {(item.image || item.featured_image || item.images) && (
-                  <img
-                    src={getImageUrl(item.image || item.featured_image || item.images, { width: 480 }, '/landing-pages/gedung.webp')}
-                    alt={item.title}
-                    width="400"
-                    height="160"
-                    loading="lazy"
-                    decoding="async"
-                    class="h-40 w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                  />
-                )}
+                {/*
+                  Always render the <img>: `getImageUrl()` already swaps a
+                  missing/`default` value for the fallback. Guarding the whole
+                  element on the CMS field made cards without a thumbnail
+                  render an empty grey box with no placeholder at all.
+                */}
+                <img
+                  src={getImageUrl(item.image || item.featured_image || item.images, { width: 480 }, '/landing-pages/gedung.webp')}
+                  alt={item.title}
+                  width="400"
+                  height="160"
+                  loading="lazy"
+                  decoding="async"
+                  data-fallback-src="/landing-pages/gedung.webp"
+                  class="h-40 w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                />
               </div>
 
               <span class="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#8a6a1d]">

@@ -87,6 +87,33 @@ If you change dependencies, regenerate the lockfile with `bun install` and commi
 `bun.lock` together with `package.json`; otherwise `--frozen-lockfile` fails both
 in CI and inside the Docker build.
 
+### When it deploys
+
+| Trigger | Docker tags | Portainer webhook |
+| :--- | :--- | :--- |
+| Push to `master` | `master`, `master-<sha>`, `latest` | `PORTAINER_WEBHOOK_URL` |
+| Push to `staging` | `staging`, `staging-<sha>` | `PORTAINER_WEBHOOK_URL` |
+| Push to `dev` | `dev`, `dev-<sha>` | `PORTAINER_WEBHOOK_URL` |
+| **Push a git tag** (`v*` or `*.*.*`) | **the git tag itself** (`v1.2.3`, `2.0.0`) | **`PORTAINER_WEBHOOK_URL_PROD`** |
+| Manual (`workflow_dispatch`) | tags of the selected ref | depends on the ref |
+
+A tag push builds the image from the tagged commit only (no `latest`, so a
+release can never silently become "latest"). It runs in the `Production`
+environment so the `PORTAINER_WEBHOOK_URL_PROD` secret can live there.
+
+```sh
+git tag v1.2.3
+git push origin v1.2.3     # -> image ghcr.io/riaudevops/fe-tif-uin-suska:v1.2.3
+```
+
+Deploys are serialised per ref (`concurrency: deploy-<ref>` with
+`cancel-in-progress`), so a burst of pushes cannot race the same Portainer
+stack, while a tag release still gets its own slot.
+
+Required repository/environment secrets: `BASE_API_URL`, `DIRECTUS_TOKEN`,
+`BASIC_AUTH_USER`, `BASIC_AUTH_PASS`, `PORTAINER_WEBHOOK_URL`, and
+`PORTAINER_WEBHOOK_URL_PROD` for tag releases.
+
 ## ⚡ Runtime & assets
 
 Production runs through **`server.mjs`**, not the raw `dist/server/entry.mjs`.
