@@ -41,7 +41,9 @@ const IMMUTABLE_CACHE = "public, max-age=31536000, immutable";
 const STATIC_CACHE = "public, max-age=604800, stale-while-revalidate=86400";
 const PRERENDERED_CACHE = "public, max-age=300, stale-while-revalidate=86400";
 
-const SECURITY_HEADERS = securityHeaders({ env: process.env, dev: false });
+const SECURITY_HEADERS = securityHeaders({ env: process.env, dev: false, secure: false });
+// HTTPS variant: adds HSTS and `upgrade-insecure-requests`.
+const SECURE_HEADERS = securityHeaders({ env: process.env, dev: false, secure: true });
 const limiter = createRateLimiter(process.env);
 
 const COMPRESSIBLE_RE =
@@ -60,21 +62,20 @@ const MAX_BODY_BYTES = Number(process.env.MAX_BODY_BYTES) || 256 * 1024;
 /** Methods allowed by this site: it has no write endpoints at all. */
 const READ_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
 
+/**
+ * Rejects bodies larger than `MAX_BODY_BYTES`.
+ *
+ * Only declared lengths are inspected: attaching a `data` listener here would
+ * let a slow upload keep a socket alive or destroy a request mid-render. Write
+ * methods are rejected earlier, so this is a second line of defence.
+ */
 function bodyTooLarge(req) {
   const declared = Number(req.headers["content-length"]);
-  if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) return true;
-
-  // Chunked requests: reject as soon as the first chunks exceed the limit.
-  if (String(req.headers["transfer-encoding"] || "").toLowerCase().includes("chunked")) {
-    let seen = 0;
-    req.on("data", (chunk) => {
-      seen += chunk.length;
-      if (seen > MAX_BODY_BYTES && !req.destroyed) req.destroy();
-    });
-  }
-
-  return false;
+  return Number.isFinite(declared) && declared > MAX_BODY_BYTES;
 }
+
+/** Root of the built client assets (prerendered HTML + public/ files). */
+const CLIENT_ROOT = path.join(process.cwd(), "dist", "client");
 
 function cachePolicyFor(pathname) {
   if (pathname.startsWith(IMMUTABLE_PREFIX)) return IMMUTABLE_CACHE;
@@ -83,15 +84,20 @@ function cachePolicyFor(pathname) {
   // Only cache HTML that Astro actually emitted during the build. This keeps
   // CMS-backed SSR routes (news, faculty, academics details) uncached while
   // allowing prerendered informational pages to be reused briefly by a CDN.
-  const cleanPath = pathname.replace(/^\/+|\/+$/g, "");
-  const htmlPath = path.join(
-    process.cwd(),
-    "dist",
-    "client",
-    cleanPath,
-    "index.html",
-  );
-  if (fs.existsSync(htmlPath)) return PRERENDERED_CACHE;
+  try {
+    const cleanPath = pathname.replace(/^\/+|\/+$/g, "");
+    const resolved = path.resolve(CLIENT_ROOT, cleanPath, "index.html");
+
+    // Reject anything that resolves outside the build output (`..`, encoded
+    // traversal, NUL bytes) so only real prerendered files get the HTML cache.
+    if (resolved !== CLIENT_ROOT && !resolved.startsWith(CLIENT_ROOT + path.sep)) {
+      return null;
+    }
+
+    if (fs.existsSync(resolved)) return PRERENDERED_CACHE;
+  } catch {
+    // Malformed path: treat as a normal SSR request.
+  }
 
   return null;
 }
@@ -223,12 +229,23 @@ function compressResponse(req, res) {
   return res;
 }
 
+const TRUST_PROXY = !/^(0|false|no)$/i.test(String(process.env.TRUST_PROXY ?? "true"));
+
+/**
+ * True when the request reached us over HTTPS.
+ *
+ * `X-Forwarded-Proto` is only honoured when the deployment is explicitly
+ * behind a trusted proxy, matching `TRUST_PROXY` in the middleware and limiter.
+ */
 function isSecureRequest(req) {
+  if (req.socket?.encrypted) return true;
+  if (!TRUST_PROXY) return false;
+
   const proto = String(req.headers["x-forwarded-proto"] || "")
     .split(",")[0]
     .trim()
     .toLowerCase();
-  return proto === "https" || Boolean(req.socket?.encrypted);
+  return proto === "https";
 }
 
 const server = http.createServer((req, res) => {
@@ -239,10 +256,11 @@ const server = http.createServer((req, res) => {
   // assets are served by the Node adapter without running Astro middleware.
   // Headers coming from the handler take precedence (Astro's `Response`
   // headers are merged first in `compressResponse`).
-  for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+  const secure = isSecureRequest(req);
+  for (const [name, value] of Object.entries(secure ? SECURE_HEADERS : SECURITY_HEADERS)) {
     res.setHeader(name, value);
   }
-  if (isSecureRequest(req)) {
+  if (secure) {
     const hsts = hstsHeader(process.env);
     if (hsts) res.setHeader("Strict-Transport-Security", hsts);
   }

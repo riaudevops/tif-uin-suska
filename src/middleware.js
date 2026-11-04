@@ -9,6 +9,22 @@ const BOT_PROBE_PATTERNS = [
 ];
 
 /**
+ * Runtime configuration for security decisions.
+ *
+ * `import.meta.env` is inlined at build time, so a container started with
+ * different values (e.g. `TRUST_PROXY=false`) would otherwise be ignored for
+ * SSR pages while `server.mjs` honours the runtime value. Runtime
+ * `process.env` wins; the inlined values remain as a fallback.
+ */
+function runtimeEnv() {
+  const buildTime = import.meta.env ?? {};
+  if (typeof process === "undefined" || !process.env) return buildTime;
+  return { ...buildTime, ...process.env };
+}
+
+const ENV = runtimeEnv();
+
+/**
  * Dev detection must not rely on `import.meta.env.DEV` alone: this repository
  * ships a `.env` with `NODE_ENV=production`, which flips `DEV` to `false` even
  * under `astro dev`. `MODE` stays "development" in that case.
@@ -21,13 +37,18 @@ const IS_DEV =
   import.meta.env?.DEV === true ||
   DEV_MODE === "development" ||
   DEV_MODE === "dev";
-const TRUST_PROXY = !/^(0|false|no)$/i.test(String(import.meta.env?.TRUST_PROXY ?? "true"));
+const TRUST_PROXY = !/^(0|false|no)$/i.test(String(ENV.TRUST_PROXY ?? "true"));
 
 /** Applies dev-aware security headers, including HSTS only on HTTPS. */
 function harden(response, context) {
   const hardened = applySecurityHeaders(response, {
-    env: import.meta.env,
+    env: ENV,
     dev: IS_DEV,
+    // Note: `@astrojs/node` builds `request.url` from `X-Forwarded-Proto`, so
+    // the scheme above may already be proxy-derived. HSTS received over plain
+    // HTTP is ignored by browsers (RFC 6797), so a spoofed header cannot pin
+    // HTTPS for a client. server.mjs enforces TRUST_PROXY for static/prerendered
+    // responses, where the raw socket is visible.
     secure: isSecureRequest(context.request, { trustProxy: TRUST_PROXY }),
   });
 

@@ -46,6 +46,15 @@ export function allowedAssetOrigins(env = {}) {
     const origin = originOf(env?.[key]);
     if (origin) origins.add(origin);
   }
+
+  // Escape hatch for images hosted somewhere else (Cloudinary, a CDN, ...).
+  // Comma or whitespace separated; validated so a typo cannot widen the policy
+  // to every host.
+  for (const entry of String(env?.CSP_IMG_SRC_EXTRA || "").split(/[\s,]+/)) {
+    const origin = originOf(entry);
+    if (origin) origins.add(origin);
+  }
+
   return [...origins];
 }
 
@@ -64,7 +73,7 @@ export function allowedAssetOrigins(env = {}) {
  * `src/scripts/*.js`. Astro CSP hashes are not used because view transitions
  * (`<ClientRouter />`) are unsupported with hash-based CSP.
  */
-export function buildContentSecurityPolicy({ env = {}, dev = false } = {}) {
+export function buildContentSecurityPolicy({ env = {}, dev = false, secure = false } = {}) {
   const assetOrigins = allowedAssetOrigins(env);
 
   if (dev) {
@@ -81,6 +90,9 @@ export function buildContentSecurityPolicy({ env = {}, dev = false } = {}) {
       "base-uri 'self'",
       "form-action 'self'",
       "frame-ancestors 'self'",
+      // Only meaningful on HTTPS. On plain HTTP it rewrites same-origin assets
+      // to https:// and breaks the page (e.g. a staging host without TLS).
+      ...(secure ? ["upgrade-insecure-requests"] : []),
     ].join("; ");
   }
 
@@ -101,7 +113,8 @@ export function buildContentSecurityPolicy({ env = {}, dev = false } = {}) {
     "frame-ancestors 'self'",
     "manifest-src 'self'",
     "worker-src 'self'",
-    "upgrade-insecure-requests",
+    // Added only for HTTPS requests: see the dev branch above.
+    ...(secure ? ["upgrade-insecure-requests"] : []),
   ];
 
   return directives.join("; ");
@@ -122,7 +135,7 @@ export function hstsHeader(env = {}) {
  */
 export function securityHeaders({ env = {}, dev = false, secure = false } = {}) {
   const headers = { ...BASE_SECURITY_HEADERS };
-  const csp = buildContentSecurityPolicy({ env, dev });
+  const csp = buildContentSecurityPolicy({ env, dev, secure });
 
   if (csp) headers["Content-Security-Policy"] = csp;
 

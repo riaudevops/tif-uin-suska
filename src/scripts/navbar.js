@@ -66,34 +66,135 @@ function initNavbar() {
         }
 
         // Attach events to each desktop dropdown group
+        //
+        // Mouse travel between the button and the panel is not a straight
+        // vertical line: the panel is 288px wide and anchored to the left of a
+        // much narrower button, so a diagonal movement leaves the group box
+        // before it reaches the panel. With an immediate close on `mouseleave`
+        // the menu vanished before the pointer arrived (reproduced in
+        // Chromium), making items impossible to click.
+        //
+        // A short grace period fixes that: closing is delayed, and re-entering
+        // the group cancels the pending close. A small open delay also keeps
+        // the menu from flashing while the pointer sweeps across the navbar.
+        const OPEN_DELAY_MS = 120;
+        const CLOSE_DELAY_MS = 280;
+        let openTimer = null;
+        let closeTimer = null;
+        /**
+         * Set when the user closes a menu with a click while still hovering it.
+         * Hover-open stays disabled until the pointer leaves the group so the
+         * menu does not immediately pop back up (click behaviour would look
+         * broken: "clicked twice, still open").
+         */
+        let suppressHoverOpen = false;
+
+        function cancelOpenTimer() {
+            if (openTimer) {
+                clearTimeout(openTimer);
+                openTimer = null;
+            }
+        }
+
+        function cancelCloseTimer() {
+            if (closeTimer) {
+                clearTimeout(closeTimer);
+                closeTimer = null;
+            }
+        }
+
+        function scheduleOpen(group) {
+            cancelCloseTimer();
+            // Already open: keep it open without waiting for the delay.
+            if (isDesktopDropdownOpen(group)) return;
+            // The user explicitly closed this menu; wait until they leave.
+            if (suppressHoverOpen) return;
+
+            cancelOpenTimer();
+            openTimer = setTimeout(() => {
+                openTimer = null;
+                closeDesktopDropdowns(group);
+                openDesktopDropdown(group);
+            }, OPEN_DELAY_MS);
+        }
+
+        function scheduleClose() {
+            cancelOpenTimer();
+            cancelCloseTimer();
+            closeTimer = setTimeout(() => {
+                closeTimer = null;
+                closeDesktopDropdowns();
+            }, CLOSE_DELAY_MS);
+        }
+
+        // Last input modality. Mouse clicks are re-opened/closed by hover
+        // shortly after, so the menu is not opened on click in that case.
+        // Keyboard (Tab + Enter/Space) has no hover at all and must open it.
         nav.querySelectorAll("[data-desktop-dropdown]").forEach((group) => {
             const btn  = group.querySelector("[data-desktop-btn]");
             const menu = group.querySelector("[data-desktop-menu]");
 
-            // Click button: toggle this menu, close all others
+            // Click button: toggle.
+            //
+            // `event.detail === 0` means the click came from the keyboard
+            // (Enter/Space), where there is no hover to open the menu.
             btn?.addEventListener("click", (e) => {
                 e.stopPropagation();
+                cancelOpenTimer();
+                cancelCloseTimer();
+                const fromKeyboard = e.detail === 0;
                 const wasOpen = isDesktopDropdownOpen(group);
-                closeDesktopDropdowns();
-                if (!wasOpen) openDesktopDropdown(group);
-                btn.blur(); // prevent focus-trap
-            });
 
-            // Hover into the group: close others, open this
-            group.addEventListener("mouseenter", () => {
-                closeDesktopDropdowns(group);
+                if (wasOpen) {
+                    closeDesktopDropdowns();
+                    // The pointer is still over the button: keep it closed.
+                    suppressHoverOpen = !fromKeyboard;
+                    return;
+                }
+
                 openDesktopDropdown(group);
+                suppressHoverOpen = false;
             });
 
-            // Hover out: close this group
+            // Hover into the group (or back into the panel): open/keep open
+            group.addEventListener("mouseenter", () => {
+                scheduleOpen(group);
+            });
+
+            // Hover out: wait briefly so the pointer can reach the panel
             group.addEventListener("mouseleave", () => {
-                closeDesktopDropdowns();
+                // Leaving re-arms hover-open for the next visit.
+                suppressHoverOpen = false;
+                scheduleClose();
+            });
+
+            // Keyboard: the button is a real <button>, so Enter/Space toggles
+            // it natively. Do NOT auto-open on `focusin` — clicking the button
+            // focuses it, which would immediately reopen a menu that the click
+            // just closed. Close when focus leaves the group instead.
+            group.addEventListener("focusout", (event) => {
+                const next = event.relatedTarget;
+                if (next instanceof Node && group.contains(next)) return;
+                // `btn.blur()` in the click handler triggers this event; the
+                // pointer is still over the menu there, so closing would
+                // immediately undo a click that just opened it.
+                if (group.matches(":hover")) return;
+                scheduleClose();
             });
 
             // Clicking a link inside closes the dropdown
             menu?.querySelectorAll("a").forEach((link) => {
-                link.addEventListener("click", () => closeDesktopDropdowns());
+                link.addEventListener("click", () => {
+                    cancelOpenTimer();
+                    cancelCloseTimer();
+                    closeDesktopDropdowns();
+                });
             });
+        });
+
+        // Leaving the navbar entirely should close without waiting too long
+        nav.addEventListener("mouseleave", () => {
+            scheduleClose();
         });
 
         // Close desktop dropdowns on outside click

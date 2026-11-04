@@ -144,9 +144,14 @@ Notes on the CSP:
   (`onclick=`, `onerror=`) and `style="..."` attributes. UI behaviour uses data
   attributes (`data-fallback-src`, `data-go-back`, `data-search-*`).
 - `'unsafe-eval'` was removed; nothing in the app or its bundles needs it.
+- `upgrade-insecure-requests` and HSTS are only sent when the request actually
+  arrived over HTTPS. On plain HTTP the directive would rewrite same-origin
+  CSS/JS/font URLs to `https://` and break the page (e.g. HTTP-only staging).
 - Fonts are self-hosted in `public/fonts/`, so Google Fonts origins are gone.
 - `img-src` is limited to the configured CMS origin plus `*.uin-suska.ac.id`
-  instead of every HTTPS host.
+  instead of every HTTPS host. Editors who host images elsewhere must add that
+  origin through `CSP_IMG_SRC_EXTRA` (see `.env.example`); otherwise the image
+  is blocked, which is visible in the browser console.
 
 CMS content is untrusted input:
 
@@ -170,11 +175,20 @@ container behind a reverse proxy:
 | `RATE_LIMIT_WINDOW_MS` | `60000` | window length |
 | `RATE_LIMIT_MAX` | `120` | page/SSR requests per window per IP |
 | `RATE_LIMIT_API_MAX` | `30` | `/api/*` and `/sitemap.xml` per window per IP |
+| `RATE_LIMIT_MAX_KEYS` | `20000` | hard cap on tracked clients (oldest evicted) |
 | `TRUST_PROXY` | `true` | read `X-Forwarded-For` / `X-Real-IP` |
+| `TRUST_PROXY_HOPS` | `1` | trusted proxies in front of the app |
 
 Static assets (`/_astro/*`, images, fonts) never consume the budget. When the
 limit is exceeded the server returns `429` with `Retry-After` and
 `Cache-Control: no-store`.
+
+Client identity uses the **rightmost** `X-Forwarded-For` entry — the value
+written by the closest trusted proxy. Reading the leftmost entry (a common
+mistake) lets a client rotate `X-Forwarded-For: <random>` through an appending
+proxy and never hit the limit. Raise `TRUST_PROXY_HOPS` when running more than
+one proxy (e.g. Cloudflare + nginx) and set `TRUST_PROXY=false` when the
+container is exposed directly.
 
 ### Request hardening
 

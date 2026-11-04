@@ -44,11 +44,6 @@ try {
   id="hero-slider"
   class="
     relative w-full overflow-hidden bg-[#022c22]
-    h-[600px]
-    sm:h-[680px]
-    md:h-[760px]
-    lg:h-screen lg:min-h-[700px] lg:max-h-[940px]
-    2xl:max-h-[1020px]
   "
 >
   {slides.length === 0 ? (
@@ -123,7 +118,7 @@ try {
                 absolute inset-0 z-20
                 flex flex-col items-center justify-center
                 px-5 sm:px-10 md:px-14 lg:px-20
-                pt-28 pb-6 sm:pt-32 sm:pb-8 md:pt-36 md:pb-10 lg:pt-40 lg:pb-12
+                pt-28 pb-6 sm:pt-32 sm:pb-8 md:pt-36 md:pb-10 lg:pt-32 lg:pb-10
                 ${template === 2 || template === 3 ? 'sm:items-start' : ''}
               `}>
                 <div class={`
@@ -234,6 +229,45 @@ try {
 </script>
 
 <style>
+  /*
+   * Tinggi hero slider.
+   *
+   * Sebelumnya `lg:h-screen` membuat hero setinggi 100vh, sehingga navbar
+   * (fixed, ~118px) menutupi hero dan seluruh layar pertama habis — konten di
+   * bawahnya tidak terlihat. Nilai `clamp()` menjaga tinggi tetap proporsional
+   * namun dibatasi agar konten (judul + subjudul + CTA) tidak terpotong;
+   * tinggi minimum yang dibutuhkan konten adalah ~412px (320px wide) sampai
+   * ~576px (>=1280px wide).
+   */
+  #hero-slider {
+    height: clamp(440px, 68vh, 540px);
+  }
+
+  /* `svh` mengikuti viewport terkecil sehingga hero tidak terpotong URL bar. */
+  @supports (height: 1svh) {
+    #hero-slider {
+      height: clamp(440px, 68svh, 540px);
+    }
+  }
+
+  @media (min-width: 640px) {
+    #hero-slider {
+      height: clamp(480px, 64vh, 600px);
+    }
+  }
+
+  @media (min-width: 768px) {
+    #hero-slider {
+      height: clamp(540px, 62vh, 640px);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    #hero-slider {
+      height: clamp(560px, 64vh, 620px);
+    }
+  }
+
   /* Pastikan swiper dan wrapper fill penuh */
   .hero-swiper,
   :global(.hero-swiper .swiper-wrapper),

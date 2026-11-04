@@ -41,22 +41,56 @@ export function rateLimitConfig(env = {}) {
     apiMax: positiveInt(env.RATE_LIMIT_API_MAX, DEFAULT_API_MAX),
     maxKeys: positiveInt(env.RATE_LIMIT_MAX_KEYS, DEFAULT_MAX_KEYS),
     trustProxy: !/^(0|false|no)$/i.test(String(env.TRUST_PROXY ?? "true")),
+    hops: positiveInt(env.TRUST_PROXY_HOPS, 1),
   };
 }
 
-/** Client IP, honouring proxies only when explicitly allowed. */
-export function clientIp(req, { trustProxy = true } = {}) {
-  if (trustProxy) {
-    const forwarded = String(req.headers["x-forwarded-for"] || "")
-      .split(",")[0]
-      .trim();
-    if (forwarded) return forwarded;
+/** Strips a port / brackets from an IP value; rejects malformed input. */
+function normalizeIp(value) {
+  let ip = String(value || "").trim();
+  if (!ip) return null;
 
-    const realIp = String(req.headers["x-real-ip"] || "").trim();
+  if (ip.startsWith("[")) {
+    const end = ip.indexOf("]");
+    if (end !== -1) ip = ip.slice(1, end);
+  } else if (/^\d{1,3}(?:\.\d{1,3}){3}:\d+$/.test(ip)) {
+    ip = ip.slice(0, ip.lastIndexOf(":"));
+  }
+
+  return /^[0-9a-fA-F:.]{2,45}$/.test(ip) ? ip : null;
+}
+
+/**
+ * Client IP used for rate limiting.
+ *
+ * `X-Forwarded-For` is client-controlled: sending
+ * `X-Forwarded-For: <random>` to a proxy that appends the real address produces
+ * `<random>, <real>`. Reading the *leftmost* entry would therefore let anyone
+ * rotate the header and bypass the limiter entirely, so the rightmost entry
+ * (written by the closest trusted proxy) is used instead.
+ *
+ * `TRUST_PROXY_HOPS` walks further left when several trusted proxies sit in
+ * front of the app (e.g. Cloudflare + nginx + app = 2 or 3).
+ */
+export function clientIp(req, { trustProxy = true, hops = 1 } = {}) {
+  if (trustProxy) {
+    const chain = String(req.headers["x-forwarded-for"] || "")
+      .split(",")
+      .map((part) => part.trim())
+      .filter(Boolean)
+      .slice(-10); // ignore absurdly long header chains
+
+    if (chain.length > 0) {
+      const trustedHops = Math.max(1, Math.min(hops, chain.length));
+      const candidate = normalizeIp(chain[chain.length - trustedHops]);
+      if (candidate) return candidate;
+    }
+
+    const realIp = normalizeIp(req.headers["x-real-ip"]);
     if (realIp) return realIp;
   }
 
-  return req.socket?.remoteAddress || "unknown";
+  return normalizeIp(req.socket?.remoteAddress) || "unknown";
 }
 
 /** Endpoints that build data per request and get the stricter budget. */
@@ -106,11 +140,18 @@ export function createRateLimiter(env = {}) {
 
     const isApi = isDataEndpoint(pathname);
     const limit = isApi ? config.apiMax : config.max;
-    const ip = clientIp(req, { trustProxy: config.trustProxy });
+    const ip = clientIp(req, { trustProxy: config.trustProxy, hops: config.hops });
     const key = `${isApi ? "api" : "page"}:${ip}`;
 
     let bucket = buckets.get(key);
     if (!bucket || bucket.resetAt <= now) {
+      // Enforce the cap on every insert, not only during the periodic sweep:
+      // within a single window the map could otherwise grow without bound
+      // (each unique client key costs an entry).
+      if (buckets.size >= config.maxKeys) {
+        const oldest = buckets.keys().next();
+        if (!oldest.done) buckets.delete(oldest.value);
+      }
       bucket = { count: 0, resetAt: now + config.windowMs };
       buckets.set(key, bucket);
     }
@@ -128,5 +169,5 @@ export function createRateLimiter(env = {}) {
     return null;
   }
 
-  return { check, config };
+  return { check, config, stats: () => ({ size: buckets.size, maxKeys: config.maxKeys }) };
 }
