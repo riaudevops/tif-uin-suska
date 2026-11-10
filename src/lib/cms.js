@@ -10,23 +10,23 @@
 const rawBaseApi = (
   (typeof import.meta !== "undefined" && import.meta.env?.BASE_API_URL) ||
   (typeof process !== "undefined" && process.env?.BASE_API_URL) ||
-  "https://exam.tif.uin-suska.ac.id/9545b1b23ab81781c22942d7214b150b"
+  "https://tif.uin-suska.ac.id/9545b1b23ab81781c22942d7214b150b"
 )
   .trim()
   .replace(/\/+$/, "");
 
-// Root CMS URL without trailing /items (e.g. "https://exam.tif.uin-suska.ac.id/9545b1b23ab81781c22942d7214b150b")
+// Root CMS URL without trailing /items (e.g. "https://tif.uin-suska.ac.id/9545b1b23ab81781c22942d7214b150b")
 export const API_URL = rawBaseApi.replace(/\/items$/, "");
 
-// Directus /items collection endpoint root (e.g. "https://exam.tif.uin-suska.ac.id/9545b1b23ab81781c22942d7214b150b/items")
+// Directus /items collection endpoint root (e.g. "https://tif.uin-suska.ac.id/9545b1b23ab81781c22942d7214b150b/items")
 export const API_ITEMS_URL = `${API_URL}/items`;
 export const API_BASE_URL = API_ITEMS_URL;
 
-// Public Assets Base URL for browser access (e.g. "https://exam.tif.uin-suska.ac.id/9545b1b23ab81781c22942d7214b150b/assets")
+// Public Assets Base URL for browser access (e.g. "https://tif.uin-suska.ac.id/9545b1b23ab81781c22942d7214b150b/assets")
 const rawAssetsUrl = (
   (typeof import.meta !== "undefined" && import.meta.env?.PUBLIC_BASE_ASSETS_URL) ||
   (typeof process !== "undefined" && process.env?.PUBLIC_BASE_ASSETS_URL) ||
-  "https://exam.tif.uin-suska.ac.id/9545b1b23ab81781c22942d7214b150b/assets"
+  "https://tif.uin-suska.ac.id/9545b1b23ab81781c22942d7214b150b/assets"
 )
   .trim()
   .replace(/\/+$/, "");

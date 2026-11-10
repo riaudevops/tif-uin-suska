@@ -6,7 +6,7 @@
  * `server.mjs` but not `src/`, so both entry points must be able to import it.
  */
 
-const DEFAULT_CMS_ORIGIN = "https://exam.tif.uin-suska.ac.id";
+const DEFAULT_CMS_ORIGIN = "https://tif.uin-suska.ac.id";
 const UIN_WILDCARD_ORIGIN = "https://*.uin-suska.ac.id";
 
 /** Headers that never depend on the request or the environment. */
