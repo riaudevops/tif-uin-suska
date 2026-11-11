@@ -10,8 +10,7 @@ const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
 
 const API_TOKEN = import.meta.env.DIRECTUS_TOKEN;
-const HERO_SLIDER_FIELDS =
-  "id,image,button_link,status,sort,translations.languages_code,translations.title_translate,translations.subtitle_translate,translations.button_text_translate";
+const HERO_SLIDER_FIELDS = "*,translations.*";
 
 const normalizeLink = (value) => {
   if (!value) return '#';
@@ -54,7 +53,6 @@ try {
     <div class="swiper hero-swiper absolute inset-0 select-none group/swiper">
       <div class="swiper-wrapper h-full">
         {slides.map((slide: any, slideIndex: number) => {
-          const template = Number(slide.template ?? 1) || 1;
           const buttonUrl = normalizeLink(slide.button_link);
           const translations = Array.isArray(slide.translations)
             ? slide.translations.filter(
@@ -88,20 +86,75 @@ try {
             currentTranslation?.button_text_translate ||
             fallbackTranslation.button_text_translate ||
             slide.button_text;
+
+          // `text_position` is optional in the CMS; default to center so
+          // existing slides keep their current layout.
+          const rawPosition = String(slide.text_position || "").toLowerCase();
+          const textPosition = ["center", "left", "right"].includes(rawPosition)
+            ? rawPosition
+            : "center";
+          const isLeft = textPosition === "left";
+          const isRight = textPosition === "right";
+
+          // Mobile stays centered for readability; the chosen side applies
+          // from `sm` upwards.
+          const alignment = isLeft
+            ? "items-center text-center mx-auto sm:items-start sm:text-left sm:mx-0 sm:mr-auto"
+            : isRight
+              ? "items-center text-center mx-auto sm:items-end sm:text-right sm:mx-0 sm:ml-auto"
+              : "items-center text-center mx-auto";
+          const blockWidth =
+            textPosition === "center" ? "max-w-3xl lg:max-w-4xl" : "max-w-2xl";
+          const overlay = isLeft
+            ? "bg-gradient-to-r from-black/80 via-black/45 to-transparent"
+            : isRight
+              ? "bg-gradient-to-l from-black/80 via-black/45 to-transparent"
+              : "bg-gradient-to-b from-black/55 via-black/35 to-black/65";
+          const ctaAlign = isLeft
+            ? "justify-center sm:justify-start"
+            : isRight
+              ? "justify-center sm:justify-end"
+              : "justify-center";
+
           const imageUrl = getImageUrl(slide.image, { width: 1920, quality: 78 });
+          const imageSrcSet = imageUrl
+            ? [
+                `${getImageUrl(slide.image, { width: 1280, quality: 78 })} 1280w`,
+                `${getImageUrl(slide.image, { width: 1920, quality: 78 })} 1920w`,
+                `${getImageUrl(slide.image, { width: 2560, quality: 78 })} 2560w`,
+              ].join(", ")
+            : "";
+          // Portrait crop for phones: a 16:9 image loses ~59% of its width
+          // when `object-cover` fills a 390x540 hero.
+          const mobileImageUrl = imageUrl
+            ? getImageUrl(slide.image, {
+                width: 1080,
+                height: 1350,
+                fit: "cover",
+                quality: 78,
+              })
+            : "";
 
           return (
             <div class="swiper-slide relative h-full w-full">
 
               {/* ── Background ── */}
               {imageUrl ? (
-                <img decoding="async"
-                  src={imageUrl}
-                  alt={title}
-                  loading={slideIndex === 0 ? "eager" : "lazy"}
-                  fetchpriority={slideIndex === 0 ? "high" : "auto"}
-                  class="absolute inset-0 z-0 h-full w-full object-cover object-center"
-                />
+                <picture class="absolute inset-0 z-0">
+                  <source media="(max-width: 639px)" srcset={mobileImageUrl} />
+                  <img
+                    src={imageUrl}
+                    srcset={imageSrcSet}
+                    sizes="100vw"
+                    alt={title}
+                    width="1920"
+                    height="1080"
+                    loading={slideIndex === 0 ? "eager" : "lazy"}
+                    fetchpriority={slideIndex === 0 ? "high" : "auto"}
+                    decoding="async"
+                    class="h-full w-full object-cover object-center"
+                  />
+                </picture>
               ) : (
                 <div class="absolute inset-0 z-0 bg-gradient-to-br from-[#003820] via-[#022c22] to-[#011a14]">
                   <div class="absolute inset-0 bg-[radial-gradient(#10b981_1.5px,transparent_1.5px)] [background-size:28px_28px] opacity-20"></div>
@@ -109,37 +162,24 @@ try {
               )}
 
               {/* ── Overlay Gradient ── */}
-              {/* Overlay lebih gelap di tengah/atas agar teks selalu terbaca */}
-              <div class="absolute inset-0 z-10 bg-gradient-to-b from-black/70 via-black/50 to-black/75" />
+              {/* Arah gradient mengikuti posisi teks agar sisi gambar yang
+                  tidak bertulisan tetap terlihat. */}
+              <div class={`absolute inset-0 z-10 ${overlay}`} />
 
               {/* ── Inner wrapper untuk centering ── */}
               {/* Menggunakan absolute inset-0 agar tidak dipengaruhi Swiper display:block override */}
-              <div class={`
+              <div class="
                 absolute inset-0 z-20
                 flex flex-col items-center justify-center
-                px-5 sm:px-10 md:px-14 lg:px-20
+                px-4 sm:px-6 lg:px-8
                 pt-28 pb-6 sm:pt-32 sm:pb-8 md:pt-36 md:pb-10 lg:pt-32 lg:pb-10
-                ${template === 2 || template === 3 ? 'sm:items-start' : ''}
-              `}>
-                <div class={`
-                  w-full flex flex-col gap-4 sm:gap-5
-                  max-w-3xl
-                  text-center items-center
-                  ${template === 2 || template === 3
-                    ? 'sm:text-left sm:items-start md:max-w-2xl'
-                    : 'lg:max-w-4xl'
-                  }
-                `}>
-
-                  {/* Badge (template 4) */}
-                  {template === 4 && (
-                    <div>
-                      <span class="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/40 bg-emerald-500/20 px-3.5 py-1 text-[11px] sm:text-xs font-bold uppercase tracking-[0.2em] text-emerald-200 backdrop-blur-md shadow-sm">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        Program Studi
-                      </span>
-                    </div>
-                  )}
+              ">
+                <div class="mx-auto w-full max-w-7xl">
+                  <div class={`
+                    w-full flex flex-col gap-4 sm:gap-5
+                    ${blockWidth}
+                    ${alignment}
+                  `}>
 
                   {/* Judul */}
                   <h1 class="
@@ -175,7 +215,7 @@ try {
 
                   {/* Tombol CTA */}
                   {slide.button_link && (
-                    <div class="mt-2 sm:mt-3 flex flex-wrap items-center gap-3">
+                    <div class={`mt-2 sm:mt-3 flex flex-wrap items-center gap-3 ${ctaAlign}`}>
                       <a
                         href={buttonUrl}
                         class="inline-flex items-center justify-center gap-2.5 rounded-xl px-6 sm:px-8 py-2.5 sm:py-3.5 text-sm sm:text-base font-bold transition-all duration-300 bg-yellow-400 text-emerald-950 hover:bg-yellow-300 hover:scale-[1.03] active:scale-[0.98] shadow-xl shadow-yellow-500/25 ring-2 ring-yellow-400/30 group/btn"
@@ -189,6 +229,7 @@ try {
                     </div>
                   )}
 
+                  </div>
                 </div>
               </div>
             </div>
