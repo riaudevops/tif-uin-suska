@@ -116,35 +116,60 @@ try {
               ? "justify-center sm:justify-end"
               : "justify-center";
 
-          const imageUrl = getImageUrl(slide.image, { width: 1920, quality: 78 });
-          const imageSrcSet = imageUrl
+          const desktopImage = slide.image;
+          const desktopUrl = getImageUrl(desktopImage, { width: 1920, quality: 78 });
+          const desktopSrcSet = desktopUrl
             ? [
-                `${getImageUrl(slide.image, { width: 1280, quality: 78 })} 1280w`,
-                `${getImageUrl(slide.image, { width: 1920, quality: 78 })} 1920w`,
-                `${getImageUrl(slide.image, { width: 2560, quality: 78 })} 2560w`,
+                `${getImageUrl(desktopImage, { width: 1280, quality: 78 })} 1280w`,
+                `${getImageUrl(desktopImage, { width: 1920, quality: 78 })} 1920w`,
+                `${getImageUrl(desktopImage, { width: 2560, quality: 78 })} 2560w`,
               ].join(", ")
             : "";
-          // Portrait crop for phones: a 16:9 image loses ~59% of its width
-          // when `object-cover` fills a 390x540 hero.
-          const mobileImageUrl = imageUrl
-            ? getImageUrl(slide.image, {
-                width: 1080,
-                height: 1350,
-                fit: "cover",
-                quality: 78,
-              })
+
+          // Optional hand-cropped variants. When a field is empty we fall back
+          // to the master image and let Directus crop it to the target ratio.
+          const mobileImage = slide.image_mobile || desktopImage;
+          const mobileUrl = mobileImage
+            ? getImageUrl(
+                mobileImage,
+                slide.image_mobile
+                  ? { width: 1080, quality: 78 }
+                  : { width: 1080, height: 1350, fit: "cover", quality: 78 },
+              )
+            : "";
+
+          const tabletImage = slide.image_tablet || desktopImage;
+          const tabletUrl = tabletImage
+            ? getImageUrl(
+                tabletImage,
+                slide.image_tablet
+                  ? { width: 1600, quality: 78 }
+                  : { width: 1600, height: 1200, fit: "cover", quality: 78 },
+              )
+            : "";
+
+          const wideImage = slide.image_wide || desktopImage;
+          const wideUrl = wideImage
+            ? getImageUrl(
+                wideImage,
+                slide.image_wide
+                  ? { width: 2560, quality: 78 }
+                  : { width: 2560, height: 1100, fit: "cover", quality: 78 },
+              )
             : "";
 
           return (
             <div class="swiper-slide relative h-full w-full">
 
               {/* ── Background ── */}
-              {imageUrl ? (
+              {desktopUrl ? (
                 <picture class="absolute inset-0 z-0">
-                  <source media="(max-width: 639px)" srcset={mobileImageUrl} />
+                  <source media="(min-width: 1920px)" srcset={wideUrl} />
+                  <source media="(min-width: 640px) and (max-width: 1023px)" srcset={tabletUrl} />
+                  <source media="(max-width: 639px)" srcset={mobileUrl} />
                   <img
-                    src={imageUrl}
-                    srcset={imageSrcSet}
+                    src={desktopUrl}
+                    srcset={desktopSrcSet}
                     sizes="100vw"
                     alt={title}
                     width="1920"
