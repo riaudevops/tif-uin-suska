@@ -9,6 +9,8 @@ UIN Sultan Syarif Kasim Riau.
 - **Bahasa:** Inggris (default, tanpa prefix) dan Indonesia (`/id/...`)
 - **Deploy:** Docker → GHCR → Portainer
 
+- aidil ganteng
+
 ## 🚀 Project Structure
 
 ```text
