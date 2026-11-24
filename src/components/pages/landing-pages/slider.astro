@@ -116,46 +116,61 @@ try {
               ? "justify-center sm:justify-end"
               : "justify-center";
 
+          // ── Gambar hero per breakpoint ─────────────────────────────────
+          // Panduan upload di Directus (rasio wajib, ukuran boleh lebih besar):
+          //   image         16:9   2560×1440  -> desktop 1024–1919px
+          //   image_mobile   4:5   1080×1350  -> mobile  ≤639px
+          //   image_tablet   4:3   1600×1200  -> tablet  640–1023px
+          //   image_wide    21:9   2560×1100  -> wide    ≥1920px
+          //
+          // Semua URL dipaksa ke rasio target lewat width+height+fit=cover,
+          // jadi file yang rasionya meleset tetap aman (dipotong dari tengah,
+          // bukan diregangkan). Field varian kosong = pakai master `image`.
           const desktopImage = slide.image;
-          const desktopUrl = getImageUrl(desktopImage, { width: 1920, quality: 78 });
+          const desktopUrl = desktopImage
+            ? getImageUrl(desktopImage, {
+                width: 1920,
+                height: 1080,
+                fit: "cover",
+                quality: 78,
+              })
+            : "";
           const desktopSrcSet = desktopUrl
             ? [
-                `${getImageUrl(desktopImage, { width: 1280, quality: 78 })} 1280w`,
-                `${getImageUrl(desktopImage, { width: 1920, quality: 78 })} 1920w`,
-                `${getImageUrl(desktopImage, { width: 2560, quality: 78 })} 2560w`,
+                `${getImageUrl(desktopImage, { width: 1280, height: 720, fit: "cover", quality: 78 })} 1280w`,
+                `${getImageUrl(desktopImage, { width: 1920, height: 1080, fit: "cover", quality: 78 })} 1920w`,
+                `${getImageUrl(desktopImage, { width: 2560, height: 1440, fit: "cover", quality: 78 })} 2560w`,
               ].join(", ")
             : "";
 
-          // Optional hand-cropped variants. When a field is empty we fall back
-          // to the master image and let Directus crop it to the target ratio.
           const mobileImage = slide.image_mobile || desktopImage;
           const mobileUrl = mobileImage
-            ? getImageUrl(
-                mobileImage,
-                slide.image_mobile
-                  ? { width: 1080, quality: 78 }
-                  : { width: 1080, height: 1350, fit: "cover", quality: 78 },
-              )
+            ? getImageUrl(mobileImage, {
+                width: 1080,
+                height: 1350,
+                fit: "cover",
+                quality: 78,
+              })
             : "";
 
           const tabletImage = slide.image_tablet || desktopImage;
           const tabletUrl = tabletImage
-            ? getImageUrl(
-                tabletImage,
-                slide.image_tablet
-                  ? { width: 1600, quality: 78 }
-                  : { width: 1600, height: 1200, fit: "cover", quality: 78 },
-              )
+            ? getImageUrl(tabletImage, {
+                width: 1600,
+                height: 1200,
+                fit: "cover",
+                quality: 78,
+              })
             : "";
 
           const wideImage = slide.image_wide || desktopImage;
           const wideUrl = wideImage
-            ? getImageUrl(
-                wideImage,
-                slide.image_wide
-                  ? { width: 2560, quality: 78 }
-                  : { width: 2560, height: 1100, fit: "cover", quality: 78 },
-              )
+            ? getImageUrl(wideImage, {
+                width: 2560,
+                height: 1100,
+                fit: "cover",
+                quality: 78,
+              })
             : "";
 
           return (
