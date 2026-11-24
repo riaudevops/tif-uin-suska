@@ -73,7 +73,7 @@ const accordionVersions = versions.filter((v) => v !== activeVersion);
 function romanize(num: number): string {
   const lookup: { [key: string]: number } = { M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1 };
   let roman = "";
-  let i;
+  let i: string;
   for (i in lookup) {
     while (num >= lookup[i]) {
       roman += i;
@@ -82,9 +82,6 @@ function romanize(num: number): string {
   }
   return roman;
 }
-
-const semesterCount = Object.keys(activeCurriculum).length;
-const totalSks = Object.values(activeCurriculum).reduce((sum: number, courses: any[]) => sum + courses.reduce((courseSum: number, course: any) => courseSum + Number(course.sks || 0), 0), 0);
 
 function getLocalizedCourseName(name: string): string {
   if (!isEn) return name;

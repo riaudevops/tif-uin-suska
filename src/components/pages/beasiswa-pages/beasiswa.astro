@@ -4,16 +4,13 @@ import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translati
 import {
   Award,
   FileText,
-  CheckCircle2,
+  CircleCheck,
   Calendar,
-  DollarSign,
   ArrowUpRight,
   Sparkles,
-  BookOpen,
   GraduationCap,
-  ExternalLink,
   ShieldCheck,
-  Building2
+  BuildingComplex
 } from '@lucide/astro';
 
 import { getImageUrl } from "../../../lib/cms";
@@ -72,7 +69,7 @@ const scholarshipCategories = isEn ? [
     title: "Government & KIP-K",
     desc: "Full educational grants from KIP-Kuliah and provincial government (Pemprov Riau).",
     badge: "Government",
-    icon: Building2
+    icon: BuildingComplex
   },
   {
     title: "Corporate & BI (GenBI)",
@@ -97,7 +94,7 @@ const scholarshipCategories = isEn ? [
     title: "Beasiswa Pemerintah & KIP-K",
     desc: "Bantuan biaya pendidikan penuh dari KIP-Kuliah dan Pemerintah Provinsi Riau.",
     badge: "Pemerintah",
-    icon: Building2
+    icon: BuildingComplex
   },
   {
     title: "Beasiswa Mitra Bank & BUMN",
@@ -122,12 +119,12 @@ const scholarshipCategories = isEn ? [
 // Workflow Steps
 
 const applicationSteps = isEn ? [
-  { step: "01", title: "Check Eligibility", desc: "Ensure GPA >= 3.00, active student status, and required certificates.", icon: CheckCircle2 },
+  { step: "01", title: "Check Eligibility", desc: "Ensure GPA >= 3.00, active student status, and required certificates.", icon: CircleCheck },
   { step: "02", title: "Prepare Documents", desc: "Gather transcript, recommendation letter, and statement of non-receipt of other grants.", icon: FileText },
   { step: "03", title: "Online Application", desc: "Submit application form via iRaise portal or official partner link.", icon: GraduationCap },
   { step: "04", title: "Interview & Selection", desc: "Administrative verification and interview by selection board.", icon: Award }
 ] : [
-  { step: "01", title: "Cek Kriteria & IPK", desc: "Pastikan IPK minimal 3.00, status mahasiswa aktif, dan kelengkapan berkas.", icon: CheckCircle2 },
+  { step: "01", title: "Cek Kriteria & IPK", desc: "Pastikan IPK minimal 3.00, status mahasiswa aktif, dan kelengkapan berkas.", icon: CircleCheck },
   { step: "02", title: "Siapkan Berkas", desc: "Kumpulkan transkrip nilai, surat rekomendasi Prodi, dan surat pernyataan.", icon: FileText },
   { step: "03", title: "Pendaftaran Online", desc: "Isi formulir melalui portal iRaise atau situs resmi penyedia beasiswa.", icon: GraduationCap },
   { step: "04", title: "Seleksi & Wawancara", desc: "Verifikasi berkas administrasi dan wawancara oleh tim seleksi.", icon: Award }

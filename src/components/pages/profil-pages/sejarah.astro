@@ -2,16 +2,15 @@
 import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from "@/lib/translations.js";
 import {
-  Home,
+  House,
   ChevronRight,
   Award,
-  Calendar,
   Sparkles,
   GraduationCap,
-  Building2,
-  CheckCircle2,
+  BuildingComplex,
+  CircleCheck,
   Milestone,
-  History,
+  RotateCcwClock,
   TrendingUp
 } from "@lucide/astro";
 
@@ -26,14 +25,14 @@ const milestones = isEn
         title: "Study Program Establishment",
         desc: "Founded under the Faculty of Science and Technology, established based on the Directorate General of Islamic Community Guidance Decree No. 4469/D/T/2004 dated May 14, 1999.",
         badge: "Inception",
-        icon: Building2
+        icon: BuildingComplex
       },
       {
         year: "2004",
         title: "Higher Education Operational License",
         desc: "Strengthened national academic legality with the operational permit decree from Directorate General of Higher Education (Dirjen Dikti Depdiknas) No. 4469/D/T/2004 dated November 12, 2004.",
         badge: "Legal Standing",
-        icon: CheckCircle2
+        icon: CircleCheck
       },
       {
         year: "2006",
@@ -63,14 +62,14 @@ const milestones = isEn
         title: "Inisiasi & Pendirian Program Studi",
         desc: "Program studi didirikan di bawah naungan Fakultas Sains dan Teknologi UIN Suska Riau berdasarkan Surat Keputusan Dirjen Binbaga Islam No. 4469/D/T/2004 tertanggal 14 Mei 1999.",
         badge: "Awal Berdiri",
-        icon: Building2
+        icon: BuildingComplex
       },
       {
         year: "2004",
         title: "Izin Operasional Dirjen Dikti",
         desc: "Status penyelenggaraan program studi diperkuat dengan Surat Keputusan Dirjen Dikti Depdiknas No. 4469/D/T/2004 tertanggal 12 November 2004.",
         badge: "Legalitas Resmi",
-        icon: CheckCircle2
+        icon: CircleCheck
       },
       {
         year: "2006",
@@ -104,7 +103,7 @@ const milestones = isEn
         href={localizePath("/", lang)}
         class="flex items-center gap-1.5 hover:text-primary transition-colors duration-200"
       >
-        <Home class="w-4 h-4 text-gray-400" />
+        <House class="w-4 h-4 text-gray-400" />
         <span>{t("bread.home")}</span>
       </a>
     </li>
@@ -136,7 +135,7 @@ const milestones = isEn
       <div class="lg:col-span-7 space-y-6 text-left">
         <div>
           <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
-            <History class="w-3.5 h-3.5 text-secondary" />
+            <RotateCcwClock class="w-3.5 h-3.5 text-secondary" />
             {translateInline((isEn) ? "en" : "id", "inline.since-1999-25-years-of-growth")}
           </span>
 

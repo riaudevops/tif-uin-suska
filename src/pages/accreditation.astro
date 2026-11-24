@@ -9,8 +9,8 @@ import {
   ShieldCheck,
   FileCheck,
   Calendar,
-  Building2,
-  CheckCircle2,
+  BuildingComplex,
+  CircleCheck,
   BadgeCheck,
   ArrowUpRight,
 } from '@lucide/astro';
@@ -48,7 +48,7 @@ const pillars = isEn
       {
         title: 'Continuous Improvement',
         desc: 'Periodic evaluation of teaching quality, research, community service, and supporting facilities.',
-        icon: CheckCircle2,
+        icon: CircleCheck,
       },
     ]
   : [
@@ -65,7 +65,7 @@ const pillars = isEn
       {
         title: 'Perbaikan Berkelanjutan',
         desc: 'Evaluasi berkala terhadap kualitas pembelajaran, riset, pengabdian, serta fasilitas pendukung.',
-        icon: CheckCircle2,
+        icon: CircleCheck,
       },
     ];
 
@@ -243,7 +243,7 @@ const documents = isEn
 
           <div class="bg-slate-50/70 p-6 sm:p-8 lg:col-span-8 lg:p-10">
             <div class="mb-5 flex items-center gap-2">
-              <Building2 class="h-5 w-5 text-primary" />
+              <BuildingComplex class="h-5 w-5 text-primary" />
               <h3 class="text-lg font-bold text-gray-900">
                 {translateInline((isEn) ? "en" : "id", "inline.decrees-and-accreditation-record")}
               </h3>

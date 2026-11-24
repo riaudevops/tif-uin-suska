@@ -1,7 +1,7 @@
 ---
 import { translateInline } from "../../../lib/translations.js";
 import { getLocaleFromUrl, useTranslations, localizePath } from "@/lib/translations.js";
-import { Home, ChevronRight, Code2, Rocket, Layers3, ArrowUpRight } from "@lucide/astro";
+import { House, ChevronRight, CodeXml, Rocket, Layers, ArrowUpRight } from "@lucide/astro";
 
 const lang = getLocaleFromUrl(Astro);
 const t = useTranslations(lang);
@@ -10,12 +10,12 @@ const isEn = lang === "en";
 const features = isEn
   ? [
       {
-        icon: Code2,
+        icon: CodeXml,
         title: "Software Engineering",
         desc: "Developing strong foundations in programming, systems design, and software quality."
       },
       {
-        icon: Layers3,
+        icon: Layers,
         title: "System Thinking",
         desc: "Preparing students to design reliable digital products and application ecosystems."
       },
@@ -27,12 +27,12 @@ const features = isEn
     ]
   : [
       {
-        icon: Code2,
+        icon: CodeXml,
         title: "Rekayasa Perangkat Lunak",
         desc: "Membangun fondasi yang kuat dalam pemrograman, perancangan sistem, dan kualitas perangkat lunak."
       },
       {
-        icon: Layers3,
+        icon: Layers,
         title: "Pemikiran Sistem",
         desc: "Mempersiapkan mahasiswa untuk merancang produk digital dan ekosistem aplikasi yang handal."
       },
@@ -48,7 +48,7 @@ const features = isEn
   <ol class="flex flex-wrap items-center gap-2 border-b border-slate-100 py-3 text-sm text-slate-500">
     <li class="flex items-center">
       <a href={localizePath('/', lang)} class="flex items-center gap-1.5 transition-colors duration-200 hover:text-[#0b5c3d]">
-        <Home class="h-4 w-4 text-gray-400" />
+        <House class="h-4 w-4 text-gray-400" />
         <span>{t('bread.home')}</span>
       </a>
     </li>

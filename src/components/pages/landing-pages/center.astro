@@ -215,25 +215,25 @@ const isEn = lang === "en";
     const counters = document.querySelectorAll(".counter");
     if (!counters.length) return;
 
-    const startCounting = (counter) => {
+    const startCounting = (counter: Element) => {
       const target = Number(counter.getAttribute("data-target") || 0);
       if (!target) return;
 
-      counter.innerText = "0";
+      counter.textContent = "0";
       const duration = 1000;
       const startTime = performance.now();
 
-      const updateCounter = (now) => {
+      const updateCounter = (now: number) => {
         const progress = Math.min((now - startTime) / duration, 1);
         const easedProgress = 1 - Math.pow(1 - progress, 3);
         const currentValue = Math.round(target * easedProgress);
 
-        counter.innerText = currentValue.toLocaleString("en-US");
+        counter.textContent = currentValue.toLocaleString("en-US");
 
         if (progress < 1) {
           requestAnimationFrame(updateCounter);
         } else {
-          counter.innerText = target.toLocaleString("en-US");
+          counter.textContent = target.toLocaleString("en-US");
         }
       };
 

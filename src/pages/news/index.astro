@@ -4,7 +4,7 @@ import Layout from "@/layouts/Layout.astro";
 import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
 import { fetchWithCache } from '@/lib/cachedFetch.js';
 import { API_BASE_URL, getImageUrl } from '@/lib/cms.js';
-import { BERITA_LIST_FIELDS, normalizeBeritaList, buildBeritaQueryParams } from '@/lib/berita.js';
+import { normalizeBeritaList, buildBeritaQueryParams } from '@/lib/berita.js';
 import { ArrowUpRight } from '@lucide/astro';
 
 const lang = getLocaleFromUrl(Astro);

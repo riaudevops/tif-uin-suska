@@ -5,16 +5,11 @@ import {
   Briefcase,
   FileText,
 
-  CheckCircle2,
+  CircleCheck,
   Calendar,
   UserCheck,
   ArrowUpRight,
-  Search,
-  Sparkles,
   Building,
-  Clock,
-  BookOpen,
-  ExternalLink
 } from '@lucide/astro';
 
 import { getImageUrl } from "../../../lib/cms";
@@ -89,7 +84,7 @@ const workflowSteps = isEn ? [
     step: "04",
     title: "Seminar & Evaluation",
     desc: "Presenting KP results in front of examiners, company assessment, and grade submission.",
-    icon: CheckCircle2
+    icon: CircleCheck
   }
 ] : [
   {
@@ -114,7 +109,7 @@ const workflowSteps = isEn ? [
     step: "04",
     title: "Seminar & Penilaian",
     desc: "Presentasi hasil KP di hadapan dosen penguji, penyerahan lembar nilai supervisor, dan penginputan nilai.",
-    icon: CheckCircle2
+    icon: CircleCheck
   }
 ];
 

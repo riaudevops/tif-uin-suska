@@ -14,7 +14,7 @@
  */
 
 import sharp from "sharp";
-import { readdir, stat, unlink, access } from "node:fs/promises";
+import { readdir, stat, unlink } from "node:fs/promises";
 import path from "node:path";
 
 const PUBLIC_DIR = "public";
@@ -46,15 +46,6 @@ const OVERRIDES = {
 const PNG_DIRS = ["public/logo"];
 
 const kb = (bytes) => `${(bytes / 1024).toFixed(0)} KB`;
-
-async function exists(file) {
-  try {
-    await access(file);
-    return true;
-  } catch {
-    return false;
-  }
-}
 
 async function filesIn(dir) {
   try {

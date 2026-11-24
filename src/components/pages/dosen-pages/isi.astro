@@ -1,14 +1,13 @@
 ---
 import { translateInline } from "../../../lib/translations.js";
-import { getLocaleFromUrl, useTranslations, localizePath } from '@/lib/translations.js';
+import { getLocaleFromUrl, localizePath } from '@/lib/translations.js';
 import { fetchWithCache } from '@/lib/cachedFetch.js';
 import { API_BASE_URL, getImageUrl } from '@/lib/cms.js';
 import { DOSEN_FIELDS, normalizeDosen, sortDosenByPosition } from '@/lib/dosen.js';
-import { ArrowUpRight, BriefcaseBusiness, Building2, GraduationCap, Mail, UserRound } from '@lucide/astro';
+import { ArrowUpRight, BriefcaseBusiness, BuildingComplex, GraduationCap, Mail, UserRound } from '@lucide/astro';
 import { safeMailto } from "../../../lib/url-safety.js";
 
 const lang = getLocaleFromUrl(Astro);
-const t = useTranslations(lang);
 const isEn = lang === 'en';
 
 let dosenData: any[] = [];
@@ -101,7 +100,7 @@ try {
                       </span>
                     </li>
                     <li class="flex items-center gap-3">
-                      <Building2 class="h-4 w-4 shrink-0 text-primary" />
+                      <BuildingComplex class="h-4 w-4 shrink-0 text-primary" />
                       <span>{dosen.fakultas || (translateInline((isEn) ? "en" : "id", "inline.faculty-of-science-and-technology"))}</span>
                     </li>
                     <li class="flex items-center gap-3">

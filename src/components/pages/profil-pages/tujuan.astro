@@ -1,16 +1,15 @@
 ---
 import { translateInline } from "../../../lib/translations.js";
-import { getLocaleFromUrl, useTranslations } from "@/lib/translations.js";
+import { getLocaleFromUrl } from "@/lib/translations.js";
 import {
   GraduationCap,
   BookOpenCheck,
   Cpu,
-  Globe2,
+  Earth,
   Target
 } from "@lucide/astro";
 
 const lang = getLocaleFromUrl(Astro);
-const t = useTranslations(lang);
 const isEn = lang === "en";
 
 const objectives = isEn
@@ -37,7 +36,7 @@ const objectives = isEn
         num: "04",
         title: "Contribution to Society and National Development",
         desc: "Supporting digital transformation through community engagement, applied innovation, and development that benefits society.",
-        icon: Globe2
+        icon: Earth
       }
     ]
   : [
@@ -63,7 +62,7 @@ const objectives = isEn
         num: "04",
         title: "Kontribusi bagi Masyarakat dan Bangsa",
         desc: "Mendukung transformasi digital melalui pengabdian, inovasi terapan, dan pembangunan yang memberi manfaat bagi masyarakat.",
-        icon: Globe2
+        icon: Earth
       }
     ];
 ---

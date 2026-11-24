@@ -1,10 +1,9 @@
 ---
 import { translateInline } from "../../../lib/translations.js";
-import { getLocaleFromUrl, useTranslations } from '@/lib/translations.js';
+import { getLocaleFromUrl } from '@/lib/translations.js';
 import { getAssetUrl } from '@/lib/cms.js';
 import { getCollection } from '@/lib/directus.js';
 const lang = getLocaleFromUrl(Astro);
-const t = useTranslations(lang);
 const isEn = lang === 'en';
 
 const COLLECTION = 'aiorc_fields';

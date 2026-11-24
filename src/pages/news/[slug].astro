@@ -157,16 +157,6 @@ const pageDescription = article
 const pageImage = article
   ? getImageUrl(article.featured_image || article.image, { width: 1200 })
   : undefined;
-const articleData = article
-  ? {
-      headline: article.title,
-      description: pageDescription,
-      image: pageImage,
-      datePublished: article.date,
-      dateModified: article.modified || article.date,
-      author: "Program Studi Teknik Informatika UIN Suska Riau",
-    }
-  : undefined;
 
 ---
 

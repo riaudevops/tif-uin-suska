@@ -6,7 +6,7 @@ import Layout from '@/layouts/Layout.astro';
 import { getLocaleFromUrl, useTranslations, localizePath } from '../lib/translations';
 import {
   Handshake,
-  Building2,
+  BuildingComplex,
   GraduationCap,
   Briefcase,
   FlaskConical,
@@ -228,7 +228,7 @@ const fundingPartners = isEn
           {partnerGroups.map((group) => (
             <div class="rounded-[24px] border border-slate-200 bg-[#f8faf3] p-6">
               <div class="mb-4 flex items-center gap-2">
-                <Building2 class="h-5 w-5 text-primary" />
+                <BuildingComplex class="h-5 w-5 text-primary" />
                 <h3 class="text-lg font-bold text-slate-900">{group.title}</h3>
               </div>
               <p class="mb-6 text-sm leading-relaxed text-slate-500">{group.desc}</p>

@@ -1,18 +1,17 @@
 ---
-import { getLocaleFromUrl, useTranslations, localizePath } from "../../../lib/translations";
+import { getLocaleFromUrl, localizePath } from "../../../lib/translations";
 import { fetchWithCache } from "../../../lib/cachedFetch";
-import { API_BASE_URL, ASSET_URL, getImageUrl } from "../../../lib/cms";
+import { API_BASE_URL, getImageUrl } from "../../../lib/cms";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 const lang = getLocaleFromUrl(Astro);
-const t = useTranslations(lang);
 
 const API_TOKEN = import.meta.env.DIRECTUS_TOKEN;
 const HERO_SLIDER_FIELDS = "*,translations.*";
 
-const normalizeLink = (value) => {
+const normalizeLink = (value?: string) => {
   if (!value) return '#';
   if (value.startsWith('/')) return localizePath(value, lang);
   if (/^https?:\/\//i.test(value)) return value;

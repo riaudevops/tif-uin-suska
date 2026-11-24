@@ -1,20 +1,15 @@
 ---
 import { translateInline } from "../../../lib/translations.js";
-import { getLocaleFromUrl, useTranslations } from "@/lib/translations.js";
+import { getLocaleFromUrl } from "@/lib/translations.js";
 import {
-  Building2,
+  BuildingComplex,
   GraduationCap,
-  Award,
   FileCheck,
-  FileText,
-  CheckCircle2,
   Calendar,
   ShieldCheck,
-  Hash
 } from "@lucide/astro";
 
 const lang = getLocaleFromUrl(Astro);
-const t = useTranslations(lang);
 const isEn = lang === "en";
 
 const legalityList = isEn
@@ -125,7 +120,7 @@ const legalityList = isEn
           <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
             <div class="mb-2 flex items-center gap-3">
               <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Building2 class="h-4 w-4" />
+                <BuildingComplex class="h-4 w-4" />
               </div>
               <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-500">
                 {translateInline((isEn) ? "en" : "id", "inline.faculty")}
