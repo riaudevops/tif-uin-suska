@@ -59,9 +59,18 @@ let loadState: "ok" | "not-found" | "unavailable" = "not-found";
       dosen = allDosenData.find((d: any) => {
         const dId = String(d.id);
         const dSlug = String(d.slug || '').trim();
-        const dNamaSlug = d.nama ? d.nama.toLowerCase().replace(/[^a-z0-9]+/g, '-') : '';
+        const dNamaSlug = d.nama
+          ? d.nama
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/^-+|-+$/g, '')
+          : '';
 
-        return dId === cleanSlug || dSlug === cleanSlug || dNamaSlug === cleanSlug.toLowerCase();
+        return (
+          dId === cleanSlug ||
+          dSlug === cleanSlug ||
+          dNamaSlug === cleanSlug.toLowerCase()
+        );
       });
 
       // Order the whole list by position, then exclude the current lecturer.
@@ -97,10 +106,13 @@ const parsePendidikan = (pendidikanData: any): string[] => {
 
 const pendidikanList = dosen ? parsePendidikan(dosen.pendidikan) : [];
 
-// Mengambil data bidang keahlian langsung dari Directus
-const keahlianList = dosen?.bidang_keahlian
-  ? (Array.isArray(dosen.bidang_keahlian) ? dosen.bidang_keahlian : String(dosen.bidang_keahlian).split(/[\n,;]+/))
-  : [];
+// Bidang keahlian sudah dinormalisasi oleh `normalizeDosen` (kini berasal dari
+// tabel terjemahan di CMS).
+const keahlianList: string[] = Array.isArray(dosen?.bidang_keahlian)
+  ? dosen.bidang_keahlian
+  : dosen?.bidang_keahlian
+    ? String(dosen.bidang_keahlian).split(/[\n,;]+/).map((s: string) => s.trim()).filter(Boolean)
+    : [];
 ---
 
 <Layout

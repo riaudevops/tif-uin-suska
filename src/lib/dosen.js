@@ -1,5 +1,5 @@
 export const DOSEN_FIELDS =
-  "id,nama,foto,email,nip,goggle_scholar,sinta,bidang_keahlian,translations.languages_code,translations.jabatan_translate,translations.fakultas_translate,translations.pendidikan_translate";
+  "id,nama,foto,email,nip,goggle_scholar,sinta,translations.languages_code,translations.jabatan_translate,translations.fakultas_translate,translations.pendidikan_translate,translations.bidang_keahlian_translate";
 
 const getPositionPriority = (position = "") => {
   const normalizedPosition = position
@@ -82,6 +82,19 @@ export function normalizeDosen(item, lang = "id") {
       ? education.split(/[\n,;]+/).map((value) => value.trim()).filter(Boolean)
       : [];
 
+  // `bidang_keahlian` moved into the translations table in the CMS.
+  const expertise =
+    matchedTranslation?.bidang_keahlian_translate ||
+    fallbackTranslation.bidang_keahlian_translate ||
+    item.bidang_keahlian ||
+    "";
+
+  const expertiseList = Array.isArray(expertise)
+    ? expertise.filter(Boolean)
+    : typeof expertise === "string"
+      ? expertise.split(/[\n,;]+/).map((value) => value.trim()).filter(Boolean)
+      : [];
+
   return {
     ...item,
     nama: item.nama || "",
@@ -101,7 +114,7 @@ export function normalizeDosen(item, lang = "id") {
     nip: item.nip || "",
     google_scholar: item.goggle_scholar || item.google_scholar || null,
     sinta: item.sinta || null,
-    bidang_keahlian: item.bidang_keahlian || null,
+    bidang_keahlian: expertiseList,
     activeTranslation,
   };
 }
