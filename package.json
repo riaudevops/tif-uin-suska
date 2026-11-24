@@ -15,12 +15,12 @@
     "security:check": "bun scripts/check-security.mjs"
   },
   "dependencies": {
-    "@astrojs/node": "^11.1.9",
+    "@astrojs/node": "^11.1.14",
     "@lucide/astro": "^1.66.0",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.3.0",
     "aos": "^2.3.4",
-    "astro": "^7.4.4",
+    "astro": "^7.4.13",
     "marked": "^18.0.14",
     "sanitize-html": "^2.18.0",
     "swiper": "^14.2.0",
